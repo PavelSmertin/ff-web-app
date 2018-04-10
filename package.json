@@ -1,0 +1,35 @@
+{
+  "name": "ff",
+  "version": "1.0.0",
+  "description": "ff project",
+  "author": "pashtet",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@nuxtjs/yandex-metrika": "^0.1.0",
+    "axios": "^0.18.0",
+    "nuxt": "^1.4.0",
+    "vue-infinite-loading": "^2.2.3",
+    "vue-js-toggle-button": "^1.2.2",
+    "vue-switches": "^2.0.1",
+    "vue-timeago": "^3.4.4",
+    "vue-yandex-metrika": "^1.6.1",
+    "yandex-metrika": "^0.1.2-beta"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "eslint": "^4.15.0",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-vue": "^4.0.0",
+    "less": "^3.0.1",
+    "less-loader": "^4.1.0"
+  }
+}
