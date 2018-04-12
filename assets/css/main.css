@@ -89,6 +89,10 @@ body{font-family:"Droid Sans Mono",Menlo,Monaco,Consolas,"Liberation Mono","Cour
 	height:100%;
 }
 
+.vk_proof_code {
+	display: none
+}
+
 .ff{color:#c2c4c9;background-color:#000}
 .ff strong{color:#f8f9f9;font-weight:normal}
 .ff a{color:#c2c4c9}

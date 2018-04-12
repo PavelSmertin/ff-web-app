@@ -79,7 +79,7 @@ export default {
   },
   async asyncData({ params, error }) {
     try {
-      const { data } = await axios.get(`http://api.crypto.ff.ru/v1/news/view/${+params.id}`)
+      const { data } = await axios.get(`http://api.ff.ru/v1/news/view/${+params.id}`)
       return data.data
     } catch (e) {
       error({ message: 'Newest not found', statusCode: 404 })

@@ -152,6 +152,9 @@
       </div>
     </div>
   </div>
+
+  <span class="vk_proof_code">vkff01-858-255</span>
+  
 </template>
 
 
@@ -161,8 +164,8 @@
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
 
-  const api_news = 'http://api.crypto.ff.ru/v1/news';
-  const api_coins = 'http://api.crypto.ff.ru/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h';
+  const api_news = 'http://api.ff.ru/v1/news';
+  const api_coins = 'http://api.ff.ru/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h';
 
   export default {
     async asyncData({ params, error }) {

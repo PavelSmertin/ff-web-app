@@ -28,7 +28,7 @@
 		},
 
 		created() {
-			axios.get(`http://api.crypto.ff.ru/v1/coin`)
+			axios.get(`http://api.ff.ru/v1/coin`)
 			.then(response => {
 				this.coins = response.data.data
 			}).catch(e => {
