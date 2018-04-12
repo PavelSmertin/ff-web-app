@@ -151,9 +151,10 @@
 
       </div>
     </div>
-  </div>
 
-  <span class="vk_proof_code">vkff01-858-255</span>
+    <span class="vk_proof_code">vkff01-858-255</span>
+
+  </div>
   
 </template>
 
