@@ -2,8 +2,8 @@
   <div class="ff-layout">
     <div class="ff-left-panel ff-panel">
       <a href="" class="logo-link">
-        <img src="/logo.png" alt="" class="normal-logo"> 
-        <img src="/logo.png" alt="" class="mobile-logo">
+        <img src="/logo77.png" alt="" class="normal-logo" width="77" height="77"> 
+        <img src="/logo77.png" alt="" class="mobile-logo" width="77" height="77">
       </a>
     </div>
     <div class="ff-center-panel">
@@ -165,8 +165,8 @@
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
 
-  const api_news = 'http://api.ff.ru/v1/news';
-  const api_coins = 'http://api.ff.ru/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h';
+  const api_news = 'https://api.ff.ru/v1/news';
+  const api_coins = 'https://api.ff.ru/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h';
 
   export default {
     async asyncData({ params, error }) {

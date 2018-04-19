@@ -50,15 +50,13 @@
     <div class="news-detail">
       <div class="post-header">
         <h1 class="post-title">
-          <a href="/">
-            <span class="text">{{attributes.title}}</span>
-          </a>
+          <span class="text">{{attributes.title}}</span>
           <span class="post-currencies"></span>
         </h1>
       </div>
       <div class="description">
         <div class="description-body">
-          <p>{{attributes.body}}</p>
+          <p v-html="attributes.body"></p>
         </div>
       </div>
       <div class="post-footer">
@@ -79,7 +77,7 @@ export default {
   },
   async asyncData({ params, error }) {
     try {
-      const { data } = await axios.get(`http://api.ff.ru/v1/news/view/${+params.id}`)
+      const { data } = await axios.get(`https://api.ff.ru/v1/news/view/${+params.id}`)
       return data.data
     } catch (e) {
       error({ message: 'Newest not found', statusCode: 404 })

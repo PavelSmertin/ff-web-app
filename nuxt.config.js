@@ -11,7 +11,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'ff project' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon-v2.ico' }
     ],
     bodyAttrs: {
       class: 'ff'
