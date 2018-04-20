@@ -13,6 +13,8 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.3.1",
+    "@nuxtjs/feed": "^0.1.0",
     "@nuxtjs/yandex-metrika": "^0.1.0",
     "axios": "^0.18.0",
     "nuxt": "^1.4.0",
