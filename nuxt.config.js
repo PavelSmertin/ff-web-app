@@ -15,7 +15,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'ff project' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon-v2.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
     bodyAttrs: {
       class: 'ff'
@@ -57,6 +57,11 @@ module.exports = {
     { src: '~/plugins/ga.js', ssr: false },
   ],
 
+  router: {
+    routes: [
+      { name: 'banana', path: '/banana', component: 'pages/index.vue'}
+    ]
+  },
 
   modules: [
     //['@nuxtjs/google-tag-manager', { id: 'UA-52990017-1' }],
