@@ -63,11 +63,13 @@
                   <div v-for="newest of news" v-bind:key="newest.id" class="news-row">
                     <div class="news-cells">
 
-                      <nuxt-link :to="'/'+newest.id" class="news-cell nc-date">
+                      <nuxt-link :to="{ path: '/' + newest.id + (newest.attributes.slug ? '/' + newest.attributes.slug : ''), params: { newest: newest.attributes }}" 
+                                  class="news-cell nc-date">
                         <timeago :since="newest.attributes.create_dt"></timeago>
                       </nuxt-link>
 
-                      <nuxt-link :to="'/'+newest.id" class="news-cell nc-title">
+                      <nuxt-link :to="{ path: '/' + newest.id + (newest.attributes.slug ? '/' + newest.attributes.slug : ''), params: { newest: newest.attributes }}" 
+                                  class="news-cell nc-title">
                         <span class="title-text">
                           <span>{{newest.attributes.title}}</span>
                           <span class="si-source-name">
@@ -81,17 +83,22 @@
 <!--                         <a href="/news/bitcoin/" class="colored-link">BTC</a>
  -->                      </div>
                     </div>
-                    <nuxt-link :to="'/'+newest.id" class="click-area"></nuxt-link>
+                      <nuxt-link :to="{ path: '/' + newest.id + (newest.attributes.slug ? '/' + newest.attributes.slug : ''), params: { newest: newest.attributes }}" 
+                    class="click-area">
+                      
+                    </nuxt-link>
                   </div>
 
                   <div class="news-row" v-for="(item, key) in list" v-bind:key="key">
                     <div class="news-cells">
 
-                      <nuxt-link :to="'/'+item.id" class="news-cell nc-date">
+                      <nuxt-link :to="{ path: '/' + item.id + (item.attributes.slug ? '/' + item.attributes.slug : ''), params: { newest: item.attributes }}" 
+                                class="news-cell nc-date">
                         <timeago :since="item.attributes.create_dt"></timeago>
                       </nuxt-link>
 
-                      <nuxt-link :to="'/'+item.id" class="news-cell nc-title">
+                      <nuxt-link :to="{ path: '/' + item.id + (item.attributes.slug ? '/' + item.attributes.slug : ''), params: { newest: item.attributes }}" 
+                                class="news-cell nc-title">
                         <span class="title-text">
                           <span>{{item.attributes.title}}</span>
                           <span class="si-source-name">
@@ -105,7 +112,10 @@
 <!--                         <a href="/news/bitcoin/" class="colored-link">BTC</a>
  -->                      </div>
                     </div>
-                    <nuxt-link :to="'/'+item.id" class="click-area"></nuxt-link>
+                      <nuxt-link :to="{ path: '/' + item.id + (item.attributes.slug ? '/' + item.attributes.slug : ''), params: { newest: item.attributes }}" 
+                              class="click-area">
+                      
+                    </nuxt-link>
                   </div>
                   <infinite-loading @infinite="infiniteHandler">
                     <span slot="no-more">You've reached the end!</span>

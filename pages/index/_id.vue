@@ -75,10 +75,21 @@ export default {
   validate({ params }) {
     return !isNaN(+params.id)
   },
+  fetch ({ params, redirect }) {
+    // if(!params.newest.slug) {
+    //   redirect(301, '/')
+    // }
+  },
   async asyncData({ params, error }) {
     try {
       const { data } = await axios.get(`https://api.ff.ru/v1/news/view/${+params.id}`)
-      return data.data
+      if( params.slug && data.data.attributes.slug && params.slug == data.data.attributes.slug ) {
+        return data.data
+      } 
+      if( !params.slug && !data.data.attributes.slug ) {
+        return data.data
+      } 
+      error({ message: 'Newest not found', statusCode: 404 })
     } catch (e) {
       error({ message: 'Newest not found', statusCode: 404 })
     }

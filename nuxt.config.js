@@ -58,9 +58,19 @@ module.exports = {
   ],
 
   router: {
-    routes: [
-      { name: 'banana', path: '/banana', component: 'pages/index.vue'}
-    ]
+    extendRoutes (routes, resolve) {
+
+      let parent = routes.find((route) => {
+        return route.path === '/'
+      })
+
+      parent.children.push({
+        name: 'slug-id',
+        path: ':id(\\d+)/:slug',
+        chunkName: 'pages/index/_id' ,
+        component: resolve(__dirname, 'pages/index/_id.vue')
+      })
+    }
   },
 
   modules: [
