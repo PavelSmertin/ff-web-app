@@ -83,13 +83,14 @@ export default {
   async asyncData({ params, error }) {
     try {
       const { data } = await axios.get(`https://api.ff.ru/v1/news/view/${+params.id}`)
-      if( params.slug && data.data.attributes.slug && params.slug == data.data.attributes.slug ) {
-        return data.data
-      } 
-      if( !params.slug && !data.data.attributes.slug ) {
-        return data.data
-      } 
-      error({ message: 'Newest not found', statusCode: 404 })
+      // if( params.slug && data.data.attributes.slug && params.slug == data.data.attributes.slug ) {
+      //   return data.data
+      // } 
+      // if( !params.slug && !data.data.attributes.slug ) {
+      //   return data.data
+      // } 
+      // error({ message: 'Newest not found', statusCode: 404 })
+      return data.data
     } catch (e) {
       error({ message: 'Newest not found', statusCode: 404 })
     }

@@ -67,7 +67,7 @@ module.exports = {
       parent.children.push({
         name: 'slug-id',
         path: ':id(\\d+)/:slug',
-        chunkName: 'pages/index/_id' ,
+        chunkName: 'pages/index/_id',
         component: resolve(__dirname, 'pages/index/_id.vue')
       })
     }
