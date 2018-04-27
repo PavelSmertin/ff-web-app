@@ -17,7 +17,10 @@
     "@nuxtjs/feed": "^0.1.0",
     "@nuxtjs/yandex-metrika": "^0.1.0",
     "axios": "^0.18.0",
+    "bootstrap-vue": "^2.0.0-rc.8",
+    "chart.js": "^2.7.2",
     "nuxt": "^1.4.0",
+    "vue-chartjs": "^3.3.1",
     "vue-infinite-loading": "^2.2.3",
     "vue-js-toggle-button": "^1.2.2",
     "vue-switches": "^2.0.1",
@@ -32,6 +35,8 @@
     "eslint-loader": "^1.7.1",
     "eslint-plugin-vue": "^4.0.0",
     "less": "^3.0.1",
-    "less-loader": "^4.1.0"
+    "less-loader": "^4.1.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1"
   }
 }

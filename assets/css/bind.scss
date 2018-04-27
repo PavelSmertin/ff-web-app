@@ -1,0 +1,146 @@
+
+// Google Fonts
+@import url(http://fonts.googleapis.com/css?family=IBM+Plex+Sans);
+
+// Font Variables
+$font-stack: 'IBM Plex Sans', serif;
+
+$primary-color: #666;
+$dark-primary-color: #000;
+$label-size: 12px;
+
+
+$bg-toolbar-color: #000;
+$border-thin-color:#E6E6E6;
+$border-bold-color: #BFBFBF;
+
+$link-color: #FF9900;
+$label-color: #666666;
+
+$l-color: #999999;
+$l-color: #8FCC14;
+$l-color: #FF6666;
+$l-color: #BFBFBF;
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
+
+a {
+	color: $dark-primary-color;
+}
+a:hover {
+	text-decoration: none;
+	color: $link-color;
+}
+h1 {
+	font-size: 32px;
+	color: $dark-primary-color;
+}
+
+.ff-label {
+	color: $label-color;
+	font-size: $label-size;
+}
+
+.container-fluid {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	.ff-content {
+		flex: 1 0 auto;
+	}
+}
+.scroll-container {
+	position: absolute;
+	top: 0px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow-y: auto;
+}
+
+
+.ff-toolbar {
+	background: $bg-toolbar-color;
+	.normal-logo{
+		margin: 24px 16px;
+	}
+}
+
+.ff-left-panel {
+	.currency{
+		padding: 20px 24px;
+		border-right: 1px solid $border-bold-color;
+		border-bottom: 1px solid $border-thin-color;
+	}
+}
+
+.ff-news {
+	.ff-news-row {
+		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .0);
+		transition: box-shadow 0.1s ease-in-out;
+		position: relative;
+		border-left: 1px solid $border-bold-color;
+		border-bottom: 1px solid $border-thin-color;
+		.ff-news-cell {
+			display: block;
+			position: relative;
+			padding: 24px;
+			.ff-nc-title {
+				display: inline-block;
+				margin-top: 12px;
+			}
+		}
+
+		.click-area {
+			display:block;
+			position:absolute;
+			left:0;
+			right:0;
+			top:0;
+			bottom:0;
+			content:'';
+			cursor:pointer;
+		}
+		a:not(.click-area) {
+			position: relative;
+			z-index: 1;
+		}
+		a.nuxt-link-active {
+			color: $link-color;
+			transition: color 0.1s ease-in-out;
+		}
+	}
+	.ff-news-row:hover {
+		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .15);
+	}
+	.ff-news-row:hover a:not(.nuxt-link-active) {
+		color: $dark-primary-color;
+	}
+
+}
+
+
+.ff-post {
+	transition: all .5s cubic-bezier(.55,0,.1,1);
+	.post-header{
+		margin: 24px 24px 0 24px;
+
+	}
+	.description {
+		margin: 24px 32px 0 24px;
+	}
+
+}
+.ff-post.page-enter-active, .ff-post.page-leave-active {
+	transition: opacity .2s
+}
+.ff-post.page-enter, .ff-post.page-leave-active, .ff-post.page-leave {
+	opacity: 0
+}
+.social {
+	padding: 24px;
+}
+

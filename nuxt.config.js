@@ -48,13 +48,14 @@ module.exports = {
   },
 
   css: [
-    '~assets/css/main.css'
+    '@/assets/css/bind.scss'
   ],
 
   plugins: [
     // ssr: false to only include it on client-side
     { src: '~/plugins/vue-js-toggle-button.js'},
     { src: '~/plugins/ga.js', ssr: false },
+    { src: '~/plugins/vue-chartjs.js', ssr: false },
   ],
 
   router: {
@@ -85,7 +86,8 @@ module.exports = {
       }
     ],
     '@nuxtjs/feed',
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'bootstrap-vue/nuxt',
   ],
   feed: [{
       path: '/rss_export', // The route to your feed.
