@@ -38,7 +38,7 @@
 
                 <div class="row">
                   <div class="col">
-                    <nuxt-link :to="{ 
+                    <nuxt-link v-if="newest.attributes.slug" :to="{ 
                               name: 'slug-id', 
                               params: { 
                                   id: newest.id, 
@@ -47,17 +47,32 @@
                               class="ff-nc-title">
                         {{newest.attributes.title}}
                     </nuxt-link>
+                    <nuxt-link v-else :to="{ 
+                              name: 'index-id', 
+                              params: { 
+                                  id: newest.id,
+                                  newest:  newest.attributes }}"
+                              class="ff-nc-title">
+                        {{newest.attributes.title}}
+                    </nuxt-link>
                   </div>
                 </div>
               </div>
-              <nuxt-link :to="{ 
+
+              <nuxt-link v-if="newest.attributes.slug" :to="{ 
                         name: 'slug-id', 
                         params: { 
                             id: newest.id, 
                             slug: newest.attributes.slug, 
                             newest:  newest.attributes }}" 
                         class="click-area">
-                          
+              </nuxt-link>
+              <nuxt-link v-else :to="{ 
+                        name: 'index-id', 
+                        params: { 
+                            id: newest.id,
+                            newest:  newest.attributes }}" 
+                        class="click-area">
               </nuxt-link>
             </div>
 
@@ -72,7 +87,7 @@
 
                 <div class="row">
                   <div class="col">
-                    <nuxt-link :to="{ 
+                    <nuxt-link v-if="item.attributes.slug"  :to="{ 
                         name: 'slug-id', 
                         params: { 
                             id: item.id, 
@@ -81,14 +96,29 @@
                         class="ff-nc-title">
                       {{item.attributes.title}}
                     </nuxt-link>
+                    <nuxt-link v-else  :to="{ 
+                        name: 'index-id', 
+                        params: { 
+                            id: item.id,
+                            newest:  item.attributes }}" 
+                        class="ff-nc-title">
+                      {{item.attributes.title}}
+                    </nuxt-link>
                   </div>
                 </div>
               </div>
-              <nuxt-link :to="{ 
+              <nuxt-link v-if="item.attributes.slug"  :to="{ 
                         name: 'slug-id', 
                         params: { 
                             id: item.id, 
                             slug: item.attributes.slug, 
+                            newest:  item.attributes }}" 
+                        class="click-area">
+              </nuxt-link>
+              <nuxt-link v-else  :to="{ 
+                        name: 'index-id', 
+                        params: { 
+                            id: item.id,
                             newest:  item.attributes }}" 
                         class="click-area">
               </nuxt-link>
