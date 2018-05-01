@@ -1,10 +1,10 @@
 <template>
   <div class="ff-post">
     <div class="news-detail"></div>
-    <h1 class="post-header">
-      {{attributes.title}}
-    </h1>
-    <p v-html="attributes.body" class="description"></p>
+      <h1 class="post-header">
+        {{attributes.title}}
+      </h1>
+      <p v-html="attributes.body" class="description"></p>
   </div>
 </template>
 
@@ -12,39 +12,36 @@
 import axios from 'axios'
 
 export default {
-    transition: {
+
+  transition: {
     name: 'page',
     mode: 'out-in',
     type: 'transition',
-    // beforeEnter (el) {
-    //   console.log('Before enter...');
-    // },
-    // beforeLeave (el) {
-    //   console.log('Before leave...');
-    // }
   },
+
   validate({ params }) {
     return !isNaN(+params.id)
   },
-  fetch ({ params, redirect }) {
-    // if(!params.newest.slug) {
-    //   redirect(301, '/')
-    // }
-  },
-  async asyncData({ params, error }) {
+
+  async asyncData({ params, error, redirect }) {
+    if( process.client ) {
+      return {
+        attributes: params.newest
+      }
+    }
+
     try {
       const { data } = await axios.get(`https://api.ff.ru/v1/news/view/${+params.id}`)
-      // if( params.slug && data.data.attributes.slug && params.slug == data.data.attributes.slug ) {
-      //   return data.data
-      // } 
-      // if( !params.slug && !data.data.attributes.slug ) {
-      //   return data.data
-      // } 
-      // error({ message: 'Newest not found', statusCode: 404 })
-      return data.data
+ 
+      if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
+        redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
+      } else {
+        return data.data
+      }
     } catch (e) {
       error({ message: 'Newest not found', statusCode: 404 })
     }
+
   },
   head() {
     return {
@@ -52,4 +49,25 @@ export default {
     }
   }
 }
+
+
+function redirectToSlug(data, slug) {
+  // Переход по ссылке со slug
+  if( slug && data && slug == data ) {
+    return false
+  } 
+
+  // Переход по ссылке без slug
+  if( !slug && !data ) {
+    return false
+  }
+
+  // Редирект на slug
+  if( !slug ) {
+    return true
+  } 
+
+  throw new Error('Newest not found');
+}
+
 </script>

@@ -38,13 +38,27 @@
 
                 <div class="row">
                   <div class="col">
-                    <nuxt-link :to="{ path: '/' + newest.id, params: { newest: newest.attributes }}" class="ff-nc-title">
+                    <nuxt-link :to="{ 
+                              name: 'slug-id', 
+                              params: { 
+                                  id: newest.id, 
+                                  slug: newest.attributes.slug, 
+                                  newest:  newest.attributes }}"
+                              class="ff-nc-title">
                         {{newest.attributes.title}}
                     </nuxt-link>
                   </div>
                 </div>
               </div>
-              <nuxt-link :to="{ path: '/' + newest.id, params: { newest: newest.attributes }}" class="click-area"></nuxt-link>
+              <nuxt-link :to="{ 
+                        name: 'slug-id', 
+                        params: { 
+                            id: newest.id, 
+                            slug: newest.attributes.slug, 
+                            newest:  newest.attributes }}" 
+                        class="click-area">
+                          
+              </nuxt-link>
             </div>
 
             <div v-for="(item, key) in list" v-bind:key="key" class="ff-news-row">
@@ -58,13 +72,26 @@
 
                 <div class="row">
                   <div class="col">
-                    <nuxt-link :to="{ path: '/' + item.id, params: { newest: item.attributes }}" class="ff-nc-title">
-                        {{item.attributes.title}}
+                    <nuxt-link :to="{ 
+                        name: 'slug-id', 
+                        params: { 
+                            id: item.id, 
+                            slug: item.attributes.slug, 
+                            newest:  item.attributes }}" 
+                        class="ff-nc-title">
+                      {{item.attributes.title}}
                     </nuxt-link>
                   </div>
                 </div>
               </div>
-              <nuxt-link :to="{ path: '/' + item.id, params: { newest: item.attributes }}" class="click-area"></nuxt-link>
+              <nuxt-link :to="{ 
+                        name: 'slug-id', 
+                        params: { 
+                            id: item.id, 
+                            slug: item.attributes.slug, 
+                            newest:  item.attributes }}" 
+                        class="click-area">
+              </nuxt-link>
             </div>
 
             <infinite-loading @infinite="infiniteHandler">
@@ -93,6 +120,7 @@
   const api_coins = 'https://api.ff.ru/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h';
 
   export default {
+
     async asyncData({ params, error }) {
       try {
         let [news, coins] = await Promise.all([
@@ -139,10 +167,10 @@
 
   Vue.use(VueTimeago, {
     name: 'timeago', // component name, `timeago` by default
-    locale: 'en-US',
+    locale: 'ru-RU',
     locales: {
       // you will need json-loader in webpack 1
-      'en-US': require('vue-timeago/locales/en-US.json')
+      'ru-RU': require('@/assets/locales/ru-RU.json')
     }
   })
 
