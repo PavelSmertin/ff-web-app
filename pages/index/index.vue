@@ -105,6 +105,15 @@
         },
         legend: { display: false },
         scales: {
+          xAxes: [{
+            display: false,
+            ticks: {
+              callback: function(dataLabel, index) {
+                // Hide the label of every 2nd dataset. return null to hide the grid line too
+                return  '';
+              }
+            }
+          }],
           yAxes: [{
             position: 'right',
             ticks: { beginAtZero:false }
