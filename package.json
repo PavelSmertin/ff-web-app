@@ -26,6 +26,7 @@
     "vue-switches": "^2.0.1",
     "vue-timeago": "^3.4.4",
     "vue-yandex-metrika": "^1.6.1",
+    "vue2-highcharts": "^1.1.9",
     "yandex-metrika": "^0.1.2-beta"
   },
   "devDependencies": {

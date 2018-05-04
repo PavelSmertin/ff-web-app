@@ -8,6 +8,7 @@ $font-stack: 'IBM Plex Sans', serif;
 $primary-color: #666;
 $dark-primary-color: #000;
 $label-size: 12px;
+$coin-info-size: 14px;
 $primary-size: 18px;
 
 
@@ -18,8 +19,10 @@ $border-bold-color: #BFBFBF;
 $link-color: #FF9900;
 $label-color: #666666;
 
+$bg-coin-color: #F2F2F2;
+
 $l-color: #999999;
-$l-color: #8FCC14;
+$up-value-color: #8FCC14;
 $l-color: #FF6666;
 $l-color: #BFBFBF;
 
@@ -40,6 +43,28 @@ a:hover {
 h1 {
 	font-size: 32px;
 	color: $dark-primary-color;
+}
+
+.margin5 {
+	margin-top: 5px;
+}
+.margin10 {
+	margin-top: 10px;
+}
+.margin15 {
+	margin-top: 15px;
+}
+.margin20 {
+	margin-top: 20px;
+}
+.margin24 {
+	margin-top: 24px;
+}
+.margin30 {
+	margin-top: 30px;
+}
+.margin40 {
+	margin-top: 40px;
 }
 
 .ff-label {
@@ -64,6 +89,15 @@ h1 {
 	padding-left: 30px;
     margin-left: -30px;
 }
+
+
+.positive {
+	color: $up-value-color !important;
+}
+
+
+
+
 
 
 .ff-toolbar {
@@ -147,4 +181,56 @@ h1 {
 .social {
 	padding: 24px;
 }
+
+
+
+
+
+
+.ff-coin {
+	padding: 24px;
+	background-color: $bg-coin-color;
+	height: 100%;
+}
+
+.coin-value {
+	font-size: 32px;
+	color: $dark-primary-color;
+	font-weight: 100;
+}
+
+.coin-unit {
+	color: $dark-primary-color;
+	line-height:28px;
+
+}
+.coin-info {
+	color: $dark-primary-color;
+	font-size: $coin-info-size;
+}
+
+.coin-details-block {
+	margin-top: 24px;
+	padding: 12px 0 16px 0;
+	border-top: 1px solid $border-bold-color;
+	border-bottom: 1px solid $border-bold-color;
+}
+
+.coin-detail{
+	color: $dark-primary-color;
+	font-weight: bold;
+	font-size: $coin-info-size;
+	line-height: $coin-info-size;
+	margin-top: 8px;
+
+
+}
+.coin-detail-info{
+	font-size: $coin-info-size;
+	line-height: $coin-info-size;
+	margin-top: 8px;
+
+	font-weight: bold;
+}
+
 

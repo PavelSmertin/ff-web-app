@@ -10,21 +10,21 @@
  
     <div class="row ff-content">
 
-      <div class="ff-left-panel col-1">
+<!--       <div class="ff-left-panel col-1">
         <div class="scroll-container">
           <div v-for="coin of coins" v-bind:key="coin.id" class="currency ff-label">
             {{coin.attributes.symbol}}
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="ff-center-panel col-7">
+      <div class="ff-center-panel d-none d-md-block col-md-7">
         <div class="scroll-container">
           <nuxt-child :key="$route.params.id"/>
         </div>
       </div>
 
-      <div class="ff-right-panel col">
+      <div class="ff-right-panel col-12 col-md-5">
         <div class="scroll-container">
           <div v-if="news && news.length" class="ff-news">
 
