@@ -23,10 +23,6 @@ export default {
     return !isNaN(+params.id)
   },
 
-  created () {
-      console.log('after each');
-  },
-
   async asyncData({ params, error, redirect }) {
     if( process.client ) {
       return {
@@ -51,6 +47,13 @@ export default {
     return {
       title: this.attributes.title + " - ff.ru"
     }
+  },
+
+  methods: {
+    showPost() {
+      console.log(this.$router);
+    }
+
   }
 }
 

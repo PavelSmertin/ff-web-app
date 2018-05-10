@@ -12,6 +12,7 @@ $coin-info-size: 14px;
 $primary-size: 18px;
 
 
+$bg-main-color: #fff;
 $bg-toolbar-color: #000;
 $border-thin-color:#E6E6E6;
 $border-bold-color: #BFBFBF;
@@ -93,7 +94,9 @@ h1 {
 	color: $up-value-color !important;
 }
 
-
+.ff-content {
+	position: relative;
+}
 
 .ff-toolbar {
 	background: $bg-toolbar-color;
@@ -101,6 +104,29 @@ h1 {
 		margin: 24px 16px;
 	}
 }
+
+
+.ff-center-panel {
+    display: none;
+    background-color: $bg-main-color;
+}
+@media (min-width: 768px) {
+	.ff-center-panel {
+    	display: block;
+	}
+}
+@media (max-width: 769px) {
+	.content_float {
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		display: block !important;
+		z-index: 5;
+	}
+}
+
 
 .ff-left-panel {
 	.currency{

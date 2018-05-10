@@ -18,7 +18,7 @@
         </div>
       </div> -->
 
-      <div class="ff-center-panel d-none d-md-block col-md-8">
+      <div v-bind:class="{ content_float: seen }" class="ff-center-panel col-md-8">
         <div class="scroll-container">
           <nuxt-child :key="$route.params.id"/>
         </div>
@@ -173,6 +173,7 @@
           meta: {current_page: 1},
           list: [],
           coins: [],
+          seen: false
         }
     },
 
@@ -181,7 +182,14 @@
       InfiniteLoading
     },
 
+    created () {
+      this.$router.afterEach((r) => {
+        this.seen = r.name == "slug-id";
+      })
+    },
+
     methods: {
+
       infiniteHandler($state) {
         axios.get(api_news, {
           params: {
@@ -197,8 +205,14 @@
           }
         });
       },
+
+      showPost() {
+        console.log(this);
+        return true;
+      }
+
     }
-  }
+  };
 
   Vue.use(VueTimeago, {
     name: 'timeago', // component name, `timeago` by default

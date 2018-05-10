@@ -81,7 +81,7 @@
   export default {
     transition: 'page',
     head: {
-      title: 'Курс биткоина, новости и прогнозы биткоина'
+      title: 'ff.ru - курс биткоина, новости и прогнозы биткоина'
     },
     data() {
       return {
