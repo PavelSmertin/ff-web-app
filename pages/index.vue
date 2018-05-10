@@ -18,13 +18,13 @@
         </div>
       </div> -->
 
-      <div class="ff-center-panel d-none d-md-block col-md-7">
+      <div class="ff-center-panel d-none d-md-block col-md-8">
         <div class="scroll-container">
           <nuxt-child :key="$route.params.id"/>
         </div>
       </div>
 
-      <div class="ff-right-panel col-12 col-md-5">
+      <div class="ff-right-panel col-12 col-md-4">
         <div class="scroll-container">
           <div v-if="news && news.length" class="ff-news">
 
@@ -44,15 +44,18 @@
                                   id: newest.id, 
                                   slug: newest.attributes.slug, 
                                   newest:  newest.attributes }}"
-                              class="ff-nc-title">
+                              class="ff-nc-title"
+                              >
                         {{newest.attributes.title}}
                     </nuxt-link>
+
                     <nuxt-link v-else :to="{ 
                               name: 'index-id', 
                               params: { 
                                   id: newest.id,
                                   newest:  newest.attributes }}"
-                              class="ff-nc-title">
+                              class="ff-nc-title"
+                              >
                         {{newest.attributes.title}}
                     </nuxt-link>
                   </div>
@@ -65,14 +68,16 @@
                             id: newest.id, 
                             slug: newest.attributes.slug, 
                             newest:  newest.attributes }}" 
-                        class="click-area">
+                        class="click-area"
+                        >
               </nuxt-link>
               <nuxt-link v-else :to="{ 
                         name: 'index-id', 
                         params: { 
                             id: newest.id,
                             newest:  newest.attributes }}" 
-                        class="click-area">
+                        class="click-area"
+                        >
               </nuxt-link>
             </div>
 
@@ -165,9 +170,9 @@
 
     data() {
         return {
-          meta : {current_page: 1},
-          list : [],
-          coins : []
+          meta: {current_page: 1},
+          list: [],
+          coins: [],
         }
     },
 

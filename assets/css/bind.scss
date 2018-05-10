@@ -23,8 +23,7 @@ $bg-coin-color: #F2F2F2;
 
 $l-color: #999999;
 $up-value-color: #8FCC14;
-$l-color: #FF6666;
-$l-color: #BFBFBF;
+
 
 body {
   font: 100% $font-stack;
@@ -90,13 +89,9 @@ h1 {
     margin-left: -30px;
 }
 
-
 .positive {
 	color: $up-value-color !important;
 }
-
-
-
 
 
 
@@ -192,13 +187,11 @@ h1 {
 	background-color: $bg-coin-color;
 	height: 100%;
 }
-
 .coin-value {
 	font-size: 32px;
 	color: $dark-primary-color;
 	font-weight: 100;
 }
-
 .coin-unit {
 	color: $dark-primary-color;
 	line-height:28px;
@@ -208,28 +201,23 @@ h1 {
 	color: $dark-primary-color;
 	font-size: $coin-info-size;
 }
-
 .coin-details-block {
 	margin-top: 24px;
 	padding: 12px 0 16px 0;
 	border-top: 1px solid $border-bold-color;
 	border-bottom: 1px solid $border-bold-color;
 }
-
 .coin-detail{
 	color: $dark-primary-color;
 	font-weight: bold;
 	font-size: $coin-info-size;
 	line-height: $coin-info-size;
 	margin-top: 8px;
-
-
 }
 .coin-detail-info{
 	font-size: $coin-info-size;
 	line-height: $coin-info-size;
 	margin-top: 8px;
-
 	font-weight: bold;
 }
 
