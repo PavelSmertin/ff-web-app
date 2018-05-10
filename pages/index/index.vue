@@ -78,20 +78,53 @@
     ToggleButton = require('vue-js-toggle-button')
   }
 
+
+  const CURRENTFIELDS = {
+      'TYPE'            : 0x0       // hex for binary 0, it is a special case of fields that are always there
+    , 'MARKET'          : 0x0       // hex for binary 0, it is a special case of fields that are always there
+    , 'FROMSYMBOL'      : 0x0       // hex for binary 0, it is a special case of fields that are always there
+    , 'TOSYMBOL'        : 0x0       // hex for binary 0, it is a special case of fields that are always there
+    , 'FLAGS'           : 0x0       // hex for binary 0, it is a special case of fields that are always there
+    , 'PRICE'           : 0x1       // hex for binary 1
+    , 'BID'             : 0x2       // hex for binary 10
+    , 'OFFER'           : 0x4       // hex for binary 100
+    , 'LASTUPDATE'      : 0x8       // hex for binary 1000
+    , 'AVG'             : 0x10      // hex for binary 10000
+    , 'LASTVOLUME'      : 0x20      // hex for binary 100000
+    , 'LASTVOLUMETO'    : 0x40      // hex for binary 1000000
+    , 'LASTTRADEID'     : 0x80      // hex for binary 10000000
+    , 'VOLUMEHOUR'      : 0x100     // hex for binary 100000000
+    , 'VOLUMEHOURTO'    : 0x200     // hex for binary 1000000000
+    , 'VOLUME24HOUR'    : 0x400     // hex for binary 10000000000
+    , 'VOLUME24HOURTO'  : 0x800     // hex for binary 100000000000
+    , 'OPENHOUR'        : 0x1000    // hex for binary 1000000000000
+    , 'HIGHHOUR'        : 0x2000    // hex for binary 10000000000000
+    , 'LOWHOUR'         : 0x4000    // hex for binary 100000000000000
+    , 'OPEN24HOUR'      : 0x8000    // hex for binary 1000000000000000
+    , 'HIGH24HOUR'      : 0x10000   // hex for binary 10000000000000000
+    , 'LOW24HOUR'       : 0x20000   // hex for binary 100000000000000000
+    , 'LASTMARKET'      : 0x40000   // hex for binary 1000000000000000000, this is a special case and will only appear on CCCAGG messages
+  };
+
   export default {
     transition: 'page',
-    head: {
-      title: 'ff.ru - курс биткоина, новости и прогнозы биткоина'
+    head() {
+      return {
+        title: this.headTitle
+      }
     },
     data() {
       return {
         enabled: true,
-        showLine: false
+        showLine: false,
+        headTitle: 'ff.ru - курс биткоина, новости и прогнозы биткоина',
+
       }
     },
     mounted () {
       this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
-    },  
+    },
+
     async asyncData () {
 
       const dataLimit = 720
@@ -168,12 +201,72 @@
         console.log('lineData error')
       }
     },
+
     methods: {
       formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      },
+      dataUnpack(message) {
+        var data = this.unpack(message);
+        if(!data['PRICE']) {
+          return;
+        }
+        if(!data['OPEN24HOUR']) {
+          return;
+        }
+        var delta = ((data['PRICE'] - data['OPEN24HOUR']) / data['OPEN24HOUR'] * 100).toFixed(2);
+        return {price: data['PRICE'], delta: delta};
+      },
+      unpack(value) {
+        var valuesArray = value.split("~");
+        var valuesArrayLenght = valuesArray.length;
+        var mask = valuesArray[valuesArrayLenght-1];
+        var maskInt = parseInt(mask,16);
+        var unpackedCurrent = {};
+        var currentField = 0;
+        for(var property in CURRENTFIELDS) {
+          if(CURRENTFIELDS[property] === 0) {
+            unpackedCurrent[property] = valuesArray[currentField];
+            currentField++;
+          }  else if(maskInt&CURRENTFIELDS[property]){
+            if(property === 'LASTMARKET'){
+              unpackedCurrent[property] = valuesArray[currentField];
+            }else{
+              unpackedCurrent[property] = parseFloat(valuesArray[currentField]);
+            }
+            currentField++;
+          }
+        }
+        
+        return unpackedCurrent;
+      }
+    },
+
+    socket: {
+      events: {
+        m(msg) {
+          var change = this.dataUnpack(msg);
+          if(change) {
+            this.headTitle = "Курс биткоина: $" + change.price;
+            this.price = change.price;
+            this.percent_change_24h = change.delta;
+          }
+        },
+        connect() {
+          console.log('connect');
+          this.$socket.emit('SubAdd', { subs: ['5~CCCAGG~BTC~USD'] });
+        },
+        disconnect() {
+          console.log("Websocket disconnected from " + this.$socket.nsp);
+        },
+        error(err) {
+          console.error("Websocket error!", err);
+        }
+
       }
     }
   }
+
 
 </script>

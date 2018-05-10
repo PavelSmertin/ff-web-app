@@ -56,6 +56,7 @@ module.exports = {
     { src: '~/plugins/vue-js-toggle-button.js'},
     { src: '~/plugins/ga.js', ssr: false },
     { src: '~/plugins/vue-chartjs.js', ssr: false },
+    { src: '~/plugins/vue-socket.js', ssr: false },
   ],
 
   router: {
