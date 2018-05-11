@@ -183,10 +183,16 @@
       InfiniteLoading
     },
 
-    created () {
-      this.$router.afterEach((r) => {
-        this.seen = r.name == "slug-id";
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        // Экземпляр компонента доступен как `vm`
+        vm.seen = to.name == "slug-id";
       })
+    },
+
+    beforeRouteUpdate (to, from, next) {
+      this.seen = to.name == "slug-id";
+      next();
     },
 
     methods: {
@@ -205,11 +211,6 @@
             $state.complete()
           }
         });
-      },
-
-      showPost() {
-        console.log(this);
-        return true;
       }
 
     }

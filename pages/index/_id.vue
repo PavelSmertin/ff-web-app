@@ -41,20 +41,13 @@ export default {
     } catch (e) {
       error({ message: 'Newest not found', statusCode: 404 })
     }
-
   },
+
   head() {
     return {
       title: this.attributes.title + " - ff.ru"
     }
   },
-
-  methods: {
-    showPost() {
-      console.log(this.$router);
-    }
-
-  }
 }
 
 
