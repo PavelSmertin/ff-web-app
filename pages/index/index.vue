@@ -248,7 +248,7 @@
         m(msg) {
           var change = this.dataUnpack(msg);
           if(change) {
-            this.headTitle = "Курс биткоина: $" + change.price;
+            this.headTitle = change.price + " BTC/USD Курс биткоина";
             this.price = change.price;
             this.percent_change_24h = change.delta;
           }

@@ -2,9 +2,9 @@
   <div class="container-fluid">
     <div class="row">
       <div class="ff-toolbar col">
-        <a href="/" class="logo-link">
-          <img src="/logo.svg" alt="" class="normal-logo"> 
-        </a>
+        <nuxt-link :to="{name: 'index'}" class="logo-link">
+            <img src="/logo.svg" alt="" class="normal-logo">
+        </nuxt-link>
       </div>
     </div>
  
@@ -22,9 +22,21 @@
         <div class="scroll-container">
           <nuxt-child :key="$route.params.id"/>
         </div>
+
+        <nuxt-link v-if="$route.name == 'slug-id'" :to="{name: 'index'}" class="ff-close">
+            <img src="/close.svg" />
+        </nuxt-link>
+        <button v-else  v-on:click="closeContent()" class="ff-close">
+            <img src="/close.svg" />
+        </button>
       </div>
 
       <div class="ff-right-panel col-12 col-md-4">
+        <ul class="right_tabs">
+          <li class="right_tab">
+            <button v-on:click="seen = !seen">Bitcoin</button>
+          </li>
+        </ul>
         <div class="scroll-container">
           <div v-if="news && news.length" class="ff-news">
 
@@ -211,6 +223,9 @@
             $state.complete()
           }
         });
+      }, 
+      closeContent() {
+        this.seen = !this.seen;
       }
 
     }

@@ -104,16 +104,33 @@ h1 {
 	}
 }
 
+.ff-close {
+	display: none;
+	background: none;
+	border:none;
+}
+.ff-close:focus {
+  outline: none;
+}
+
+.content_float .ff-close {
+	display: block;
+	position: absolute;
+	top: 0px;
+	right: 0;
+}
 
 .ff-center-panel {
     display: none;
     background-color: $bg-main-color;
 }
+
 @media (min-width: 768px) {
 	.ff-center-panel {
     	display: block;
 	}
 }
+
 @media (max-width: 769px) {
 	.content_float {
 		position: absolute;
@@ -123,6 +140,12 @@ h1 {
 		right: 0;
 		display: block !important;
 		z-index: 5;
+	}
+	.ff-close, .content_float .ff-close {
+		display: block;
+		position: absolute;
+		top: -45px;
+		right: 0;
 	}
 }
 
@@ -244,6 +267,51 @@ h1 {
 	line-height: $coin-info-size;
 	margin-top: 8px;
 	font-weight: bold;
+}
+
+
+
+
+.ff-right-panel .right_tabs {
+	display:none;
+}
+@media (max-width: 769px) {
+	.ff-right-panel .right_tabs{
+		display: block;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		font-size: $coin-info-size;
+		height: 48px;
+		border-bottom: 1px solid $border-thin-color;
+		border-left: 1px solid $border-thin-color;
+		background-color: $bg-coin-color;
+
+		position: absolute;
+		top: 0px;
+		left: 0;
+		right: 0;
+	}
+	.ff-right-panel .right_tabs li{
+		margin: 0 0 0 24px;
+	}
+
+	.ff-right-panel .right_tabs li a{
+		line-height: 48px;
+	}
+	.ff-right-panel .right_tabs li button{
+		line-height: 48px;
+		background: none;
+		border:none;
+	}
+
+	.ff-right-panel .right_tabs li button:focus{
+		outline: none;
+	}
+
+	.ff-right-panel .scroll-container {
+		top: 48px;
+	}
 }
 
 
