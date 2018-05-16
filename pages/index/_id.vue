@@ -10,6 +10,7 @@
 
 <script>
 import axios from 'axios'
+import moment from 'moment'
 
 export default {
 
@@ -45,7 +46,16 @@ export default {
 
   head() {
     return {
-      title: this.attributes.title + " - ff.ru"
+      title: this.attributes.title + " - " + ((this.attributes.type == "news") ? "Новости Bitcoin (BTC/USD)" : "Прогноз курса Bitcoin (BTC/USD)") + ((this.attributes.type == "news") ? "" : " от " + moment().format('DD.MM.YYYY')) + " на ФФ.ру",
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { 
+          hid: 'description', 
+          name: 'description', 
+          content: this.attributes.title,
+        }
+      ],
     }
   },
 }

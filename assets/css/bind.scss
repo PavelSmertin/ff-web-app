@@ -66,11 +66,22 @@ h1 {
 .margin40 {
 	margin-top: 40px;
 }
-
+.margin60 {
+	margin-top: 60px;
+}
 .ff-label {
 	color: $label-color;
 	font-size: $label-size;
 }
+
+
+@media (min-width: 768px) {
+	.ff_text_block {
+		margin: 0 auto;
+		width: 83%;
+	}
+}
+
 .container-fluid {
 	display: flex;
 	flex-direction: column;
@@ -99,8 +110,10 @@ h1 {
 
 .ff-toolbar {
 	background: $bg-toolbar-color;
+	padding-right: 24px;
+    padding-left: 24px;
 	.normal-logo{
-		margin: 24px 16px;
+		margin: 16px 0px;
 	}
 }
 
@@ -214,6 +227,12 @@ h1 {
 		margin: 24px 32px 0 24px;
 	}
 
+}
+@media (min-width: 768px) {
+	.ff-post {
+		width: 63%;
+		margin: 0 auto;
+	}
 }
 .ff-post.page-enter-active, .ff-post.page-leave-active {
 	transition: opacity .2s

@@ -164,7 +164,7 @@
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
   
 
-  const api_news = 'https://api.ff.ru/v1/news';
+  const api_news = 'https://api.ff.ru/v1/news/';
   const api_coins = 'https://api.ff.ru/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h';
 
   export default {

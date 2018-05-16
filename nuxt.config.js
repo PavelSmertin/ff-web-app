@@ -8,11 +8,11 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'ff',
+    title: 'Курс Bitcoin (BTC), новости и прогнозы Биткоина в реальном времени на FF.ru',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'ff project' }
+      { hid: 'description', name: 'description', content: 'Курс, новости, прогнозы Bitcoin (BTC) и криптовалют в реальном времени. Когда покупать Биткоин - поможем принять решение. Подпишись на новости и не упусти момент, когда цены начнут меняться.' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -94,8 +94,8 @@ module.exports = {
       path: '/rss_export', // The route to your feed.
       async create (feed) {
         feed.options = {
-          title: 'эф-эф',
-          description: 'Агрегатор новостей из глубин криптомира!',
+          title: 'Курс Bitcoin (BTC), новости и прогнозы Биткоина в реальном времени на FF.ru',
+          description: 'Курс, новости, прогнозы Bitcoin (BTC) и криптовалют в реальном времени. Когда покупать Биткоин - поможем принять решение. Подпишись на новости и не упусти момент, когда цены начнут меняться.',
           language: 'ru-ru',
           generator: 'RSS for ff',
           id: 'https://ff.ru/',
@@ -104,7 +104,7 @@ module.exports = {
           copyright: 'All rights reserved 2018, ff.ru',
         }
 
-        const posts = await axios.get('https://api.ff.ru/v1/news/', {
+        const posts = await axios.get('https://api.ff.ru/v1/news/by-coin/1182', {
                             params: {
                               page: 1,
                               'per-page': 200
