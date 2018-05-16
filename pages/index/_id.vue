@@ -46,7 +46,7 @@ export default {
 
   head() {
     return {
-      title: this.attributes.title + " - " + ((this.attributes.type == "news") ? "Новости Bitcoin (BTC/USD)" : "Прогноз курса Bitcoin (BTC/USD)") + ((this.attributes.type == "news") ? "" : " от " + moment().format('DD.MM.YYYY')) + " на ФФ.ру",
+      title: this.attributes.title + " - " + ((this.attributes.type == "news") ? "Новости Bitcoin (BTC/USD)" : "Прогноз курса Bitcoin (BTC/USD)") + ((this.attributes.type == "news") ? "" : " от " + moment().format('DD.MM.YYYY')) + " на FF.ru",
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
