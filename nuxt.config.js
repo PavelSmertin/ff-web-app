@@ -59,6 +59,10 @@ module.exports = {
     { src: '~/plugins/vue-socket.js', ssr: false },
   ],
 
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+  },
+  
   router: {
     extendRoutes (routes, resolve) {
 

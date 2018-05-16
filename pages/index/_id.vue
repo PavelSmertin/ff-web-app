@@ -1,10 +1,10 @@
 <template>
   <div class="ff-post">
     <div class="news-detail"></div>
-      <h1 class="post-header">
-        {{attributes.title}}
-      </h1>
-      <p v-html="attributes.body" class="description"></p>
+    <h1 class="post-header">
+      {{attributes.title}}
+    </h1>
+    <p v-html="attributes.body" class="description"></p>
   </div>
 </template>
 
@@ -24,7 +24,8 @@ export default {
     return !isNaN(+params.id)
   },
 
-  async asyncData({ params, error, redirect }) {
+
+  async asyncData({ req, params, error, redirect }) {
     if( process.client ) {
       return {
         attributes: params.newest
@@ -37,6 +38,7 @@ export default {
       if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
         redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
       } else {
+        data.data.seoTitle = data.data.attributes.title + " - " + ((data.data.attributes.type == "news") ? "Новости Bitcoin (BTC/USD)" : "Прогноз курса Bitcoin (BTC/USD)") + ((data.data.attributes.type == "news") ? "" : " от " + moment().format('DD.MM.YYYY')) + " на FF.ru";
         return data.data
       }
     } catch (e) {
@@ -46,7 +48,7 @@ export default {
 
   head() {
     return {
-      title: this.attributes.title + " - " + ((this.attributes.type == "news") ? "Новости Bitcoin (BTC/USD)" : "Прогноз курса Bitcoin (BTC/USD)") + ((this.attributes.type == "news") ? "" : " от " + moment().format('DD.MM.YYYY')) + " на FF.ru",
+      title: this.seoTitle,
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -54,7 +56,26 @@ export default {
           hid: 'description', 
           name: 'description', 
           content: this.attributes.title,
-        }
+        },
+        { property: 'article:published_time', content: '' },
+
+        { property: 'og:title', content: this.seoTitle },
+        { property: 'og:type', content: 'article' },
+        { property: 'og:url', content: process.env.baseUrl },
+        { property: 'og:image', content: process.env.baseUrl + '/FF_cover_b.png' },
+        { property: 'og:description', content: this.attributes.title },
+        { property: 'og:site_name', content: 'FF.ru' },
+
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:site', content: '@www_FF_ru' },
+        { name: 'twitter:creator', content: '@www_FF_ru' },
+        { name: 'twitter:title', content: 'Курс Биткоина, новости и прогнозы Биткоина в реальном времени на FF.ru' },
+        { name: 'twitter:description', content: this.attributes.title },
+        { name: 'twitter:image', content: process.env.baseUrl + '/FF_cover_b.png' },
+
+        { itemprop: 'name', content: 'Курс Биткоина, новости и прогнозы Биткоина в реальном времени на FF.ru' },
+        { itemprop: 'description', content: this.attributes.title },
+        { itemprop: 'image', content: process.env.baseUrl + '/FF_cover_b.png' },
       ],
     }
   },
