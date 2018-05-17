@@ -63,8 +63,11 @@ export default {
         { property: 'og:type', content: 'article' },
         { property: 'og:url', content: process.env.baseUrl },
         { property: 'og:image', content: process.env.baseUrl + '/FF_cover_b.png' },
+        { property: 'og:image:width', content: '968' },
+        { property: 'og:image:height', content: '504' },
         { property: 'og:description', content: this.attributes.title },
         { property: 'og:site_name', content: 'FF.ru' },
+        { property: 'og:locale', content: 'ru_RU' },
 
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:site', content: '@www_FF_ru' },
@@ -73,9 +76,6 @@ export default {
         { name: 'twitter:description', content: this.attributes.title },
         { name: 'twitter:image', content: process.env.baseUrl + '/FF_cover_b.png' },
 
-        { itemprop: 'name', content: 'Курс Биткоина, новости и прогнозы Биткоина в реальном времени на FF.ru' },
-        { itemprop: 'description', content: this.attributes.title },
-        { itemprop: 'image', content: process.env.baseUrl + '/FF_cover_b.png' },
       ],
     }
   },
