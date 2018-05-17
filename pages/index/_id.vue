@@ -61,7 +61,7 @@ export default {
 
         { property: 'og:title', content: this.seoTitle },
         { property: 'og:type', content: 'article' },
-        { property: 'og:url', content: process.env.baseUrl },
+        { property: 'og:url', content: process.env.baseUrl + this.$route.path },
         { property: 'og:image', content: process.env.baseUrl + '/FF_cover_b.png' },
         { property: 'og:image:width', content: '968' },
         { property: 'og:image:height', content: '504' },
