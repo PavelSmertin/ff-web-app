@@ -44,7 +44,12 @@
               <div class="ff-news-cell">
                 <div class="row">
                   <div class="col">
-                    <timeago :since="newest.attributes.create_dt" class="time-ago ff-label"></timeago>
+                    <ul class="ff-label news_list_detail">
+                      <li><timeago :since="newest.attributes.create_dt" class="time-ago"></timeago></li>
+                      <li v-if="newest.attributes.time_for_translation" v-html="translationTime(newest.attributes.time_for_translation)"></li>
+                      <li v-if="newest.attributes.type == 'news'">Новость</li>
+                      <li v-else-if="newest.attributes.type == 'prognosis'">Прогноз</li>
+                    </ul>
                   </div>
                 </div>
 
@@ -98,7 +103,12 @@
 
                 <div class="row">
                   <div class="col">
-                    <timeago :since="item.attributes.create_dt" class="time-ago ff-label"></timeago>
+                    <ul class="ff-label news_list_detail">
+                      <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
+                      <li>Перевод: </li>
+                      <li v-if="item.attributes.type == 'news'">Новость</li>
+                      <li v-else-if="item.attributes.type == 'prognosis'">Прогноз</li>
+                    </ul>
                   </div>
                 </div>
 
@@ -164,6 +174,13 @@
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
   
 
+  var MINUTE = 60;
+  var HOUR = MINUTE * 60;
+  var DAY = HOUR * 24;
+  var WEEK = DAY * 7;
+  var MONTH = DAY * 30;
+  var YEAR = DAY * 365;
+
   const api_news = 'https://api.ff.ru/v1/news/';
   const api_coins = 'https://api.ff.ru/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h';
 
@@ -226,9 +243,29 @@
       }, 
       closeContent() {
         this.seen = !this.seen;
-      }
+      },
 
-    }
+      translationTime: function translationTime(seconds) {
+        var ret =
+          seconds <= MINUTE
+              ? pluralOrSingular(seconds, 'сек')
+              : seconds < HOUR
+                ? pluralOrSingular(seconds / MINUTE, 'мин')
+                : seconds < DAY
+                  ? pluralOrSingular(seconds / HOUR, 'ч')
+                  : seconds < WEEK
+                    ? pluralOrSingular(seconds / DAY, 'д')
+                    : seconds < MONTH
+                      ? pluralOrSingular(seconds / WEEK, 'н')
+                      : seconds < YEAR
+                        ? pluralOrSingular(seconds / MONTH, 'мес')
+                        : pluralOrSingular(seconds / YEAR, 'г');
+
+        return ret
+      }
+    },
+
+
   };
 
   Vue.use(VueTimeago, {
@@ -238,6 +275,11 @@
       // you will need json-loader in webpack 1
       'ru-RU': require('@/assets/locales/ru-RU.json')
     }
-  })
+  });
+
+  function pluralOrSingular(data, locale) {
+    var count = Math.round(data);
+    return 'Перевод: ' + count + ' ' + locale;
+  }
 
 </script>

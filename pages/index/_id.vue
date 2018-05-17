@@ -1,16 +1,33 @@
 <template>
   <div class="ff-post">
-    <div class="news-detail"></div>
+    <div class="news-detail">
+      <ul class="ff-label news_list_detail">
+        <li><timeago :since="attributes.create_dt" class="time-ago"></timeago></li>
+        <li>Перевод: {{translationTime}} </li>
+        <li v-if="attributes.type == 'news'">Новость</li>
+        <li v-else-if="attributes.type == 'prognosis'">Прогноз</li>
+      </ul>
+    </div>
     <h1 class="post-header">
       {{attributes.title}}
     </h1>
     <p v-html="attributes.body" class="description"></p>
+    <p class="post_source">
+      <a target="_blank" rel="nofollow noopener noreferrer" :href="attributes.source_url">Ссылка на источник</a>
+    </p>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import moment from 'moment'
+
+var MINUTE = 60;
+var HOUR = MINUTE * 60;
+var DAY = HOUR * 24;
+var WEEK = DAY * 7;
+var MONTH = DAY * 30;
+var YEAR = DAY * 365;
 
 export default {
 
@@ -26,7 +43,7 @@ export default {
 
 
   async asyncData({ req, params, error, redirect }) {
-    if( process.client ) {
+    if( process.client && params.newest) {
       return {
         attributes: params.newest
       }
@@ -79,6 +96,30 @@ export default {
       ],
     }
   },
+
+  computed: {
+    translationTime: function() {
+
+        var seconds = this.attributes.time_for_translation;
+        var ret =
+          seconds <= MINUTE
+              ? pluralOrSingular(seconds, 'сек')
+              : seconds < HOUR
+                ? pluralOrSingular(seconds / MINUTE, 'мин')
+                : seconds < DAY
+                  ? pluralOrSingular(seconds / HOUR, 'ч')
+                  : seconds < WEEK
+                    ? pluralOrSingular(seconds / DAY, 'д')
+                    : seconds < MONTH
+                      ? pluralOrSingular(seconds / WEEK, 'н')
+                      : seconds < YEAR
+                        ? pluralOrSingular(seconds / MONTH, 'мес')
+                        : pluralOrSingular(seconds / YEAR, 'г');
+
+      return ret
+    }
+  }
+
 }
 
 
@@ -100,5 +141,12 @@ function redirectToSlug(data, slug) {
 
   throw new Error('Newest not found');
 }
+
+
+function pluralOrSingular(data, locale) {
+  var count = Math.round(data);
+  return count + " " + locale;
+}
+
 
 </script>

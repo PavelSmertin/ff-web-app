@@ -172,6 +172,15 @@ h1 {
 }
 
 .ff-news {
+	.news_list_detail {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		li {
+			margin-right: 24px;
+			display: inline-block;
+		}
+	}
 	.ff-news-row {
 		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .0);
 		transition: box-shadow 0.1s ease-in-out;
@@ -226,12 +235,26 @@ h1 {
 	.description {
 		margin: 24px 32px 0 24px;
 	}
+	.post_source {
+		margin: 24px 32px 0 24px;
+	}
+	.news_list_detail {
+		list-style: none;
+		font-size: 14px;
+		padding: 0;
+		margin: 48px 24px 0 24px;
+		li {
+			margin-right: 24px;
+			display: inline-block;
+		}
+	}
 
 }
 @media (min-width: 768px) {
 	.ff-post {
 		width: 63%;
 		margin: 0 auto;
+		padding-bottom: 140px;
 	}
 }
 .ff-post.page-enter-active, .ff-post.page-leave-active {
