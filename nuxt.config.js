@@ -3,7 +3,7 @@
 const axios = require('axios')
 
 module.exports = {
-  
+
   /*
   ** Headers of the page
   */
@@ -19,7 +19,10 @@ module.exports = {
     ],
     bodyAttrs: {
       class: 'ff'
-    }
+    },
+    htmlAttrs: {
+      prefix: 'og: http://ogp.me/ns# article: http://ogp.me/ns/article# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#'
+    },
   },
 
   /*
