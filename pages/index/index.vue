@@ -200,12 +200,7 @@
           }]
         }
 
-
-
-
-
         const details = await axios.get(`https://api.coinmarketcap.com/v2/ticker/1/?convert=BTC`)
-
 
         const { total_supply, circulating_supply, max_supply }  = details.data.data
 

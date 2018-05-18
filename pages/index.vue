@@ -105,7 +105,7 @@
                   <div class="col">
                     <ul class="ff-label news_list_detail">
                       <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
-                      <li>Перевод: </li>
+                      <li v-if="item.attributes.time_for_translation" v-html="translationTime(item.attributes.time_for_translation)"></li>
                       <li v-if="item.attributes.type == 'news'">Новость</li>
                       <li v-else-if="item.attributes.type == 'prognosis'">Прогноз</li>
                     </ul>
@@ -198,6 +198,7 @@
       }
     },
 
+    
     data() {
         return {
           meta: {current_page: 1},
@@ -206,6 +207,18 @@
           seen: false
         }
     },
+
+    // fetch ({ store }) {
+    //   return Promise.all([
+    //       axios.get(api_news),
+    //       axios.get(api_coins),
+    //   ])
+    //   .then((res) => {
+    //     console.log('news retrieved');
+
+    //     this.news = res[0].data.data;
+    //   })
+    // },
 
     components: {
       VueTimeago,
@@ -264,6 +277,19 @@
         return ret
       }
     },
+
+    // computed: {
+    //   news: {
+    //     get () {
+    //       console.log('news get')
+    //       return this.$store.state.news
+    //     },
+    //     set (value) {
+    //       console.log('news set');
+    //       this.$store.commit('setNews', value)
+    //     }
+    //   }
+    // }
 
 
   };
