@@ -197,7 +197,6 @@
         error({ message: 'News not found', statusCode: 404 })
       }
     },
-
     
     data() {
         return {

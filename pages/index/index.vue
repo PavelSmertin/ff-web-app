@@ -10,7 +10,7 @@
         <h1 class="col">Курс биткойна</h1>
         <div class="col">
           <div>
-            <span class="coin-value">${{price}}</span>&nbsp;
+            <span class="coin-value">${{formatPrice(price)}}</span>&nbsp;
             <span class="coin-unit">USD</span>&nbsp;
             <span class="coin-value positive">{{percent_change_24h}}%</span>
           </div>
@@ -25,24 +25,24 @@
       <div class="row no-gutters coin-details-block">
         <div class="col">
           <div class="ff-label">Капитализация</div>
-          <div class="coin-detail">{{market_cap}} USD</div>
-          <div class="coin-detail-info">1{{total_supply}} BTC</div>
+          <div class="coin-detail">{{formatPrice(market_cap)}} USD</div>
+          <div class="coin-detail-info">{{formatPrice(total_supply)}} BTC</div>
         </div>
 
         <div class="col">
           <div class="ff-label">Объем (24ч)</div>
-          <div class="coin-detail">{{volume_24h}} USD</div>
-          <div class="coin-detail-info">{{volume_24h_btc}} BTC</div>
+          <div class="coin-detail">{{formatPrice(volume_24h)}} USD</div>
+          <div class="coin-detail-info">{{formatPrice(volume_24h_btc)}} BTC</div>
         </div>
 
         <div class="col">
           <div class="ff-label">В обороте</div>
-          <div class="coin-detail">{{circulating_supply}} BTC</div>
+          <div class="coin-detail">{{formatPrice(circulating_supply)}} BTC</div>
         </div>
 
         <div class="col">
           <div class="ff-label">В обороте (max)</div>
-          <div class="coin-detail">{{max_supply}} BTC</div>
+          <div class="coin-detail">{{formatPrice(max_supply)}} BTC</div>
         </div>
       </div>
 
@@ -177,7 +177,9 @@
           }],
           yAxes: [{
             position: 'right',
-            ticks: { beginAtZero:false }
+            ticks: { 
+              beginAtZero:false
+            }
           }]
         }
       }
@@ -228,7 +230,7 @@
     methods: {
       formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
       dataUnpack(message) {
 
