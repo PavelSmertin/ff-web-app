@@ -66,7 +66,6 @@ export default {
       if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
         redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
       } else {
-        console.log(data.data);
         return {
           seoTitle: setMeta(data.data.attributes.title, data.data.attributes.type),
           attributes: data.data.attributes
@@ -152,6 +151,4 @@ function pluralOrSingular(data, locale) {
 function setMeta(title, type) {
   return title + " - " + ((type == "news") ? "Новости Bitcoin (BTC/USD)" : "Прогноз курса Bitcoin (BTC/USD)") + ((type == "news") ? "" : " от " + moment().format('DD.MM.YYYY')) + " на FF.ru";
 }
-
-
 </script>

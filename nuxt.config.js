@@ -91,14 +91,15 @@ module.exports = {
 
       let parent = routes.find((route) => {
         return route.path === '/'
-      })
+      });
 
       parent.children.push({
         name: 'slug-id',
         path: ':id(\\d+)/:slug',
         chunkName: 'pages/index/_id',
         component: resolve(__dirname, 'pages/index/_id.vue')
-      })
+      });
+
     }
   },
 
@@ -138,8 +139,6 @@ module.exports = {
                             },
                           })
         const domain = 'https://ff.ru/';
-
-        console.log(posts.data.data)
 
         posts.data.data.forEach(post => { 
           feed.addItem({
