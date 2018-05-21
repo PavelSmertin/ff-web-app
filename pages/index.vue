@@ -162,6 +162,14 @@
 
     </div>
 
+    <script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/embed.js" data-dojo-config="usePlainJson: true, isDebug: false">
+    </script>
+    <script type="text/javascript">
+      require(["mojo/signup-forms/Loader"], function(L) { 
+        L.start({"baseUrl":"mc.us18.list-manage.com","uuid":"f2a6cbc588ae02f3e4991dd3d","lid":"c84e62e0f7"}) 
+      });
+    </script>
+
   </div>
   
 </template>
@@ -315,5 +323,7 @@
     var count = Math.round(data);
     return 'Перевод: ' + count + ' ' + locale;
   }
+
+
 
 </script>
