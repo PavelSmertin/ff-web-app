@@ -6,7 +6,7 @@
 <script>
 
 	export default {
-	  data ({ redirect }) {
+	  async asyncData ({ redirect }) {
 	    redirect(301, { path: `/` });
 	    return;
 	  }
