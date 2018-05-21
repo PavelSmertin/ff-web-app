@@ -42,9 +42,20 @@ export default {
   },
 
 
+  data() {
+    var title = "Новости Bitcoin (BTC/USD) на FF.ru";
+    var seoTitle = "Новости Bitcoin (BTC/USD) на FF.ru";
+    return {
+      title: title,
+      seoTitle: title,
+    }
+  },
+
   async asyncData({ req, params, error, redirect }) {
+
     if( process.client && params.newest) {
       return {
+        seoTitle: setMeta(params.newest.title, params.newest.type),
         attributes: params.newest
       }
     }
@@ -55,8 +66,11 @@ export default {
       if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
         redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
       } else {
-        data.data.seoTitle = data.data.attributes.title + " - " + ((data.data.attributes.type == "news") ? "Новости Bitcoin (BTC/USD)" : "Прогноз курса Bitcoin (BTC/USD)") + ((data.data.attributes.type == "news") ? "" : " от " + moment().format('DD.MM.YYYY')) + " на FF.ru";
-        return data.data
+        console.log(data.data);
+        return {
+          seoTitle: setMeta(data.data.attributes.title, data.data.attributes.type),
+          attributes: data.data.attributes
+        }
       }
     } catch (e) {
       error({ message: 'Newest not found', statusCode: 404 })
@@ -67,31 +81,19 @@ export default {
     return {
       title: this.seoTitle,
       meta: [
-        { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { 
           hid: 'description', 
           name: 'description', 
-          content: this.attributes.title,
+          content: this.title,
         },
         { property: 'article:published_time', content: '' },
-
-        { property: 'og:title', content: this.seoTitle },
-        { property: 'og:type', content: 'article' },
-        { property: 'og:url', content: process.env.baseUrl + this.$route.path },
-        { property: 'og:image', content: process.env.baseUrl + '/FF_cover_b.png' },
-        { property: 'og:image:width', content: '968' },
-        { property: 'og:image:height', content: '504' },
-        { property: 'og:description', content: this.attributes.title },
-        { property: 'og:site_name', content: 'FF.ru' },
-        { property: 'og:locale', content: 'ru_RU' },
-
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:site', content: '@www_FF_ru' },
-        { name: 'twitter:creator', content: '@www_FF_ru' },
-        { name: 'twitter:title', content: 'Курс Биткоина, новости и прогнозы Биткоина в реальном времени на FF.ru' },
-        { name: 'twitter:description', content: this.attributes.title },
-        { name: 'twitter:image', content: process.env.baseUrl + '/FF_cover_b.png' },
+        { hid: 'og:title', property: 'og:title', content: this.seoTitle },
+        { hid: 'og:url', property: 'og:url', content: process.env.baseUrl + this.$route.path },
+        { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover_b.png' },
+        { hid: 'og:description', property: 'og:description', content: this.title },
+        { hid: 'twitter:title',name: 'twitter:title', content: 'Курс Биткоина, новости и прогнозы Биткоина в реальном времени на FF.ru' },
+        { hid: 'twitter:description', name: 'twitter:description', content: this.title },
+        { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover_b.png' },
 
       ],
     }
@@ -119,7 +121,6 @@ export default {
       return ret
     }
   }
-
 }
 
 
@@ -146,6 +147,10 @@ function redirectToSlug(data, slug) {
 function pluralOrSingular(data, locale) {
   var count = Math.round(data);
   return count + " " + locale;
+}
+
+function setMeta(title, type) {
+  return title + " - " + ((type == "news") ? "Новости Bitcoin (BTC/USD)" : "Прогноз курса Bitcoin (BTC/USD)") + ((type == "news") ? "" : " от " + moment().format('DD.MM.YYYY')) + " на FF.ru";
 }
 
 

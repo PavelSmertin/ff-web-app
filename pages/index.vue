@@ -173,7 +173,6 @@
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
   
-
   var MINUTE = 60;
   var HOUR = MINUTE * 60;
   var DAY = HOUR * 24;
@@ -197,7 +196,7 @@
         error({ message: 'News not found', statusCode: 404 })
       }
     },
-    
+
     data() {
         return {
           meta: {current_page: 1},
@@ -205,6 +204,16 @@
           coins: [],
           seen: false
         }
+    },
+
+    head() {
+      return {
+        meta: [
+          { hid: 'og:url', property: 'og:url', content: process.env.baseUrl + this.$route.path },
+          { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover_b.png' },
+          { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover_b.png' },
+        ],
+      }
     },
 
     // fetch ({ store }) {
