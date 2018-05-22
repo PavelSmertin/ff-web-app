@@ -159,17 +159,7 @@
           </div> 
         </div>
       </div> 
-
     </div>
-
-    <script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/embed.js" data-dojo-config="usePlainJson: true, isDebug: false">
-    </script>
-    <script type="text/javascript">
-      require(["mojo/signup-forms/Loader"], function(L) { 
-        L.start({"baseUrl":"mc.us18.list-manage.com","uuid":"f2a6cbc588ae02f3e4991dd3d","lid":"c84e62e0f7"}) 
-      });
-    </script>
-
   </div>
   
 </template>
@@ -212,16 +202,6 @@
           coins: [],
           seen: false
         }
-    },
-
-    head() {
-      return {
-        meta: [
-          { hid: 'og:url', property: 'og:url', content: process.env.baseUrl + this.$route.path },
-          { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover_b.png' },
-          { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover_b.png' },
-        ],
-      }
     },
 
     // fetch ({ store }) {

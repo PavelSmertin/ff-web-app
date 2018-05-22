@@ -17,25 +17,19 @@ module.exports = {
         name: 'description', 
         content: 'Курс, новости, прогнозы Bitcoin (BTC) и криптовалют в реальном времени. Когда покупать Биткоин - поможем принять решение. Подпишись на новости и не упусти момент, когда цены начнут меняться.' 
       },
-      { hid: 'og:title', property: 'og:title', content: 'Курс Bitcoin (BTC), новости и прогнозы Биткоина в реальном времени на FF.ru' },
-      { property: 'og:type', content: 'website' },
-      { hid: 'og:url', property: 'og:url', content:'' },
-      { hid: 'og:image', property: 'og:image', content:''},
+
       { property: 'og:image:width', content: '968' },
       { property: 'og:image:height', content: '504' },
-      { hid: 'og:description', property: 'og:description', content: 'Курс, новости, прогнозы Bitcoin (BTC) и криптовалют в реальном времени. Когда покупать Биткоин - поможем принять решение. Подпишись на новости и не упусти момент, когда цены начнут меняться.' },
       { property: 'og:site_name', content: 'FF.ru' },
       { property: 'og:locale', content: 'ru_RU' },
 
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:site', content: '@www_FF_ru' },
       { name: 'twitter:creator', content: '@www_FF_ru' },
-      { hid: 'twitter:title', name: 'twitter:title', content: 'Курс Биткоина, новости и прогнозы Биткоина в реальном времени на FF.ru' },
-      { hid: 'twitter:description', name: 'twitter:description', content: 'Курс, новости, прогнозы Bitcoin (BTC) и криптовалют в реальном времени. Когда покупать Биткоин - поможем принять решение. Подпишись на новости и не упусти момент, когда цены начнут меняться.' },
-      { hid: 'twitter:image', name: 'twitter:image', content:''},
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'alternate', type: 'application/rss+xml', title: "RSS", href: '/rss_export' }
     ],
     bodyAttrs: {
       class: 'ff'
