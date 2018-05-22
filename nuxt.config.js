@@ -126,7 +126,7 @@ module.exports = {
           copyright: 'All rights reserved 2018, ff.ru',
         }
 
-        const posts = await axios.get('https://api.ff.ru/v1/news/by-coin/1182', {
+        const posts = await axios.get('https://api.ff.ru/v1/news/', {
                             params: {
                               page: 1,
                               'per-page': 200
