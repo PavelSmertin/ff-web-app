@@ -39,8 +39,8 @@
           </li>
         </ul>
 
-        <dropdown v-if="showSelect" :options="arrayOfObjects" :selected="object" v-on:updateOption="methodToRunOnSelect"></dropdown>
-
+<!--         <dropdown v-if="showSelect" :options="arrayOfObjects" :selected="object" v-on:updateOption="methodToRunOnSelect"></dropdown>
+ -->
         <div class="scroll-container border_top">
           <div v-if="news && news.length" class="ff-news">
 
