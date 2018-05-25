@@ -3,6 +3,7 @@ FROM node:9.9-alpine
 WORKDIR /app
 COPY . /app
 
+RUN npm cache clean
 RUN npm install npm@latest -g
 
 RUN npm install
