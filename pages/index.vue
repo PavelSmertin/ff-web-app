@@ -173,7 +173,7 @@
       <div class="social col-12 col-md-4">
         <a href="https://vk.com/cryptoff" target="_blank"><img src="/vk.svg" alt="vk" /></a>
         <a href="https://t.me/ff_ru" target="_blank"><img src="/telegram.svg" alt="telegram" /></a>
-        <a href="https://twitter.com/FFru11" target="_blank"><img src="/twitter.svg" alt="twitter" /></a>
+        <a href="https://twitter.com/www_FF_ru" target="_blank"><img src="/twitter.svg" alt="twitter" /></a>
         <a href="https://fb.com/crypto.ff.ru/" target="_blank"><img src="/facebook.svg" alt="facebook" /></a>
       </div>
 
