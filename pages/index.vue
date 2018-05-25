@@ -1,12 +1,12 @@
 <template>
   <div class="container-fluid">
-    <div class="row">
+    <nav class="row">
       <div class="ff-toolbar col">
         <nuxt-link :to="{name: 'index'}" class="logo-link">
             <img src="/logo.svg" alt="" class="normal-logo">
         </nuxt-link>
       </div>
-    </div>
+    </nav>
  
     <div class="row ff-content">
 
@@ -32,12 +32,16 @@
       </div>
 
       <div class="ff-right-panel col-12 col-md-4">
+
         <ul class="right_tabs">
           <li class="right_tab">
             <button v-on:click="seen = !seen">Bitcoin</button>
           </li>
         </ul>
-        <div class="scroll-container">
+
+        <dropdown v-if="showSelect" :options="arrayOfObjects" :selected="object" v-on:updateOption="methodToRunOnSelect"></dropdown>
+
+        <div class="scroll-container border_top">
           <div v-if="news && news.length" class="ff-news">
 
             <div v-for="newest of news" v-bind:key="newest.id" class="ff-news-row">
@@ -158,8 +162,23 @@
 
           </div> 
         </div>
-      </div> 
+      </div>
+
     </div>
+
+    <footer class="ff-footer row justify-content-between" >
+      <div class="d-none d-md-block col-md-8 ff-label"><span>Copyright &copy; FF.ru</span></div>
+
+
+      <div class="social col-12 col-md-4">
+        <a href="https://vk.com/cryptoff" target="_blank"><img src="/vk.svg" alt="vk" /></a>
+        <a href="https://t.me/ff_ru" target="_blank"><img src="/telegram.svg" alt="telegram" /></a>
+        <a href="https://twitter.com/FFru11" target="_blank"><img src="/twitter.svg" alt="twitter" /></a>
+        <a href="https://fb.com/crypto.ff.ru/" target="_blank"><img src="/facebook.svg" alt="facebook" /></a>
+      </div>
+
+    </footer>
+
   </div>
   
 </template>
@@ -170,7 +189,7 @@
   import VueTimeago from 'vue-timeago'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
-  
+
   var MINUTE = 60;
   var HOUR = MINUTE * 60;
   var DAY = HOUR * 24;
@@ -196,12 +215,21 @@
     },
 
     data() {
-        return {
-          meta: {current_page: 1},
-          list: [],
-          coins: [],
-          seen: false
+      return {
+        meta: {current_page: 1},
+        list: [],
+        coins: [],
+        seen: false,
+        showSelect: false,
+        arrayOfObjects: [
+          { name: 'Все новости' }, 
+          { name: 'Новость', value: 'news' },
+          { name: 'Прогноз', value: 'prognosis' }
+        ],
+        object: {
+          name: 'Все новости',
         }
+      }
     },
 
     // fetch ({ store }) {
@@ -219,6 +247,10 @@
     components: {
       VueTimeago,
       InfiniteLoading
+    },
+
+    mounted () {
+      this.showSelect = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
     },
 
     beforeRouteEnter (to, from, next) {
@@ -271,7 +303,16 @@
                         : pluralOrSingular(seconds / YEAR, 'г');
 
         return ret
+      },
+
+      methodToRunOnSelect(payload) {
+        this.object = payload;
+        var url = api_news + (payload.value ? '?filter[type]=' + payload.value : '');
+        let data = axios.get(url).then(({ data }) => {
+          this.news = data.data
+        });
       }
+
     },
 
     // computed: {

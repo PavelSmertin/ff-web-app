@@ -74,6 +74,8 @@ module.exports = {
     { src: '~/plugins/ga.js', ssr: false },
     { src: '~/plugins/vue-chartjs.js', ssr: false },
     { src: '~/plugins/vue-socket.js', ssr: false },
+    { src: '~plugins/social.js', ssr: false },
+    { src: '~/plugins/filters.js', ssr: false },
   ],
 
   env: {

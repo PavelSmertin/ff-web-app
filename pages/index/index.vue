@@ -7,8 +7,8 @@
     <div>
       
       <div class="row no-gutters">
-        <h1 class="col">Курс биткойна</h1>
-        <div class="col">
+        <h1 class="col-12 col-md-6">Курс биткойна</h1>
+        <div class="col-12 col-md-6">
           <div>
             <span class="coin-value">${{formatPrice(price)}}</span>&nbsp;
             <span class="coin-unit">USD</span>&nbsp;
@@ -23,24 +23,24 @@
 
 
       <div class="row no-gutters coin-details-block">
-        <div class="col">
+        <div class="coin_detail_unit col-6 col-md-3">
           <div class="ff-label">Капитализация</div>
           <div class="coin-detail">{{formatPrice(market_cap)}} USD</div>
           <div class="coin-detail-info">{{formatPrice(total_supply)}} BTC</div>
         </div>
 
-        <div class="col">
+        <div class="coin_detail_unit col-6 col-md-3">
           <div class="ff-label">Объем (24ч)</div>
           <div class="coin-detail">{{formatPrice(volume_24h)}} USD</div>
           <div class="coin-detail-info">{{formatPrice(volume_24h_btc)}} BTC</div>
         </div>
 
-        <div class="col">
+        <div class="coin_detail_unit col-6 col-md-3">
           <div class="ff-label">В обороте</div>
           <div class="coin-detail">{{formatPrice(circulating_supply)}} BTC</div>
         </div>
 
-        <div class="col">
+        <div class="coin_detail_unit col-6 col-md-3">
           <div class="ff-label">В обороте (max)</div>
           <div class="coin-detail">{{formatPrice(max_supply)}} BTC</div>
         </div>
@@ -76,18 +76,6 @@
 
         <p>Для держателей монет Bitcoin важно не упустить момент роста цены криптовалюты. Подпишитесь на уведомления об изменении курса и актуальные прогнозы, чтобы быть в курсе изменения цен на биткоин.</p>
       </div>
-
-
-<!--       <p class="social">
-        <a href="https://vk.com/cryptoff" class="colored-link" target="_blank">ВК</a>
-        <br />
-        <a href="https://t.me/ff_ru" class="colored-link" target="_blank">Телеграм</a>
-        <br />
-        <a href="https://twitter.com/FFru11" class="colored-link" target="_blank">Твиттер</a>
-        <br />
-        <a href="https://fb.com/crypto.ff.ru/" class="colored-link" target="_blank">Facebook</a>
-      </p>
- -->
 
     </div>
   </div>

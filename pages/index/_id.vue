@@ -11,10 +11,36 @@
     <h1 class="post-header">
       {{attributes.title}}
     </h1>
-    <p v-html="attributes.body" class="description"></p>
-    <p class="post_source">
+    <div v-html="attributes.body" class="description"></div>
+    <div class="post_source">
       <a target="_blank" rel="nofollow noopener noreferrer" :href="attributes.source_url">Ссылка на источник</a>
-    </p>
+    </div>
+    <div class="tools">
+      <div v-if="showSocial" class="social">
+
+        <social-sharing :url="url"
+                      :title="title"
+                      :description="body"
+                      :quote="body"
+                      twitter-user="www_FF_ru"
+                      inline-template>
+          <div>
+            <network network="facebook">
+              <img src="/facebook.svg" alt="facebook" />
+            </network>
+            <network network="telegram">
+              <img src="/telegram.svg" alt="telegram" />
+            </network>
+            <network network="twitter">
+              <img src="/twitter.svg" alt="twitter" />
+            </network>
+            <network network="vk">
+              <img src="/vk.svg" alt="vk" />
+            </network>
+          </div>
+        </social-sharing>
+      </div>    
+    </div>
   </div>
 </template>
 
@@ -46,6 +72,8 @@ export default {
     var title = "Новости Bitcoin (BTC/USD) на FF.ru";
     var seoTitle = "Новости Bitcoin (BTC/USD) на FF.ru";
     return {
+      showSocial: false,
+      url: process.env.baseUrl + this.$route.path,
       title: title,
       seoTitle: title,
       body: ''
@@ -102,6 +130,10 @@ export default {
 
       ],
     }
+  },
+
+  mounted () {
+    this.showSocial = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
   },
 
   computed: {
