@@ -1,4 +1,4 @@
 import Vue from 'vue'
-import Dropdown from 'vue-dropdowns'
+import dropdown from 'vue-dropdowns'
 
-Vue.component('dropdown', Dropdown)
+Vue.component('dropdown', dropdown)
