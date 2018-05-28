@@ -156,7 +156,7 @@
               </nuxt-link>
             </div>
 
-            <infinite-loading @infinite="infiniteHandler">
+            <infinite-loading @infinite="infiniteHandler" spinner="spiral">
               <span slot="no-more">You've reached the end!</span>
               <span slot="no-results">You've reached the end!</span>
             </infinite-loading>
@@ -172,10 +172,10 @@
 
 
       <div class="social col-12 col-md-4">
-        <a href="https://vk.com/cryptoff" target="_blank"><img src="/vk.svg" alt="vk" /></a>
-        <a href="https://t.me/ff_ru" target="_blank"><img src="/telegram.svg" alt="telegram" /></a>
-        <a href="https://twitter.com/www_FF_ru" target="_blank"><img src="/twitter.svg" alt="twitter" /></a>
-        <a href="https://fb.com/crypto.ff.ru/" target="_blank"><img src="/facebook.svg" alt="facebook" /></a>
+        <a href="https://vk.com/cryptoff" class="social_link vk" target="_blank"></a>
+        <a href="https://t.me/ff_ru" class="social_link tg" target="_blank"></a>
+        <a href="https://twitter.com/www_FF_ru" class="social_link tr" target="_blank"></a>
+        <a href="https://fb.com/crypto.ff.ru/" class="social_link fb" target="_blank"></a>
       </div>
 
     </footer>
@@ -188,7 +188,6 @@
 <script>
   import axios from 'axios'
   import VueTimeago from 'vue-timeago'
-  import AppLogo from '~/components/AppLogo.vue'
   import Dropdowns from '~/components/Dropdowns.vue'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
@@ -219,6 +218,7 @@
 
     data() {
       return {
+        infiniteState: null,
         meta: {current_page: 1},
         list: [],
         coins: [],
@@ -231,7 +231,9 @@
         ],
         object: {
           name: 'Все новости',
-        }
+        },
+        apiNewsPrepared: api_news
+
       }
     },
 
@@ -250,7 +252,6 @@
     components: {
       VueTimeago,
       InfiniteLoading,
-      AppLogo,
       Dropdowns
     },
 
@@ -273,11 +274,13 @@
     methods: {
 
       infiniteHandler($state) {
-        axios.get(api_news, {
+        this.infiniteState = $state
+        axios.get(this.apiNewsPrepared, {
           params: {
             page: this.meta.current_page + 1,
           },
         }).then(({ data }) => {
+          console.log(data.meta.page_count)
           if (this.meta.current_page < data.meta.page_count) {
             this.meta = data.meta
             this.list = this.list.concat(data.data)
@@ -311,10 +314,15 @@
       },
 
       methodToRunOnSelect(payload) {
-        this.object = payload;
-        var url = api_news + (payload.value ? '?filter[type]=' + payload.value : '');
-        let data = axios.get(url).then(({ data }) => {
+        if(this.infiniteState) { 
+          this.infiniteState.reset()
+        }
+        this.object = payload
+        this.apiNewsPrepared = api_news + (payload.value ? '?filter[type]=' + payload.value : '')
+        let data = axios.get(this.apiNewsPrepared).then(({ data }) => {
           this.news = data.data
+          this.list = []
+          this.meta = {current_page: 1}
         });
       }
 

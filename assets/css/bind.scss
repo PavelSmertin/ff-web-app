@@ -216,6 +216,7 @@ h1 {
 }
 
 .ff-news {
+	padding-bottom: 40px;
 	.news_list_detail {
 		list-style: none;
 		margin: 0;
@@ -266,6 +267,21 @@ h1 {
 		color: $dark-primary-color;
 	}
 
+
+	@keyframes loading-rotating {
+		0%{
+			transform: rotate(0);
+		}
+		100%{
+			transform: rotate(360deg);
+		}
+	}
+	.loading-spiral {
+		border: 3px solid #FF9900 !important;
+		border-right-color: transparent  !important;;
+		animation: loading-rotating linear .85s infinite  !important;;
+	}
+
 }
 
 
@@ -293,14 +309,6 @@ h1 {
 	}
 	.tools {
 		margin: 24px 32px 0 24px;
-		.social {
-			text-align: right;
-			img {
-				height: 16px;
-				margin-right: 24px;
-				cursor: pointer;
-			}
-		}
 	}
 
 
@@ -449,20 +457,50 @@ h1 {
 	span {
 		line-height: 48px;
 	}
-	.social {
-		text-align: right;
-		a {
-			width: 24px;
-			height: 24px;
-			line-height: 48px;
-			margin-right: 24px;
-			img {
-				height: 16px;
-			}
-		}
-	}
 }
 
+.social {
+	text-align: right;
+	.social_link {
+		cursor: pointer;
+		width: 48px;
+		height: 48px;
+		background-origin: content-box;
+		padding: 16px;
+		display: inline-block;
+		line-height: 48px;
+		background-repeat: no-repeat;
+		background-position: center;
+		vertical-align:bottom;
+	}
+
+
+	.social_link.vk {
+		background-image: url('/vk.svg');
+	}
+	.social_link.tr {
+		background-image: url('/twitter.svg');
+	}
+	.social_link.tg {
+		background-image: url('/telegram.svg');
+	}
+	.social_link.fb {
+		background-image: url('/facebook.svg');
+	}
+
+	.social_link.vk:hover {
+		background-image: url('/vk_hover.svg');
+	}
+	.social_link.tr:hover  {
+		background-image: url('/twitter_hover.svg');
+	}
+	.social_link.tg:hover  {
+		background-image: url('/telegram_hover.svg');
+	}
+	.social_link.fb:hover  {
+		background-image: url('/facebook_hover.svg');
+	}
+}
 
 
 

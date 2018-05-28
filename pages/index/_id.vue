@@ -25,18 +25,10 @@
                       twitter-user="www_FF_ru"
                       inline-template>
           <div>
-            <network network="facebook">
-              <img src="/facebook.svg" alt="facebook" />
-            </network>
-            <network network="telegram">
-              <img src="/telegram.svg" alt="telegram" />
-            </network>
-            <network network="twitter">
-              <img src="/twitter.svg" alt="twitter" />
-            </network>
-            <network network="vk">
-              <img src="/vk.svg" alt="vk" />
-            </network>
+            <network network="facebook" class="social_link fb"></network>
+            <network network="telegram" class="social_link tg"></network>
+            <network network="twitter" class="social_link tr"></network>
+            <network network="vk" class="social_link vk"></network>
           </div>
         </social-sharing>
       </div>    
