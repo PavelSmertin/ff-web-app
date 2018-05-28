@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid">
+
     <nav class="row">
       <div class="ff-toolbar col">
         <nuxt-link :to="{name: 'index'}" class="logo-link">
@@ -39,7 +40,7 @@
           </li>
         </ul>
 
-        <dropdown v-if="showSelect" :options="arrayOfObjects" :selected="object" v-on:updateOption="methodToRunOnSelect"></dropdown>
+        <dropdowns v-if="showSelect" :options="arrayOfObjects" :selected="object" v-on:updateOption="methodToRunOnSelect"></dropdowns>
 
         <div class="scroll-container border_top">
           <div v-if="news && news.length" class="ff-news">
@@ -187,6 +188,8 @@
 <script>
   import axios from 'axios'
   import VueTimeago from 'vue-timeago'
+  import AppLogo from '~/components/AppLogo.vue'
+  import Dropdowns from '~/components/Dropdowns.vue'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
 
@@ -246,7 +249,9 @@
 
     components: {
       VueTimeago,
-      InfiniteLoading
+      InfiniteLoading,
+      AppLogo,
+      Dropdowns
     },
 
     mounted () {
