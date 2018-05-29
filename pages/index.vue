@@ -19,24 +19,24 @@
         </div>
       </div> -->
 
-      <div v-bind:class="{ content_float: seen }" class="ff-center-panel col-md-8">
+      <div v-bind:class="{ content_float: seenIndex || seenPost}" class="ff-center-panel col-md-8">
         <div class="scroll-container">
           <nuxt-child :key="$route.params.id"/>
         </div>
 
-        <nuxt-link v-if="$route.name == 'slug-id'" :to="{name: 'index'}" class="ff-close">
+        <nuxt-link v-if="seenPost" v-on:click="closeContent()" :to="{name: 'index'}" class="ff-close">
             <img src="/close.svg" />
         </nuxt-link>
-        <button v-else  v-on:click="closeContent()" class="ff-close">
-            <img src="/close.svg" />
-        </button>
       </div>
 
       <div class="ff-right-panel col-12 col-md-4">
 
         <ul class="right_tabs">
           <li class="right_tab">
-            <button v-on:click="seen = !seen">Bitcoin</button>
+            <button v-on:click="seenIndex = true">Bitcoin</button>
+          </li>
+          <li class="right_tab">
+            <button v-on:click="seenIndex = false">Новости</button>
           </li>
         </ul>
 
@@ -222,7 +222,8 @@
         meta: {current_page: 1},
         list: [],
         coins: [],
-        seen: false,
+        seenPost: false,
+        seenIndex: true,
         showSelect: false,
         arrayOfObjects: [
           { name: 'Все новости' }, 
@@ -262,12 +263,12 @@
     beforeRouteEnter (to, from, next) {
       next(vm => {
         // Экземпляр компонента доступен как `vm`
-        vm.seen = to.name == "slug-id";
+        vm.seenPost = to.name == "slug-id";
       })
     },
 
     beforeRouteUpdate (to, from, next) {
-      this.seen = to.name == "slug-id";
+      this.seenPost = to.name == "slug-id";
       next();
     },
 
@@ -291,7 +292,7 @@
         });
       }, 
       closeContent() {
-        this.seen = !this.seen;
+        this.seenIndex = false;
       },
 
       translationTime: function translationTime(seconds) {

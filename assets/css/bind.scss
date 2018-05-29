@@ -197,6 +197,7 @@ h1 {
 		right: 0;
 		display: block !important;
 		z-index: 5;
+		margin-top: 49px;
 	}
 	.ff-close, .content_float .ff-close {
 		display: block;
@@ -216,7 +217,7 @@ h1 {
 }
 
 .ff-news {
-	padding-bottom: 40px;
+	padding-bottom: 200px;
 	.news_list_detail {
 		list-style: none;
 		margin: 0;
@@ -430,6 +431,7 @@ h1 {
 	}
 	.ff-right-panel .right_tabs li{
 		margin: 0;
+		display: inline-block;
 	}
 
 	.ff-right-panel .right_tabs li a{
