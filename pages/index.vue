@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid p-0">
 
     <nav class="row">
       <div class="ff-toolbar col">
@@ -9,7 +9,7 @@
       </div>
     </nav>
  
-    <div class="row ff-content">
+    <div class="row ff-content no-gutters">
 
 <!--       <div class="ff-left-panel col-1">
         <div class="scroll-container">
@@ -19,7 +19,7 @@
         </div>
       </div> -->
 
-      <div v-bind:class="{ content_float: seenIndex || seenPost}" class="ff-center-panel col-md-8">
+      <div v-bind:class="{ content_float: seenIndex || seenPost, content_post: seenPost}" class="ff-center-panel col-md-8">
         <div class="scroll-container">
           <nuxt-child :key="$route.params.id"/>
         </div>
@@ -32,17 +32,17 @@
       <div class="ff-right-panel col-12 col-md-4">
 
         <ul class="right_tabs">
-          <li class="right_tab">
-            <button v-on:click="seenIndex = true">Bitcoin</button>
+          <li  v-on:click="seenIndex = true" class="right_tab">
+            <span v-bind:class="{ active_tab: seenIndex }">Bitcoin</span>
           </li>
-          <li class="right_tab">
-            <button v-on:click="seenIndex = false">Новости</button>
+          <li v-on:click="seenIndex = false" class="right_tab">
+            <span v-bind:class="{ active_tab: !seenIndex }">Новости</span>
           </li>
         </ul>
 
-        <dropdowns v-if="showSelect" :options="arrayOfObjects" :selected="object" v-on:updateOption="methodToRunOnSelect"></dropdowns>
+        <dropdowns :options="arrayOfObjects" :selected="object" v-on:updateOption="methodToRunOnSelect"></dropdowns>
 
-        <div class="scroll-container border_top">
+        <div class="scroll-container">
           <div v-if="news && news.length" class="ff-news">
 
             <div v-for="newest of news" v-bind:key="newest.id" class="ff-news-row">

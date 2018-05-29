@@ -93,12 +93,9 @@ h1 {
 	}
 }
 .scroll-container {
-	position: absolute;
-	top: 0px;
-	bottom: 0;
-	left: 0;
-	right: 0;
 	overflow-y: auto;
+	flex: 1 1 auto;
+    height: 0px;
     -webkit-overflow-scrolling:touch;
 }
 
@@ -109,14 +106,24 @@ h1 {
 .ff-content {
 	position: relative;
 	.btn-group {
-		margin: 0 7px 0 0  !important;
-		float: right;
+		margin: 0  !important;
+		padding-right: 24px;
 		height: 56px !important;
 		line-height: 56px;
+		border-bottom: 1px solid $border-bold-color;
 		li {
 			list-style: none;
 			margin: 0;
 			padding: 0; 
+		}
+		.dropdown-toggle {
+			height: 56px !important;
+			line-height: 56px;
+		}
+		.dropdown-menu {
+			left: auto !important;
+			right: 0 !important;
+
 		}
 	}
 	.dropdown-menu {
@@ -144,6 +151,10 @@ h1 {
 		.btn-group {
 			height: 48px !important;
 			line-height: 48px;
+			.dropdown-toggle {
+				height: 48px !important;
+				line-height: 48px;
+			}
 		}
 		.caret {
 			top: 22px !important;
@@ -178,13 +189,14 @@ h1 {
 
 
 .ff-center-panel {
+    flex-direction: column;
     display: none;
     background-color: $bg-main-color;
 }
 
 @media (min-width: 768px) {
 	.ff-center-panel {
-    	display: block;
+    	display: flex;
 	}
 }
 
@@ -195,10 +207,15 @@ h1 {
 		left: 0;
 		bottom: 0;
 		right: 0;
-		display: block !important;
+		display: flex !important;
 		z-index: 5;
 		margin-top: 49px;
 	}
+
+	.content_post {
+		margin-top: 0px;	
+	}
+
 	.ff-close, .content_float .ff-close {
 		display: block;
 		position: absolute;
@@ -294,6 +311,9 @@ h1 {
 	}
 	.description {
 		margin: 24px 32px 0 24px;
+		img {
+			width: 100%;
+		}
 	}
 	.post_source {
 		margin: 24px 32px 0 24px;
@@ -402,17 +422,19 @@ h1 {
 }
 
 .ff-right-panel {
+	display: flex;
+    flex-direction: column;
 	border-left: 1px solid $border-bold-color;
 	.right_tabs {
 		display:none;
-	}
-	.scroll-container {
-		top: 56px;
 	}
 }
 
 
 @media (max-width: 769px) {
+	.ff-right-panel {
+		border: none;
+	}
 	.ff-right-panel .right_tabs{
 		display: block;
 		list-style: none;
@@ -420,37 +442,26 @@ h1 {
 		padding: 0;
 		font-size: $coin-info-size;
 		height: 48px;
-		border-bottom: 1px solid $border-thin-color;
+		border-bottom: 1px solid $border-bold-color;
 		border-left: 1px solid $border-thin-color;
 		background-color: $bg-coin-color;
 
-		position: absolute;
-		top: 0px;
-		left: 0;
-		right: 0;
 	}
+
 	.ff-right-panel .right_tabs li{
 		margin: 0;
 		display: inline-block;
-	}
+		padding: 0 0px 0 24px;
 
-	.ff-right-panel .right_tabs li a{
-		line-height: 48px;
-	}
-	.ff-right-panel .right_tabs li button{
-		line-height: 48px;
-		background: none;
-		border:none;
-		padding: 0 24px 0 24px;
-		border-right: 1px solid $border-bold-color;
-	}
+		span {
+			line-height: 48px;
+			display: inline-block;
+    		height: 48px;
+		}
 
-	.ff-right-panel .right_tabs li button:focus{
-		outline: none;
-	}
-
-	.ff-right-panel .scroll-container {
-		top: 48px;
+		.active_tab {
+			border-bottom: 2px solid $bg-toolbar-color;
+		}
 	}
 }
 
