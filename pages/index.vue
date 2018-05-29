@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid p-0">
 
-    <nav class="row">
+    <nav class="row no-gutters">
       <div class="ff-toolbar col">
         <nuxt-link :to="{name: 'index'}" class="logo-link">
             <img src="/logo.svg" alt="" class="normal-logo">
