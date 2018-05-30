@@ -45,7 +45,7 @@
   },
 
   "telegram": {
-    "sharer": "https://t.me/share/url?url=@url&text=@description",
+    "sharer": "https://t.me/share/url?url=@url&text=@title",
     "type": "popup"
   },
 
