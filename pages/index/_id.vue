@@ -76,6 +76,7 @@ export default {
 
     if( process.client && params.newest) {
       return {
+        url: process.env.baseUrl + "/" + params.newest.id,
         title: params.newest.title,
         seoTitle: setMeta(params.newest.title, params.newest.type),
         body: params.newest.body,
@@ -90,6 +91,7 @@ export default {
         redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
       } else {
         return {
+          url: process.env.baseUrl +  "/" + data.data.id,
           title: data.data.attributes.title,
           seoTitle: setMeta(data.data.attributes.title, data.data.attributes.type),
           body: data.data.attributes.body,
