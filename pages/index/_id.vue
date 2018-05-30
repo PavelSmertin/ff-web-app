@@ -18,7 +18,9 @@
     <div class="tools">
       <div v-if="showSocial" class="social">
 
-        <social-sharing :url="url"
+        <social-sharing :networks="overriddenNetworks"
+
+                      :url="url"
                       :title="title"
                       :description="stripSocialDesription"
                       :quote="stripSocialDesription"
@@ -39,6 +41,7 @@
 <script>
 import axios from 'axios'
 import moment from 'moment'
+import BaseNetworks from '@/assets/networks.json';
 
 var MINUTE = 60;
 var HOUR = MINUTE * 60;
@@ -68,7 +71,8 @@ export default {
       url: process.env.baseUrl + this.$route.path,
       title: title,
       seoTitle: title,
-      body: ''
+      body: '',
+      overriddenNetworks: BaseNetworks
     }
   },
 
