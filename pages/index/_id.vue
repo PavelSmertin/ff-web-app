@@ -20,8 +20,8 @@
 
         <social-sharing :url="url"
                       :title="title"
-                      :description="body"
-                      :quote="body"
+                      :description="stripSocialDesription"
+                      :quote="stripSocialDesription"
                       twitter-user="www_FF_ru"
                       inline-template>
           <div>
@@ -150,6 +150,14 @@ export default {
                         : pluralOrSingular(seconds / YEAR, 'г');
 
       return ret
+    },
+   stripSocialDesription: function() {
+      var str = this.attributes.body
+      if ((str === null) || (str === ''))
+        return false;
+      else
+        str = str.toString();
+      return str.replace(/<[^>]*>/g, '');
     }
   }
 }
