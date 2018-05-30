@@ -1,5 +1,5 @@
 <template>
-  <div class="ff-post">
+  <article class="ff-post">
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
         <li><timeago :since="attributes.create_dt" class="time-ago"></timeago></li>
@@ -33,7 +33,7 @@
         </social-sharing>
       </div>    
     </div>
-  </div>
+  </article>
 </template>
 
 <script>

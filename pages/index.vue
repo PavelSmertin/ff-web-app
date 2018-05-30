@@ -1,13 +1,14 @@
 <template>
   <div class="container-fluid p-0">
 
-    <nav class="row no-gutters">
+
+    <header class="row no-gutters">
       <div class="ff-toolbar col">
         <nuxt-link :to="{name: 'index'}" class="logo-link">
             <img src="/logo.svg" alt="" class="normal-logo">
         </nuxt-link>
       </div>
-    </nav>
+    </header>
  
     <div class="row ff-content no-gutters">
 
@@ -19,7 +20,7 @@
         </div>
       </div> -->
 
-      <div v-bind:class="{ content_float: seenIndex || seenPost, content_post: seenPost}" class="ff-center-panel col-md-8">
+      <main v-bind:class="{ content_float: seenIndex || seenPost, content_post: seenPost}" class="ff-center-panel col-md-8">
         <div class="scroll-container">
           <nuxt-child :key="$route.params.id"/>
         </div>
@@ -27,9 +28,9 @@
         <nuxt-link v-if="seenPost" v-on:click="closeContent()" :to="{name: 'index'}" class="ff-close">
             <img src="/close.svg" />
         </nuxt-link>
-      </div>
+      </main>
 
-      <div class="ff-right-panel col-12 col-md-4">
+      <aside class="ff-right-panel col-12 col-md-4">
 
         <ul class="right_tabs">
           <li  v-on:click="seenIndex = true" class="right_tab">
@@ -163,7 +164,7 @@
 
           </div> 
         </div>
-      </div>
+      </aside>
 
     </div>
 
