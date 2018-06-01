@@ -25,6 +25,9 @@ $l-color: #999999;
 $up-value-color: #8FCC14;
 
 
+
+
+/* COMMONS */
 body {
   font: 100% $font-stack;
   color: $primary-color;
@@ -114,6 +117,42 @@ h1 {
 	color: $up-value-color !important;
 }
 
+
+
+
+
+/* SECTIONS */
+.ff-toolbar {
+	background: $bg-toolbar-color;
+	padding: 0 24px 0 24px !important;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	.normal-logo{
+		margin: 16px 0px;
+	}
+
+	.ff_account_menu {
+		display: block;
+		border: 1px solid $border-bold-color;
+		color: $bg-main-color;
+		padding: 0 12px;
+		height: 32px;
+		font-size: $label-size;
+		text-transform: uppercase;
+		font-weight: bold;
+		line-height: 32px;
+	}
+	.ff_account_menu:hover {
+		border: 1px solid $link-color;
+		color: $link-color;
+		transition: color 0.2s ease-in-out;
+	}
+}
+
+
 .ff-content {
 	position: relative;
 	.btn-group {
@@ -170,14 +209,6 @@ h1 {
 		.caret {
 			top: 22px !important;
 		}
-	}
-}
-
-.ff-toolbar {
-	background: $bg-toolbar-color;
-	padding: 0 24px 0 24px !important;
-	.normal-logo{
-		margin: 16px 0px;
 	}
 }
 
@@ -309,12 +340,11 @@ h1 {
 		border-right-color: transparent  !important;;
 		animation: loading-rotating linear .85s infinite  !important;;
 	}
-
 }
-
 
 .ff-post {
 	transition: all .5s cubic-bezier(.55,0,.1,1);
+	padding-bottom: 140px;
 	.post-header{
 		margin: 24px 24px 0 24px;
 
@@ -341,15 +371,6 @@ h1 {
 	.tools {
 		margin: 24px 32px 0 24px;
 	}
-
-
-}
-
-
-/*Други, восславьте Анатолия! Вчера он ушёл огненной тропой в чертог Ярилы и, 
-присягнув под стягом с коловратом, стал в строй небесной рати рядом с Доброславом*/
-.ff-post {
-	padding-bottom: 140px;
 }
 
 @media (min-width: 768px) {
@@ -500,32 +521,233 @@ h1 {
 
 
 	.social_link.vk {
-		background-image: url('/vk.svg');
+		background-image: url('~assets/images/vk.svg');
 	}
 	.social_link.tr {
-		background-image: url('/twitter.svg');
+		background-image: url('~assets/images/twitter.svg');
 	}
 	.social_link.tg {
-		background-image: url('/telegram.svg');
+		background-image: url('~assets/images/telegram.svg');
 	}
 	.social_link.fb {
-		background-image: url('/facebook.svg');
+		background-image: url('~assets/images/facebook.svg');
 	}
 
 	.social_link.vk:hover {
-		background-image: url('/vk_hover.svg');
+		background-image: url('~assets/images/vk_hover.svg');
 	}
 	.social_link.tr:hover  {
-		background-image: url('/twitter_hover.svg');
+		background-image: url('~assets/images/twitter_hover.svg');
 	}
 	.social_link.tg:hover  {
-		background-image: url('/telegram_hover.svg');
+		background-image: url('~assets/images/telegram_hover.svg');
 	}
 	.social_link.fb:hover  {
-		background-image: url('/facebook_hover.svg');
+		background-image: url('~assets/images/facebook_hover.svg');
 	}
 }
 
+.ff_account{
+	flex: 1 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.form_pane {
+
+		margin: 48px 0;
+		border: 1px solid $border-bold-color;
+		width: 640px;
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.navigation {
+			$nav_height: 56px;
+			width: 100%;
+			height: $nav_height;
+			border-bottom: 1px solid $border-bold-color;
+
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			font-size: $coin-info-size;
+
+			display: flex;
+			justify-content: center;
+
+			li {
+				margin: 0;
+				display: inline-block;
+				padding: 0 12px 0 12px;
+
+				span {
+					line-height: $nav_height;
+					display: inline-block;
+					height: $nav_height;
+				}
+
+				.nuxt-link-active {
+					border-bottom: 2px solid $bg-toolbar-color;
+				}
+
+				a {
+					display: block;
+					color: $dark-primary-color;
+					height: 100%;
+					line-height: $nav_height;
+				}
+
+				a:hover {
+					color: $link-color;
+				}
+			}
+		}
+
+
+		form, .flash_form {
+			width: 62.5%;
+
+			h1 {
+				margin-top: 32px;
+				text-align: center;
+			}
+
+			.success_text {
+				margin-top: 16px;
+			}
+
+			.form_logo {
+				display: block;
+				height: 40px;
+				color: $bg-toolbar-color;
+				margin-top: 32px;
+
+				background-image: url('~assets/images/logo_black.svg');
+				background-position: center center;
+				background-repeat: no-repeat;
+			}
+
+			.row_field {
+				margin-top: 12px;
+				label {
+					display: block;
+					width: 100%;
+					margin-bottom: 4px;
+					line-height: 16px;
+				}
+
+				input[type="text"], input[type="password"]  {
+					border: 1px solid $border-bold-color;
+					padding: 0 5px;
+					display: block;
+					width: 100%;
+				}
+			}
+
+			.row_tools {
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+				margin-top: 24px; 
+				input, .button_link {
+					min-width: 120px;
+					padding: 0 20px;
+					height: 48px;
+					cursor: pointer;
+					border: 1px solid $border-bold-color;
+					background-color: $bg-toolbar-color;
+					color: $bg-main-color;
+					font-size: $label-size;
+					text-transform: uppercase;
+					font-weight: bold;
+					margin-right: 45px;
+
+				}
+
+				input:hover, .button_link:hover {
+					background-color: $bg-main-color;
+					color: $bg-toolbar-color;
+					transition: background-color 0.2s ease-in-out;
+				}
+
+				a {
+					height: 48px;
+					color: $l-color;
+					font-size: $label-size;
+					text-transform: uppercase;
+					font-weight: bold;
+					line-height: 48px;
+					text-align: center;
+				}
+
+				a:hover {
+					color: $link-color;
+				}
+			}
+
+			.row_tools.row_center {
+				justify-content: center;
+				input, .button_link {
+					margin-right: 0px;
+				}
+			}
+
+			.instruction {
+				text-align: center;
+				margin-top: 136px;
+				a {
+					text-decoration: underline;
+				}
+				a:hover {
+					text-decoration: none;
+				}
+			}
+		}
+
+
+	}
+}
+
+
+@media (max-width: 769px) {
+	.ff_account {
+		flex: 1 0 auto;
+		align-items: center;
+		.form_pane {
+
+			margin-top: 0;
+			border: none;
+			width: 100%;
+
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			form, .flash_form {
+				width: 80%;
+
+				.row_tools {
+					flex-direction: column;
+					justify-content: flex-end;
+					align-items: center;
+					input {
+						margin-right: 0px;
+					}
+					a {
+						margin-top: 24px; 
+					}
+				}
+
+				.instruction {
+					text-align: center;
+					margin-top: 24px;
+				}
+			}
+
+		}
+	}
+}
 
 
 
