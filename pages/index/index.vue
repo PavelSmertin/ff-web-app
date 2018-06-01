@@ -2,7 +2,7 @@
   <section class="ff-coin">
       
     <div class="row no-gutters">
-      <h1 class="col-12 col-md-6">Курс биткойна</h1>
+      <h1 class="col-12 col-md-6">Курс биткоина</h1>
       <div class="col-12 col-md-6">
         <div>
           <span class="coin-value">${{formatPrice(price)}}</span>&nbsp;
