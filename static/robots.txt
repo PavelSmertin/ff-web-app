@@ -1,1 +1,4 @@
 Host: https://ff.ru
+Disallow: /*?*
+Disallow: /account
+Disallow: /account/*
