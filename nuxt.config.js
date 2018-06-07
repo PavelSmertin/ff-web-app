@@ -138,7 +138,7 @@ module.exports = {
   // },
 
   axios: {
-    // baseUrl: 'https://ff.ru/api',
+    baseUrl: 'https://ff.ru',
     // browserBaseURL: 'https://ff.ru/api',
     // proxy: true,
     // proxyHeaders: true,
