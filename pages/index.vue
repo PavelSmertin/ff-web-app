@@ -11,7 +11,7 @@
       </div> -->
 
       <main v-bind:class="{ content_float: seenIndex || seenPost, content_post: seenPost}" class="ff-center-panel col-md-8">
-        <div class="scroll-container">
+        <div class="scroll-container" ref="scroll-container">
           <nuxt-child :key="$route.params.id"/>
         </div>
 
@@ -163,7 +163,6 @@
 
 
 <script>
-  import axios from 'axios'
   import VueTimeago from 'vue-timeago'
   import Dropdowns from '~/components/Dropdowns.vue'
   import Vue from 'vue'
@@ -181,11 +180,12 @@
 
   export default {
 
-    async asyncData({ params, error }) {
+    async asyncData({ app, params, error }) {
+
       try {
         let [news, coins] = await Promise.all([
-          axios.get(api_news),
-          axios.get(api_coins),
+          app.$axios.get(api_news),
+          app.$axios.get(api_coins),
         ])
         return { news: news.data.data, coins: coins.data.data }
       } catch (e) {
@@ -255,7 +255,7 @@
 
       infiniteHandler($state) {
         this.infiniteState = $state
-        axios.get(this.apiNewsPrepared, {
+        this.$axios.get(this.apiNewsPrepared, {
           params: {
             page: this.meta.current_page + 1,
           },
@@ -299,7 +299,7 @@
         }
         this.object = payload
         this.apiNewsPrepared = api_news + (payload.value ? '?filter[type]=' + payload.value : '')
-        let data = axios.get(this.apiNewsPrepared).then(({ data }) => {
+        let data = this.$axios.get(this.apiNewsPrepared).then(({ data }) => {
           this.news = data.data
           this.list = []
           this.meta = {current_page: 1}

@@ -65,7 +65,8 @@ module.exports = {
   },
 
   css: [
-    '@/assets/css/bind.scss'
+    '@/assets/css/bootstrap.min.css',
+    '@/assets/css/bind.scss',
   ],
 
   plugins: [
@@ -82,6 +83,22 @@ module.exports = {
   },
 
   router: {
+    scrollBehavior(to, from, savedPosition) {
+      if (savedPosition) {
+        return savedPosition
+      } else {
+        let position = {}
+        if (to.matched.length < 2) {
+          position = { x: 0, y: 0 }
+        } else if (to.matched.some(r => r.components.default.options.scrollToTop)) {
+          position = { x: 0, y: 0 }
+        }
+        if (to.hash) {
+          position = { selector: to.hash }
+        }
+        return position
+      }
+    },
     extendRoutes (routes, resolve) {
 
       let parent = routes.find((route) => {
@@ -111,8 +128,67 @@ module.exports = {
     ],
     '@nuxtjs/feed',
     '@nuxtjs/axios',
-    'bootstrap-vue/nuxt',
+    '@nuxtjs/auth',
+    ['@nuxtjs/proxy', { pathRewrite: { '^/api' : '/v1' } }],
+    ['bootstrap-vue/nuxt', { css: false }],
   ],
+
+  // build: {
+  //   vendor: ['@nuxtjs/axios']
+  // },
+
+  axios: {
+    // baseUrl: 'https://ff.ru/api',
+    // browserBaseURL: 'https://ff.ru/api',
+    // proxy: true,
+    // proxyHeaders: true,
+    // credentials: false,
+    // debug: true,
+    // // proxyHeaders: false,
+    // headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    // // headers: {'Access-Control-Allow-Origin': '*'},
+
+    // // config.headers['Content-Type'] = 'application/json';
+
+    // requestInterceptor: (config, { store }) => {
+    //   console.log('requestInterceptor')
+    //   console.log(config)
+    //   config.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
+    //   return config
+    // },
+  },
+
+  proxy: {
+    '/api': 'https://api.ff.ru',
+  },
+
+  auth: {
+    
+    redirect: {
+      login: '/',
+    },
+
+    token: {
+      prefix: 'token.'
+    },
+
+    defaultStrategy: 'api',
+
+    strategies: {
+      api: {
+        _scheme: '~/schemes/api.js',
+        endpoints: {
+          login: {
+            url: '/api/auth/login',
+            method: 'post',
+            propertyName: 'token'
+          },
+          logout: false
+        }
+      }
+    }
+  },
+
   feed: [{
       path: '/rss_export', // The route to your feed.
       async create (feed) {

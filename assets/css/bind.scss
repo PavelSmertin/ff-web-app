@@ -9,7 +9,9 @@ $primary-color: #666;
 $dark-primary-color: #000;
 $label-size: 12px;
 $coin-info-size: 14px;
+
 $primary-size: 18px;
+$second_size: 14px;
 
 $bg-main-color: #fff;
 $bg-toolbar-color: #000;
@@ -88,7 +90,31 @@ h1 {
 	color: $label-color;
 	font-size: $label-size;
 }
+.second_font {
+	color: $dark-primary-color;
+	font-size: $second_size; 
+	line-height: 18px;
+}
 
+
+
+@keyframes loading-rotating {
+	0%{
+		transform: rotate(0);
+	}
+	100%{
+		transform: rotate(360deg);
+	}
+}
+
+.loading-spiral {
+	border: 3px solid #FF9900 !important;
+	border-right-color: transparent  !important;
+	animation: loading-rotating linear .85s infinite  !important;
+	border-radius: 50%;
+	width: 40px;
+	height:40px;
+}
 
 @media (min-width: 768px) {
 	.ff_text_block {
@@ -117,9 +143,60 @@ h1 {
 	color: $up-value-color !important;
 }
 
+.button_link {
+	display: block;
+	min-width: 120px;
+	padding: 0 20px;
+	height: 48px;
+	line-height: 48px;
+	cursor: pointer;
+	border: 1px solid $border-bold-color;
+	background-color: $bg-toolbar-color;
+	color: $bg-main-color;
+	font-size: $label-size;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.button_link:hover {
+	background-color: $bg-main-color;
+	color: $bg-toolbar-color;
+	transition: background-color 0.2s ease-in-out;
+}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.error {
+	margin: 40px auto;
+	text-align: center;
+	.class404{
+		font-size: 100px;
+		margin-top: 48px;
+		color: #000;
+	}
+	.title {
+		margin-top: 24px;
+	}
+	.button_link{
+		margin-top: 24px;
+	}
+}
 
 /* SECTIONS */
 .ff-toolbar {
@@ -144,6 +221,7 @@ h1 {
 		text-transform: uppercase;
 		font-weight: bold;
 		line-height: 32px;
+		background: none;
 	}
 	.ff_account_menu:hover {
 		border: 1px solid $link-color;
@@ -324,21 +402,6 @@ h1 {
 	}
 	.ff-news-row:hover a:not(.nuxt-link-active) {
 		color: $dark-primary-color;
-	}
-
-
-	@keyframes loading-rotating {
-		0%{
-			transform: rotate(0);
-		}
-		100%{
-			transform: rotate(360deg);
-		}
-	}
-	.loading-spiral {
-		border: 3px solid #FF9900 !important;
-		border-right-color: transparent  !important;;
-		animation: loading-rotating linear .85s infinite  !important;;
 	}
 }
 
@@ -552,8 +615,10 @@ h1 {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	background: transparent url('~assets/images/auth_bg.jpg') center center no-repeat; 
 	.form_pane {
 
+		background-color: $bg-main-color;
 		margin: 48px 0;
 		border: 1px solid $border-bold-color;
 		width: 640px;
@@ -609,12 +674,19 @@ h1 {
 			width: 62.5%;
 
 			h1 {
-				margin-top: 32px;
+				margin-top: 24px;
 				text-align: center;
 			}
 
 			.success_text {
 				margin-top: 16px;
+				text-align: center;
+			}
+
+			.love_img {
+				display: block;
+				margin: 32px auto 0;
+
 			}
 
 			.form_logo {
@@ -637,11 +709,16 @@ h1 {
 					line-height: 16px;
 				}
 
-				input[type="text"], input[type="password"]  {
+				input[type="text"], input[type="password"], input[type="email"]  {
+					height: 48px;
 					border: 1px solid $border-bold-color;
-					padding: 0 5px;
+					padding: 0 13px;
 					display: block;
 					width: 100%;
+				}
+
+				input::placeholder { 
+					color: $l-color; 
 				}
 			}
 
@@ -650,10 +727,13 @@ h1 {
 				justify-content: flex-end;
 				align-items: center;
 				margin-top: 24px; 
+				position: relative;
+				min-height: 48px;
 				input, .button_link {
 					min-width: 120px;
 					padding: 0 20px;
 					height: 48px;
+					line-height: 48px;
 					cursor: pointer;
 					border: 1px solid $border-bold-color;
 					background-color: $bg-toolbar-color;
@@ -661,8 +741,7 @@ h1 {
 					font-size: $label-size;
 					text-transform: uppercase;
 					font-weight: bold;
-					margin-right: 45px;
-
+					margin: 0 45px;
 				}
 
 				input:hover, .button_link:hover {
@@ -671,7 +750,7 @@ h1 {
 					transition: background-color 0.2s ease-in-out;
 				}
 
-				a {
+				.row_link {
 					height: 48px;
 					color: $l-color;
 					font-size: $label-size;
@@ -679,10 +758,19 @@ h1 {
 					font-weight: bold;
 					line-height: 48px;
 					text-align: center;
+					background: none;
+					border: none;
+					cursor: pointer;
 				}
 
-				a:hover {
+				.row_link:hover {
 					color: $link-color;
+				}
+
+				.loading-spiral {
+					position: absolute;
+					left: 50%;
+					margin-left: -20px;
 				}
 			}
 
@@ -690,7 +778,15 @@ h1 {
 				justify-content: center;
 				input, .button_link {
 					margin-right: 0px;
+					margin-left:  0px;
 				}
+			}
+
+			.row_errors {
+				@extend .second_font;
+				margin: 0;
+				padding: 0;
+				margin-top: 24px;
 			}
 
 			.instruction {
@@ -703,6 +799,9 @@ h1 {
 					text-decoration: none;
 				}
 			}
+
+
+
 		}
 
 
@@ -714,6 +813,7 @@ h1 {
 	.ff_account {
 		flex: 1 0 auto;
 		align-items: center;
+		background: none; 
 		.form_pane {
 
 			margin-top: 0;

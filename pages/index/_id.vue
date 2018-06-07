@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import moment from 'moment'
 import BaseNetworks from '@/assets/networks.json';
 
@@ -76,7 +75,7 @@ export default {
     }
   },
 
-  async asyncData({ req, params, error, redirect }) {
+  async asyncData({ app, req, params, error, redirect }) {
 
     if( process.client && params.newest) {
       return {
@@ -89,7 +88,7 @@ export default {
     }
 
     try {
-      const { data } = await axios.get(`https://api.ff.ru/v1/news/view/${+params.id}`)
+      const { data } = await app.$axios.get(`https://api.ff.ru/v1/news/view/${+params.id}`)
  
       if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
         redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
@@ -120,11 +119,11 @@ export default {
         { property: 'article:published_time', content: '' },
         { hid: 'og:title', property: 'og:title', content: this.title },
         { hid: 'og:url', property: 'og:url', content: process.env.baseUrl + this.$route.path },
-        { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover_b.png' },
+        { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
         { hid: 'og:description', property: 'og:description', content: strip_social_desription(this.body, 200) },
         { hid: 'twitter:title',name: 'twitter:title', content: this.title },
         { hid: 'twitter:description', name: 'twitter:description', content: strip_social_desription(this.body, 200) },
-        { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover_b.png' },
+        { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
 
       ],
     }
@@ -132,6 +131,7 @@ export default {
 
   mounted () {
     this.showSocial = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
+    this.goto()
   },
 
   computed: {
@@ -155,7 +155,7 @@ export default {
 
       return ret
     },
-   stripSocialDesription: function() {
+    stripSocialDesription: function() {
       var str = this.attributes.body
       if ((str === null) || (str === ''))
         return false;
@@ -163,7 +163,13 @@ export default {
         str = str.toString();
       return str.replace(/<[^>]*>/g, '');
     }
-  }
+  },
+  methods: {
+    goto() {
+        var element = this.$parent.$refs["scroll-container"];
+        element.scrollTo(0, 0);
+    }
+  },
 }
 
 

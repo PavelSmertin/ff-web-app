@@ -8,7 +8,10 @@
 					<img src="/logo.svg" alt="" class="normal-logo">
 				</nuxt-link>
 
-				<nuxt-link :to="{path: '/account/signin'}" class="ff_account_menu">
+				<button v-if="$auth.loggedIn" v-on:click="$auth.logout() " class="ff_account_menu">
+					Выход
+				</button>
+				<nuxt-link  v-else :to="{name: 'account-signin'}" class="ff_account_menu">
 					Вход/Регистрация
 				</nuxt-link>
 			</div>

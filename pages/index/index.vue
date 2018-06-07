@@ -74,8 +74,8 @@
 
 <script>
   import Vue from 'vue'
-  import axios from 'axios'
   import moment from 'moment'
+  import axios from 'axios'
 
   let ToggleButton
   if (process.browser) {
@@ -118,8 +118,8 @@
         meta: [
           { hid: 'og:type', property: 'og:type', content: 'website' },
           { hid: 'og:url', property: 'og:url', content: process.env.baseUrl },
-          { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover_b.png' },
-          { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover_b.png' },
+          { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
+          { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
 
           { hid: 'og:title', property: 'og:title', content: 'Курс Bitcoin (BTC), новости и прогнозы Биткоина в реальном времени на FF.ru' },
           { hid: 'og:description', property: 'og:description', content: 'Курс, новости, прогнозы Bitcoin (BTC) и криптовалют в реальном времени. Когда покупать Биткоин - поможем принять решение. Подпишись на новости и не упусти момент, когда цены начнут меняться.' },
@@ -140,7 +140,7 @@
       this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
     },
 
-    async asyncData () {
+    async asyncData ({ app }) {
 
       const dataLimit = 720
       const options = {
@@ -188,6 +188,7 @@
               borderWidth: 2
           }]
         }
+
 
         const details = await axios.get(`https://api.coinmarketcap.com/v2/ticker/1/?convert=BTC`)
 

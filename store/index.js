@@ -1,18 +1,27 @@
-import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
 
-const store = () => new Vuex.Store({
+const createStore = () => {
+	return new Vuex.Store({
+		state: {
+			isMenuOpen: false,
+			authUser: null
+		},
 
-  state: {
-    news: []
-  },
-  mutations: {
-    setNews (state, news) {
-      state.news = news
-  	}
-  }
-})
+		mutations: {
+			SET_USER: function (state, user) {
+				state.authUser = user
+			}
+		},
 
-export default store
+		actions: {
+			async nuxtServerInit ({ commit }, { app, params, route }) {
+				// if(route.name == 'account-signup-code-code' && params.code) {
+				// 	app.$auth.setToken('api', 'djsnjn')
+				// 	app.$auth.setUser({})
+				// }
+			}
+		}
+	})
+}
+export default createStore
