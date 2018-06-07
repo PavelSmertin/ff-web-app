@@ -79,7 +79,7 @@ module.exports = {
   ],
 
   env: {
-    baseUrl: process.env.BASE_URL || 'https://ff.ru',
+    baseUrl: 'https://ff.ru',
   },
 
   router: {
@@ -139,7 +139,7 @@ module.exports = {
 
   axios: {
     baseUrl: 'https://ff.ru',
-    // browserBaseURL: 'https://ff.ru/api',
+    browserBaseURL: 'https://ff.ru',
     // proxy: true,
     // proxyHeaders: true,
     // credentials: false,
