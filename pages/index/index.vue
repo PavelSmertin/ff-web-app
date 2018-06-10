@@ -40,7 +40,19 @@
       </div>
     </div>
 
-    <coin-line v-if="showLine" :data="lineData" :options="options" :width="817" :height="350" class="margin40"></coin-line>
+<!--     <coin-line v-if="showLine" :data="lineData" :options="options" :width="817" :height="350" class="margin40"></coin-line>
+ -->
+<!--     <no-ssr>
+      <vue-highcharts :options="testOptions" :highcharts="highcharts" ref="lineCharts"></vue-highcharts>
+    </no-ssr> -->
+<!--     <no-ssr>
+      <highcharts :constructor-type="'stockChart'" :options="testOptions" ref="lineCharts"></highcharts>
+    </no-ssr> -->
+<!--     <no-ssr>
+      <button @click="loadChart">load</button>
+    </no-ssr> -->
+
+    <div id="tradingview_53a94"></div>
 
     <section class="ff_text_block">
       <h2 class="margin60">Онлайн график курса биткоина к доллару. Прогноз цены Bitcoin</h2>
@@ -76,6 +88,11 @@
   import Vue from 'vue'
   import moment from 'moment'
   import axios from 'axios'
+
+
+  import Highcharts from 'highcharts'
+  import StockInit from 'highcharts/modules/stock.src'
+  import { DrilldownOptions, MapData} from '~/static/data.js'
 
   let ToggleButton
   if (process.browser) {
@@ -133,11 +150,67 @@
         enabled: true,
         showLine: false,
         headTitle: '(BTC/USD) Курс Bitcoin к доллару, (BTC/RUB) курс Биткоина в рублях - Курсы криптовалют в реальном времени на FF.ru',
-
+        
+        testOptions: DrilldownOptions,
+        // testOptions: {
+        //   rangeSelector: {
+        //     selected: 1
+        //   },
+        //   title: {
+        //     text: 'AAPL Stock Price'
+        //   },
+        //   series: [{
+        //     name: 'AAPL',
+        //     data: [10, 20, 10, 23, 65, 121, 44, 66, 98, 30, 32, 56, 25, 12, 53],
+        //     pointStart: Date.UTC(2018, 1, 1),
+        //     pointInterval: 1000 * 3600 * 24,
+        //     tooltip: {
+        //       valueDecimals: 2
+        //     }
+        //   }]
+        // },
+        highcharts: Highcharts,
+        series: {
+          name: 'COIN',
+          type: 'area',
+          data: [],
+          gapSize: 5,
+          tooltip: {
+              valueDecimals: 2
+          },
+          threshold: null
+        }
       }
     },
     mounted () {
       this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
+      // StockInit(Highcharts)
+      //this.loadChart()
+
+        var script = document.createElement('script');
+        script.src = "https://s3.tradingview.com/tv.js"
+        document.body.appendChild(script);
+
+        var chimpPopup = document.createElement("script");
+        chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BITFINEX:ETHUSD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
+
+        script.onload = function() {
+          document.body.appendChild(chimpPopup);
+        }
+    },
+
+    created () {
+
+        // var script = document.createElement('script');
+        // script.src = "https://s3.tradingview.com/tv.js"
+        // document.body.appendChild(script);
+
+        // var chimpPopup = document.createElement("script");
+        // chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BINANCE:BTCUSD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
+
+        // script.onload = function() {
+        //   document.body.appendChild(chimpPopup);
+        // }
     },
 
     async asyncData ({ app }) {
@@ -173,21 +246,21 @@
 
       try {
 
-        const { data } = await axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=${+dataLimit}&aggregate=3&e=CCCAGG`)
+        // const { data } = await axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=${+dataLimit}&aggregate=3&e=CCCAGG`)
    
-        const labels = data.Data.map(a => a.time)
-        const values = data.Data.map(a => a.close)
+        // const labels = data.Data.map(a => a.time)
+        // const values = data.Data.map(a => a.close)
 
-        const lineData = {
-          labels: labels,
-          datasets: [{
-              label: '$',
-              data: values,
-              backgroundColor: ['rgba(255, 255, 255, 0.7)'],
-              borderColor: ['rgba(255, 153, 0, 1)'],
-              borderWidth: 2
-          }]
-        }
+        // const lineData = {
+        //   labels: labels,
+        //   datasets: [{
+        //       label: '$',
+        //       data: values,
+        //       backgroundColor: ['rgba(255, 255, 255, 0.7)'],
+        //       borderColor: ['rgba(255, 153, 0, 1)'],
+        //       borderWidth: 2
+        //   }]
+        // }
 
 
         const details = await axios.get(`https://api.coinmarketcap.com/v2/ticker/1/?convert=BTC`)
@@ -198,7 +271,7 @@
         const volume_24h_btc = details.data.data.quotes.BTC.volume_24h
 
         return { 
-                  lineData, 
+                  lineData: {}, 
                   options, 
                   total_supply, 
                   circulating_supply, 
@@ -254,6 +327,22 @@
         }
         
         return unpackedCurrent;
+      },
+      loadChart(){
+        let lineCharts = this.$refs.lineCharts;
+        lineCharts.delegateMethod('showLoading', 'Loading...');
+
+        axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=720&aggregate=3&e=CCCAGG`)
+        .then((data) => {
+          this.series.data = data.data.Data.map(a => [a.time*1000, a.close] )
+          console.log(this.series)
+
+          lineCharts.addSeries(this.series)
+          lineCharts.hideLoading()
+        })
+        .catch(e => {
+          lineCharts.hideLoading();
+        })
       }
     },
 

@@ -19,7 +19,6 @@
       <div v-if="showSocial" class="social">
 
         <social-sharing :networks="overriddenNetworks"
-
                       :url="url"
                       :title="title"
                       :description="stripSocialDesription"
@@ -27,10 +26,34 @@
                       twitter-user="www_FF_ru"
                       inline-template>
           <div>
-            <network network="facebook" class="social_link fb"></network>
-            <network network="telegram" class="social_link tg"></network>
-            <network network="twitter" class="social_link tr"></network>
-            <network network="vk" class="social_link vk"></network>
+            <network 
+              network="facebook" 
+              class="social_link fb" 
+              @open="open()" 
+              @change="change()" 
+              @close="close()">
+            </network>
+            <network 
+              network="telegram" 
+              class="social_link tg" 
+              @open="open('telegram')" 
+              @change="change('telegram')" 
+              @close="close('telegram')">
+            </network>
+            <network 
+              network="twitter" 
+              class="social_link tr" 
+              @open="open('twitter')" 
+              @change="change('twitter')" 
+              @close="close('twitter')">
+            </network>
+            <network 
+              network="vk" 
+              class="social_link vk" 
+              @open="open('vk')" 
+              @change="change('vk')" 
+              @close="close('vk')">
+            </network>
           </div>
         </social-sharing>
       </div>    
@@ -39,6 +62,8 @@
 </template>
 
 <script>
+import Vue from 'vue'
+
 import moment from 'moment'
 import BaseNetworks from '@/assets/networks.json';
 
@@ -130,6 +155,11 @@ export default {
   },
 
   mounted () {
+    this.$on('social_shares_open', function (network, url) {
+      console.log('social_shares_open')
+      console.log(network)
+      console.log(url)
+    });
     this.showSocial = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
     this.goto()
   },
@@ -168,7 +198,17 @@ export default {
     goto() {
         var element = this.$parent.$refs["scroll-container"];
         element.scrollTo(0, 0);
-    }
+    },
+    open( ) {
+      console.log('open ')
+    },
+    change( network ) {
+      console.log('change ')
+    },
+    close( network ) {
+      console.log('close ')
+    },
+
   },
 }
 
@@ -209,4 +249,15 @@ function strip_social_desription(str, desriptionLength) {
     str = str.toString();
   return str.replace(/<[^>]*>/g, '').substring(0, desriptionLength) + "...";
 }
+
+
+    function open( network ) {
+      console.log('open1 ')
+    }
+    function change( network ) {
+      console.log('change1 ')
+    }
+    function close( network ) {
+      console.log('close1 ')
+    }
 </script>

@@ -75,7 +75,8 @@ module.exports = {
     { src: '~/plugins/ga.js', ssr: false },
     { src: '~/plugins/vue-chartjs.js', ssr: false },
     { src: '~/plugins/vue-socket.js', ssr: false },
-    { src: '~plugins/social.js', ssr: false },
+    { src: '~/plugins/social.js', ssr: true },
+    // { src: '~/plugins/vue-highcharts.js', ssr: false },
   ],
 
   env: {
@@ -105,12 +106,16 @@ module.exports = {
         return route.path === '/'
       });
 
+      parent.children.find((r) => r.path.includes(':id')).path = ':id(\\d+)'
+      parent.children.find((r) => r.path.includes(':symbol')).path = ':symbol([a-zA-Z]+)'
+
       parent.children.push({
         name: 'slug-id',
         path: ':id(\\d+)/:slug',
         chunkName: 'pages/index/_id',
         component: resolve(__dirname, 'pages/index/_id.vue')
       });
+
 
     }
   },
