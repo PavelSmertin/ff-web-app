@@ -12,8 +12,8 @@
       {{attributes.title}}
     </h1>
     <div v-html="attributes.body" class="description"></div>
-    <div class="post_source">
-      <a target="_blank" rel="nofollow noopener noreferrer" :href="attributes.source_url">Ссылка на источник</a>
+    <div class="post_source ff-label">
+        Источник: {{ sourceDomain() }}
     </div>
     <div class="tools">
       <div v-if="showSocial" class="social">
@@ -168,6 +168,24 @@ export default {
     goto() {
         var element = this.$parent.$refs["scroll-container"];
         element.scrollTo(0, 0);
+    },
+
+    sourceDomain() {
+      var domain = extractHostname(this.attributes.source_url),
+          splitArr = domain.split('.'),
+          arrLen = splitArr.length;
+
+      //extracting the root domain here
+      //if there is a subdomain 
+      if (arrLen > 2) {
+          domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
+          //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
+          if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
+              //this is using a ccTLD
+              domain = splitArr[arrLen - 3] + '.' + domain;
+          }
+      }
+      return domain;
     }
   },
 }
@@ -209,4 +227,24 @@ function strip_social_desription(str, desriptionLength) {
     str = str.toString();
   return str.replace(/<[^>]*>/g, '').substring(0, desriptionLength) + "...";
 }
+
+function extractHostname(url) {
+    var hostname;
+    //find & remove protocol (http, ftp, etc.) and get hostname
+
+    if (url.indexOf("://") > -1) {
+        hostname = url.split('/')[2];
+    }
+    else {
+        hostname = url.split('/')[0];
+    }
+
+    //find & remove port number
+    hostname = hostname.split(':')[0];
+    //find & remove "?"
+    hostname = hostname.split('?')[0];
+
+    return hostname;
+}
+
 </script>
