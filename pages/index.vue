@@ -298,7 +298,7 @@
           this.infiniteState.reset()
         }
         this.object = payload
-        this.apiNewsPrepared = api_news + (payload.value ? '?filter[type]=' + payload.value : '')
+        this.apiNewsPrepared = api_news + (payload.value ? '?filters[news-translated][type]=' + payload.value : '')
         let data = this.$axios.get(this.apiNewsPrepared).then(({ data }) => {
           this.news = data.data
           this.list = []
