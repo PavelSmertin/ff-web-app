@@ -27,7 +27,6 @@
     "moment": "^2.22.1",
     "nuxt": "^1.4.0",
     "vue-chartjs": "^3.3.1",
-    "vue-highcharts": "0.0.10",
     "vue-infinite-loading": "^2.3.1",
     "vue-js-toggle-button": "^1.2.3",
     "vue-social-sharing": "^2.3.3",
@@ -35,7 +34,6 @@
     "vue-timeago": "^3.4.4",
     "vue-websocket": "^0.2.2",
     "vue-yandex-metrika": "^1.6.1",
-    "vue2-highcharts": "^1.2.4",
     "yandex-metrika": "^0.1.2-beta"
   },
   "devDependencies": {

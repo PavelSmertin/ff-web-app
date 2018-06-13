@@ -40,19 +40,13 @@
       </div>
     </div>
 
-<!--     <coin-line v-if="showLine" :data="lineData" :options="options" :width="817" :height="350" class="margin40"></coin-line>
- -->
-<!--     <no-ssr>
-      <vue-highcharts :options="testOptions" :highcharts="highcharts" ref="lineCharts"></vue-highcharts>
-    </no-ssr> -->
-<!--     <no-ssr>
+    <no-ssr>
       <highcharts :constructor-type="'stockChart'" :options="testOptions" ref="lineCharts"></highcharts>
-    </no-ssr> -->
-<!--     <no-ssr>
+    </no-ssr>
+    <no-ssr>
       <button @click="loadChart">load</button>
-    </no-ssr> -->
+    </no-ssr>
 
-    <div id="tradingview_53a94"></div>
 
     <section class="ff_text_block">
       <h2 class="margin60">Онлайн график курса биткоина к доллару. Прогноз цены Bitcoin</h2>
@@ -151,25 +145,24 @@
         showLine: false,
         headTitle: '(BTC/USD) Курс Bitcoin к доллару, (BTC/RUB) курс Биткоина в рублях - Курсы криптовалют в реальном времени на FF.ru',
         
-        testOptions: DrilldownOptions,
-        // testOptions: {
-        //   rangeSelector: {
-        //     selected: 1
-        //   },
-        //   title: {
-        //     text: 'AAPL Stock Price'
-        //   },
-        //   series: [{
-        //     name: 'AAPL',
-        //     data: [10, 20, 10, 23, 65, 121, 44, 66, 98, 30, 32, 56, 25, 12, 53],
-        //     pointStart: Date.UTC(2018, 1, 1),
-        //     pointInterval: 1000 * 3600 * 24,
-        //     tooltip: {
-        //       valueDecimals: 2
-        //     }
-        //   }]
-        // },
-        highcharts: Highcharts,
+        //testOptions: DrilldownOptions,
+        testOptions: {
+          rangeSelector: {
+            selected: 1
+          },
+          title: {
+            text: 'AAPL Stock Price'
+          },
+          series: [{
+            name: 'AAPL',
+            data: [10, 20, 10, 23, 65, 121, 44, 66, 98, 30, 32, 56, 25, 12, 53],
+            pointStart: Date.UTC(2018, 1, 1),
+            pointInterval: 1000 * 3600 * 24,
+            tooltip: {
+              valueDecimals: 2
+            }
+          }]
+        },
         series: {
           name: 'COIN',
           type: 'area',
@@ -184,19 +177,9 @@
     },
     mounted () {
       this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
-      // StockInit(Highcharts)
+      StockInit(Highcharts)
       //this.loadChart()
 
-        var script = document.createElement('script');
-        script.src = "https://s3.tradingview.com/tv.js"
-        document.body.appendChild(script);
-
-        var chimpPopup = document.createElement("script");
-        chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BITFINEX:BTCUSD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
-
-        script.onload = function() {
-          document.body.appendChild(chimpPopup);
-        }
     },
 
     created () {
@@ -293,6 +276,7 @@
         let val = (value/1).toFixed(2).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
+
       dataUnpack(message) {
 
         var data = this.unpack(message);
@@ -305,6 +289,7 @@
         var delta = ((data['PRICE'] - data['OPEN24HOUR']) / data['OPEN24HOUR'] * 100).toFixed(2);
         return {price: data['PRICE'], delta: delta};
       },
+
       unpack(value) {
         var valuesArray = value.split("~");
         var valuesArrayLenght = valuesArray.length;
@@ -328,7 +313,8 @@
         
         return unpackedCurrent;
       },
-      loadChart(){
+
+      loadChart() {
         let lineCharts = this.$refs.lineCharts;
         lineCharts.delegateMethod('showLoading', 'Loading...');
 

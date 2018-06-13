@@ -76,7 +76,7 @@ module.exports = {
     { src: '~/plugins/vue-chartjs.js', ssr: false },
     { src: '~/plugins/vue-socket.js', ssr: false },
     { src: '~/plugins/social.js', ssr: true },
-    // { src: '~/plugins/vue-highcharts.js', ssr: false },
+    { src: '~/plugins/vue-highchartsof.js', ssr: false },
   ],
 
   env: {

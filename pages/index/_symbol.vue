@@ -41,9 +41,6 @@
     </div>
 
 
-    <div id="tradingview_53a94"></div>
-
-
   </section>
 </template>
 
@@ -99,35 +96,22 @@
     mounted () {
               console.log('mounted')
 
-      this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
-      var script = document.createElement('script');
-      script.src = "https://s3.tradingview.com/tv.js"
-      document.body.appendChild(script);
+      // this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
+      // var script = document.createElement('script');
+      // script.src = "https://s3.tradingview.com/tv.js"
+      // document.body.appendChild(script);
 
-      var chimpPopup = document.createElement("script");
-      chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BITFINEX:' + this.symbol + 'USD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
+      // var chimpPopup = document.createElement("script");
+      // chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BITFINEX:' + this.symbol + 'USD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
 
-      script.onload = function() {
-        document.body.appendChild(chimpPopup);
-      }
-    },
-
-    created () {
-
-        console.log('created')
-        // var script = document.createElement('script');
-        // script.src = "https://s3.tradingview.com/tv.js"
-        // document.body.appendChild(script);
-
-        // var chimpPopup = document.createElement("script");
-        // chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BINANCE:BTCUSD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
-
-        // script.onload = function() {
-        //   document.body.appendChild(chimpPopup);
-        // }
+      // script.onload = function() {
+      //   document.body.appendChild(chimpPopup);
+      // }
     },
 
     async asyncData ({ app, params }) {
+
+        console.log('asyncData')
 
       const details = await app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
 
