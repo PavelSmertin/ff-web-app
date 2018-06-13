@@ -42,7 +42,7 @@
                   <div class="col">
                     <ul class="ff-label news_list_detail">
                       <li><timeago :since="newest.attributes.create_dt" class="time-ago"></timeago></li>
-                      <li v-if="newest.attributes.time_for_translation" v-html="translationTime(newest.attributes.time_for_translation)"></li>
+                      <li v-if="newest.attributes.time_for_translation"></li>
                       <li v-if="newest.attributes.type == 'news'">Новость</li>
                       <li v-else-if="newest.attributes.type == 'prognosis'">Прогноз</li>
                     </ul>
@@ -101,7 +101,7 @@
                   <div class="col">
                     <ul class="ff-label news_list_detail">
                       <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
-                      <li v-if="item.attributes.time_for_translation" v-html="translationTime(item.attributes.time_for_translation)"></li>
+                      <li v-if="item.attributes.time_for_translation"></li>
                       <li v-if="item.attributes.type == 'news'">Новость</li>
                       <li v-else-if="item.attributes.type == 'prognosis'">Прогноз</li>
                     </ul>
@@ -274,25 +274,6 @@
         this.seenIndex = false;
       },
 
-      translationTime: function translationTime(seconds) {
-        var ret =
-          seconds <= MINUTE
-              ? pluralOrSingular(seconds, 'сек')
-              : seconds < HOUR
-                ? pluralOrSingular(seconds / MINUTE, 'мин')
-                : seconds < DAY
-                  ? pluralOrSingular(seconds / HOUR, 'ч')
-                  : seconds < WEEK
-                    ? pluralOrSingular(seconds / DAY, 'д')
-                    : seconds < MONTH
-                      ? pluralOrSingular(seconds / WEEK, 'н')
-                      : seconds < YEAR
-                        ? pluralOrSingular(seconds / MONTH, 'мес')
-                        : pluralOrSingular(seconds / YEAR, 'г');
-
-        return ret
-      },
-
       methodToRunOnSelect(payload) {
         if(this.infiniteState) { 
           this.infiniteState.reset()
@@ -332,12 +313,6 @@
       'ru-RU': require('@/assets/locales/ru-RU.json')
     }
   });
-
-  function pluralOrSingular(data, locale) {
-    var count = Math.round(data);
-    return 'Перевод: ' + count + ' ' + locale;
-  }
-
 
 
 </script>

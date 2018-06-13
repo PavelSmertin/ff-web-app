@@ -3,7 +3,6 @@
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
         <li><timeago :since="attributes.create_dt" class="time-ago"></timeago></li>
-        <li>Перевод: {{translationTime}} </li>
         <li v-if="attributes.type == 'news'">Новость</li>
         <li v-else-if="attributes.type == 'prognosis'">Прогноз</li>
       </ul>
@@ -135,26 +134,6 @@ export default {
   },
 
   computed: {
-    translationTime: function() {
-
-        var seconds = this.attributes.time_for_translation;
-        var ret =
-          seconds <= MINUTE
-              ? pluralOrSingular(seconds, 'сек')
-              : seconds < HOUR
-                ? pluralOrSingular(seconds / MINUTE, 'мин')
-                : seconds < DAY
-                  ? pluralOrSingular(seconds / HOUR, 'ч')
-                  : seconds < WEEK
-                    ? pluralOrSingular(seconds / DAY, 'д')
-                    : seconds < MONTH
-                      ? pluralOrSingular(seconds / WEEK, 'н')
-                      : seconds < YEAR
-                        ? pluralOrSingular(seconds / MONTH, 'мес')
-                        : pluralOrSingular(seconds / YEAR, 'г');
-
-      return ret
-    },
     stripSocialDesription: function() {
       var str = this.attributes.body
       if ((str === null) || (str === ''))
@@ -208,12 +187,6 @@ function redirectToSlug(data, slug) {
   } 
 
   throw new Error('Newest not found');
-}
-
-
-function pluralOrSingular(data, locale) {
-  var count = Math.round(data);
-  return count + " " + locale;
 }
 
 function setMeta(title, type) {
