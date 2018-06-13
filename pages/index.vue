@@ -42,7 +42,6 @@
                   <div class="col">
                     <ul class="ff-label news_list_detail">
                       <li><timeago :since="newest.attributes.create_dt" class="time-ago"></timeago></li>
-                      <li v-if="newest.attributes.time_for_translation"></li>
                       <li v-if="newest.attributes.type == 'news'">Новость</li>
                       <li v-else-if="newest.attributes.type == 'prognosis'">Прогноз</li>
                     </ul>
@@ -101,7 +100,6 @@
                   <div class="col">
                     <ul class="ff-label news_list_detail">
                       <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
-                      <li v-if="item.attributes.time_for_translation"></li>
                       <li v-if="item.attributes.type == 'news'">Новость</li>
                       <li v-else-if="item.attributes.type == 'prognosis'">Прогноз</li>
                     </ul>
