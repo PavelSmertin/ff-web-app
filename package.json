@@ -22,7 +22,7 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "chart.js": "^2.7.2",
     "highcharts": "^6.1.0",
-    "highcharts-vue": "^1.0.4",
+    "vue2-highcharts": "^1.2.4",
     "jsonapi-datastore": "^0.4.0-beta",
     "moment": "^2.22.1",
     "nuxt": "^1.4.0",

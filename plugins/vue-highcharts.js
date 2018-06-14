@@ -1,4 +1,4 @@
 import Vue from 'vue'
-import VueHighcharts from 'vue2-highcharts'
+import VueHighcharts from '~/components/VueHighcharts.vue'
 
 Vue.component('VueHighcharts', VueHighcharts)

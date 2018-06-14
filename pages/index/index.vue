@@ -40,9 +40,10 @@
       </div>
     </div>
 
-    <no-ssr>
+<!--     <no-ssr>
       <highcharts :constructor-type="'stockChart'" :options="testOptions" ref="lineCharts"></highcharts>
-    </no-ssr>
+    </no-ssr> -->
+    <vue-highcharts :options="testOptions" ref="lineCharts"></vue-highcharts>
     <no-ssr>
       <button @click="loadChart">load</button>
     </no-ssr>
@@ -82,11 +83,12 @@
   import Vue from 'vue'
   import moment from 'moment'
   import axios from 'axios'
+  import VueHighcharts from '~/components/VueHighcharts.vue'
 
 
-  import Highcharts from 'highcharts'
-  import StockInit from 'highcharts/modules/stock.src'
-  import { DrilldownOptions, MapData} from '~/static/data.js'
+  // import Highcharts from 'highcharts'
+  // import StockInit from 'highcharts/modules/stock'
+  // import { DrilldownOptions, MapData} from '~/static/data.js'
 
   let ToggleButton
   if (process.browser) {
@@ -123,6 +125,11 @@
 
   export default {
     transition: 'page',
+
+    components: {
+      VueHighcharts
+    },
+
     head() {
       return {
         title: this.headTitle,
@@ -163,6 +170,7 @@
             }
           }]
         },
+        // highcharts: Highcharts,
         series: {
           name: 'COIN',
           type: 'area',
@@ -177,9 +185,7 @@
     },
     mounted () {
       this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
-      StockInit(Highcharts)
-      //this.loadChart()
-
+      this.loadChart()
     },
 
     created () {
@@ -197,6 +203,11 @@
     },
 
     async asyncData ({ app }) {
+
+      // if( process.client) {
+      //   StockInit(Highcharts)
+      // }
+
 
       const dataLimit = 720
       const options = {
@@ -315,20 +326,24 @@
       },
 
       loadChart() {
-        let lineCharts = this.$refs.lineCharts;
-        lineCharts.delegateMethod('showLoading', 'Loading...');
 
-        axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=720&aggregate=3&e=CCCAGG`)
-        .then((data) => {
-          this.series.data = data.data.Data.map(a => [a.time*1000, a.close] )
-          console.log(this.series)
 
-          lineCharts.addSeries(this.series)
-          lineCharts.hideLoading()
-        })
-        .catch(e => {
-          lineCharts.hideLoading();
-        })
+         let lineCharts = this.$refs.lineCharts
+
+          lineCharts.delegateMethod('showLoading', 'Loading...')
+
+          axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=720&aggregate=3&e=CCCAGG`)
+          .then((data) => {
+            this.series.data = data.data.Data.map(a => [a.time*1000, a.close] )
+            console.log(this.series)
+
+            lineCharts.addSeries(this.series)
+            lineCharts.hideLoading()
+          })
+          .catch(e => {
+            lineCharts.hideLoading();
+          })
+
       }
     },
 
