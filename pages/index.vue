@@ -17,7 +17,6 @@
       <div class="scroll-container" ref="scroll-container">
         <nuxt-child :key="$route.params.id"/>
       </div>
-
       <nuxt-link v-if="seenPost" v-on:click="closeContent()" :to="{name: 'index'}" class="ff-close">
           <img src="/close.svg" />
       </nuxt-link>
@@ -45,7 +44,6 @@
                 <div class="col">
                   <ul class="ff-label news_list_detail">
                     <li><timeago :since="newest.attributes.create_dt" class="time-ago"></timeago></li>
-                    <li v-if="newest.attributes.time_for_translation" v-html="translationTime(newest.attributes.time_for_translation)"></li>
                     <li v-if="newest.attributes.type == 'news'">Новость</li>
                     <li v-else-if="newest.attributes.type == 'prognosis'">Прогноз</li>
                   </ul>
@@ -76,61 +74,61 @@
                   </nuxt-link>
                 </div>
               </div>
+
+              <nuxt-link v-if="newest.attributes.slug" :to="{ 
+                        name: 'slug-id', 
+                        params: { 
+                            id: newest.id, 
+                            slug: newest.attributes.slug, 
+                            newest:  newest.attributes }}" 
+                        class="click-area"
+                        >
+              </nuxt-link>
+              <nuxt-link v-else :to="{ 
+                        name: 'index-id', 
+                        params: { 
+                            id: newest.id,
+                            newest:  newest.attributes }}" 
+                        class="click-area"
+                        >
+              </nuxt-link>
+            </div>
+          </div>
+        </div>
+
+        <div v-for="(item, key) in list" v-bind:key="key" class="ff-news-row">
+          <div class="ff-news-cell">
+
+            <div class="row">
+              <div class="col">
+                <ul class="ff-label news_list_detail">
+                  <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
+                  <li v-if="item.attributes.type == 'news'">Новость</li>
+                  <li v-else-if="item.attributes.type == 'prognosis'">Прогноз</li>
+                </ul>
+
+              </div>
             </div>
 
-            <nuxt-link v-if="newest.attributes.slug" :to="{ 
-                      name: 'slug-id', 
-                      params: { 
-                          id: newest.id, 
-                          slug: newest.attributes.slug, 
-                          newest:  newest.attributes }}" 
-                      class="click-area"
-                      >
-            </nuxt-link>
-            <nuxt-link v-else :to="{ 
-                      name: 'index-id', 
-                      params: { 
-                          id: newest.id,
-                          newest:  newest.attributes }}" 
-                      class="click-area"
-                      >
-            </nuxt-link>
-          </div>
-
-          <div v-for="(item, key) in list" v-bind:key="key" class="ff-news-row">
-            <div class="ff-news-cell">
-
-              <div class="row">
-                <div class="col">
-                  <ul class="ff-label news_list_detail">
-                    <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
-                    <li v-if="item.attributes.time_for_translation" v-html="translationTime(item.attributes.time_for_translation)"></li>
-                    <li v-if="item.attributes.type == 'news'">Новость</li>
-                    <li v-else-if="item.attributes.type == 'prognosis'">Прогноз</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col">
-                  <nuxt-link v-if="item.attributes.slug"  :to="{ 
-                      name: 'slug-id', 
-                      params: { 
-                          id: item.id, 
-                          slug: item.attributes.slug, 
-                          newest:  item.attributes }}" 
-                      class="ff-nc-title">
-                    {{item.attributes.title}}
-                  </nuxt-link>
-                  <nuxt-link v-else  :to="{ 
-                      name: 'index-id', 
-                      params: { 
-                          id: item.id,
-                          newest:  item.attributes }}" 
-                      class="ff-nc-title">
-                    {{item.attributes.title}}
-                  </nuxt-link>
-                </div>
+            <div class="row">
+              <div class="col">
+                <nuxt-link v-if="item.attributes.slug"  :to="{ 
+                    name: 'slug-id', 
+                    params: { 
+                        id: item.id, 
+                        slug: item.attributes.slug, 
+                        newest:  item.attributes }}" 
+                    class="ff-nc-title">
+                  {{item.attributes.title}}
+                </nuxt-link>
+                <nuxt-link v-else  :to="{ 
+                    name: 'index-id', 
+                    params: { 
+                        id: item.id,
+                        newest:  item.attributes }}" 
+                    class="ff-nc-title">
+                  {{item.attributes.title}}
+                </nuxt-link>
               </div>
             </div>
             <nuxt-link v-if="item.attributes.slug"  :to="{ 
@@ -149,14 +147,13 @@
                       class="click-area">
             </nuxt-link>
           </div>
+        </div>
 
-          <infinite-loading @infinite="infiniteHandler" spinner="spiral">
-            <span slot="no-more">You've reached the end!</span>
-            <span slot="no-results">You've reached the end!</span>
-          </infinite-loading>
-
-        </div> 
-      </div>
+        <infinite-loading @infinite="infiniteHandler" spinner="spiral">
+          <span slot="no-more">You've reached the end!</span>
+          <span slot="no-results">You've reached the end!</span>
+        </infinite-loading>
+      </div> 
     </aside>
 
   </div>
@@ -281,31 +278,12 @@
         this.seenIndex = false;
       },
 
-      translationTime: function translationTime(seconds) {
-        var ret =
-          seconds <= MINUTE
-              ? pluralOrSingular(seconds, 'сек')
-              : seconds < HOUR
-                ? pluralOrSingular(seconds / MINUTE, 'мин')
-                : seconds < DAY
-                  ? pluralOrSingular(seconds / HOUR, 'ч')
-                  : seconds < WEEK
-                    ? pluralOrSingular(seconds / DAY, 'д')
-                    : seconds < MONTH
-                      ? pluralOrSingular(seconds / WEEK, 'н')
-                      : seconds < YEAR
-                        ? pluralOrSingular(seconds / MONTH, 'мес')
-                        : pluralOrSingular(seconds / YEAR, 'г');
-
-        return ret
-      },
-
       methodToRunOnSelect(payload) {
         if(this.infiniteState) { 
           this.infiniteState.reset()
         }
         this.object = payload
-        this.apiNewsPrepared = api_news + (payload.value ? '?filter[type]=' + payload.value : '')
+        this.apiNewsPrepared = api_news + (payload.value ? '?filters[news-translated][type]=' + payload.value : '')
         let data = this.$axios.get(this.apiNewsPrepared).then(({ data }) => {
           this.news = data.data
           this.list = []
@@ -356,15 +334,5 @@
       'ru-RU': require('@/assets/locales/ru-RU.json')
     }
   });
-
-  function pluralOrSingular(data, locale) {
-    var count = Math.round(data);
-    return 'Перевод: ' + count + ' ' + locale;
-  }
-
-  function filterBySymbol( symbol ) {
-    return api_news + '?filter[type]=' + symbol;
-  }
-
 
 </script>
