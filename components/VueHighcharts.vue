@@ -11,11 +11,6 @@ import Highcharts from 'highcharts'
 import StockInit from 'highcharts/modules/stock'
 
 
-const HIGHCHARTS_PRODUCT = {
-  Highmaps: 'Highmaps',
-  Highstock: 'Highstock',
-}
-
 export default {
   props: {
     classname: {
@@ -38,20 +33,42 @@ export default {
     }
   },
   mounted() {
-    if (!this.getChart() && this.options) {
-      this.init()
+    console.log('mounted')
+
+    if (!this.getChart()) {
+      if(this.options) {
+        this.init()
+      }
+    } else {
+      //this.getChart().init()
+      this.getChart().destroy()
+      this.chart = new Highcharts.StockChart(this.$el, this.options, this.callback())
+      console.log(Highcharts.charts)
+
     }
   },
 
   methods: {
     getChart() {
-      return this.chart
+      //return this.chart
+      //return Highcharts.charts[0]
+      return Highcharts.charts.find(function(element, index, array){ return element != undefined })
     },
 
     addSeries(options) {
+      console.log('addSeries')
       this.delegateMethod('addSeries', options)
     },
+    setData(data) {
+      console.log('setData')
+      if(this.getChart().series[0]) {
+        //this.getChart().series[0].setData(data, true)
+      } else {
+        this.addSeries(data)
+      }
+    },
     removeSeries() {
+      console.log('removeSeries')
       while (this.getChart().series.length !== 0) {
         this.getChart().series[0].remove()
       }
@@ -60,41 +77,56 @@ export default {
       this.delegateMethod('update', options)
     },
     showLoading(txt) {
+      console.log('showLoading')
       this.getChart().showLoading(txt)
     },
     hideLoading() {
+      console.log('hideLoading')
+
       this.getChart().hideLoading()
     },
     delegateMethod(name, ...args) {
+      console.log('delegateMethod: ' + name)
+
       if (!this.getChart()) {
         return
       }
       return this.getChart()[name](...args)
     },
 
-    initHigcharts(product) {},
 
     init() {
+      console.log('init')
       if (!this.getChart() && this.options) {
-        StockInit(Highcharts)
-        this.chart = new Highcharts['StockChart'](this.$el, this.options)
+        let chart = Highcharts.charts.find(function(element, index, array){ return element != undefined })
+        if(!chart) {
+          console.log('new')
+          StockInit(Highcharts)
+          this.chart = new Highcharts.StockChart(this.$el, this.options, this.callback())
+          //Highcharts.charts = Highcharts.charts.filter(function(n){ return typeof element !== "undefined" })
+        } 
       }
+      console.log(Highcharts.charts)
+
     },
   },
 
-  watch: {
-    options: function(options) {
-      if (!this.getChart() && options) {
-        this.init()
-      } else {
-        this.getChart().update(this.options)
-      }
-    },
-  },
+  // watch: {
+  //   options: function(options) {
+  //     if (!this.getChart() && options) {
+  //       this.init()
+  //     } else {
+  //       this.getChart().update(this.options)
+  //     }
+  //   },
+  // },
 
   beforeDestroy() {
+    console.log('beforeDestroy')
     if (this.getChart()) {
-      this.getChart().destroy()
+      //this.getChart().destroy()
+      // Highcharts.charts = Highcharts.charts.filter(function(n){ return true })
+      // this.chart = null
     }
   },
 }

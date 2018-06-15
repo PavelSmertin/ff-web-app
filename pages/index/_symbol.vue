@@ -25,8 +25,8 @@
 
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">Объем (24ч)</div>
-        <div class="coin-detail">{{formatPrice(volume24_usd)}} USD</div>
-        <div class="coin-detail-info">{{formatPrice(volume_24h_btc)}} BTC</div>
+        <div class="coin-detail">{{formatPrice(volume24h_usd)}} USD</div>
+        <div class="coin-detail-info">{{formatPrice(volume24h_btc)}} BTC</div>
       </div>
 
       <div class="coin_detail_unit col-6 col-md-3">
@@ -40,6 +40,7 @@
       </div>
     </div>
 
+    <div id="tradingview_53a94"></div>
 
   </section>
 </template>
@@ -70,20 +71,20 @@
       }
     },
     fetch( {params} ) {
-      if (process.browser) {
-        console.log('fetch')
-        this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
-        var script = document.createElement('script');
-        script.src = "https://s3.tradingview.com/tv.js"
-        document.body.appendChild(script);
+      // if (process.browser) {
+      //   console.log('fetch')
+      //   this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
+      //   var script = document.createElement('script');
+      //   script.src = "https://s3.tradingview.com/tv.js"
+      //   document.body.appendChild(script);
 
-        var chimpPopup = document.createElement("script");
-        chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BITFINEX:' + params.symbol + 'USD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
+      //   var chimpPopup = document.createElement("script");
+      //   chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BITFINEX:' + params.symbol + 'USD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
 
-        script.onload = function() {
-          document.body.appendChild(chimpPopup);
-        }
-      }
+      //   script.onload = function() {
+      //     document.body.appendChild(chimpPopup);
+      //   }
+      // }
     },
 
     data() {
@@ -123,9 +124,9 @@
           price_usd:          0,
           price_btc:          0,
           percent_change24h:  0,
-          volume24_usd:       0,
+          volume24h_usd:       0,
           market_cap_usd:     0,
-          volume_24h_btc:     0,
+          volume24h_btc:      0,
           symbol: upSymbol(params.symbol),
           headTitle: `(${upSymbol(params.symbol)}/USD) - Курсы криптовалют в реальном времени на FF.ru`,
         }
@@ -138,9 +139,9 @@
         price_usd, 
         price_btc,
         percent_change24h, 
-        volume24_usd, 
+        volume24h_usd, 
         market_cap_usd,
-        volume_24h_btc
+        volume24h_btc
       }  = details.data.data[0].attributes
 
       return { 
@@ -150,9 +151,9 @@
         price_usd,
         price_btc,
         percent_change24h,
-        volume24_usd: 0,
+        volume24h_usd,
         market_cap_usd,
-        volume_24h_btc: 0,
+        volume24h_btc,
         symbol: upSymbol(params.symbol),
         headTitle: `(${upSymbol(params.symbol)}/USD) - Курсы криптовалют в реальном времени на FF.ru`,
       }

@@ -40,14 +40,7 @@
       </div>
     </div>
 
-<!--     <no-ssr>
-      <highcharts :constructor-type="'stockChart'" :options="testOptions" ref="lineCharts"></highcharts>
-    </no-ssr> -->
-    <vue-highcharts :options="testOptions" ref="lineCharts"></vue-highcharts>
-    <no-ssr>
-      <button @click="loadChart">load</button>
-    </no-ssr>
-
+    <vue-highcharts :options="testOptions" ref="lineCharts" :callback="callback()"></vue-highcharts>
 
     <section class="ff_text_block">
       <h2 class="margin60">Онлайн график курса биткоина к доллару. Прогноз цены Bitcoin</h2>
@@ -86,9 +79,7 @@
   import VueHighcharts from '~/components/VueHighcharts.vue'
 
 
-  // import Highcharts from 'highcharts'
-  // import StockInit from 'highcharts/modules/stock'
-  // import { DrilldownOptions, MapData} from '~/static/data.js'
+  import { DrilldownOptions, MapData} from '~/static/data.js'
 
   let ToggleButton
   if (process.browser) {
@@ -152,34 +143,27 @@
         showLine: false,
         headTitle: '(BTC/USD) Курс Bitcoin к доллару, (BTC/RUB) курс Биткоина в рублях - Курсы криптовалют в реальном времени на FF.ru',
         
-        //testOptions: DrilldownOptions,
-        testOptions: {
-          rangeSelector: {
-            selected: 1
-          },
-          title: {
-            text: 'AAPL Stock Price'
-          },
-          series: [{
-            name: 'AAPL',
-            data: [10, 20, 10, 23, 65, 121, 44, 66, 98, 30, 32, 56, 25, 12, 53],
-            pointStart: Date.UTC(2018, 1, 1),
-            pointInterval: 1000 * 3600 * 24,
-            tooltip: {
-              valueDecimals: 2
-            }
-          }]
-        },
+        testOptions: DrilldownOptions,
+        // testOptions: {
+        //   rangeSelector: {
+        //     selected: 1
+        //   },
+        //   title: {
+        //     text: 'AAPL Stock Price'
+        //   },
+        //   series: [{
+        //     name: 'AAPL',
+        //     data: [10, 20, 10, 23, 65, 121, 44, 66, 98, 30, 32, 56, 25, 12, 53],
+        //     pointStart: Date.UTC(2018, 1, 1),
+        //     pointInterval: 1000 * 3600 * 24,
+        //     tooltip: {
+        //       valueDecimals: 2
+        //     }
+        //   }]
+        // },
         // highcharts: Highcharts,
         series: {
-          name: 'COIN',
           type: 'area',
-          data: [],
-          gapSize: 5,
-          tooltip: {
-              valueDecimals: 2
-          },
-          threshold: null
         }
       }
     },
@@ -327,8 +311,10 @@
 
       loadChart() {
 
-
+          console.log('loadChart')
          let lineCharts = this.$refs.lineCharts
+
+          console.log(lineCharts)
 
           lineCharts.delegateMethod('showLoading', 'Loading...')
 
@@ -337,13 +323,24 @@
             this.series.data = data.data.Data.map(a => [a.time*1000, a.close] )
             console.log(this.series)
 
+            //lineCharts.removeSeries()
+            //lineCharts.setData(this.series)
             lineCharts.addSeries(this.series)
             lineCharts.hideLoading()
           })
           .catch(e => {
+
+            console.log(e)
             lineCharts.hideLoading();
           })
 
+      },
+
+      callback() {
+
+        return function() {
+          console.log('callback')
+        }
       }
     },
 

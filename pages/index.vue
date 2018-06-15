@@ -94,59 +94,60 @@
               </nuxt-link>
             </div>
           </div>
-        </div>
 
-        <div v-for="(item, key) in list" v-bind:key="key" class="ff-news-row">
-          <div class="ff-news-cell">
+          <div v-for="(item, key) in list" v-bind:key="key" class="ff-news-row">
+            <div class="ff-news-cell">
 
-            <div class="row">
-              <div class="col">
-                <ul class="ff-label news_list_detail">
-                  <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
-                  <li v-if="item.attributes.type == 'news'">Новость</li>
-                  <li v-else-if="item.attributes.type == 'prognosis'">Прогноз</li>
-                </ul>
+              <div class="row">
+                <div class="col">
+                  <ul class="ff-label news_list_detail">
+                    <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
+                    <li v-if="item.attributes.type == 'news'">Новость</li>
+                    <li v-else-if="item.attributes.type == 'prognosis'">Прогноз</li>
+                  </ul>
 
+                </div>
               </div>
-            </div>
 
-            <div class="row">
-              <div class="col">
-                <nuxt-link v-if="item.attributes.slug"  :to="{ 
-                    name: 'slug-id', 
-                    params: { 
-                        id: item.id, 
-                        slug: item.attributes.slug, 
-                        newest:  item.attributes }}" 
-                    class="ff-nc-title">
-                  {{item.attributes.title}}
-                </nuxt-link>
-                <nuxt-link v-else  :to="{ 
-                    name: 'index-id', 
-                    params: { 
-                        id: item.id,
-                        newest:  item.attributes }}" 
-                    class="ff-nc-title">
-                  {{item.attributes.title}}
-                </nuxt-link>
-              </div>
-            </div>
-            <nuxt-link v-if="item.attributes.slug"  :to="{ 
+              <div class="row">
+                <div class="col">
+                  <nuxt-link v-if="item.attributes.slug"  :to="{ 
                       name: 'slug-id', 
                       params: { 
                           id: item.id, 
                           slug: item.attributes.slug, 
                           newest:  item.attributes }}" 
-                      class="click-area">
-            </nuxt-link>
-            <nuxt-link v-else  :to="{ 
+                      class="ff-nc-title">
+                    {{item.attributes.title}}
+                  </nuxt-link>
+                  <nuxt-link v-else  :to="{ 
                       name: 'index-id', 
                       params: { 
                           id: item.id,
                           newest:  item.attributes }}" 
-                      class="click-area">
-            </nuxt-link>
+                      class="ff-nc-title">
+                    {{item.attributes.title}}
+                  </nuxt-link>
+                </div>
+              </div>
+              <nuxt-link v-if="item.attributes.slug"  :to="{ 
+                        name: 'slug-id', 
+                        params: { 
+                            id: item.id, 
+                            slug: item.attributes.slug, 
+                            newest:  item.attributes }}" 
+                        class="click-area">
+              </nuxt-link>
+              <nuxt-link v-else  :to="{ 
+                        name: 'index-id', 
+                        params: { 
+                            id: item.id,
+                            newest:  item.attributes }}" 
+                        class="click-area">
+              </nuxt-link>
+            </div>
           </div>
+          
         </div>
 
         <infinite-loading @infinite="infiniteHandler" spinner="spiral">

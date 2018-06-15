@@ -901,5 +901,36 @@ h1 {
 	}
 }
 
+.highcharts-background {
+	fill: $bg-coin-color;
+}
+
+.highcharts-plot-background {
+	fill: $bg-coin-color;
+}
+/*.highcharts-plot-border {
+	stroke: $border-bold-color;
+	stroke-width: 1px;
+}
+*/
+.highcharts-area {
+	opacity: 0.9;
+	fill: $bg-main-color;
+}
+
+.highcharts-graph {
+	stroke: $link-color;
+}
+
+
+
+
+.highcharts-xaxis-grid .highcharts-grid-line,
+.highcharts-xaxis .highcharts-tick,
+.highcharts-yaxis-grid .highcharts-grid-line,
+.highcharts-yaxis .highcharts-tick {
+	stroke-width: 1px;
+	stroke: $border-thin-color;
+}
 
 
