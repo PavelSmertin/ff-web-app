@@ -174,8 +174,8 @@
   var MONTH = DAY * 30;
   var YEAR = DAY * 365;
 
-  const api_news = 'https://test-api.ff.ru/v1/news/';
-  const api_coins = 'https://test-api.ff.ru/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h';
+  const api_news = 'http://test-api.ff.ru/v1/news/';
+  const api_coins = 'http://test-api.ff.ru/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h';
 
   export default {
 

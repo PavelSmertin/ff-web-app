@@ -161,7 +161,7 @@ module.exports = {
   },
 
   proxy: {
-    '/api': 'https://test-api.ff.ru',
+    '/api': 'http://test-api.ff.ru',
   },
 
   auth: {
@@ -205,7 +205,7 @@ module.exports = {
           copyright: 'All rights reserved 2018, ff.ru',
         }
 
-        const posts = await axios.get('https://api.ff.ru/v1/news/', {
+        const posts = await axios.get('http://test-api.ff.ru/v1/news/', {
                             params: {
                               page: 1,
                               'per-page': 200
