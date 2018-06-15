@@ -254,7 +254,7 @@
       next(vm => {
         // Экземпляр компонента доступен как `vm`
         console.log('beforeRouteEnter: ' + to.name)
-        vm.seenPost = to.name == "slug-id";
+        vm.seenPost = to.name == "slug-id" || to.name == "index-id";
       })
     },
 
@@ -262,14 +262,14 @@
       console.log('beforeRouteUpdate: ' + to.name)
 
       if(to.name == "index") {
-        this.filterBySymbol('BTC')
+        this.filterBySymbol(null)
       }
 
       if(to.name == "index-symbol") {
         this.filterBySymbol(to.params.symbol)
       }
 
-      this.seenPost = to.name == "slug-id";
+      this.seenPost = to.name == "slug-id" || to.name == "index-id";
       next();
     },
 
@@ -322,6 +322,9 @@
       },
 
       filterBySymbol(symbol) {
+        if( symbol != null && upSymbol(this.filters.symbol) == upSymbol(symbol)) {
+          return
+        }
 
         this.filters.symbol = symbol
         if(this.infiniteState) { 
