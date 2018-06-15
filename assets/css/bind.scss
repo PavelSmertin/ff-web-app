@@ -508,7 +508,6 @@ h1 {
 .ff-coin {
 	padding: 24px;
 	background-color: $bg-coin-color;
-	height: 90vh;
 }
 .coin-value {
 	font-size: 32px;
@@ -901,36 +900,61 @@ h1 {
 	}
 }
 
-.highcharts-background {
-	fill: $bg-coin-color;
-}
 
-.highcharts-plot-background {
-	fill: $bg-coin-color;
-}
-/*.highcharts-plot-border {
-	stroke: $border-bold-color;
-	stroke-width: 1px;
-}
-*/
-.highcharts-area {
-	opacity: 0.9;
-	fill: $bg-main-color;
-}
+.vue-highcharts {
+	margin-top: 10px;
+	.highcharts-background {
+		fill: $bg-coin-color;
+	}
 
-.highcharts-graph {
-	stroke: $link-color;
-}
+	.highcharts-plot-background {
+		fill: $bg-coin-color;
+	}
+	/*.highcharts-plot-border {
+		stroke: $border-bold-color;
+		stroke-width: 1px;
+	}
+	*/
+	.highcharts-area {
+		opacity: 0.9;
+		fill: $bg-main-color;
+	}
+
+	.highcharts-graph {
+		stroke: $link-color;
+	}
+
+	.highcharts-xaxis-grid .highcharts-grid-line,
+	.highcharts-xaxis .highcharts-tick,
+	.highcharts-yaxis-grid .highcharts-grid-line,
+	.highcharts-yaxis .highcharts-tick {
+		stroke-width: 1px;
+		stroke: $border-thin-color;
+	}
+
+	.highcharts-minor-grid-line {
+	    stroke: transparent;
+	}
+	.highcharts-crosshair-thin {
+	    stroke-width: 1px;
+	    stroke: $dark-primary-color;
+	}
+	.highcharts-markers {
+	    stroke-width: 1px;
+	    opacity: 1;
+	    stroke: $dark-primary-color;
+	    fill: $dark-primary-color;
+	}
 
 
+	.highcharts-graph {
+		stroke-width: 2px;
+	}
 
-
-.highcharts-xaxis-grid .highcharts-grid-line,
-.highcharts-xaxis .highcharts-tick,
-.highcharts-yaxis-grid .highcharts-grid-line,
-.highcharts-yaxis .highcharts-tick {
-	stroke-width: 1px;
-	stroke: $border-thin-color;
+	.highcharts-tooltip-box .highcharts-label-box {
+	    fill: $dark-primary-color;
+	    stroke: $dark-primary-color;
+	}
 }
 
 

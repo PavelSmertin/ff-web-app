@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div id="tradingview_53a94"></div>
+    <vue-highcharts :options="options" ref="lineCharts" :callback="callback()"></vue-highcharts>
 
   </section>
 </template>
@@ -50,6 +50,10 @@
   import Vue from 'vue'
   import moment from 'moment'
   import axios from 'axios'
+  import VueHighcharts from '~/components/VueHighcharts.vue'
+  import { DrilldownOptions, MapData} from '~/static/data.js'
+
+
 
   export default {
     transition: 'page',
@@ -70,49 +74,20 @@
         ],
       }
     },
-    fetch( {params} ) {
-      // if (process.browser) {
-      //   console.log('fetch')
-      //   this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
-      //   var script = document.createElement('script');
-      //   script.src = "https://s3.tradingview.com/tv.js"
-      //   document.body.appendChild(script);
-
-      //   var chimpPopup = document.createElement("script");
-      //   chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BITFINEX:' + params.symbol + 'USD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
-
-      //   script.onload = function() {
-      //     document.body.appendChild(chimpPopup);
-      //   }
-      // }
-    },
 
     data() {
-      console.log('data')
       return {
         enabled: true,
         showLine: false,
+        options: DrilldownOptions,
+        series: {
+          type: 'area',
+          zIndex: 50
+        }
       }
-    },
-    mounted () {
-              console.log('mounted')
-
-      // this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
-      // var script = document.createElement('script');
-      // script.src = "https://s3.tradingview.com/tv.js"
-      // document.body.appendChild(script);
-
-      // var chimpPopup = document.createElement("script");
-      // chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BITFINEX:' + this.symbol + 'USD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
-
-      // script.onload = function() {
-      //   document.body.appendChild(chimpPopup);
-      // }
     },
 
     async asyncData ({ app, params }) {
-
-        console.log('asyncData')
 
       const details = await app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
 
@@ -159,6 +134,14 @@
       }
     },
 
+    components: {
+      VueHighcharts
+    },
+
+    mounted () {
+      this.loadChart(this.symbol)
+    },
+
     methods: {
       formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')
@@ -166,8 +149,37 @@
       },
       upSymbol() {
         return this.symbol ? this.symbol.toUpperCase() : ''
+      },
+      loadChart(symbol) {
+
+        console.log('loadChart: ' + symbol)
+        let lineCharts = this.$refs.lineCharts
+        lineCharts.delegateMethod('showLoading', 'Loading...')
+
+        axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=` + upSymbol(symbol) + `&tsym=USD&limit=720&aggregate=3&e=CCCAGG`)
+        .then((data) => {
+          this.series.data = data.data.Data.map(a => [a.time*1000, a.close] )
+          lineCharts.removeSeries()
+          lineCharts.addSeries(this.series)
+          lineCharts.hideLoading()
+        })
+        .catch(e => {
+          lineCharts.hideLoading();
+        })
+      },
+      callback() {
+        return function() {
+          console.log('callback')
+        }
+      },
+    },
+
+    beforeRouteUpdate (to, from, next) {
+      if(to.name == "index-symbol") {
+        this.loadChart(to.params.symbol)
       }
-    }
+      next();
+    },
   }
 
 

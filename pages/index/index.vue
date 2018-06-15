@@ -77,8 +77,6 @@
   import moment from 'moment'
   import axios from 'axios'
   import VueHighcharts from '~/components/VueHighcharts.vue'
-
-
   import { DrilldownOptions, MapData} from '~/static/data.js'
 
   let ToggleButton
@@ -140,117 +138,27 @@
     data() {
       return {
         enabled: true,
-        showLine: false,
         headTitle: '(BTC/USD) Курс Bitcoin к доллару, (BTC/RUB) курс Биткоина в рублях - Курсы криптовалют в реальном времени на FF.ru',
-        
         testOptions: DrilldownOptions,
-        // testOptions: {
-        //   rangeSelector: {
-        //     selected: 1
-        //   },
-        //   title: {
-        //     text: 'AAPL Stock Price'
-        //   },
-        //   series: [{
-        //     name: 'AAPL',
-        //     data: [10, 20, 10, 23, 65, 121, 44, 66, 98, 30, 32, 56, 25, 12, 53],
-        //     pointStart: Date.UTC(2018, 1, 1),
-        //     pointInterval: 1000 * 3600 * 24,
-        //     tooltip: {
-        //       valueDecimals: 2
-        //     }
-        //   }]
-        // },
-        // highcharts: Highcharts,
         series: {
           type: 'area',
+          zIndex: 50
         }
       }
     },
     mounted () {
-      this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
       this.loadChart()
-    },
-
-    created () {
-
-        // var script = document.createElement('script');
-        // script.src = "https://s3.tradingview.com/tv.js"
-        // document.body.appendChild(script);
-
-        // var chimpPopup = document.createElement("script");
-        // chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BINANCE:BTCUSD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
-
-        // script.onload = function() {
-        //   document.body.appendChild(chimpPopup);
-        // }
     },
 
     async asyncData ({ app }) {
 
-      // if( process.client) {
-      //   StockInit(Highcharts)
-      // }
-
-
-      const dataLimit = 720
-      const options = {
-        responsive: true, 
-        maintainAspectRatio: true,
-        devicePixelRatio: 1,
-        elements: {
-            point: { radius: 0 },
-            line: { tension: 0 }
-        },
-        legend: { display: false },
-        scales: {
-          xAxes: [{
-            display: false,
-            ticks: {
-              callback: function(dataLabel, index) {
-                // Hide the label of every 2nd dataset. return null to hide the grid line too
-                return  '';
-              }
-            }
-          }],
-          yAxes: [{
-            position: 'right',
-            ticks: { 
-              beginAtZero:false
-            }
-          }]
-        }
-      }
-
       try {
-
-        // const { data } = await axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=${+dataLimit}&aggregate=3&e=CCCAGG`)
-   
-        // const labels = data.Data.map(a => a.time)
-        // const values = data.Data.map(a => a.close)
-
-        // const lineData = {
-        //   labels: labels,
-        //   datasets: [{
-        //       label: '$',
-        //       data: values,
-        //       backgroundColor: ['rgba(255, 255, 255, 0.7)'],
-        //       borderColor: ['rgba(255, 153, 0, 1)'],
-        //       borderWidth: 2
-        //   }]
-        // }
-
-
         const details = await axios.get(`https://api.coinmarketcap.com/v2/ticker/1/?convert=BTC`)
-
         const { total_supply, circulating_supply, max_supply }  = details.data.data
-
         const { price, percent_change_24h, volume_24h, market_cap } = details.data.data.quotes.USD
         const volume_24h_btc = details.data.data.quotes.BTC.volume_24h
 
         return { 
-                  lineData: {}, 
-                  options, 
                   total_supply, 
                   circulating_supply, 
                   max_supply, 
@@ -323,8 +231,7 @@
             this.series.data = data.data.Data.map(a => [a.time*1000, a.close] )
             console.log(this.series)
 
-            //lineCharts.removeSeries()
-            //lineCharts.setData(this.series)
+            lineCharts.removeSeries()
             lineCharts.addSeries(this.series)
             lineCharts.hideLoading()
           })
@@ -337,7 +244,6 @@
       },
 
       callback() {
-
         return function() {
           console.log('callback')
         }

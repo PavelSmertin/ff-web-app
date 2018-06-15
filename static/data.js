@@ -1,5 +1,6 @@
 export const DrilldownOptions = {
 
+  type: 'area',
   navigator: {
     adaptToUpdatedData: true,
     series: []
@@ -50,16 +51,22 @@ export const DrilldownOptions = {
     // events: {
     //     afterSetExtremes: afterSetExtremes
     // },
-    gridZIndex: 3,
+    gridZIndex: 2,
     crosshair: { zIndex: 4 },
     minRange: 3600 * 1000, // one hour
     minorTickInterval: 'auto',
     startOnTick: true,
-    endOnTick: true
+    endOnTick: true,
+
+    plotLines: [{
+      color: 'red',
+      width: 2,
+      zIndex: 500
+    }],
   },
 
   yAxis: {
-    gridZIndex: 3,
+    gridZIndex: 2,
 
     opposite: true,
     crosshair: { zIndex: 4 },
@@ -68,7 +75,28 @@ export const DrilldownOptions = {
         format: '{value:.2f}',
         y: 6,
         x: 2
-    }
+    },
+    plotLines: [{
+      color: 'red',
+      width: 2,
+      zIndex: 500
+    }],
+
+  },
+
+
+  tooltip: {
+    style: {
+      color: '#FFFFFF',
+      padding: 0
+    },
+    valuePrefix: '$',
+    shape: 'circle',
+    shadow: false,
+    valueDecimals: 2,
+    borderRadius: 0,
+    borderWidth: 0,
+    pointFormat: '{point.y}'
   },
 
   plotOptions: {
@@ -78,16 +106,23 @@ export const DrilldownOptions = {
           valueDecimals: 2
       },
       threshold: null,
-    },
-    line: {
       zIndex: 50,
+      marker: {
+        radius: 1,
+        lineColor: '#000000',
+        fillColor: '#000000',
+      },
+      states: {
+        hover: {
+            halo: false
+        }
+      }
     },
-    area: {
-      zIndex: 50,
-    }
   },
   series: {
     type: 'area',
+    zIndex: 50,
+
   },
 
 }

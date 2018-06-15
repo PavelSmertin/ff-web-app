@@ -181,9 +181,14 @@
 
     async asyncData({ app, params, error }) {
 
+      console.log('asyncData')
+
       var apiNewsFiltered = api_news
+
+      let filters = {}
       if( params.symbol ) {
-        //apiNewsFiltered = filterBySymbol(params.symbol)
+        filters = { symbol: params.symbol }
+        // apiNewsFiltered = app.filterBySymbol(params.symbol)
       }
 
       try {
@@ -191,15 +196,16 @@
           app.$axios.get(apiNewsFiltered),
           app.$axios.get(api_coins),
         ])
-        return { news: news.data.data, coins: coins.data.data }
+        return { filters: filters, news: news.data.data, coins: coins.data.data }
       } catch (e) {
         console.log(e);
-
         error({ message: 'News not found', statusCode: 404 })
       }
     },
 
     data() {
+              console.log('data')
+
       return {
         infiniteState: null,
         meta: {current_page: 1},
@@ -216,7 +222,8 @@
         object: {
           name: 'Все новости',
         },
-        apiNewsPrepared: api_news
+        apiNewsPrepared: api_news,
+        filters: {}
 
       }
     },
@@ -253,6 +260,11 @@
 
     beforeRouteUpdate (to, from, next) {
       console.log('beforeRouteUpdate: ' + to.name)
+
+      if(to.name == "index-symbol") {
+        this.filterBySymbol(to.params.symbol)
+      }
+
       this.seenPost = to.name == "slug-id";
       next();
     },
@@ -280,11 +292,24 @@
       },
 
       methodToRunOnSelect(payload) {
+
+        this.filters.type = payload.value;
+
         if(this.infiniteState) { 
           this.infiniteState.reset()
         }
         this.object = payload
-        this.apiNewsPrepared = api_news + (payload.value ? '?filters[news-translated][type]=' + payload.value : '')
+
+        let filterQuery = 
+          (this.filters.type ? '&filters[news-translated][type]=' + this.filters.type : '') + 
+          (this.filters.symbol ? '&filters[portfolio-coins][symbol]=' + upSymbol(this.filters.symbol) : '')
+
+        if (filterQuery.length > 0) {
+          filterQuery = filterQuery.replace('&','?')
+        }
+
+        this.apiNewsPrepared = api_news + filterQuery
+
         let data = this.$axios.get(this.apiNewsPrepared).then(({ data }) => {
           this.news = data.data
           this.list = []
@@ -293,11 +318,22 @@
       },
 
       filterBySymbol(symbol) {
+
+        this.filters.symbol = symbol
         if(this.infiniteState) { 
           this.infiniteState.reset()
         }
-        this.object = payload
-        this.apiNewsPrepared = api_news + (payload.value ? '?filter[type,]=' + symbol : '')
+
+        let filterQuery = 
+          (this.filters.type ? '&filters[news-translated][type]=' + this.filters.type : '') + 
+          (this.filters.symbol ? '&filters[portfolio-coins][symbol]=' + upSymbol(this.filters.symbol) : '')
+
+        if (filterQuery.length > 0) {
+          filterQuery = filterQuery.replace('&','?')
+        }
+
+        this.apiNewsPrepared = api_news + filterQuery
+
         let data = this.$axios.get(this.apiNewsPrepared).then(({ data }) => {
           this.news = data.data
           this.list = []
@@ -335,5 +371,9 @@
       'ru-RU': require('@/assets/locales/ru-RU.json')
     }
   });
+
+  function upSymbol(value) {
+    return value.toUpperCase()
+  }
 
 </script>
