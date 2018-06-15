@@ -261,6 +261,10 @@
     beforeRouteUpdate (to, from, next) {
       console.log('beforeRouteUpdate: ' + to.name)
 
+      if(to.name == "index") {
+        this.filterBySymbol('BTC')
+      }
+
       if(to.name == "index-symbol") {
         this.filterBySymbol(to.params.symbol)
       }
