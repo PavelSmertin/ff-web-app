@@ -322,7 +322,7 @@
       },
 
       filterBySymbol(symbol) {
-        if( symbol != null && upSymbol(this.filters.symbol) == upSymbol(symbol)) {
+        if(upSymbol(this.filters.symbol) == upSymbol(symbol)) {
           return
         }
 
@@ -380,7 +380,11 @@
   });
 
   function upSymbol(value) {
-    return value.toUpperCase()
+    if( value ) {
+      return value.toUpperCase()
+    } else {
+      return null
+    }
   }
 
 </script>
