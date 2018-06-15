@@ -56,21 +56,6 @@
           this.$auth.$storage.setUniversal('username',  this.email )
         }
 
-
-        // this.$axios.setHeader('Content-Type', 'application/x-www-form-urlencoded', ['post'])
-
-      // this.$axios.onRequest((config) => {
-      //   console.log(config)
-      //   // config.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
-      // })
-      // this.$axios.setHeader('Access-Control-Allow-Origin', false)
-      // this.$axios.setHeader('Access-Control-Request-Method', false)
-      // headers: { 'content-type': 'application/x-www-form-urlencoded' }
-
-        // const instance = axios.create({
-        //   baseURL: 'https://api.ff.ru/v1/',
-        //   headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Access-Control-Allow-Origin': '*'}
-        // });
         return this.$axios.post(`/api/auth/signup`, 'SignupForm[email]=' 
                   + this.email + '&SignupForm[password]=' 
                   + this.password + '&SignupForm[rePassword]=' 

@@ -161,7 +161,7 @@ module.exports = {
   },
 
   proxy: {
-    '/api': 'https://api.ff.ru',
+    '/api': 'https://test-api.ff.ru',
   },
 
   auth: {
