@@ -181,8 +181,6 @@
 
     async asyncData({ app, params, error }) {
 
-      console.log('asyncData')
-
       var apiNewsFiltered = api_news
 
       let filters = {}
@@ -199,13 +197,10 @@
         return { filters: filters, news: news.data.data, coins: coins.data.data }
       } catch (e) {
         console.log(e);
-        error({ message: 'News not found', statusCode: 404 })
       }
     },
 
     data() {
-              console.log('data')
-
       return {
         infiniteState: null,
         meta: {current_page: 1},

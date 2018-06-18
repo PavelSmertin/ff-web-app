@@ -87,8 +87,8 @@ export default {
 
 
   data() {
-    var title = "Новости Bitcoin (BTC/USD) на FF.ru";
-    var seoTitle = "Новости Bitcoin (BTC/USD) на FF.ru";
+    var title = "Новости Bitcoin (BTC) на FF.ru";
+    var seoTitle = "Новости Bitcoin (BTC) на FF.ru";
     return {
       showSocial: false,
       url: process.env.baseUrl + this.$route.path,
@@ -105,9 +105,9 @@ export default {
       return {
         url: process.env.baseUrl + "/" + params.newest.id,
         title: params.newest.title,
-        seoTitle: setMeta(params.newest.title, params.newest.type),
+        seoTitle: getTitle(params.newest),
         body: params.newest.body,
-        attributes: params.newest
+        attributes: params.newest,
       }
     }
 
@@ -120,9 +120,9 @@ export default {
         return {
           url: process.env.baseUrl +  "/" + data.data.id,
           title: data.data.attributes.title,
-          seoTitle: setMeta(data.data.attributes.title, data.data.attributes.type),
+          seoTitle: getTitle(data.data.attributes),
           body: data.data.attributes.body,
-          attributes: data.data.attributes
+          attributes: data.data.attributes,
         }
       }
     } catch (e) {
@@ -137,17 +137,17 @@ export default {
         { 
           hid: 'description', 
           name: 'description', 
-          content: this.title,
+          content: strip_social_desription(this.body, 200),
         },
         { hid: 'og:type', property: 'og:type', content: 'article' },
         { property: 'article:published_time', content: '' },
         { hid: 'og:title', property: 'og:title', content: this.title },
         { hid: 'og:url', property: 'og:url', content: process.env.baseUrl + this.$route.path },
-        { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
+        { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + this.getImageSharing() },
         { hid: 'og:description', property: 'og:description', content: strip_social_desription(this.body, 200) },
         { hid: 'twitter:title',name: 'twitter:title', content: this.title },
         { hid: 'twitter:description', name: 'twitter:description', content: strip_social_desription(this.body, 200) },
-        { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
+        { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + this.getImageSharing() },
 
       ],
     }
@@ -203,7 +203,13 @@ export default {
           }
       }
       return domain;
-    }
+    },
+    getImageSharing() {
+      if( this.attributes.images.sharing ) {
+        return this.attributes.images.sharing
+      }
+      return '/FF_cover1080_b.png'
+    },
   },
 }
 
@@ -267,6 +273,22 @@ function extractHostname(url) {
   hostname = hostname.split('?')[0];
 
   return hostname;
+}
+
+function getTitle (params) {
+  if( params.meta_title ) {
+    return params.meta_title
+  }
+
+  if (params.type == "news") {
+    return `${params.title} - Новости Bitcoin (BTC/USD) на FF.ru`
+  } else {
+    return `Прогноз курса ${getCoin(params)} от ${moment(params.end_translate_dt || params.create_dt).format('DD.MM.YYYY')} - ${params.title} - FF.ru`
+  }
+}
+
+function getCoin (params) {
+  return 'криптовалют'
 }
 
 </script>

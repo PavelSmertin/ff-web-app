@@ -62,16 +62,23 @@
         title: this.headTitle,
         symbol: false,
         meta: [
+          { 
+            hid: 'description', 
+            name: 'description', 
+            content: this.headDescription,
+          },
+
           { hid: 'og:type', property: 'og:type', content: 'website' },
           { hid: 'og:url', property: 'og:url', content: process.env.baseUrl },
-          { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
-          { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
+          { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + this.getImage() },
+          { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + this.getImage() },
 
           { hid: 'og:title', property: 'og:title', content: `Курс ${this.upSymbol()}, новости и прогнозы Биткоина в реальном времени на FF.ru` },
-          { hid: 'og:description', property: 'og:description', content: `Курс, новости, прогнозы ${this.upSymbol()} и криптовалют в реальном времени.` },
+          { hid: 'og:description', property: 'og:description', content: this.headDescription },
           { hid: 'twitter:title', name: 'twitter:title', content: `Курс ${this.upSymbol()}, новости и прогнозы ${this.upSymbol()} в реальном времени на FF.ru` },
-          { hid: 'twitter:description', name: 'twitter:description', content: `Курс, новости, прогнозы ${this.upSymbol()} и криптовалют в реальном времени.` },
+          { hid: 'twitter:description', name: 'twitter:description', content: this.headDescription },
         ],
+
       }
     },
 
@@ -79,6 +86,7 @@
       return {
         enabled: true,
         showLine: false,
+        imageSharing: null,
         options: DrilldownOptions,
         series: {
           type: 'area',
@@ -87,25 +95,17 @@
       }
     },
 
-    async asyncData ({ app, params }) {
+    async asyncData ({ app, params, error }) {
 
       const details = await app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
 
       if(details.data.data.length == 0) {
-        return { 
-          total_coin_supply:  0,
-          available_supply:   0,
-          max_supply:         0,
-          price_usd:          0,
-          price_btc:          0,
-          percent_change24h:  0,
-          volume24h_usd:       0,
-          market_cap_usd:     0,
-          volume24h_btc:      0,
-          symbol: upSymbol(params.symbol),
-          headTitle: `(${upSymbol(params.symbol)}/USD) - Курсы криптовалют в реальном времени на FF.ru`,
-        }
+        //error ({ message: 'Такой монеты не существует', statusCode: 404 })
       }
+
+      let attributes = details.data.data[0].attributes
+
+
 
       const { 
         total_coin_supply, 
@@ -117,7 +117,7 @@
         volume24h_usd, 
         market_cap_usd,
         volume24h_btc
-      }  = details.data.data[0].attributes
+      }  = attributes
 
       return { 
         total_coin_supply,
@@ -129,8 +129,9 @@
         volume24h_usd,
         market_cap_usd,
         volume24h_btc,
-        symbol: upSymbol(params.symbol),
-        headTitle: `(${upSymbol(params.symbol)}/USD) - Курсы криптовалют в реальном времени на FF.ru`,
+        symbol: attributes.symbol,
+        headTitle: getTitle(attributes),
+        headDescription: getDescription(attributes),
       }
     },
 
@@ -167,6 +168,12 @@
           lineCharts.hideLoading();
         })
       },
+      getImage() {
+        if( this.imageSharing ) {
+          return this.imageSharing
+        }
+        return '/FF_cover1080_b.png'
+      },
       callback() {
         return function() {
           console.log('callback')
@@ -184,8 +191,38 @@
 
 
   function upSymbol(value) {
-    return value.toUpperCase()
+    if(value) {
+      return value.toUpperCase()
+    }
   }
 
+  function getTitle (params) {
+    if( params.meta_title ) {
+      return params.meta_title
+    }
+
+    return `(${params.symbol}/USD) Курс ${params.coin_name} к доллару, (${params.symbol}/RUB) курс ${getCase(params, 2)} к рублю - прогноз на сегодня - FF.ru`
+  }
+
+  function getDescription (params) {
+    if( params.meta_description ) {
+      return params.meta_description
+    }
+    return `Актуальный курс ${params.full_name} к доллару. График курса ${getCase(params, 2)} на сегодня, новости, прогноз цены ${params.coin_name}. Когда купить ${getCase(params, 1)} - поможем принять решение.`
+  }
+
+  function getCase (params, variant) {
+    if(variant == 2) {
+      if(params.cases && params.cases.r) {
+        return params.cases.r
+      }
+    }
+
+    if(params.cases && params.cases.i) {
+      return params.cases.i
+    }
+
+    return params.coin_name
+  }
 
 </script>
