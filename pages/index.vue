@@ -3,7 +3,7 @@
 
     <div class="ff-left-panel col-md-1">
       <div class="scroll-container">
-        <div v-for="coin of coins" v-bind:key="coin.id" class="currency ff-label">
+        <div v-for="coin of $store.state.coins" v-bind:key="coin.id" class="currency ff-label">
           <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" >
             {{ coin.attributes.symbol }}
           </nuxt-link>
@@ -36,9 +36,9 @@
       <dropdowns :options="arrayOfObjects" :selected="object" v-on:updateOption="methodToRunOnSelect"></dropdowns>
 
       <div class="scroll-container">
-        <div v-if="news && news.length" class="ff-news">
+        <div v-if="$store.state.news.length" class="ff-news">
 
-          <div v-for="newest of news" v-bind:key="newest.id" class="ff-news-row">
+          <div v-for="newest of $store.state.news" v-bind:key="newest.id" class="ff-news-row">
             <div class="ff-news-cell">
               <div class="row">
                 <div class="col">
@@ -150,7 +150,7 @@
           
         </div>
 
-        <infinite-loading @infinite="infiniteHandler" spinner="spiral">
+        <infinite-loading v-if="$store.state.news.length" @infinite="infiniteHandler" spinner="spiral">
           <span slot="no-more">You've reached the end!</span>
           <span slot="no-results">You've reached the end!</span>
         </infinite-loading>
@@ -188,17 +188,6 @@
         filters = { symbol: params.symbol }
         // apiNewsFiltered = app.filterBySymbol(params.symbol)
       }
-
-      try {
-        let [news, coins] = await Promise.all([
-          app.$axios.get(apiNewsFiltered),
-          app.$axios.get(api_coins),
-        ])
-        console.log(coins.data.data)
-        return { filters: filters, news: news.data.data, coins: coins.data.data }
-      } catch (e) {
-        console.log(e);
-      }
     },
 
     data() {
@@ -206,6 +195,7 @@
         infiniteState: null,
         meta: {current_page: 1},
         list: [],
+        news: [],
         coins: [],
         seenPost: false,
         seenIndex: true,
@@ -224,17 +214,17 @@
       }
     },
 
-    // fetch ({ store }) {
-    //   return Promise.all([
-    //       axios.get(api_news),
-    //       axios.get(api_coins),
-    //   ])
-    //   .then((res) => {
-    //     console.log('news retrieved');
+    async fetch ({ app, store }) {
 
-    //     this.news = res[0].data.data;
-    //   })
-    // },
+      let [news, coins] = await Promise.all([
+        app.$axios.get(api_news),
+        app.$axios.get(api_coins),
+      ])
+
+      store.commit('SET_NEWS', news.data.data)
+      store.commit('SET_COINS', coins.data.data)
+
+    },
 
     components: {
       VueTimeago,
@@ -249,14 +239,11 @@
     beforeRouteEnter (to, from, next) {
       next(vm => {
         // Экземпляр компонента доступен как `vm`
-        console.log('beforeRouteEnter: ' + to.name)
         vm.seenPost = to.name == "slug-id" || to.name == "index-id";
       })
     },
 
     beforeRouteUpdate (to, from, next) {
-      console.log('beforeRouteUpdate: ' + to.name)
-
       if(to.name == "index") {
         this.filterBySymbol(null)
       }
@@ -313,7 +300,7 @@
         let data = this.$axios.get(this.apiNewsPrepared).then(({ data }) => {
           this.news = data.data
           this.list = []
-          this.meta = {current_page: 1}
+          this.meta = { current_page: 1 }
         });
       },
 

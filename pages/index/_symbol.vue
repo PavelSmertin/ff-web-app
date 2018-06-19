@@ -42,6 +42,8 @@
 
     <vue-highcharts :options="options" ref="lineCharts" :callback="callback()"></vue-highcharts>
 
+    <section v-if="attributes.seo_text" class="ff_text_block margin60" v-html="attributes.seo_text"></section>
+
   </section>
 </template>
 
@@ -94,7 +96,7 @@
 
     async asyncData ({ app, params, error }) {
 
-      const details = await app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
+      const details = await app.$axios.get(`http://test-api.ff.ru/v1/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
 
       if(details.data.data.length == 0) {
         //error ({ message: 'Такой монеты не существует', statusCode: 404 })
@@ -114,7 +116,7 @@
     },
 
     mounted () {
-      this.loadChart(this.symbol)
+      this.loadChart(this.attributes.symbol)
     },
 
     methods: {
@@ -174,7 +176,6 @@
     if( params.meta_title ) {
       return params.meta_title
     }
-
     return `(${params.symbol}/USD) Курс ${params.coin_name} к доллару, (${params.symbol}/RUB) курс ${getCase(params, 2)} к рублю - прогноз на сегодня - FF.ru`
   }
 
@@ -187,13 +188,13 @@
 
   function getCase (params, variant) {
     if(variant == 2) {
-      if(params.cases && params.cases.r) {
-        return params.cases.r
+      if(params.cases && params.cases.ro) {
+        return params.cases.ro
       }
     }
 
-    if(params.cases && params.cases.i) {
-      return params.cases.i
+    if(params.cases && params.cases.im) {
+      return params.cases.im
     }
 
     return params.coin_name

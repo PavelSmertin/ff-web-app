@@ -1,32 +1,29 @@
 <template>
   <section class="ff-coin-index">
       
-        <div class="coin_pane">
-          <div v-for="coin of coins" v-bind:key="coin.id" class="currency ff-label">
-            <div class="coin_row">
-              <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" >
-                {{ coin.attributes.symbol }}
-              </nuxt-link>
-              <div class="coin_details_item">
-                {{ coin.attributes.market_cap_usd }}
-              </div>
-              <div class="coin_details_item">
-                {{ coin.attributes.price_usd }}
-              </div>
-              <div class="coin_details_item">
-                {{ coin.attributes.volume24h_usd }}
-              </div>
-              <div class="coin_details_item">
-                {{ coin.attributes.available_supply }} {{ coin.attributes.symbol }}
-              </div>
-              <div class="coin_details_item">
-                {{ coin.attributes.percent_change24h }}
-              </div>
-            </div>
-            <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" class="click-area">
-            </nuxt-link>
-          </div>
-        </div>
+    <div v-for="coin of $store.state.coins" v-bind:key="coin.id" class="currency ff-label">
+      <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" >
+        {{ coin.attributes.symbol }}
+      </nuxt-link>
+      <div class="coin_details_item">
+        {{ coin.attributes.market_cap_usd }}
+      </div>
+      <div class="coin_details_item">
+        {{ coin.attributes.price_usd }}
+      </div>
+      <div class="coin_details_item">
+        {{ coin.attributes.volume24h_usd }}
+      </div>
+      <div class="coin_details_item">
+        {{ coin.attributes.available_supply }} {{ coin.attributes.symbol }}
+      </div>
+      <div class="coin_details_item">
+        {{ coin.attributes.percent_change24h }}
+      </div>
+
+      <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" class="click-area">
+      </nuxt-link>
+    </div>
 
 
   </section>
@@ -78,6 +75,10 @@
         let val = (value/1).toFixed(2).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
+      downSymbol(value) {
+        return value.toLowerCase()
+      },
+
     },
 
   }

@@ -5,12 +5,20 @@ const createStore = () => {
 	return new Vuex.Store({
 		state: {
 			isMenuOpen: false,
-			authUser: null
+			authUser: null,
+			coins: [],
+			news: [],
 		},
 
 		mutations: {
 			SET_USER: function (state, user) {
 				state.authUser = user
+			},
+			SET_COINS: function (state, coins) {
+				state.coins = coins
+			},
+			SET_NEWS: function (state, news) {
+				state.news = news
 			}
 		},
 
