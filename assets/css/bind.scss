@@ -353,48 +353,63 @@ h1 {
 	flex-direction: column;
     display: none;
     background-color: $bg-main-color;
-	.currency {
-		padding: 20px 24px;
-		border-right: 1px solid $border-bold-color;
-		border-bottom: 1px solid $border-thin-color;
-		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .0);
-		transition: box-shadow 0.1s ease-in-out;
-		position: relative;
-		border-bottom: 1px solid $border-thin-color;
-		.ff-news-cell {
-			display: block;
+
+
+		.currency {
+			padding: 20px 24px;
+			border-right: 1px solid $border-bold-color;
+			border-bottom: 1px solid $border-thin-color;
+			box-shadow: 0 5px 30px rgba($bg-toolbar-color, .0);
+			transition: box-shadow 0.1s ease-in-out;
 			position: relative;
-			padding: 24px;
-			.ff-nc-title {
-				display: inline-block;
-				margin-top: 12px;
+			border-bottom: 1px solid $border-thin-color;
+
+
+
+			.ff-news-cell {
+				display: block;
+				position: relative;
+				padding: 24px;
+				.ff-nc-title {
+					display: inline-block;
+					margin-top: 12px;
+				}
+			}
+			.click-area {
+				display:block;
+				position:absolute;
+				left:0;
+				right:0;
+				top:0;
+				bottom:0;
+				content:'';
+				cursor:pointer;
+			}
+			a:not(.click-area) {
+				position: relative;
+				z-index: 1;
+			}
+			a.nuxt-link-active {
+				color: $link-color;
+				transition: color 0.1s ease-in-out;
 			}
 		}
-		.click-area {
-			display:block;
-			position:absolute;
-			left:0;
-			right:0;
-			top:0;
-			bottom:0;
-			content:'';
-			cursor:pointer;
+		.currency:hover {
+			box-shadow: 0 5px 30px rgba($bg-toolbar-color, .15);
+
 		}
-		a:not(.click-area) {
-			position: relative;
-			z-index: 1;
+		.currency:hover a:not(.nuxt-link-active) {
+			color: $dark-primary-color;
+
 		}
-		a.nuxt-link-active {
-			color: $link-color;
-			transition: color 0.1s ease-in-out;
+
+
+		.coin_row {
+			.coin_details_item {
+				display: inline-block;
+			}
 		}
-	}
-	.currency:hover {
-		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .15);
-	}
-	.currency:hover a:not(.nuxt-link-active) {
-		color: $dark-primary-color;
-	}
+	
 }
 
 @media (min-width: 768px) {
@@ -462,6 +477,10 @@ h1 {
 	.post-header{
 		margin: 24px 24px 0 24px;
 
+	}
+	.image_origin {
+		margin-top: 32px;
+		width: 100%;
 	}
 	.description {
 		margin: 24px 32px 0 24px;

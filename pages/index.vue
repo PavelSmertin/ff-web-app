@@ -5,7 +5,7 @@
       <div class="scroll-container">
         <div v-for="coin of coins" v-bind:key="coin.id" class="currency ff-label">
           <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" >
-              {{coin.attributes.symbol}}
+            {{ coin.attributes.symbol }}
           </nuxt-link>
           <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" class="click-area">
           </nuxt-link>
@@ -175,7 +175,7 @@
   var YEAR = DAY * 365;
 
   const api_news = 'http://test-api.ff.ru/v1/news/';
-  const api_coins = 'http://test-api.ff.ru/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h';
+  const api_coins = 'http://test-api.ff.ru/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply';
 
   export default {
 
@@ -194,6 +194,7 @@
           app.$axios.get(apiNewsFiltered),
           app.$axios.get(api_coins),
         ])
+        console.log(coins.data.data)
         return { filters: filters, news: news.data.data, coins: coins.data.data }
       } catch (e) {
         console.log(e);

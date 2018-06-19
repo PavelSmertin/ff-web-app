@@ -10,6 +10,9 @@
     <h1 class="post-header">
       {{attributes.title}}
     </h1>
+
+    <img v-if="getImageOriginal()" class="image_origin" :src="getImageOriginal()" alt="новость">
+
     <div v-html="attributes.body" class="description"></div>
     <div class="post_source ff-label">
         Источник: {{ sourceDomain() }}
@@ -206,9 +209,15 @@ export default {
     },
     getImageSharing() {
       if( this.attributes.images.sharing ) {
-        return this.attributes.images.sharing
+        return 'http://test-api.ff.ru/' + this.attributes.images.sharing
       }
       return '/FF_cover1080_b.png'
+    },
+    getImageOriginal() {
+      if( this.attributes.images.original ) {
+        return 'http://test-api.ff.ru/' + this.attributes.images.original
+      }
+      return false
     },
   },
 }

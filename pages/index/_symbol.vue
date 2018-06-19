@@ -2,15 +2,15 @@
   <section class="ff-coin">
       
     <div class="row no-gutters">
-      <h1 class="col-12 col-md-6">Курс {{ upSymbol() }}</h1>
+      <h1 class="col-12 col-md-6">Курс {{ getCase() }}</h1>
       <div class="col-12 col-md-6">
         <div>
-          <span class="coin-value">${{formatPrice(price_usd)}}</span>&nbsp;
+          <span class="coin-value">${{formatPrice(attributes.price_usd)}}</span>&nbsp;
           <span class="coin-unit">USD</span>&nbsp;
-          <span class="coin-value positive">{{percent_change24h}}%</span>
+          <span class="coin-value positive">{{attributes.percent_change24h}}%</span>
         </div>
         <div>
-          <span class="coin-info">{{price_btc}} BTC</span>&nbsp;
+          <span class="coin-info">{{attributes.price_btc}} BTC</span>&nbsp;
           <span class="coin-info positive">0,0%</span>
         </div>
       </div>
@@ -19,24 +19,24 @@
     <div class="row no-gutters coin-details-block">
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">Капитализация</div>
-        <div class="coin-detail">{{formatPrice(market_cap_usd)}} USD</div>
-        <div class="coin-detail-info">{{formatPrice(total_coin_supply)}} BTC</div>
+        <div class="coin-detail">{{formatPrice(attributes.market_cap_usd)}} USD</div>
+        <div class="coin-detail-info">{{formatPrice(attributes.total_coin_supply)}} BTC</div>
       </div>
 
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">Объем (24ч)</div>
-        <div class="coin-detail">{{formatPrice(volume24h_usd)}} USD</div>
-        <div class="coin-detail-info">{{formatPrice(volume24h_btc)}} BTC</div>
+        <div class="coin-detail">{{formatPrice(attributes.volume24h_usd)}} USD</div>
+        <div class="coin-detail-info">{{formatPrice(attributes.volume24h_btc)}} BTC</div>
       </div>
 
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">В обороте</div>
-        <div class="coin-detail">{{formatPrice(available_supply)}} BTC</div>
+        <div class="coin-detail">{{formatPrice(attributes.available_supply)}} BTC</div>
       </div>
 
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">В обороте (max)</div>
-        <div class="coin-detail">{{formatPrice(max_supply)}} BTC</div>
+        <div class="coin-detail">{{formatPrice(attributes.max_supply)}} BTC</div>
       </div>
     </div>
 
@@ -51,9 +51,7 @@
   import moment from 'moment'
   import axios from 'axios'
   import VueHighcharts from '~/components/VueHighcharts.vue'
-  import { DrilldownOptions, MapData} from '~/static/data.js'
-
-
+  import { DrilldownOptions, MapData } from '~/static/data.js'
 
   export default {
     transition: 'page',
@@ -70,8 +68,8 @@
 
           { hid: 'og:type', property: 'og:type', content: 'website' },
           { hid: 'og:url', property: 'og:url', content: process.env.baseUrl },
-          { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + this.getImage() },
-          { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + this.getImage() },
+          { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + this.getImageSharing() },
+          { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + this.getImageSharing() },
 
           { hid: 'og:title', property: 'og:title', content: `Курс ${this.upSymbol()}, новости и прогнозы Биткоина в реальном времени на FF.ru` },
           { hid: 'og:description', property: 'og:description', content: this.headDescription },
@@ -86,7 +84,6 @@
       return {
         enabled: true,
         showLine: false,
-        imageSharing: null,
         options: DrilldownOptions,
         series: {
           type: 'area',
@@ -103,36 +100,13 @@
         //error ({ message: 'Такой монеты не существует', statusCode: 404 })
       }
 
-      let attributes = details.data.data[0].attributes
+      const { attributes }  = details.data.data[0] 
+      let headTitle        = getTitle(attributes)
+      let headDescription  = getDescription(attributes)
 
+      console.log(attributes)
 
-
-      const { 
-        total_coin_supply, 
-        available_supply, 
-        max_supply, 
-        price_usd, 
-        price_btc,
-        percent_change24h, 
-        volume24h_usd, 
-        market_cap_usd,
-        volume24h_btc
-      }  = attributes
-
-      return { 
-        total_coin_supply,
-        available_supply,
-        max_supply,
-        price_usd,
-        price_btc,
-        percent_change24h,
-        volume24h_usd,
-        market_cap_usd,
-        volume24h_btc,
-        symbol: attributes.symbol,
-        headTitle: getTitle(attributes),
-        headDescription: getDescription(attributes),
-      }
+      return { attributes, headTitle, headDescription }
     },
 
     components: {
@@ -168,11 +142,11 @@
           lineCharts.hideLoading();
         })
       },
-      getImage() {
-        if( this.imageSharing ) {
-          return this.imageSharing
-        }
+      getImageSharing() {
         return '/FF_cover1080_b.png'
+      },
+      getCase() {
+        return getCase(this.attributes, 1)
       },
       callback() {
         return function() {
