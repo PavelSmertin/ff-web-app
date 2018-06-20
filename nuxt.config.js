@@ -80,8 +80,8 @@ module.exports = {
   ],
 
   env: {
-    baseUrl: 'http://latest.ff.ru',
-    apiUrl: 'http://test-api.ff.ru',
+    baseUrl: 'https://ff.ru',
+    apiUrl: 'https://api.ff.ru',
   },
 
   router: {
@@ -141,8 +141,8 @@ module.exports = {
 
 
   axios: {
-    baseUrl: 'http://latest.ff.ru',
-    browserBaseURL: 'http://latest.ff.ru',
+    baseUrl: 'https://ff.ru',
+    browserBaseURL: 'https://ff.ru',
     // proxy: true,
     // proxyHeaders: true,
     // credentials: false,
@@ -162,7 +162,7 @@ module.exports = {
   },
 
   proxy: {
-    '/api': 'http://test-api.ff.ru',
+    '/api': 'https://api.ff.ru',
   },
 
   auth: {
@@ -206,7 +206,7 @@ module.exports = {
           copyright: 'All rights reserved 2018, ff.ru',
         }
 
-        const posts = await axios.get('http://test-api.ff.ru/v1/news/', {
+        const posts = await axios.get('https://api.ff.ru/v1/news/', {
                             params: {
                               page: 1,
                               'per-page': 200
