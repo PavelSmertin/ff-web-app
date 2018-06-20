@@ -147,13 +147,14 @@
               </nuxt-link>
             </div>
           </div>
+
+          <infinite-loading v-if="$store.state.news.length" @infinite="infiniteHandler" spinner="spiral">
+            <span slot="no-more">You've reached the end!</span>
+            <span slot="no-results">You've reached the end!</span>
+          </infinite-loading>
           
         </div>
 
-        <infinite-loading v-if="$store.state.news.length" @infinite="infiniteHandler" spinner="spiral">
-          <span slot="no-more">You've reached the end!</span>
-          <span slot="no-results">You've reached the end!</span>
-        </infinite-loading>
       </div> 
     </aside>
 
