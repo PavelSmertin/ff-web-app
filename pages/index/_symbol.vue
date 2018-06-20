@@ -73,9 +73,9 @@
           { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + this.getImageSharing() },
           { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + this.getImageSharing() },
 
-          { hid: 'og:title', property: 'og:title', content: `Курс ${this.upSymbol()}, новости и прогнозы Биткоина в реальном времени на FF.ru` },
+          { hid: 'og:title', property: 'og:title', content: `Курс ${this.attributes.full_name} на сегодня -  FF.ru` },
           { hid: 'og:description', property: 'og:description', content: this.headDescription },
-          { hid: 'twitter:title', name: 'twitter:title', content: `Курс ${this.upSymbol()}, новости и прогнозы ${this.upSymbol()} в реальном времени на FF.ru` },
+          { hid: 'twitter:title', name: 'twitter:title', content: `Курс ${this.attributes.full_name} на сегодня -  FF.ru` },
           { hid: 'twitter:description', name: 'twitter:description', content: this.headDescription },
         ],
 
@@ -147,8 +147,8 @@
       getImageSharing() {
         return '/FF_cover1080_b.png'
       },
-      getCase() {
-        return getCase(this.attributes, 1)
+      getCase(value) {
+        return getCase(this.attributes, 2)
       },
       callback() {
         return function() {
@@ -159,6 +159,11 @@
 
     beforeRouteUpdate (to, from, next) {
       if(to.name == "index-symbol") {
+        if(to.params.symbol == 'btc') {
+          next({ path: '/' })
+          return
+        }
+
         this.loadChart(to.params.symbol)
       }
       next();

@@ -195,11 +195,8 @@
         infiniteState: null,
         meta: {current_page: 1},
         list: [],
-        news: [],
-        coins: [],
         seenPost: false,
         seenIndex: true,
-        showSelect: false,
         arrayOfObjects: [
           { name: 'Все новости' }, 
           { name: 'Новость', value: 'news' },
@@ -230,10 +227,6 @@
       VueTimeago,
       InfiniteLoading,
       Dropdowns
-    },
-
-    mounted () {
-      this.showSelect = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
     },
 
     beforeRouteEnter (to, from, next) {
@@ -298,7 +291,7 @@
         this.apiNewsPrepared = api_news + filterQuery
 
         let data = this.$axios.get(this.apiNewsPrepared).then(({ data }) => {
-          this.news = data.data
+          this.$store.commit('SET_NEWS', data.data)
           this.list = []
           this.meta = { current_page: 1 }
         });
@@ -325,7 +318,7 @@
         this.apiNewsPrepared = api_news + filterQuery
 
         let data = this.$axios.get(this.apiNewsPrepared).then(({ data }) => {
-          this.news = data.data
+          this.$store.commit('SET_NEWS', data.data)
           this.list = []
           this.meta = {current_page: 1}
         });
