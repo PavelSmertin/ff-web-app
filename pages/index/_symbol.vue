@@ -96,7 +96,7 @@
 
     async asyncData ({ app, params, error }) {
 
-      const details = await app.$axios.get(`http://test-api.ff.ru/v1/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
+      const details = await app.$axios.get(process.env.apiUrl + `/v1/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
 
       if(details.data.data.length == 0) {
         //error ({ message: 'Такой монеты не существует', statusCode: 404 })

@@ -81,6 +81,7 @@ module.exports = {
 
   env: {
     baseUrl: 'http://latest.ff.ru',
+    apiUrl: 'http://test-api.ff.ru',
   },
 
   router: {

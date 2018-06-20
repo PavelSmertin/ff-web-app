@@ -115,7 +115,7 @@ export default {
     }
 
     try {
-      const { data } = await app.$axios.get(`http://test-api.ff.ru/v1/news/view/${+params.id}`)
+      const { data } = await app.$axios.get(process.env.apiUrl + `/v1/news/view/${+params.id}`)
  
       if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
         redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
@@ -209,13 +209,13 @@ export default {
     },
     getImageSharing() {
       if( this.attributes.images.sharing ) {
-        return 'http://test-api.ff.ru/' + this.attributes.images.sharing
+        return process.env.apiUrl +'/' + this.attributes.images.sharing
       }
       return '/FF_cover1080_b.png'
     },
     getImageOriginal() {
       if( this.attributes.images.original ) {
-        return 'http://test-api.ff.ru/' + this.attributes.images.original
+        return process.env.apiUrl +'/' + this.attributes.images.original
       }
       return false
     },
