@@ -27,6 +27,9 @@
 <script>
 
   export default {
+    head() {
+      return { meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]}
+    },
     data() {
       return {
         message: "На вашу электронную почту придет письмо с подтверждением вашего аккаунта. Пройдите по ссылке, чтобы закончить регистрацию."

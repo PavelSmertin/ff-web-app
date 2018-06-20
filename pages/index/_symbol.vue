@@ -159,11 +159,6 @@
 
     beforeRouteUpdate (to, from, next) {
       if(to.name == "index-symbol") {
-        if(to.params.symbol == 'btc') {
-          next({ path: '/' })
-          return
-        }
-
         this.loadChart(to.params.symbol)
       }
       next();

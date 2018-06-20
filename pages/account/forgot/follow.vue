@@ -20,6 +20,9 @@
 <script>
 
   export default {
+    head() {
+      return { meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]}
+    },
     data() {
       return {
         message: "На вашу электронную почту придет письмо со ссылкой. Пройдите по ссылке, чтобы установить новый пароль."

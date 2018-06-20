@@ -237,15 +237,19 @@
     },
 
     beforeRouteUpdate (to, from, next) {
+      this.seenPost = to.name == "slug-id" || to.name == "index-id";
+
       if(to.name == "index") {
         this.filterBySymbol(null)
       }
 
       if(to.name == "index-symbol") {
+        if(to.params.symbol == 'btc') {
+          next({ path: '/' })
+          return
+        }
         this.filterBySymbol(to.params.symbol)
       }
-
-      this.seenPost = to.name == "slug-id" || to.name == "index-id";
       next();
     },
 

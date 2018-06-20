@@ -24,6 +24,9 @@
 <script>
 
   export default {
+    head() {
+      return { meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]}
+    },
     data() {
       return {
         message: "Ваш пароль успешно изменен!"

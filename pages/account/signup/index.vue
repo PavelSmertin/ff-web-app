@@ -36,6 +36,9 @@
 <script>
 
   export default {
+    head() {
+      return { meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]}
+    },
     data() {
       return {
         email: null,
