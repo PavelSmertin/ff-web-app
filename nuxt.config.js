@@ -122,16 +122,16 @@ module.exports = {
   },
 
   modules: [
-    //['@nuxtjs/google-tag-manager', { id: 'UA-52990017-1' }],
-    // ['@nuxtjs/yandex-metrika', {
-    //   id: '25598768',
-    //   webvisor: true,
-    //   // clickmap:true,
-    //   // useCDN:false,
-    //   // trackLinks:true,
-    //   // accurateTrackBounce:true,
-    //   }
-    // ],
+    ['@nuxtjs/google-tag-manager', { id: 'UA-52990017-1' }],
+    ['@nuxtjs/yandex-metrika', {
+      id: '25598768',
+      webvisor: true,
+      // clickmap:true,
+      // useCDN:false,
+      // trackLinks:true,
+      // accurateTrackBounce:true,
+      }
+    ],
     '@nuxtjs/feed',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
