@@ -1057,6 +1057,9 @@ h1 {
 	    fill: $dark-primary-color;
 	    stroke: $dark-primary-color;
 	}
+	.highcharts-credits{
+		display: none !important;
+	}
 }
 
 
