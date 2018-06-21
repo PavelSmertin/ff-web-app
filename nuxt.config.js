@@ -134,7 +134,7 @@ module.exports = {
     '@nuxtjs/feed',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
-    ['@nuxtjs/proxy', { pathRewrite: { '^/api' : '/v1' } }],
+    ['@nuxtjs/proxy', { pathRewrite: { '^/api' : '/v1', '^/images' : '/' } }],
     ['bootstrap-vue/nuxt', { css: false }],
   ],
 
@@ -162,6 +162,7 @@ module.exports = {
 
   proxy: {
     '/api': 'https://api.ff.ru',
+    '/images': 'https://api.ff.ru',
   },
 
   auth: {
