@@ -1,2 +1,5 @@
+Host: https://ff.ru
 User-Agent: *
-Disallow: *
+Disallow: /*?*
+Disallow: /account
+Disallow: /account/*
