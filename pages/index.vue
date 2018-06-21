@@ -1,19 +1,27 @@
 <template> 
   <div class="row ff-content no-gutters">
 
-    <div class="ff-left-panel col-md-1">
+    <div class="ff-left-panel" v-bind:class="colLeft">
       <div class="scroll-container">
-        <div v-for="coin of $store.state.coins" v-bind:key="coin.id" class="currency ff-label">
-          <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" >
-            {{ coin.attributes.symbol }}
-          </nuxt-link>
-          <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" class="click-area">
-          </nuxt-link>
+
+        <div class="ff_coins">
+          <div class="coin_header">
+            <div class="coin_details_head">
+              Ресурс
+            </div>
+          </div>
+          <div v-for="coin of $store.state.coins" v-bind:key="coin.id" class="currency">
+            <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" >
+              {{ coin.attributes.symbol }}
+            </nuxt-link>
+            <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" class="click-area">
+            </nuxt-link>
+          </div>
         </div>
       </div>
     </div>
 
-    <main v-bind:class="{ content_float: seenIndex || seenPost, content_post: seenPost}" class="ff-center-panel col-md-7">
+    <main class="ff-center-panel" v-bind:class="colCenter">
       <div class="scroll-container" ref="scroll-container">
         <nuxt-child :key="$route.params.id"/>
       </div>
@@ -26,7 +34,7 @@
 
       <ul class="right_tabs">
         <li  v-on:click="seenIndex = true" class="right_tab">
-          <span v-bind:class="{ active_tab: seenIndex }">Bitcoin</span>
+          <span v-bind:class="{ active_tab: seenIndex }">Курсы</span>
         </li>
         <li v-on:click="seenIndex = false" class="right_tab">
           <span v-bind:class="{ active_tab: !seenIndex }">Новости</span>
@@ -40,16 +48,6 @@
 
           <div v-for="newest of $store.state.news" v-bind:key="newest.id" class="ff-news-row">
             <div class="ff-news-cell">
-              <div class="row">
-                <div class="col">
-                  <ul class="ff-label news_list_detail">
-                    <li><timeago :since="newest.attributes.create_dt" class="time-ago"></timeago></li>
-                    <li v-if="newest.attributes.type == 'news'">Новость</li>
-                    <li v-else-if="newest.attributes.type == 'prognosis'">Прогноз</li>
-                  </ul>
-                </div>
-              </div>
-
               <div class="row">
                 <div class="col">
                   <nuxt-link v-if="newest.attributes.slug" :to="{ 
@@ -72,6 +70,16 @@
                             >
                       {{newest.attributes.title}}
                   </nuxt-link>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <ul class="ff-label news_list_detail">
+                    <li><timeago :since="newest.attributes.create_dt" class="time-ago"></timeago></li>
+                    <li v-if="newest.attributes.type == 'news'">Новость</li>
+                    <li v-else-if="newest.attributes.type == 'prognosis'">Прогноз</li>
+                  </ul>
                 </div>
               </div>
 
@@ -100,17 +108,6 @@
 
               <div class="row">
                 <div class="col">
-                  <ul class="ff-label news_list_detail">
-                    <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
-                    <li v-if="item.attributes.type == 'news'">Новость</li>
-                    <li v-else-if="item.attributes.type == 'prognosis'">Прогноз</li>
-                  </ul>
-
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col">
                   <nuxt-link v-if="item.attributes.slug"  :to="{ 
                       name: 'slug-id', 
                       params: { 
@@ -130,6 +127,17 @@
                   </nuxt-link>
                 </div>
               </div>
+
+              <div class="row">
+                <div class="col">
+                  <ul class="ff-label news_list_detail">
+                    <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
+                    <li v-if="item.attributes.type == 'news'">Новость</li>
+                    <li v-else-if="item.attributes.type == 'prognosis'">Прогноз</li>
+                  </ul>
+                </div>
+              </div>
+
               <nuxt-link v-if="item.attributes.slug"  :to="{ 
                         name: 'slug-id', 
                         params: { 
@@ -149,8 +157,8 @@
           </div>
 
           <infinite-loading v-if="$store.state.news.length" @infinite="infiniteHandler" spinner="spiral">
-            <span slot="no-more">You've reached the end!</span>
-            <span slot="no-results">You've reached the end!</span>
+            <span slot="no-more">Вы достигли конца списка</span>
+            <span slot="no-results">Вы достигли конца списка</span>
           </infinite-loading>
           
         </div>
@@ -233,22 +241,18 @@
     beforeRouteEnter (to, from, next) {
       next(vm => {
         // Экземпляр компонента доступен как `vm`
-        vm.seenPost = to.name == "slug-id" || to.name == "index-id";
+        vm.seenPost = to.name != "index";
       })
     },
 
     beforeRouteUpdate (to, from, next) {
-      this.seenPost = to.name == "slug-id" || to.name == "index-id";
+      this.seenPost = to.name != "index";
 
       if(to.name == "index") {
         this.filterBySymbol(null)
       }
 
       if(to.name == "index-symbol") {
-        if(to.params.symbol == 'btc') {
-          next({ path: '/' })
-          return
-        }
         this.filterBySymbol(to.params.symbol)
       }
       next();
@@ -335,6 +339,25 @@
 
     },
 
+    computed: {
+      colLeft: function () {
+        return {
+          'home': this.$route.name == 'index',
+          'col-md-1': this.$route.name != 'index',
+          //'col-md-1': true,
+        }
+      },
+      colCenter: function () {
+        return {
+          'col-md-7': this.$route.name != 'index',
+          'col-md-8': this.$route.name == 'index',
+          'content_float': this.seenIndex || this.seenPost, 
+          'content_post': this.seenPost,
+          //'col-md-7': true,
+
+        }
+      }
+    },
     // computed: {
     //   news: {
     //     get () {

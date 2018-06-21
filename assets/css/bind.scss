@@ -21,11 +21,12 @@ $border-bold-color: #BFBFBF;
 $link-color: #FF9900;
 $label-color: #666666;
 
+
 $bg-coin-color: #F2F2F2;
 
 $l-color: #999999;
 $up-value-color: #8FCC14;
-
+$down-value-color: #FF6666;
 
 
 
@@ -141,6 +142,12 @@ h1 {
 
 .positive {
 	color: $up-value-color !important;
+	font-weight: bold !important;
+}
+
+.negative {
+	color: $down-value-color !important;
+	font-weight: bold !important;
 }
 
 .button_link {
@@ -356,25 +363,23 @@ h1 {
 }
 
 
-.currency {
-	padding: 20px 24px;
+ .ff_coins {
 	border-right: 1px solid $border-bold-color;
+ }
+
+.currency {
+	padding: 0px 0px 0px 24px;
+	height: 56px;
 	border-bottom: 1px solid $border-thin-color;
 	box-shadow: 0 5px 30px rgba($bg-toolbar-color, .0);
 	transition: box-shadow 0.1s ease-in-out;
 	position: relative;
 	border-bottom: 1px solid $border-thin-color;
-
-
-
-	.ff-news-cell {
-		display: block;
-		position: relative;
-		padding: 24px;
-		.ff-nc-title {
-			display: inline-block;
-			margin-top: 12px;
-		}
+	color: $dark-primary-color;
+	font-size: $second_size;
+	line-height: 56px;
+	a {
+		color: $l-color;
 	}
 	.click-area {
 		display:block;
@@ -394,9 +399,6 @@ h1 {
 		color: $link-color;
 		transition: color 0.1s ease-in-out;
 	}
-	.coin_details_item {
-		display: inline-block;
-	}
 }
 .currency:hover {
 	box-shadow: 0 5px 30px rgba($bg-toolbar-color, .15);
@@ -405,9 +407,62 @@ h1 {
 	color: $dark-primary-color;
 }
 
+.coin_row {
+	display: flex;
+	.coin_details_item {
+		flex-grow: 1;
+		flex-basis: 100%;
+		overflow: hidden;
+	}
+	.coin_details_item.change {
+		color: $up-value-color;
+		font-weight: bold;
+	}
+
+	.i_cap, .i_volume, .i_sup {
+		flex-basis: 200%;
+	}
+}
+.coin_header {
+	border-bottom: 1px solid $border-bold-color;
+	color: $label-color;
+	font-size: $label-size;
+	height: 36px;
+	padding-left: 24px;
+
+
+	display: flex;
+	.coin_details_head {
+		flex-grow: 1;
+		line-height: 36px;
+		flex-basis: 100%;
+		overflow: hidden;
+	}
+	.i_cap, .i_volume, .i_sup {
+		flex-basis: 200%;
+	}
+}
+
+@media (max-width: 769px) {
+	.coin_row {
+		.i_cap, .i_volume, .i_sup {
+			display: none;
+		}
+	}
+	.coin_header {
+		.i_cap, .i_volume, .i_sup {
+			display: none;
+		}
+	}
+}
+
+
 @media (min-width: 768px) {
 	.ff-left-panel {
     	display: flex;
+	}
+	.ff-left-panel.home{
+		display: none;
 	}
 }
 
@@ -415,8 +470,9 @@ h1 {
 	padding-bottom: 200px;
 	.news_list_detail {
 		list-style: none;
-		margin: 0;
+		margin: 8px 0 0 0;
 		padding: 0;
+		line-height: 16px;
 		li {
 			margin-right: 24px;
 			display: inline-block;
@@ -430,10 +486,12 @@ h1 {
 		.ff-news-cell {
 			display: block;
 			position: relative;
-			padding: 24px;
+			padding: 16px;
 			.ff-nc-title {
 				display: inline-block;
-				margin-top: 12px;
+				font-size: 16px;
+				line-height: 20px;
+				font-weight: bold;
 			}
 		}
 
@@ -487,6 +545,7 @@ h1 {
 	.news_list_detail {
 		list-style: none;
 		font-size: 14px;
+		line-height: 16px;
 		padding: 0;
 		margin: 48px 24px 0 24px;
 		li {
@@ -503,6 +562,20 @@ h1 {
 	.ff-post {
 		width: 63%;
 		margin: 0 auto;
+		.post-header{
+			margin: 24px 0 0 0;
+
+		}
+		.description {
+			margin: 24px 0 0 0;
+		}
+		.post_source {
+			margin: 24px 0 0 0;
+		}
+		.news_list_detail {
+			margin: 48px 0 0 0;
+
+		}
 	}
 }
 .ff-post.page-enter-active, .ff-post.page-leave-active {
