@@ -72,7 +72,7 @@ module.exports = {
   plugins: [
     // ssr: false to only include it on client-side
     { src: '~/plugins/vue-js-toggle-button.js'},
-    //{ src: '~/plugins/ga.js', ssr: false },
+    { src: '~/plugins/ga.js', ssr: false },
     { src: '~/plugins/vue-chartjs.js', ssr: false },
     { src: '~/plugins/vue-socket.js', ssr: false },
     { src: '~/plugins/social.js', ssr: true },
@@ -122,7 +122,7 @@ module.exports = {
   },
 
   modules: [
-    ['@nuxtjs/google-tag-manager', { id: 'UA-52990017-1' }],
+    //['@nuxtjs/google-tag-manager', { id: 'UA-52990017-1' }],
     ['@nuxtjs/yandex-metrika', {
       id: '25598768',
       webvisor: true,
