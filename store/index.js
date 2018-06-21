@@ -8,6 +8,7 @@ const createStore = () => {
 			authUser: null,
 			coins: [],
 			news: [],
+			filters: {symbol: null, type: null}
 		},
 
 		mutations: {
@@ -19,7 +20,13 @@ const createStore = () => {
 			},
 			SET_NEWS: function (state, news) {
 				state.news = news
-			}
+			},
+			SET_FILTER_TYPE: function (state, type) {
+				state.filters.type = type
+			},
+			SET_FILTER_SYMBOL: function (state, symbol) {
+				state.filters.symbol = symbol
+			},
 		},
 
 		actions: {

@@ -41,7 +41,10 @@
         </li>
       </ul>
 
-      <dropdowns :options="arrayOfObjects" :selected="object" v-on:updateOption="methodToRunOnSelect"></dropdowns>
+      <div class="news_filters_block">
+        <div class="coin_tag">{{ $store.state.filters.symbol }}</div>
+        <dropdowns :options="types" :selected="selectedType" v-on:updateOption="filterByType"></dropdowns>
+      </div>
 
       <div class="scroll-container">
         <div v-if="$store.state.news.length" class="ff-news">
@@ -75,6 +78,7 @@
 
               <div class="row">
                 <div class="col">
+
                   <ul class="ff-label news_list_detail">
                     <li><timeago :since="newest.attributes.create_dt" class="time-ago"></timeago></li>
                     <li v-if="newest.attributes.type == 'news'">Новость</li>
@@ -188,17 +192,6 @@
 
   export default {
 
-    async asyncData({ app, params, error }) {
-
-      var apiNewsFiltered = api_news
-
-      let filters = {}
-      if( params.symbol ) {
-        filters = { symbol: params.symbol }
-        // apiNewsFiltered = app.filterBySymbol(params.symbol)
-      }
-    },
-
     data() {
       return {
         infiniteState: null,
@@ -206,30 +199,30 @@
         list: [],
         seenPost: false,
         seenIndex: true,
-        arrayOfObjects: [
+        types: [
           { name: 'Все новости' }, 
           { name: 'Новость', value: 'news' },
           { name: 'Прогноз', value: 'prognosis' }
         ],
-        object: {
+        selectedType: {
           name: 'Все новости',
-        },
-        apiNewsPrepared: api_news,
-        filters: {}
-
+        }
       }
     },
 
-    async fetch ({ app, store }) {
+    async fetch ({ app, store, params }) {
+
+      if( params.symbol ) {
+        store.commit('SET_FILTER_SYMBOL', params.symbol)
+      }
 
       let [news, coins] = await Promise.all([
-        app.$axios.get(api_news),
+        app.$axios.get(apiNewsPrepare(store.state.filters)),
         app.$axios.get(api_coins),
       ])
 
       store.commit('SET_NEWS', news.data.data)
       store.commit('SET_COINS', coins.data.data)
-
     },
 
     components: {
@@ -262,7 +255,7 @@
 
       infiniteHandler($state) {
         this.infiniteState = $state
-        this.$axios.get(this.apiNewsPrepared, {
+        this.$axios.get(apiNewsPrepare(this.$store.state.filters), {
           params: {
             page: this.meta.current_page + 1,
           },
@@ -280,26 +273,16 @@
         this.seenIndex = false;
       },
 
-      methodToRunOnSelect(payload) {
+      filterByType(payload) {
 
-        this.filters.type = payload.value;
+        this.$store.commit('SET_FILTER_TYPE', payload.value)
+        this.selectedType = payload
 
         if(this.infiniteState) { 
           this.infiniteState.reset()
         }
-        this.object = payload
 
-        let filterQuery = 
-          (this.filters.type ? '&filters[news-translated][type]=' + this.filters.type : '') + 
-          (this.filters.symbol ? '&filters[portfolio-coins][symbol]=' + upSymbol(this.filters.symbol) : '')
-
-        if (filterQuery.length > 0) {
-          filterQuery = filterQuery.replace('&','?')
-        }
-
-        this.apiNewsPrepared = api_news + filterQuery
-
-        let data = this.$axios.get(this.apiNewsPrepared).then(({ data }) => {
+        let data = this.$axios.get(apiNewsPrepare(this.$store.state.filters)).then(({ data }) => {
           this.$store.commit('SET_NEWS', data.data)
           this.list = []
           this.meta = { current_page: 1 }
@@ -307,26 +290,17 @@
       },
 
       filterBySymbol(symbol) {
-        if(upSymbol(this.filters.symbol) == upSymbol(symbol)) {
+        if(upSymbol(this.$store.state.filters.symbol) == upSymbol(symbol)) {
           return
         }
 
-        this.filters.symbol = symbol
+        this.$store.commit('SET_FILTER_SYMBOL', symbol)
+
         if(this.infiniteState) { 
           this.infiniteState.reset()
         }
 
-        let filterQuery = 
-          (this.filters.type ? '&filters[news-translated][type]=' + this.filters.type : '') + 
-          (this.filters.symbol ? '&filters[portfolio-coins][symbol]=' + upSymbol(this.filters.symbol) : '')
-
-        if (filterQuery.length > 0) {
-          filterQuery = filterQuery.replace('&','?')
-        }
-
-        this.apiNewsPrepared = api_news + filterQuery
-
-        let data = this.$axios.get(this.apiNewsPrepared).then(({ data }) => {
+        let data = this.$axios.get(apiNewsPrepare(this.$store.state.filters)).then(({ data }) => {
           this.$store.commit('SET_NEWS', data.data)
           this.list = []
           this.meta = {current_page: 1}
@@ -389,6 +363,18 @@
     } else {
       return null
     }
+  }
+
+  function apiNewsPrepare(filters) {
+    let filterQuery = 
+      (filters.type ? '&filters[news-translated][type]=' + filters.type : '') + 
+      (filters.symbol ? '&filters[portfolio-coins][symbol]=' + upSymbol(filters.symbol) : '')
+
+    if (filterQuery.length > 0) {
+      filterQuery = filterQuery.replace('&','?')
+    }
+
+    return api_news + filterQuery
   }
 
 </script>
