@@ -209,13 +209,13 @@ export default {
     },
     getImageSharing() {
       if( this.attributes.images.sharing ) {
-        return process.env.apiUrl +'/' + this.attributes.images.sharing
+        return process.env.apiUrl + this.attributes.images.sharing
       }
       return '/FF_cover1080_b.png'
     },
     getImageOriginal() {
       if( this.attributes.images.original ) {
-        return process.env.apiUrl +'/' + this.attributes.images.original
+        return process.env.apiUrl + this.attributes.images.original
       }
       return false
     },
