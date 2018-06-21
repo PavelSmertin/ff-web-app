@@ -146,11 +146,11 @@ export default {
         { property: 'article:published_time', content: '' },
         { hid: 'og:title', property: 'og:title', content: this.title },
         { hid: 'og:url', property: 'og:url', content: process.env.baseUrl + this.$route.path },
-        { hid: 'og:image', property: 'og:image', content: this.getImageSharing() },
+        { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + this.getImageSharing() },
         { hid: 'og:description', property: 'og:description', content: strip_social_desription(this.body, 200) },
         { hid: 'twitter:title',name: 'twitter:title', content: this.title },
         { hid: 'twitter:description', name: 'twitter:description', content: strip_social_desription(this.body, 200) },
-        { hid: 'twitter:image', name: 'twitter:image', content: this.getImageSharing() },
+        { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + this.getImageSharing() },
 
       ],
     }
