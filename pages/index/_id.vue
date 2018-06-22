@@ -1,5 +1,12 @@
 <template>
   <article class="ff-post">
+
+<!--     <ul class="ff_post_tabs">
+      <li class="col-12">
+        <span>К другим новостям</span>
+      </li>
+    </ul> -->
+
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
         <li><timeago :since="attributes.create_dt" class="time-ago"></timeago></li>

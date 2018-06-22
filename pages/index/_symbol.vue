@@ -1,5 +1,14 @@
 <template>
-  <section class="ff-coin">
+  <section class="ff_coin">
+
+<!--     <ul class="row ff_coin_tabs">
+      <li class="col-2">
+        <span>Все монеты</span>
+      </li>
+      <li class="col-2">
+        <span>Новости {{attributes.symbol}}</span>
+      </li>
+    </ul> -->
       
     <div class="row no-gutters">
       <h1 class="col-12 col-md-6">Курс {{ getCase() }}</h1>
@@ -42,7 +51,7 @@
 
     <vue-highcharts :options="options" ref="lineCharts" :callback="callback()"></vue-highcharts>
 
-    <section v-if="attributes.seo_text" class="ff_text_block margin60" v-html="attributes.seo_text"></section>
+    <section v-if="attributes.seo_text" class="row ff_text_block margin60" v-html="attributes.seo_text"></section>
 
   </section>
 </template>
