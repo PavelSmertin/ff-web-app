@@ -104,9 +104,12 @@
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col">
-
+                  <div class="row no-gutters">
+                    <div class="col-2">
+                      <post-votes :positives="newest.attributes.votes_positive" :negatives="newest.attributes.votes_negatives">
+                      </post-votes>
+                    </div>
+                    <div class="col-10">
                       <ul class="ff-label news_list_detail">
                         <li><timeago :since="newest.attributes.create_dt" class="time-ago"></timeago></li>
                         <li v-if="newest.attributes.type == 'news'">Новость</li>
@@ -161,7 +164,11 @@
                   </div>
 
                   <div class="row">
-                    <div class="col">
+                    <div class="col-2">
+                      <post-votes :positives="item.attributes.votes_positive" :negatives="item.attributes.votes_negatives">
+                      </post-votes>
+                    </div>
+                    <div class="col-10">
                       <ul class="ff-label news_list_detail">
                         <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
                         <li v-if="item.attributes.type == 'news'">Новость</li>
@@ -206,6 +213,7 @@
 <script>
   import VueTimeago from 'vue-timeago'
   import Dropdowns from '~/components/Dropdowns.vue'
+  import PostVotes from '~/components/PostVotes.vue'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
 
@@ -258,7 +266,8 @@
     components: {
       VueTimeago,
       InfiniteLoading,
-      Dropdowns
+      Dropdowns,
+      PostVotes,
     },
 
     beforeRouteEnter (to, from, next) {
@@ -275,28 +284,32 @@
 
     beforeRouteUpdate (to, from, next) {
 
-      if(to.name == "index") {
-        this.filterBySymbol(null)
-        this.back = { name: 'index' } 
-      }
-
-      if(to.name == "index-symbol") {
+      if(to.name == "index" || to.name == "index-symbol") {
         this.filterBySymbol(to.params.symbol)
-        this.back = { name: 'index' } 
       }
 
-      if(from.name == "index-symbol" && to.name != "index") {
-        this.back = { name: 'index-symbol', 
-          params: { 
-            symbol: from.params.symbol
-          }
-        }
-      }
+      this.applyBackStack(to, from)
 
       next();
     },
 
     methods: {
+
+      applyBackStack(to, from) {
+        if(to.name == "index" || to.name == "index-symbol") {
+          this.back = { name: 'index' } 
+          return
+        }
+
+        if(from.name == "index-symbol") {
+          this.back = { name: 'index-symbol', 
+            params: { 
+              symbol: from.params.symbol
+            }
+          }
+          return
+        }
+      },
 
       infiniteHandler($state) {
         this.infiniteState = $state
@@ -332,6 +345,7 @@
       },
 
       filterBySymbol(symbol) {
+
         if(upSymbol(this.$store.state.filters.symbol) == upSymbol(symbol)) {
           return
         }

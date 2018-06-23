@@ -25,6 +25,14 @@
         Источник: {{ sourceDomain() }}
     </div>
     <div class="tools">
+
+      <button class="vote_up" v-on:click="vote(1)">
+        <span class="ic_up"></span><span class="votes_count">{{ attributes.votes_positive }}</span>
+      </button>
+       <button class="vote_down" v-on:click="vote(0)">
+        <span class="ic_down"></span><span class="votes_count">{{ attributes.votes_negative }}</span>
+      </button>
+
       <div v-if="showSocial" class="social">
 
         <social-sharing :networks="overriddenNetworks"
@@ -225,6 +233,20 @@ export default {
         return '/images' + this.attributes.images.original
       }
       return false
+    },
+    vote(is_positive) {
+      this.$axios.post(`/api/news/${this.attributes.id}/vote`, {
+          params: {
+            is_positive: is_positive,
+          },
+        }).then(({ data }) => {
+          console.log(data)
+          this.attributes = data.data.attributes
+        }).catch(e => {
+          if (e.response.status == 401) {
+            this.$router.push({ name: `account-signin` })
+          }
+        })
     },
   },
 }

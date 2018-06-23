@@ -184,7 +184,7 @@ module.exports = {
           login: {
             url: '/api/auth/login',
             method: 'post',
-            propertyName: 'token'
+            propertyName: 'access_token'
           },
           logout: false
         }
