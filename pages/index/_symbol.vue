@@ -11,7 +11,7 @@
     </ul> -->
       
     <div class="row no-gutters">
-      <h1 class="col-12 col-md-6">Курс {{ getCase() }}</h1>
+      <h1 class="col-12 col-md-6">Курс {{ getBTCCase() }}</h1>
       <div class="col-12 col-md-6">
         <div>
           <span class="coin-value">${{formatPrice(attributes.price_usd)}}</span>&nbsp;
@@ -105,7 +105,15 @@
 
     async asyncData ({ app, params, error }) {
 
-      const details = await app.$axios.get(process.env.apiUrl + `/v1/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
+      let details
+      try {
+        details = await app.$axios.get(process.env.apiUrl + `/v1/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
+      } catch (e) {
+        if( e.response && e.response.status == 404 ) {
+          error ({ message: 'Такой монеты не существует', statusCode: 404 })
+          return
+        }
+      }
 
       if(!details.data.data || details.data.data.length == 0) {
         error ({ message: 'Такой монеты не существует', statusCode: 404 })
@@ -115,8 +123,6 @@
       const { attributes }  = details.data.data[0] 
       let headTitle        = getTitle(attributes)
       let headDescription  = getDescription(attributes)
-
-      console.log(attributes)
 
       return { attributes, headTitle, headDescription }
     },
@@ -139,7 +145,6 @@
       },
       loadChart(symbol) {
 
-        console.log('loadChart: ' + symbol)
         let lineCharts = this.$refs.lineCharts
         lineCharts.delegateMethod('showLoading', 'Loading...')
 
@@ -157,12 +162,15 @@
       getImageSharing() {
         return '/FF_cover1080_b.png'
       },
+
+      getBTCCase() {
+        return this.attributes.symbol == 'BTC' ? getCase(this.attributes, 2) : this.attributes.coin_name
+      },
       getCase(value) {
         return getCase(this.attributes, 2)
       },
       callback() {
         return function() {
-          console.log('callback')
         }
       },
     },
