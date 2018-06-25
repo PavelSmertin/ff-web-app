@@ -63,7 +63,7 @@
 
         <div class="ff_center_panel col-md-7 offset-md-1" ref="scroll-container" v-bind:class="colCenter">
            <nuxt-child :key="$route.params.id"/>
-            <nuxt-link v-on:click="closeContent()" :to="back" class="ff_close">
+            <nuxt-link :to="back" class="ff_close">
                 <img src="/close.svg" />
             </nuxt-link>
         </div>
@@ -106,7 +106,7 @@
 
                   <div class="row no-gutters">
                     <div class="col-2">
-                      <post-votes :positives="newest.attributes.votes_positive" :negatives="newest.attributes.votes_negatives">
+                      <post-votes :positives="newest.attributes.votes_positive" :negatives="newest.attributes.votes_negative">
                       </post-votes>
                     </div>
                     <div class="col-10">
@@ -165,7 +165,7 @@
 
                   <div class="row">
                     <div class="col-2">
-                      <post-votes :positives="item.attributes.votes_positive" :negatives="item.attributes.votes_negatives">
+                      <post-votes :positives="item.attributes.votes_positive" :negatives="item.attributes.votes_negative">
                       </post-votes>
                     </div>
                     <div class="col-10">
@@ -201,9 +201,11 @@
               </infinite-loading>
               
             </div>
-
           </div> 
+          <div class="fading" v-bind:class="{ filtered: isFiltering }"></div>
+
         </aside>
+
       </div>
     </div>
   </div>
@@ -244,7 +246,8 @@
         ],
         selectedType: {name: 'Все новости'},
         back: { name: 'index' },
-        activeTab: 'left_tab'
+        activeTab: 'left_tab',
+        isFiltering: null,
       }
     },
 
@@ -329,38 +332,36 @@
       },
 
       filterByType(payload) {
-
         this.$store.commit('SET_FILTER_TYPE', payload.value)
         this.selectedType = payload
-
-        if(this.infiniteState) { 
-          this.infiniteState.reset()
-        }
-
-        let data = this.$axios.get(apiNewsPrepare(this.$store.state.filters)).then(({ data }) => {
-          this.$store.commit('SET_NEWS', data.data)
-          this.list = []
-          this.meta = { current_page: 1 }
-        });
+        this.filter()
       },
 
       filterBySymbol(symbol) {
-
         if(upSymbol(this.$store.state.filters.symbol) == upSymbol(symbol)) {
           return
         }
-
         this.$store.commit('SET_FILTER_SYMBOL', symbol)
+        this.filter()
+      },
 
+      filter() {
+        this.isFiltering = true
         if(this.infiniteState) { 
           this.infiniteState.reset()
         }
 
-        let data = this.$axios.get(apiNewsPrepare(this.$store.state.filters)).then(({ data }) => {
-          this.$store.commit('SET_NEWS', data.data)
-          this.list = []
-          this.meta = {current_page: 1}
-        });
+        let data = this.$axios.get(apiNewsPrepare(this.$store.state.filters))
+          .then(({ data }) => {
+
+            this.$store.commit('SET_NEWS', data.data)
+            this.list = []
+            this.meta = {current_page: 1}
+            this.isFiltering = false
+
+          }).catch(e => {
+            this.isFiltering = false
+          })
       },
 
       formatPrice(value) {
@@ -378,7 +379,7 @@
       },
 
       closeContent: function () {
-        return false
+        return true
       }
     },
 

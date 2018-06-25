@@ -271,6 +271,23 @@ h1 {
 		}
 	}
 }
+.ff-right-panel {
+	position: relative;
+	.fading {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: transparentize($bg-main-color, 0.45);
+		z-index: 3;
+		display: none;
+		&.filtered {
+			display:block;
+		}
+	}
+
+}
 
 /* mobile tabs block */
 .ff-toolbar {

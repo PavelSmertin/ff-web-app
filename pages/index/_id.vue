@@ -144,7 +144,9 @@ export default {
         }
       }
     } catch (e) {
-      error({ message: 'Newest not found', statusCode: 404 })
+      if( e.response.status == 404 ) {
+        error({ message: 'Newest not found', statusCode: 404 })
+      }
     }
   },
 
@@ -173,9 +175,6 @@ export default {
 
   mounted () {
     this.$on('social_shares_open', function (network, url) {
-      console.log('social_shares_open')
-      console.log(network)
-      console.log(url)
     });
     this.showSocial = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
     this.goto()
@@ -235,12 +234,8 @@ export default {
       return false
     },
     vote(is_positive) {
-      this.$axios.post(`/api/news/${this.attributes.id}/vote`, {
-          params: {
-            is_positive: is_positive,
-          },
-        }).then(({ data }) => {
-          console.log(data)
+      this.$axios.post(`/api/news/${this.attributes.id}/vote`, `is_positive=${is_positive}`)
+        .then(({ data }) => {
           this.attributes = data.data.attributes
         }).catch(e => {
           if (e.response.status == 401) {
