@@ -35,7 +35,8 @@ module.exports = {
       class: 'ff'
     },
     htmlAttrs: {
-      prefix: 'og: http://ogp.me/ns# article: http://ogp.me/ns/article# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#'
+      prefix: 'og: http://ogp.me/ns# article: http://ogp.me/ns/article# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#',
+      lang: 'ru',
     },
   },
 

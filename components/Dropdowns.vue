@@ -1,14 +1,16 @@
 <template>
     <div class="btn-group">
-        <li @click="toggleMenu()" class="dropdown-toggle" v-if="selectedOption.name !== undefined">
-          {{ selectedOption.name }}
-          <span class="caret"></span>
-        </li>
+        <ul>
+          <li @click="toggleMenu()" class="dropdown-toggle" v-if="selectedOption.name !== undefined">
+            {{ selectedOption.name }}
+            <span class="caret"></span>
+          </li>
 
-        <li @click="toggleMenu()" class="dropdown-toggle" v-if="selectedOption.name === undefined">
-          {{placeholderText}}
-          <span class="caret"></span>
-        </li>
+          <li @click="toggleMenu()" class="dropdown-toggle" v-if="selectedOption.name === undefined">
+            {{placeholderText}}
+            <span class="caret"></span>
+          </li>
+        </ul>
 
         <ul class="dropdown-menu" v-if="showMenu">
             <li v-for="option in options" v-bind:key="option.name">
