@@ -64,7 +64,25 @@
         <div class="ff_center_panel col-md-7 offset-md-1" ref="scroll-container" v-bind:class="colCenter">
            <nuxt-child :key="$route.params.id"/>
             <nuxt-link :to="back" class="ff_close">
-                <img src="/close.svg" />
+              <svg width="106px" height="106px" viewBox="0 0 106 106" id="ff_close">
+                  <defs>
+                    <circle id="path-1" cx="24" cy="24" r="24"></circle>
+                    <filter x="-104.2%" y="-83.3%" width="308.3%" height="308.3%" filterUnits="objectBoundingBox" id="filter-2">
+                      <feOffset dx="0" dy="10" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+                      <feGaussianBlur stdDeviation="15" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                      <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+                    </filter>
+                  </defs>
+                    <g transform="translate(-890.000000, -211.000000)">
+                      <g transform="translate(928.000000, 230.000000)">
+                        <g>
+                          <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                          <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        </g>
+                        <polygon id="close" fill="#000000" points="19 19.8 23.2 24.0000063 19 28.2 19.8 29 24 24.8 28.2 29 29 28.2 24.8 24.0000063 29 19.8 28.2 19 24 23.2 19.8 19"></polygon>
+                      </g>
+                    </g>
+              </svg>
             </nuxt-link>
         </div>
 
@@ -205,7 +223,6 @@
           <div class="fading" v-bind:class="{ filtered: isFiltering }"></div>
 
         </aside>
-
       </div>
     </div>
   </div>
@@ -307,14 +324,14 @@
     },
 
     beforeRouteUpdate (to, from, next) {
-
-      if(to.name == "index" || to.name == "index-symbol") {
-        this.filterBySymbol(to.params.symbol)
-      }
-
       this.applyBackStack(to, from)
-
       next();
+    },
+
+    mounted () {
+        if(this.$route.name == "index" || this.$route.name == "index-symbol") {
+          this.filterBySymbol(this.$route.params.symbol)
+        }
     },
 
     methods: {
@@ -400,7 +417,14 @@
       },
 
       closeContent: function () {
-        return true
+      }
+    },
+
+    watch:{
+      '$route':  function () {
+        if(this.$route.name == "index" || this.$route.name == "index-symbol") {
+          this.filterBySymbol(this.$route.params.symbol)
+        }
       }
     },
 

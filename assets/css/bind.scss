@@ -270,7 +270,17 @@ h1 {
 			outline: none;
 		}
 	}
+	#close {
+		transition: all 0.2s ease-out;
+	}
+
+	#ff_close:hover {
+		#close {
+			fill: $link-color;
+		}
+	}
 }
+
 .ff-right-panel {
 	position: relative;
 	.fading {
