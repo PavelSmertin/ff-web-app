@@ -80,8 +80,6 @@
 
 <script>
 import Vue from 'vue'
-
-import moment from 'moment'
 import BaseNetworks from '@/assets/networks.json';
 
 var MINUTE = 60;
@@ -144,7 +142,7 @@ export default {
         }
       }
     } catch (e) {
-      if( e.response.status == 404 ) {
+      if( e.response && e.response.status == 404 ) {
         error({ message: 'Newest not found', statusCode: 404 })
       }
     }
@@ -238,7 +236,7 @@ export default {
         .then(({ data }) => {
           this.attributes = data.data.attributes
         }).catch(e => {
-          if (e.response.status == 401) {
+          if (e.response && e.response.status == 401) {
             this.$router.push({ name: `account-signin` })
           }
         })
@@ -264,10 +262,6 @@ function redirectToSlug(data, slug) {
   } 
 
   throw new Error('Newest not found');
-}
-
-function setMeta(title, type) {
-  return title + " - " + ((type == "news") ? "Новости Bitcoin (BTC/USD)" : "Прогноз курса Bitcoin (BTC/USD)") + ((type == "news") ? "" : " от " + moment().format('DD.MM.YYYY')) + " на FF.ru";
 }
 
 function strip_social_desription(str, desriptionLength) {
@@ -308,7 +302,7 @@ function extractHostname(url) {
   return hostname;
 }
 
-function getTitle (params) {
+function getTitle( params ) {
   if( params.meta_title ) {
     return params.meta_title
   }
@@ -316,12 +310,29 @@ function getTitle (params) {
   if (params.type == "news") {
     return `${params.title} - Новости Bitcoin (BTC/USD) на FF.ru`
   } else {
-    return `Прогноз курса ${getCoin(params)} от ${moment(params.end_translate_dt || params.create_dt).format('DD.MM.YYYY')} - ${params.title} - FF.ru`
+    return `Прогноз курса криптовалют от ${formatDate(params.end_translate_dt || params.create_dt)} - ${params.title} - FF.ru`
   }
 }
 
-function getCoin (params) {
-  return 'криптовалют'
+function formatDate( dateString ) {
+  let postDate = new Date(dateString)
+  let dd    = postDate.getDate()
+  let mm    = postDate.getMonth()+1 //January is 0!
+  let yyyy  = postDate.getFullYear()
+  let yy    = postDate.getYear()
+  if( dd < 10 ){
+    dd = '0' + dd
+  } 
+  if( mm < 10 ){
+    mm ='0' + mm
+  }
+  if( yyyy >= 2000 ){
+    yy = yy - 100
+  } else {
+    yy = yyyy
+  }
+
+  return `${dd}.${mm}.${yy}`
 }
 
 </script>

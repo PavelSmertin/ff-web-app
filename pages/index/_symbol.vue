@@ -59,7 +59,6 @@
 
 <script>
   import Vue from 'vue'
-  import moment from 'moment'
   import axios from 'axios'
   import VueHighcharts from '~/components/VueHighcharts.vue'
   import { DrilldownOptions, MapData } from '~/static/data.js'

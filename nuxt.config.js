@@ -8,14 +8,14 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'Курс Bitcoin (BTC), новости и прогнозы Биткоина в реальном времени на FF.ru',
+    title: 'Рыночная капитализация криптовалют - FF.ru',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { 
         hid: 'description', 
         name: 'description', 
-        content: 'Курс, новости, прогнозы Bitcoin (BTC) и криптовалют в реальном времени. Когда покупать Биткоин - поможем принять решение. Подпишись на новости и не упусти момент, когда цены начнут меняться.' 
+        content: 'Рыночная капитализация криптовалют, рейтинг криптовалют, графики курса криптовалют в реальном времени, объемы рынка.',
       },
 
       { property: 'og:image:width', content: '968' },
@@ -49,6 +49,8 @@ module.exports = {
   */
   build: {
 
+    extractCSS: true,
+    analyze: true,
     /*
     ** Run ESLint on save
     */
@@ -71,11 +73,9 @@ module.exports = {
 
   plugins: [
     // ssr: false to only include it on client-side
-    { src: '~/plugins/vue-js-toggle-button.js'},
     { src: '~/plugins/ga.js', ssr: false },
-    { src: '~/plugins/vue-chartjs.js', ssr: false },
-    { src: '~/plugins/vue-socket.js', ssr: false },
-    { src: '~/plugins/social.js', ssr: true },
+    //{ src: '~/plugins/vue-socket.js', ssr: false },
+    { src: '~/plugins/social.js' },
     { src: '~/plugins/vue-highcharts.js', ssr: false },
   ],
 
@@ -101,8 +101,8 @@ module.exports = {
         return position
       }
     },
-    extendRoutes (routes, resolve) {
 
+    extendRoutes (routes, resolve) {
       let parent = routes.find((route) => {
         return route.path === '/'
       });
@@ -116,9 +116,7 @@ module.exports = {
         chunkName: 'pages/index/_id',
         component: resolve(__dirname, 'pages/index/_id.vue')
       });
-
-
-    }
+    },
   },
 
   modules: [
@@ -134,8 +132,8 @@ module.exports = {
     '@nuxtjs/feed',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
+    //['@nuxtjs/moment', { locales: ['ru'], plugin: false }],
     ['@nuxtjs/proxy', { pathRewrite: { '^/api' : '/v1', '^/images' : '/' } }],
-    ['bootstrap-vue/nuxt', { css: false }],
   ],
 
 
