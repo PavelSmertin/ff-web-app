@@ -198,15 +198,11 @@ h1 {
 					border-left: 1px solid $border-bold-color;
 				}
 				.ff_center_panel {
-					display: none;
 					position: absolute;
 					top:0;
 					bottom: 0;
 					overflow-y: scroll;
 					z-index: 2;
-					&.active_content {
-						display: block;
-					}
 				}
 			}
 		}
@@ -236,9 +232,6 @@ h1 {
 					}
 					.ff_center_panel {
 						top:-49px;
-						&.active_content {
-							display: block;
-						}
 					}
 				}
 
@@ -266,6 +259,7 @@ h1 {
 		position: absolute;
 		top: 0;
 		right: 0;
+		cursor: pointer;
 		&:focus {
 			outline: none;
 		}
@@ -278,6 +272,17 @@ h1 {
 		#close {
 			fill: $link-color;
 		}
+	}
+
+	&.fade-enter-active {
+		transition: all .3s ease;
+	}
+	&.fade-leave-active {
+		transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+	}
+	&.fade-enter, &.fade-leave-to {
+		transform: translateY(10px);
+		opacity: 0
 	}
 }
 
