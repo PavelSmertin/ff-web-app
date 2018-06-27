@@ -50,7 +50,7 @@ module.exports = {
   build: {
 
     extractCSS: true,
-    analyze: true,
+    // analyze: true,
     /*
     ** Run ESLint on save
     */
@@ -65,6 +65,10 @@ module.exports = {
       }
     }
   },
+
+  // render: {
+  //   gzip: true,
+  // },
 
   css: [
     '@/assets/css/bootstrap.min.css',
