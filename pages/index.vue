@@ -61,7 +61,7 @@
 
               <!-- client list -->              
               <nuxt-link v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff-news-row">
-                <post-item :post="newest"></post-item>
+                <post-item :post="item"></post-item>
               </nuxt-link>
 
               <infinite-loading v-if="$store.state.news.length" @infinite="infiniteHandler" spinner="spiral">
