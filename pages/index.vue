@@ -337,10 +337,6 @@
       (filters.type ? '&filters[news-translated][type]=' + filters.type : '') + 
       (filters.symbol ? '&filters[portfolio-coins][symbol]=' + upSymbol(filters.symbol) : '')
 
-    if (filterQuery.length > 0) {
-      filterQuery = filterQuery.replace('&','?')
-    }
-
     return api_news + filterQuery
   }
 
