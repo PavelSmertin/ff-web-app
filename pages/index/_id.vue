@@ -129,7 +129,7 @@ export default {
     // }
 
     try {
-      const { data } = await app.$axios.get(process.env.apiUrl + `/v1/news/view/${+params.id}`)
+      const { data } = await app.$axios.get(`/api/news/view/${+params.id}`)
  
       if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
         redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
