@@ -376,33 +376,18 @@ h1 {
 		color: $dark-primary-color;
 		font-size: $second_size;
 		line-height: 56px;
-		a {
-			color: $l-color;
-		}
-		.click-area {
-			display:block;
-			position:absolute;
-			left:0;
-			right:0;
-			top:0;
-			bottom:0;
-			content:'';
-			cursor:pointer;
-		}
-		a:not(.click-area) {
-			position: relative;
-			z-index: 1;
-		}
-		a.nuxt-link-active {
-			color: $link-color;
-			transition: color 0.1s ease-in-out;
+		&.nuxt-link-active {
+			.i_symbol {
+				color: $link-color;
+				transition: color 0.1s ease-in-out;
+			}
 		}
 	}
-	.currency:hover {
+	.currency:hover:not(.nuxt-link-active) {
 		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .15);
-	}
-	.currency:hover a:not(.nuxt-link-active) {
-		color: $dark-primary-color;
+		.i_symbol {
+			color: $dark-primary-color;
+		}
 	}
 	.coin_row {
 		display: flex;
@@ -415,7 +400,9 @@ h1 {
 			color: $up-value-color;
 			font-weight: bold;
 		}
-
+		.i_symbol {
+			color: $l-color;
+		}
 		.i_cap, .i_volume, .i_sup {
 			flex-basis: 200%;
 		}
@@ -470,6 +457,7 @@ h1 {
 		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .0);
 		transition: box-shadow 0.1s ease-in-out;
 		position: relative;
+		display: block;
 		border-bottom: 1px solid $border-thin-color;
 		.ff-news-cell {
 			display: block;
@@ -486,8 +474,13 @@ h1 {
 					margin-right: 4px;
 				}
 			}
-		}
 
+		}
+		&.nuxt-link-active {
+			.ff-nc-title  {
+				color: $link-color;
+			}
+		}
 		.click-area {
 			display:block;
 			position:absolute;
@@ -510,7 +503,7 @@ h1 {
 	.ff-news-row:hover {
 		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .15);
 	}
-	.ff-news-row:hover a:not(.nuxt-link-active) {
+	.ff-news-row:hover {
 		color: $dark-primary-color;
 	}
 }

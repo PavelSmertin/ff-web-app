@@ -1,5 +1,5 @@
 <template> 
-  <div class="row ff_index no-gutters">
+  <main class="row ff_index no-gutters">
     <div class="col ff_wrap">
 
       <ul class="row ff_mobile_tabs">
@@ -14,50 +14,7 @@
       <div class="row ff_content no-gutters">
         <div class="ff-left-panel col-md-8" v-bind:class="colLeft">
           <div class="scroll-container">
-            <div class="ff_coin_index">
-              <div class="coin_header">
-                <div class="coin_details_head i_symbol"></div>
-                <div class="coin_details_head i_cap">
-                  Капитализация
-                </div>
-                <div class="coin_details_head">
-                  Цена
-                </div>
-                <div class="coin_details_head i_volume">
-                  Объем(24ч)
-                </div>
-                <div class="coin_details_head i_sup">
-                  Оборот
-                </div>
-                <div class="coin_details_head">
-                  Цена(%)
-                </div>
-              </div>
-
-              <div v-for="coin of $store.state.coins" v-bind:key="coin.id" class="currency coin_row">
-                <nuxt-link :to="{name: 'index-symbol', params: { symbol: downSymbol(coin.attributes.symbol)}}" class="coin_details_item i_symbol" >
-                  {{ coin.attributes.symbol }}
-                </nuxt-link>
-                <div class="coin_details_item i_cap">
-                  ${{ formatPrice(coin.attributes.market_cap_usd) }}
-                </div>
-                <div class="coin_details_item">
-                  ${{ formatPrice(coin.attributes.price_usd) }}
-                </div>
-                <div class="coin_details_item i_volume">
-                  ${{ formatPrice(coin.attributes.volume24h_usd) }}
-                </div>
-                <div class="coin_details_item i_sup">
-                  {{ formatPrice(coin.attributes.available_supply) }} {{ coin.attributes.symbol }}
-                </div>
-                <div class="coin_details_item change" v-bind:class="{ negative: (coin.attributes.percent_change24h < 0) }">
-                  {{ coin.attributes.percent_change24h }}%
-                </div>
-
-                <nuxt-link :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" class="click-area">
-                </nuxt-link>
-              </div>
-            </div>
+            <coins-list />
           </div>
         </div>
 
@@ -97,123 +54,15 @@
           <div class="scroll-container">
             <div v-if="$store.state.news.length" class="ff-news">
 
-              <div v-for="newest of $store.state.news" v-bind:key="newest.id" class="ff-news-row">
-                <div class="ff-news-cell">
-                  <div class="row">
-                    <div class="col">
-                      <nuxt-link v-if="newest.attributes.slug" :to="{ 
-                                name: 'slug-id', 
-                                params: { 
-                                    id: newest.id, 
-                                    slug: newest.attributes.slug, 
-                                    newest:  newest.attributes }}"
-                                class="ff-nc-title"
-                                >
-                          {{newest.attributes.title}}
-                      </nuxt-link>
+              <!-- ssr list -->  
+              <nuxt-link v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
+                <post-item :post="newest"></post-item>
+              </nuxt-link>
 
-                      <nuxt-link v-else :to="{ 
-                                name: 'index-id', 
-                                params: { 
-                                    id: newest.id,
-                                    newest:  newest.attributes }}"
-                                class="ff-nc-title"
-                                >
-                          {{newest.attributes.title}}
-                      </nuxt-link>
-                    </div>
-                  </div>
-
-                  <div class="row no-gutters">
-                    <div class="col-2">
-                      <post-votes :positives="newest.attributes.votes_positive" :negatives="newest.attributes.votes_negative">
-                      </post-votes>
-                    </div>
-                    <div class="col-10">
-                      <ul class="ff-label news_list_detail">
-                        <li><timeago :since="newest.attributes.create_dt" class="time-ago"></timeago></li>
-                        <li v-if="newest.attributes.type == 'news'">Новость</li>
-                        <li v-else-if="newest.attributes.type == 'prognosis'">Прогноз</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <nuxt-link v-if="newest.attributes.slug" :to="{ 
-                            name: 'slug-id', 
-                            params: { 
-                                id: newest.id, 
-                                slug: newest.attributes.slug, 
-                                newest:  newest.attributes }}" 
-                            class="click-area"
-                            >
-                  </nuxt-link>
-                  <nuxt-link v-else :to="{ 
-                            name: 'index-id', 
-                            params: { 
-                                id: newest.id,
-                                newest:  newest.attributes }}" 
-                            class="click-area"
-                            >
-                  </nuxt-link>
-                </div>
-              </div>
-
-              <div v-for="(item, key) in list" v-bind:key="key" class="ff-news-row">
-                <div class="ff-news-cell">
-
-                  <div class="row">
-                    <div class="col">
-                      <nuxt-link v-if="item.attributes.slug"  :to="{ 
-                          name: 'slug-id', 
-                          params: { 
-                              id: item.id, 
-                              slug: item.attributes.slug, 
-                              newest:  item.attributes }}" 
-                          class="ff-nc-title">
-                        {{item.attributes.title}}
-                      </nuxt-link>
-                      <nuxt-link v-else  :to="{ 
-                          name: 'index-id', 
-                          params: { 
-                              id: item.id,
-                              newest:  item.attributes }}" 
-                          class="ff-nc-title">
-                        {{item.attributes.title}}
-                      </nuxt-link>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-2">
-                      <post-votes :positives="item.attributes.votes_positive" :negatives="item.attributes.votes_negative">
-                      </post-votes>
-                    </div>
-                    <div class="col-10">
-                      <ul class="ff-label news_list_detail">
-                        <li><timeago :since="item.attributes.create_dt" class="time-ago"></timeago></li>
-                        <li v-if="item.attributes.type == 'news'">Новость</li>
-                        <li v-else-if="item.attributes.type == 'prognosis'">Прогноз</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <nuxt-link v-if="item.attributes.slug"  :to="{ 
-                            name: 'slug-id', 
-                            params: { 
-                                id: item.id, 
-                                slug: item.attributes.slug, 
-                                newest:  item.attributes }}" 
-                            class="click-area">
-                  </nuxt-link>
-                  <nuxt-link v-else  :to="{ 
-                            name: 'index-id', 
-                            params: { 
-                                id: item.id,
-                                newest:  item.attributes }}" 
-                            class="click-area">
-                  </nuxt-link>
-                </div>
-              </div>
+              <!-- client list -->              
+              <nuxt-link v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff-news-row">
+                <post-item :post="newest"></post-item>
+              </nuxt-link>
 
               <infinite-loading v-if="$store.state.news.length" @infinite="infiniteHandler" spinner="spiral">
                 <span slot="no-more">Вы достигли конца списка</span>
@@ -227,14 +76,15 @@
         </aside>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 
 <script>
   import VueTimeago from 'vue-timeago'
   import Dropdowns from '~/components/Dropdowns.vue'
-  import PostVotes from '~/components/PostVotes.vue'
+  import PostItem from '~/components/PostItem.vue'
+  import CoinsList from '~/components/CoinsList.vue'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
 
@@ -245,7 +95,7 @@
   var MONTH = DAY * 30;
   var YEAR = DAY * 365;
 
-  const api_news = process.env.apiUrl + '/v1/news/';
+  const api_news = process.env.apiUrl + '/v1/news/?fields[news-translated]=title,votes_positive,votes_negative,create_dt,type';
   const api_coins = process.env.apiUrl + '/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply';
 
   export default {
@@ -308,7 +158,8 @@
       VueTimeago,
       InfiniteLoading,
       Dropdowns,
-      PostVotes,
+      PostItem,
+      CoinsList,
     },
 
     beforeRouteEnter (to, from, next) {
@@ -401,14 +252,6 @@
             this.isFiltering = false
           })
       },
-
-      formatPrice(value) {
-        let val = (value/1).toFixed(2).replace('.', ',')
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-      },
-      downSymbol(value) {
-        return value.toLowerCase()
-      },
       setRightTab: function () {
         this.activeTab = 'right_tab'
       },
@@ -422,6 +265,15 @@
       afterLeave: function (el) {
         //this.$router.push(this.back)
       },
+
+      linkToPost: function (post) {
+        if( post.attributes.slug ) {
+          return { name: 'slug-id', params: { id: post.id, slug: post.attributes.slug, newest:  post.attributes }}
+        } else {
+          return { name: 'index-id', params: { id: post.id, newest:  post.attributes }}
+        }
+      },
+
     },
 
     watch:{

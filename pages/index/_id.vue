@@ -14,6 +14,7 @@
         <li v-else-if="attributes.type == 'prognosis'">Прогноз</li>
       </ul>
     </div>
+    
     <h1 class="post-header">
       {{attributes.title}}
     </h1>
@@ -117,15 +118,15 @@ export default {
 
   async asyncData({ app, req, params, error, redirect }) {
 
-    if( process.client && params.newest) {
-      return {
-        url: process.env.baseUrl + "/" + params.newest.id,
-        title: params.newest.title,
-        seoTitle: getTitle(params.newest),
-        body: params.newest.body,
-        attributes: params.newest,
-      }
-    }
+    // if( process.client && params.newest) {
+    //   return {
+    //     url: process.env.baseUrl + "/" + params.newest.id,
+    //     title: params.newest.title,
+    //     seoTitle: getTitle(params.newest),
+    //     body: params.newest.body,
+    //     attributes: params.newest,
+    //   }
+    // }
 
     try {
       const { data } = await app.$axios.get(process.env.apiUrl + `/v1/news/view/${+params.id}`)
