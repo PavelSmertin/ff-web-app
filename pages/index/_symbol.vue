@@ -20,8 +20,8 @@
         </div>
         <div>
           <span class="coin-info">{{attributes.price_btc}} BTC</span>&nbsp;
-          <span class="coin-info positive">0,0%</span>
-        </div>
+<!--           <span class="coin-info positive">0,0%</span>
+ -->        </div>
       </div>
     </div>
 
@@ -29,23 +29,23 @@
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">Капитализация</div>
         <div class="coin-detail">{{formatPrice(attributes.market_cap_usd)}} USD</div>
-        <div class="coin-detail-info">{{formatPrice(attributes.total_coin_supply)}} BTC</div>
+        <div class="coin-detail-info">{{formatPrice(attributes.total_coin_supply)}} {{attributes.symbol}}</div>
       </div>
 
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">Объем (24ч)</div>
         <div class="coin-detail">{{formatPrice(attributes.volume24h_usd)}} USD</div>
-        <div class="coin-detail-info">{{formatPrice(attributes.volume24h_btc)}} BTC</div>
+        <div class="coin-detail-info">{{formatPrice(attributes.volume24h_btc)}} {{attributes.symbol}}</div>
       </div>
 
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">В обороте</div>
-        <div class="coin-detail">{{formatPrice(attributes.available_supply)}} BTC</div>
+        <div class="coin-detail">{{formatPrice(attributes.available_supply)}} {{attributes.symbol}}</div>
       </div>
 
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">В обороте (max)</div>
-        <div class="coin-detail">{{formatPrice(attributes.max_supply)}} BTC</div>
+        <div class="coin-detail">{{formatPrice(attributes.max_supply)}} {{attributes.symbol}}</div>
       </div>
     </div>
 
