@@ -75,13 +75,12 @@ module.exports = {
     '@/assets/css/bootstrap.min.css',
     '@/assets/css/bind.scss',
   ],
-
   plugins: [
     // ssr: false to only include it on client-side
     { src: '~/plugins/ga.js', ssr: false },
     //{ src: '~/plugins/vue-socket.js', ssr: false },
     { src: '~/plugins/social.js' },
-    { src: '~/plugins/vue-highcharts.js', ssr: false },
+    //{ src: '~/plugins/vue-highcharts.js', ssr: false },
   ],
 
   env: {
