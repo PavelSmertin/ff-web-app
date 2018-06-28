@@ -180,7 +180,7 @@
     },
 
     mounted () {
-      if( this.$route.name == "index-symbol" ) {
+      if( this.$route.name == "index" || this.$route.name == "index-symbol" ) {
         this.filterBySymbol(this.$route.params.symbol)
       }
     },
@@ -278,7 +278,7 @@
 
     watch:{
       '$route':  function () {
-        if( this.$route.name == "index-symbol" ) {
+        if( this.$route.name == "index" || this.$route.name == "index-symbol" ) {
           this.filterBySymbol(this.$route.params.symbol)
         }
       }
