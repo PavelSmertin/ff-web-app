@@ -2,6 +2,8 @@
 
 const axios = require('axios')
 
+const host = 'http://localhost:3000'
+
 module.exports = {
 
   /*
@@ -80,11 +82,12 @@ module.exports = {
     { src: '~/plugins/ga.js', ssr: false },
     //{ src: '~/plugins/vue-socket.js', ssr: false },
     { src: '~/plugins/social.js' },
+    { src: '~/plugins/mailsform.js', ssr: false },
     //{ src: '~/plugins/vue-highcharts.js', ssr: false },
   ],
 
   env: {
-    baseUrl: 'https://ff.ru',
+    baseUrl: host,
     apiUrl: 'https://api.ff.ru',
   },
 
@@ -142,8 +145,8 @@ module.exports = {
 
 
   axios: {
-    baseUrl: 'https://ff.ru',
-    browserBaseURL: 'https://ff.ru',
+    baseUrl: host,
+    browserBaseURL: host,
     // proxy: true,
     // proxyHeaders: true,
     // credentials: false,
