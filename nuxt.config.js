@@ -2,7 +2,7 @@
 
 const axios = require('axios')
 
-const host = 'http://localhost:3000'
+const host = 'https://ff.ru'
 
 module.exports = {
 
