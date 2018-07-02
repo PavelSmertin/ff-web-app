@@ -76,7 +76,12 @@
         </social-sharing>
       </div>    
     </div>
+
+    <div class="my-widget-anchor mail_news_widget" data-cid="b9cdb3b43490823a65345cb4608d6471"></div>
+
   </article>
+
+
 </template>
 
 <script>
@@ -177,6 +182,26 @@ export default {
     });
     this.showSocial = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
     this.goto()
+
+    // mail recomendes
+    var script = document.createElement("script");
+    script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: false};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'));
+    document.body.appendChild(script);
+
+    // email collector
+    var chimpPopupWrap = document.createElement('script');
+    chimpPopupWrap.src = "//downloads.mailchimp.com/js/signup-forms/popup/embed.js"
+    chimpPopupWrap.setAttribute('data-dojo-config', 'usePlainJson: true, isDebug: false');
+    document.body.appendChild(chimpPopupWrap);
+
+    var chimpPopup = document.createElement("script");
+    chimpPopup.appendChild(document.createTextNode('require(["mojo/signup-forms/Loader"], function (L) { L.start({"baseUrl":"mc.us18.list-manage.com","uuid":"f2a6cbc588ae02f3e4991dd3d","lid":"c84e62e0f7"})});'));
+
+    chimpPopupWrap.onload = function() {
+      document.body.appendChild(chimpPopup);
+    }
+
+
   },
 
   computed: {
