@@ -115,7 +115,7 @@ module.exports = {
       });
 
       parent.children.find((r) => r.path.includes(':id')).path = ':id(\\d+)'
-      parent.children.find((r) => r.path.includes(':symbol')).path = ':symbol([a-zA-Z]+)'
+      parent.children.find((r) => r.path.includes(':symbol')).path = ':symbol([a-zA-Z0-9]+)'
 
       parent.children.push({
         name: 'slug-id',

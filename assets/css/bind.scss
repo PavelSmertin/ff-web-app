@@ -205,7 +205,9 @@ h1 {
 					.ff_scroll_wrap {
 						position: absolute;
 						top:0;
-						bottom: 0;	
+						bottom: 0;
+						right: 0;
+						left: 0;
 						overflow-y: scroll;
 					}
 				}
