@@ -16,7 +16,7 @@
     </div>
     
     <h1 class="post-header">
-      {{attributes.title}}
+      {{ attributes.title }}
     </h1>
 
     <img v-if="getImageOriginal()" class="image_origin" :src="getImageOriginal()" alt="новость">

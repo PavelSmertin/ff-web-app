@@ -19,8 +19,12 @@
         </div>
 
         <transition name="fade" v-on:after-leave="afterLeave">
-          <div v-if="centralFade" class="ff_center_panel col-md-7 offset-md-1" ref="scroll-container">
-            <nuxt-child :key="$route.params.id"/>
+          <div v-if="centralFade" class="ff_center_panel col-md-7 offset-md-1">
+
+            <div class="ff_scroll_wrap" ref="scroll-container">
+              <nuxt-child :key="$route.params.id"/>
+            </div>
+
             <button v-on:click="onClose()" class="ff_close">
               <svg width="106px" height="106px" viewBox="0 0 106 106" id="ff_close">
                 <defs>
@@ -42,6 +46,7 @@
                 </g>
               </svg>
             </button>
+            
           </div>
         </transition>
 

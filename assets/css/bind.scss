@@ -201,8 +201,13 @@ h1 {
 					position: absolute;
 					top:0;
 					bottom: 0;
-					overflow-y: scroll;
 					z-index: 2;
+					.ff_scroll_wrap {
+						position: absolute;
+						top:0;
+						bottom: 0;	
+						overflow-y: scroll;
+					}
 				}
 			}
 		}
@@ -783,6 +788,9 @@ h1 {
 		}
 	}
 
+	.mail_news_widget {
+		margin: 48px 24px 0 24px;
+	}
 
 }
 
@@ -820,6 +828,12 @@ h1 {
 				text-align: right;
 			}
 		}
+
+		.mail_news_widget {
+			margin: 50px 0 0 0;
+		}
+
+
 	}
 }
 
@@ -1225,11 +1239,6 @@ h1 {
 	.highcharts-credits{
 		display: none !important;
 	}
-}
-
-
-.mail_news_widget {
-	margin-top: 50px;
 }
 
 
