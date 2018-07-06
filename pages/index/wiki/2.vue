@@ -68,3 +68,32 @@
 		
 	</article>
 </template>
+
+<script>
+  export default {
+
+	head() {
+		return {
+		title: 'Где хранить биткоины? Как выбрать биткоин кошелек - FF.ru',
+		meta: [
+		{ 
+			hid: 'description', 
+			name: 'description', 
+			content: 'Важно выбрать наиболее надежный и удобный способ хранения биткоина, для этого подойдут Bitcoin кошельки. Существует несколько типов кошельков, разберемся какой лучше.',
+		},
+		{ hid: 'og:type', property: 'og:type', content: 'website' },
+		{ hid: 'og:url', property: 'og:url', content: process.env.baseUrl },
+		{ hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
+		{ hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
+
+		{ hid: 'og:title', property: 'og:title', content: 'Где хранить биткоины? Как выбрать биткоин кошелек - FF.ru' },
+		{ hid: 'og:description', property: 'og:description', content: 'Важно выбрать наиболее надежный и удобный способ хранения биткоина, для этого подойдут Bitcoin кошельки. Существует несколько типов кошельков, разберемся какой лучше.' },
+		{ hid: 'twitter:title', name: 'twitter:title', content: 'Где хранить биткоины? Как выбрать биткоин кошелек - FF.ru' },
+		{ hid: 'twitter:description', name: 'twitter:description', content: 'Важно выбрать наиболее надежный и удобный способ хранения биткоина, для этого подойдут Bitcoin кошельки. Существует несколько типов кошельков, разберемся какой лучше.' },
+		],
+		}
+	},
+
+ }
+
+</script>

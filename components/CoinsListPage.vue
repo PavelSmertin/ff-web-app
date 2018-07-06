@@ -1,5 +1,5 @@
 <template>
-  <div class="ff_coin_index">
+  <div class="ff_coin_page">
     <div class="coin_header">
       <div class="coin_details_head i_symbol"></div>
       <div class="coin_details_head i_cap">

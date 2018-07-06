@@ -50,3 +50,32 @@
 		
 	</article>
 </template>
+
+<script>
+  export default {
+
+	head() {
+		return {
+		title: 'Как продать или обналичить биткоин',
+		meta: [
+		{ 
+			hid: 'description', 
+			name: 'description', 
+			content: 'Продать или обналичить биткоины можно нескольким способами, например через биржи, обменники или с помощью карты.',
+		},
+		{ hid: 'og:type', property: 'og:type', content: 'website' },
+		{ hid: 'og:url', property: 'og:url', content: process.env.baseUrl },
+		{ hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
+		{ hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
+
+		{ hid: 'og:title', property: 'og:title', content: 'Как продать или обналичить биткоин' },
+		{ hid: 'og:description', property: 'og:description', content: 'Продать или обналичить биткоины можно нескольким способами, например через биржи, обменники или с помощью карты.' },
+		{ hid: 'twitter:title', name: 'twitter:title', content: 'Как продать или обналичить биткоин' },
+		{ hid: 'twitter:description', name: 'twitter:description', content: 'Продать или обналичить биткоины можно нескольким способами, например через биржи, обменники или с помощью карты.' },
+		],
+		}
+	}
+
+ }
+ 
+</script>

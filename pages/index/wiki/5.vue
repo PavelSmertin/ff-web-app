@@ -24,3 +24,32 @@
 		
 	</article>
 </template>
+
+<script>
+  export default {
+
+	head() {
+		return {
+		title: 'Биткоин в России| Подробности регулирования криптовалют - FF.ru',
+		meta: [
+		{ 
+			hid: 'description', 
+			name: 'description', 
+			content: 'Биткоин в России использовать можно, отношение государства к криптовалюте на данный момент носит неопределенный характер.',
+		},
+		{ hid: 'og:type', property: 'og:type', content: 'website' },
+		{ hid: 'og:url', property: 'og:url', content: process.env.baseUrl },
+		{ hid: 'og:image', property: 'og:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
+		{ hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + '/FF_cover1080_b.png' },
+
+		{ hid: 'og:title', property: 'og:title', content: 'Биткоин в России| Подробности регулирования криптовалют - FF.ru' },
+		{ hid: 'og:description', property: 'og:description', content: 'Биткоин в России использовать можно, отношение государства к криптовалюте на данный момент носит неопределенный характер.' },
+		{ hid: 'twitter:title', name: 'twitter:title', content: 'Биткоин в России| Подробности регулирования криптовалют - FF.ru' },
+		{ hid: 'twitter:description', name: 'twitter:description', content: 'Биткоин в России использовать можно, отношение государства к криптовалюте на данный момент носит неопределенный характер.' },
+		],
+		}
+	}
+
+ }
+ 
+</script>
