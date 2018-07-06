@@ -2,8 +2,8 @@
 
 const axios = require('axios')
 
-const host = 'http://localhost:3000'
-const api = 'http://test-api.ff.ru'
+const host = 'http://latest.ff.ru'
+const api = 'http://api.ff.ru'
 
 module.exports = {
 
@@ -80,7 +80,7 @@ module.exports = {
   ],
   plugins: [
     // ssr: false to only include it on client-side
-    { src: '~/plugins/ga.js', ssr: false },
+    //{ src: '~/plugins/ga.js', ssr: false },
     //{ src: '~/plugins/vue-socket.js', ssr: false },
     { src: '~/plugins/social.js' },
     // { src: '~/plugins/mailsform.js', ssr: false },
@@ -128,15 +128,15 @@ module.exports = {
   },
 
   modules: [
-    ['@nuxtjs/yandex-metrika', {
-      id: '25598768',
-      webvisor: true,
-      // clickmap:true,
-      // useCDN:false,
-      // trackLinks:true,
-      // accurateTrackBounce:true,
-      }
-    ],
+    // ['@nuxtjs/yandex-metrika', {
+    //   id: '25598768',
+    //   webvisor: true,
+    //   // clickmap:true,
+    //   // useCDN:false,
+    //   // trackLinks:true,
+    //   // accurateTrackBounce:true,
+    //   }
+    // ],
     '@nuxtjs/feed',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
