@@ -33,30 +33,30 @@
 
         <div class="coin_detail_unit col-6 col-md-2">
           <div class="ff-label">Изменение (1ч)</div>
-          <div class="coin-detail" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
+          <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
             {{ formatPrice(attributes.change1h_usd) }} USD
           </div>
-          <div class="coin-detail-info" v-bind:class="{ negative: (attributes.change24h_rub < 0) }">
+          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change1h_rub < 0) }">
             {{ formatPrice(attributes.change1h_rub) }} RUB
           </div>
         </div>
 
         <div class="coin_detail_unit col-6 col-md-2">
           <div class="ff-label">Изменение (24ч)</div>
-          <div class="coin-detail" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
+          <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
             {{ formatPrice(attributes.change24h_usd) }} USD
           </div>
-          <div class="coin-detail-info" v-bind:class="{ negative: (attributes.change24h_rub < 0) }">
+          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change24h_rub < 0) }">
             {{ formatPrice(attributes.change24h_rub) }} RUB
           </div>
         </div>
 
         <div class="coin_detail_unit col-6 col-md-2">
           <div class="ff-label">Изменение (7д)</div>
-          <div class="coin-detail" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
+          <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
             {{ formatPrice(attributes.change7d_usd) }} USD
           </div>
-          <div class="coin-detail-info" v-bind:class="{ negative: (attributes.change24h_rub < 0) }">
+          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change7d_rub < 0) }">
             {{ formatPrice(attributes.change7d_rub) }} RUB
           </div>
         </div>
@@ -171,10 +171,6 @@
       </dl>
     </div>
 
-    <div class="row no-gutters">
-      <h3>Другие криптовалюты</h3>
-    </div>
-
     <section v-if="attributes.seo_text" class="row ff_text_block margin60" v-html="attributes.seo_text"></section>
 
   </section>
@@ -243,8 +239,6 @@
 
         details = dataFormatter.deserialize(response_details.data)
         pairs = dataFormatter.deserialize(response_pairs.data)
-
-        console.log(details)
 
       } catch (e) {
         if( e.response && e.response.status == 404 ) {

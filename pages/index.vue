@@ -160,7 +160,7 @@
           { name: 'Прогноз', value: 'prognosis' }
         ],
         selectedType: {name: 'Все новости'},
-        back: { name: 'index' },
+        back: { name: 'coins' },
         activePane: 'center_pane',
         activeTab: null,
         isFiltering: null,
@@ -217,7 +217,7 @@
 
       applyBackStack(to, from) {
         if(to.name == "index" || to.name == "index-symbol") {
-          this.back = { name: 'index' } 
+          this.back = { name: 'coins' } 
           return
         }
 
@@ -227,6 +227,11 @@
               symbol: from.params.symbol
             }
           }
+          return
+        }
+
+        if(from.name == "index") {
+          this.back = { name: 'index' }
           return
         }
       },
@@ -362,7 +367,7 @@
         }
       },
       showPost: function () {
-        return !( this.$route.name == "index" || this.$route.name == "index-symbol" ) 
+        return true
       }
     },
 
