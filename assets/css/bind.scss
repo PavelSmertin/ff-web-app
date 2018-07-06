@@ -1469,6 +1469,53 @@ h3 {
 		background-color: $bg-coin-color;
 	}
 }
+@media (max-width: 769px) {
+	.ff_pairs_index {
+		.ff_pairs_header {
+
+			.ff_pairs_head {
+					&.i_high, &.i_low {
+						display: none;
+					}
+					&.changes {
+						flex-grow: 1;
+					}
+					&.i_price {
+						flex-grow: 1.5;
+					}
+					&.i_volume {
+						flex-grow: 1.5;
+					}
+			}
+		}
+		.ff_pair {
+			.ff_pair_item {
+				&.i_high, &.i_low {
+					display: none;
+				}
+				.changes {
+					flex-grow: 1;
+				}
+				&.i_price {
+					flex-grow: 1.5;
+				}
+				&.i_volume {
+					flex-grow: 1.5;
+					.unit {
+						display: none
+					}
+				}
+			}
+		}
+	}
+
+	.ff_coin {
+		.row.pairs_row {
+			padding: 0 !important;
+		}
+	}
+}
+
 
 
 .coin_stat {

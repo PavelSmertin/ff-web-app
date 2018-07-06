@@ -37,7 +37,7 @@
             {{ formatPrice(attributes.change1h_usd) }} USD
           </div>
           <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change1h_rub < 0) }">
-            {{ formatPrice(attributes.change1h_rub) }} RUB
+            {{ formatPrice(attributes.percent_change1h) }}%
           </div>
         </div>
 
@@ -47,7 +47,7 @@
             {{ formatPrice(attributes.change24h_usd) }} USD
           </div>
           <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change24h_rub < 0) }">
-            {{ formatPrice(attributes.change24h_rub) }} RUB
+            {{ formatPrice(attributes.percent_change24h) }}%
           </div>
         </div>
 
@@ -57,7 +57,7 @@
             {{ formatPrice(attributes.change7d_usd) }} USD
           </div>
           <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change7d_rub < 0) }">
-            {{ formatPrice(attributes.change7d_rub) }} RUB
+            {{ formatPrice(attributes.percent_change7d) }}%
           </div>
         </div>
 
@@ -74,25 +74,25 @@
       <h2 class="margin12">Котировки биткоина к доллару на биржах</h2>
     </div>
 
-    <div class="row no-gutters margin6">
+    <div class="row no-gutters margin6 pairs_row">
       <div class="ff_pairs_index">
         <div class="ff_pairs_header">
           <div class="ff_pairs_head">
             Биржа
           </div>
-          <div class="ff_pairs_head">
+          <div class="ff_pairs_head i_price">
             Курс
           </div>
-          <div class="ff_pairs_head">
+          <div class="ff_pairs_head i_high">
             Мин (24ч)
           </div>
-          <div class="ff_pairs_head">
+          <div class="ff_pairs_head i_low">
             Макс (24ч)
           </div>
           <div class="ff_pairs_head changes">
             Изменения
           </div>
-          <div class="ff_pairs_head">
+          <div class="ff_pairs_head i_volume">
             Объем
           </div>
         </div>
@@ -100,11 +100,11 @@
         <div class="ff_pair" v-for="pair of pairs" v-bind:key="pair.exchange_id" >
 
           <div class="ff_pair_item">{{ pair.exchange.name }}</div>
-          <div class="ff_pair_item">${{ formatPrice(pair.price) }}</div>
-          <div class="ff_pair_item">${{ formatPrice(pair.high24hour) }}</div>
-          <div class="ff_pair_item">${{ formatPrice(pair.low24hour) }}</div>
+          <div class="ff_pair_item i_price">${{ formatPrice(pair.price) }}</div>
+          <div class="ff_pair_item i_high">${{ formatPrice(pair.high24hour) }}</div>
+          <div class="ff_pair_item i_low">${{ formatPrice(pair.low24hour) }}</div>
           <div class="ff_pair_item changes">${{ formatPrice(pair.change24hour) }} ({{ formatPrice(pair.changepct24hour) }}%)</div>
-          <div class="ff_pair_item">{{ formatPrice(pair.volume24hour) }} BTC</div>
+          <div class="ff_pair_item i_volume">{{ formatPrice(pair.volume24hour) }} <span class="unit">BTC</span></div>
         </div>
       </div>
     </div>

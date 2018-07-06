@@ -138,7 +138,7 @@ module.exports = {
     //   // accurateTrackBounce:true,
     //   }
     // ],
-    '@nuxtjs/feed',
+    // '@nuxtjs/feed',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     //['@nuxtjs/moment', { locales: ['ru'], plugin: false }],
@@ -199,51 +199,51 @@ module.exports = {
     }
   },
 
-  feed: [{
-      path: '/rss_export', // The route to your feed.
-      async create (feed) {
-        feed.options = {
-          title: 'Курс Bitcoin (BTC), новости и прогнозы Биткоина в реальном времени на FF.ru',
-          description: 'Курс, новости, прогнозы Bitcoin (BTC) и криптовалют в реальном времени. Когда покупать Биткоин - поможем принять решение. Подпишись на новости и не упусти момент, когда цены начнут меняться.',
-          language: 'ru-ru',
-          generator: 'RSS for ff',
-          id: 'https://ff.ru/',
-          link: 'https://ff.ru/',
-          favicon: 'https://ff.ru/favicon.ico',
-          copyright: 'All rights reserved 2018, ff.ru',
-        }
+  // feed: [{
+  //     path: '/rss_export', // The route to your feed.
+  //     async create (feed) {
+  //       feed.options = {
+  //         title: 'Курс Bitcoin (BTC), новости и прогнозы Биткоина в реальном времени на FF.ru',
+  //         description: 'Курс, новости, прогнозы Bitcoin (BTC) и криптовалют в реальном времени. Когда покупать Биткоин - поможем принять решение. Подпишись на новости и не упусти момент, когда цены начнут меняться.',
+  //         language: 'ru-ru',
+  //         generator: 'RSS for ff',
+  //         id: 'https://ff.ru/',
+  //         link: 'https://ff.ru/',
+  //         favicon: 'https://ff.ru/favicon.ico',
+  //         copyright: 'All rights reserved 2018, ff.ru',
+  //       }
 
-        const posts = await axios.get('https://api.ff.ru/v1/news/', {
-                            params: {
-                              page: 1,
-                              'per-page': 200
-                            },
-                          })
-        const domain = 'https://ff.ru/';
+  //       const posts = await axios.get('https://api.ff.ru/v1/news/', {
+  //                           params: {
+  //                             page: 1,
+  //                             'per-page': 200
+  //                           },
+  //                         })
+  //       const domain = 'https://ff.ru/';
 
-        posts.data.data.forEach(post => { 
-          feed.addItem({
-              title: post.attributes.title,
-              id: domain + post.id + (post.attributes.slag ? ("/" + post.attributes.slag) : ""),
-              link: domain + post.id + (post.attributes.slag ? ("/" + post.attributes.slag) : ""),
-              content: post.attributes.body,
-              pubDate: post.attributes.create_dt
-          })
+  //       posts.data.data.forEach(post => { 
+  //         feed.addItem({
+  //             title: post.attributes.title,
+  //             id: domain + post.id + (post.attributes.slag ? ("/" + post.attributes.slag) : ""),
+  //             link: domain + post.id + (post.attributes.slag ? ("/" + post.attributes.slag) : ""),
+  //             content: post.attributes.body,
+  //             pubDate: post.attributes.create_dt
+  //         })
         
-        })
+  //       })
 
-        feed.addCategory('CryptoCurrency')
+  //       feed.addCategory('CryptoCurrency')
       
-        feed.addContributor({
-          name: 'Pavel Smertin',
-          email: 'pashtetbezd@gmail.com',
-          link: 'https://ff.ru/'
-        })
-      },
-      cacheTime: 1000 * 60 * 15, // How long should the feed be cached
-      type: 'rss2' // Can be: rss2, atom1, json1
-    }
-  ],
+  //       feed.addContributor({
+  //         name: 'Pavel Smertin',
+  //         email: 'pashtetbezd@gmail.com',
+  //         link: 'https://ff.ru/'
+  //       })
+  //     },
+  //     cacheTime: 1000 * 60 * 15, // How long should the feed be cached
+  //     type: 'rss2' // Can be: rss2, atom1, json1
+  //   }
+  // ],
 
 
 }

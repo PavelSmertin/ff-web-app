@@ -1,7 +1,10 @@
 <template> 
 	<article class="ff-post">
 	  	<div class="description">
-	  		<img src="https://preview.ibb.co/iYRHCJ/Chto_takoe_bitcoin_prostimi_slovami.png" alt="Chto_takoe_bitcoin_prostimi_slovami" border="0">
+
+	  		<h1 class="margin60">Что такое Биткоин?</h1>
+
+	  		<img class="margin24" src="https://preview.ibb.co/iYRHCJ/Chto_takoe_bitcoin_prostimi_slovami.png" alt="Chto_takoe_bitcoin_prostimi_slovami" border="0">
 
 	  		<p class="margin24">
 			Биткоин - первая криптовалюта, ставшая популярной после резкого взлета курса до 20 000 $ за монету в декабре 2017 года. Основная суть биткоина состоит в децентрализации - нет центрального хранилища информации, нет центрального управления и, главное, нет центральной точки отказа. Биткоин зарекомендовал себя как более быстрый, более частный и более безопасный способ переводов, чем существующие банковские системы. Транзакции в сети биткоин невозможно изменить, отменить или подделать.
