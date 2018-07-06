@@ -10,7 +10,7 @@
       </li>
     </ul> -->
       
-    <div class="row no-gutters">
+    <div class="row no-gutters margin24">
       <h1 class="col-12 col-md-6">Курс {{ getBTCCase() }}</h1>
       <div class="col-12 col-md-6">
         <div>
@@ -49,7 +49,12 @@
       </div>
     </div>
 
-    <vue-highcharts :options="options" ref="lineCharts" :callback="callback()"></vue-highcharts>
+    <div class="row no-gutters margin12">
+      <h2>График курса {{ attributes.coin_name }}</h2>
+    </div>
+    <div class="row no-gutters">
+      <vue-highcharts :options="options" ref="lineCharts" :callback="callback()"></vue-highcharts>
+    </div>
 
     <section v-if="attributes.seo_text" class="row ff_text_block margin60" v-html="attributes.seo_text"></section>
 

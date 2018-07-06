@@ -3,52 +3,74 @@
     <div class="col ff_wrap">
 
       <ul class="row ff_mobile_tabs">
-        <li class="col-2"  v-on:click="setLeftTab">
+        <li class="col-3"  v-on:click="setLeftTab">
           <span v-bind:class="activeLeftTab">Курсы</span>
         </li>
-        <li class="col-2" v-on:click="setRightTab">
+        <li class="col-3" v-on:click="setRightTab">
           <span v-bind:class="activeRightTab">Новости</span>
         </li>
       </ul>
 
       <div class="row ff_content no-gutters">
-        <div class="ff-left-panel col-md-8" v-bind:class="colLeft">
+        <div class="ff-left-panel col-md-1" v-bind:class="colLeft">
           <div class="scroll-container">
             <coins-list />
           </div>
         </div>
 
-        <transition name="fade" v-on:after-leave="afterLeave">
-          <div v-if="centralFade" class="ff_center_panel col-md-7 offset-md-1">
 
-            <div class="ff_scroll_wrap" ref="scroll-container">
-              <nuxt-child :key="$route.params.id"/>
-            </div>
+        <div class="ff_center_panel col-md-7" v-bind:class="colCenter">
 
-            <button v-on:click="onClose()" class="ff_close">
-              <svg width="106px" height="106px" viewBox="0 0 106 106" id="ff_close">
-                <defs>
-                  <circle id="path-1" cx="24" cy="24" r="24"></circle>
-                  <filter x="-104.2%" y="-83.3%" width="308.3%" height="308.3%" filterUnits="objectBoundingBox" id="filter-2">
-                    <feOffset dx="0" dy="10" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-                    <feGaussianBlur stdDeviation="15" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-                    <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
-                  </filter>
-                </defs>
-                <g transform="translate(-890.000000, -211.000000)">
-                  <g transform="translate(928.000000, 230.000000)">
-                    <g>
-                      <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-                      <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
-                    </g>
-                    <polygon id="close" fill="#000000" points="19 19.8 23.2 24.0000063 19 28.2 19.8 29 24 24.8 28.2 29 29 28.2 24.8 24.0000063 29 19.8 28.2 19 24 23.2 19.8 19"></polygon>
-                  </g>
-                </g>
-              </svg>
-            </button>
-            
+          <div class="ff_scroll_wrap" ref="scroll-container">
+            <nuxt-child :key="$route.params.symbol"/>
           </div>
-        </transition>
+
+          <button v-if="showPost" v-on:click="onClose()" class="ff_close">
+            <svg width="106px" height="106px" viewBox="0 0 106 106" id="ff_close">
+              <defs>
+                <circle id="path-1" cx="24" cy="24" r="24"></circle>
+                <filter x="-104.2%" y="-83.3%" width="308.3%" height="308.3%" filterUnits="objectBoundingBox" id="filter-2">
+                  <feOffset dx="0" dy="10" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+                  <feGaussianBlur stdDeviation="15" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                  <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+                </filter>
+              </defs>
+              <g transform="translate(-890.000000, -211.000000)">
+                <g transform="translate(928.000000, 230.000000)">
+                  <g>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                  </g>
+                  <polygon id="close" fill="#000000" points="19 19.8 23.2 24.0000063 19 28.2 19.8 29 24 24.8 28.2 29 29 28.2 24.8 24.0000063 29 19.8 28.2 19 24 23.2 19.8 19"></polygon>
+                </g>
+              </g>
+            </svg>
+          </button>
+
+          <button v-on:click="onClosePane()" class="ff_close_mobile">
+            <svg width="106px" height="106px" viewBox="0 0 106 106" id="ff_close">
+              <defs>
+                <circle id="path-1" cx="24" cy="24" r="24"></circle>
+                <filter x="-104.2%" y="-83.3%" width="308.3%" height="308.3%" filterUnits="objectBoundingBox" id="filter-mobile">
+                  <feOffset dx="0" dy="10" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+                  <feGaussianBlur stdDeviation="15" in="shadowOffsetOuter2" result="shadowBlurOuter1"></feGaussianBlur>
+                  <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+                </filter>
+              </defs>
+              <g transform="translate(-890.000000, -211.000000)">
+                <g transform="translate(928.000000, 230.000000)">
+                  <g>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-mobile)" xlink:href="#path-1"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                  </g>
+                  <polygon id="close" fill="#000000" points="19 19.8 23.2 24.0000063 19 28.2 19.8 29 24 24.8 28.2 29 29 28.2 24.8 24.0000063 29 19.8 28.2 19 24 23.2 19.8 19"></polygon>
+                </g>
+              </g>
+            </svg>
+          </button>
+          
+        </div>
+
 
         <aside class="ff-right-panel col-md-4" v-bind:class="colRight">
           <div class="news_filters_block">
@@ -139,7 +161,8 @@
         ],
         selectedType: {name: 'Все новости'},
         back: { name: 'index' },
-        activeTab: 'left_tab',
+        activePane: 'center_pane',
+        activeTab: null,
         isFiltering: null,
       }
     },
@@ -259,13 +282,28 @@
       },
       setRightTab: function () {
         this.activeTab = 'right_tab'
+        this.activePane = 'right_pane'
       },
       setLeftTab: function () {
         this.activeTab = 'left_tab'
+        this.activePane = 'left_pane'
+      },
+      showCentralPane: function () {
+        this.activePane = 'center_pane'
+      },
+      hideCentralPane: function () {
+        if( this.activeTab == 'right_tab' ) {
+          this.activePane = 'right_pane'
+        } else {
+          this.activePane = 'left_pane'
+        }
       },
 
       onClose: function () {
         this.$router.push(this.back)
+      },
+      onClosePane: function () {
+        this.hideCentralPane()
       },
       afterLeave: function (el) {
         //this.$router.push(this.back)
@@ -286,26 +324,33 @@
         if( this.$route.name == "index" || this.$route.name == "index-symbol" ) {
           this.filterBySymbol(this.$route.params.symbol)
         }
+
+        this.showCentralPane()
       }
     },
 
     computed: {
       colLeft: function () {
         return {
-          'col-12': this.activeTab == 'left_tab',
-          'active_left': this.activeTab == 'left_tab',
+          'col-12': this.activePane == 'left_pane',
+          'active_left': this.activePane == 'left_pane',
         }
       },
-      centralFade: function () {
-        return this.$route.name != 'index'
-      },
-      colRight: function () {
+      colCenter: function () {
         return {
-          'col-12': this.activeTab == 'right_tab',
-          'active_right': this.activeTab == 'right_tab',
+          'col-12': this.activePane == 'center_pane',
+          'active_center': this.activePane == 'center_pane',
 
         }
       },
+      colRight: function () {
+        return {
+          'col-12': this.activePane == 'right_pane',
+          'active_right': this.activePane == 'right_pane',
+
+        }
+      },
+
       activeRightTab: function () {
         return {
           'active_tab': this.activeTab == 'right_tab',
@@ -315,6 +360,9 @@
         return {
           'active_tab': this.activeTab == 'left_tab',
         }
+      },
+      showPost: function () {
+        return !( this.$route.name == "index" || this.$route.name == "index-symbol" ) 
       }
     },
 

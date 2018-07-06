@@ -2,7 +2,8 @@
 
 const axios = require('axios')
 
-const host = 'https://ff.ru'
+const host = 'http://localhost:3000'
+const api = 'http://test-api.ff.ru'
 
 module.exports = {
 
@@ -88,7 +89,7 @@ module.exports = {
 
   env: {
     baseUrl: host,
-    apiUrl: 'https://api.ff.ru',
+    apiUrl: api,
   },
 
   router: {
@@ -166,8 +167,8 @@ module.exports = {
   },
 
   proxy: {
-    '/api': 'https://api.ff.ru',
-    '/images': 'https://api.ff.ru',
+    '/api': api,
+    '/images': api,
   },
 
   auth: {

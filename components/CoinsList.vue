@@ -2,18 +2,18 @@
   <div class="ff_coin_index">
     <div class="coin_header">
       <div class="coin_details_head i_symbol"></div>
-      <div class="coin_details_head i_cap">
+<!--       <div class="coin_details_head i_cap">
         Капитализация
-      </div>
+      </div> -->
       <div class="coin_details_head">
         Цена
       </div>
-      <div class="coin_details_head i_volume">
+<!--       <div class="coin_details_head i_volume">
         Объем(24ч)
-      </div>
-      <div class="coin_details_head i_sup">
+      </div> -->
+<!--       <div class="coin_details_head i_sup">
         Оборот
-      </div>
+      </div> -->
       <div class="coin_details_head">
         Цена(%)
       </div>
@@ -22,24 +22,24 @@
     <nuxt-link 
         v-for="coin of $store.state.coins" 
         v-bind:key="coin.id" 
-        :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" 
+        :to="coinPath(coin)" 
         class="currency coin_row"
       >
       <div class="coin_details_item i_symbol" >
-        {{ coin.attributes.symbol }}
+        {{ coin.attributes.symbol }} 
       </div>
-      <div class="coin_details_item i_cap">
+<!--       <div class="coin_details_item i_cap">
         ${{ formatPrice(coin.attributes.market_cap_usd) }}
-      </div>
-      <div class="coin_details_item">
+      </div> -->
+      <div class="coin_details_item i_price">
         ${{ formatPrice(coin.attributes.price_usd) }}
       </div>
-      <div class="coin_details_item i_volume">
+<!--       <div class="coin_details_item i_volume">
         ${{ formatPrice(coin.attributes.volume24h_usd) }}
-      </div>
-      <div class="coin_details_item i_sup">
+      </div> -->
+<!--       <div class="coin_details_item i_sup">
         {{ formatPrice(coin.attributes.available_supply) }} {{ coin.attributes.symbol }}
-      </div>
+      </div> -->
       <div class="coin_details_item change" v-bind:class="{ negative: (coin.attributes.percent_change24h < 0) }">
         {{ coin.attributes.percent_change24h }}%
       </div>
@@ -58,6 +58,13 @@
       },
       downSymbol(value) {
         return value.toLowerCase()
+      },
+      coinPath( coin ) {
+        if( coin.attributes.symbol == 'BTC') {
+          return { name: 'index' }
+        }
+
+        return { name: 'index-symbol',  params: { symbol: this.downSymbol(coin.attributes.symbol) }}
       },
     }
   }
