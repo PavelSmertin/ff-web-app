@@ -14,7 +14,7 @@
       <div class="row ff_content no-gutters">
         <div class="ff-left-panel col-md-8" v-bind:class="colLeft">
           <div class="scroll-container">
-            <coins-list />
+            <coins-list-page />
           </div>
         </div>
 
@@ -89,7 +89,7 @@
   import VueTimeago from 'vue-timeago'
   import Dropdowns from '~/components/Dropdowns.vue'
   import PostItem from '~/components/PostItem.vue'
-  import CoinsList from '~/components/CoinsList.vue'
+  import CoinsListPage from '~/components/CoinsListPage.vue'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
 
@@ -164,7 +164,7 @@
       InfiniteLoading,
       Dropdowns,
       PostItem,
-      CoinsList,
+      CoinsListPage,
     },
 
     beforeRouteEnter (to, from, next) {
