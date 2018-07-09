@@ -96,6 +96,8 @@ var YEAR = DAY * 365;
 
 export default {
 
+  transition: 'page',
+
   validate({ params }) {
     return !isNaN(+params.id)
   },

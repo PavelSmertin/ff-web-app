@@ -12,11 +12,14 @@
       </ul>
 
       <div class="row ff_content no-gutters">
-        <div class="ff-left-panel" v-bind:class="colLeft">
-          <div class="scroll-container">
-            <coins-list />
+
+        <transition name="fade" v-on:before-enter="beforeEnter" v-on:before-leave="beforeLeave" v-on:after-leave="afterLeave">
+          <div v-if="$route.name != 'index-coins'" class="ff-left-panel" v-bind:class="colLeft">
+            <div class="scroll-container">
+              <coins-list />
+            </div>
           </div>
-        </div>
+        </transition>
 
         <div class="ff_center_panel" v-bind:class="colCenter">
 
@@ -126,11 +129,6 @@
 
   export default {
 
-    transition: {
-      name: 'page',
-      mode: 'out-in',
-      type: 'transition',
-    },
     head() {
       return {
         title: 'Рыночная капитализация криптовалют - FF.ru',
@@ -168,6 +166,8 @@
         activePane: 'center_pane',
         activeTab: null,
         isFiltering: null,
+        isMarketCup: false,
+        fadeForRedirect: false,
       }
     },
 
@@ -327,8 +327,16 @@
       onClosePane: function () {
         this.hideCentralPane()
       },
+
+      beforeEnter: function (el) {
+        this.isMarketCup = this.$route.name == 'index-coins' 
+      },
+      beforeLeave: function (el) {
+        this.fadeForRedirect = true 
+      },
       afterLeave: function (el) {
-        //this.$router.push(this.back)
+        this.fadeForRedirect = false 
+        this.isMarketCup = this.$route.name == 'index-coins' 
       },
 
       linkToPost: function (post) {
@@ -363,15 +371,15 @@
       colLeft: function () {
         return {
           'col-md-1': this.$route.name != 'index-coins',
-          'active_market_cup': this.$route.name == 'index-coins',
           'col-12': this.activePane == 'left_pane',
           'active_left': this.activePane == 'left_pane',
         }
       },
       colCenter: function () {
         return {
-          'col-md-8': this.$route.name == 'index-coins',
-          'col-md-7': this.$route.name != 'index-coins',
+          'col-md-8': this.isMarketCup,
+          'col-md-7': !this.isMarketCup,
+          'fade_for_redirect': this.fadeForRedirect,
           'col-12': this.activePane == 'center_pane',
           'active_center': this.activePane == 'center_pane',
 
