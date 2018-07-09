@@ -3,7 +3,7 @@
 const axios = require('axios')
 
 
-const host = 'http://ff:tt@latest.ff.ru'
+const host = 'http://latest.ff.ru'
 const api = 'https://api.ff.ru'
 
 module.exports = {

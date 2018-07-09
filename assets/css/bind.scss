@@ -468,9 +468,6 @@ h3 {
 			line-height: 36px;
 			flex-basis: 100%;
 			overflow: hidden;
-			&.i_symbol a {
-				display: none;
-			}
 		}
 
 		.i_cap, .i_volume, .i_sup {
@@ -489,6 +486,11 @@ h3 {
 	.coin_header {
 		.i_cap, .i_volume, .i_sup {
 			display: none;
+		}
+		.coin_details_head {
+			&.i_symbol a {
+				display: none;
+			}
 		}
 	}
 }
