@@ -157,14 +157,14 @@
         <dt>Дата ATH</dt><dd>16.12.2017</dd>
         <dt>Доступный объем</dt><dd>17.1 миллионов</dd>
         <dt>Общий объем</dt><dd>21.0 миллион</dd>
-        <dt>Официальный сайт</dt><dd><a href="https://bitcoin.org/" rel="nofollow noopener">bitcoin.org</a></dd>
+        <dt>Официальный сайт</dt><dd><a href="https://bitcoin.org/" rel="nofollow noopener" target="_blank">bitcoin.org</a></dd>
         <dt>Цепочка блоков / Выпущено</dt>
         <dd>
-          <a href="https://blockchair.com/bitcoin/blocks" rel="nofollow noopener">blockchair.com</a><br>
-          <a href="https://www.blockchain.com/en/explorer" rel="nofollow noopener">blockchain.com</a><br>
+          <a href="https://blockchair.com/bitcoin/blocks" rel="nofollow noopener" target="_blank">blockchair.com</a><br>
+          <a href="https://www.blockchain.com/en/explorer" rel="nofollow noopener" target="_blank">blockchain.com</a><br>
           <a href="https://live.blockcypher.com/btc/" rel="nofollow noopener">blockcypher.com</a>
         </dd>
-        <dt>Форум</dt><dd><a href="https://bitcointalk.org/" rel="nofollow noopener">bitcointalk.org</a></dd>
+        <dt>Форум</dt><dd><a href="https://bitcointalk.org/" rel="nofollow noopener" target="_blank">bitcointalk.org</a></dd>
         <dt>Алгоритм хеширования</dt><dd>SHA-256</dd>
         <dt>Скорость хеширования</dt><dd>577,744 PH/s</dd>
         <dt>Время между блоками</dt><dd>10 минут</dd>
