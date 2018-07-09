@@ -142,7 +142,7 @@ module.exports = {
       // accurateTrackBounce:true,
       }
     ],
-    // '@nuxtjs/feed',
+    '@nuxtjs/feed',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     //['@nuxtjs/moment', { locales: ['ru'], plugin: false }],
