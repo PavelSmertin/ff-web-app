@@ -564,12 +564,12 @@ h3 {
 		line-height: 56px;
 		&.nuxt-link-active {
 			.i_symbol {
-				color: $link-color;
 				transition: color 0.1s ease-in-out;
 			}
 		}
 	}
-	.currency:hover:not(.nuxt-link-active) {
+
+	.currency:hover {
 		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .15);
 		.i_symbol {
 			color: $dark-primary-color;
@@ -1056,6 +1056,9 @@ h3 {
 		font-size: $coin-info-size;
 		line-height: $coin-info-size;
 		margin-top: 8px;
+		.i_symbol {
+			color: $dark-primary-color;
+		}
 	}
 	.coin-detail-info{
 		font-size: $coin-info-size;

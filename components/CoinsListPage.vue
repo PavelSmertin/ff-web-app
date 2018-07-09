@@ -22,7 +22,7 @@
     <nuxt-link 
         v-for="coin of $store.state.coins" 
         v-bind:key="coin.id" 
-        :to="{ name: 'index-symbol',  params: { symbol: downSymbol(coin.attributes.symbol) }}" 
+        :to="coinPath(coin)" 
         class="currency coin_row"
       >
       <div class="coin_details_item i_symbol" >
@@ -58,6 +58,13 @@
       },
       downSymbol(value) {
         return value.toLowerCase()
+      },
+      coinPath( coin ) {
+        if( coin.attributes.symbol == 'BTC') {
+          return { name: 'index' }
+        }
+
+        return { name: 'index-symbol',  params: { symbol: this.downSymbol(coin.attributes.symbol) }}
       },
     }
   }
