@@ -156,7 +156,7 @@ module.exports = {
     // proxy: true,
     // proxyHeaders: true,
     // credentials: false,
-     debug: true,
+    // debug: true,
     // // proxyHeaders: false,
     // headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     // // headers: {'Access-Control-Allow-Origin': '*'},
