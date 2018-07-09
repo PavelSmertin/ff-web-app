@@ -6,7 +6,6 @@
         <span>К другим новостям</span>
       </li>
     </ul> -->
-
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
         <li><timeago :since="attributes.create_dt" class="time-ago"></timeago></li>
@@ -121,7 +120,7 @@ export default {
     }
   },
 
-  async asyncData({ app, req, params, error, redirect }) {
+  async asyncData({ app, req, params, error, redirect, route }) {
 
     // if( process.client && params.newest) {
     //   return {
@@ -132,7 +131,7 @@ export default {
     //     attributes: params.newest,
     //   }
     // }
-
+    console.log(route)
     try {
       const { data } = await app.$axios.get(`/api/news/view/${+params.id}`)
  

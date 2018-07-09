@@ -12,14 +12,13 @@
       </ul>
 
       <div class="row ff_content no-gutters">
-        <div class="ff-left-panel col-md-1" v-bind:class="colLeft">
+        <div class="ff-left-panel" v-bind:class="colLeft">
           <div class="scroll-container">
             <coins-list />
           </div>
         </div>
 
-
-        <div class="ff_center_panel col-md-7" v-bind:class="colCenter">
+        <div class="ff_center_panel" v-bind:class="colCenter">
 
           <div class="ff_scroll_wrap" ref="scroll-container">
             <nuxt-child :key="$route.params.symbol"/>
@@ -122,7 +121,7 @@
   var MONTH = DAY * 30;
   var YEAR = DAY * 365;
 
-  const api_news = process.env.apiUrl + '/v1/news/?fields[news-translated]=title,votes_positive,votes_negative,create_dt,type';
+  const api_news = process.env.apiUrl + '/v1/news/?fields[news-translated]=title,votes_positive,votes_negative,create_dt,type,slug';
   const api_coins = process.env.apiUrl + '/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply';
 
   export default {
@@ -160,7 +159,7 @@
           { name: 'Прогноз', value: 'prognosis' }
         ],
         selectedType: {name: 'Все новости'},
-        back: { name: 'coins' },
+        back: { name: 'index-coins' },
         activePane: 'center_pane',
         activeTab: null,
         isFiltering: null,
@@ -208,8 +207,16 @@
     },
 
     mounted () {
-      if( this.$route.name == "index" || this.$route.name == "index-symbol" ) {
+      if( this.$route.name == "index" ) {
+        this.filterBySymbol('BTC')
+      }
+
+      if( this.$route.name == "index-symbol" ) {
         this.filterBySymbol(this.$route.params.symbol)
+      }
+
+      if( this.$route.name == "index-coins" ) {
+        this.filterBySymbol(null)
       }
     },
 
@@ -217,7 +224,7 @@
 
       applyBackStack(to, from) {
         if(to.name == "index" || to.name == "index-symbol") {
-          this.back = { name: 'coins' } 
+          this.back = { name: 'index-coins' } 
           return
         }
 
@@ -326,8 +333,16 @@
 
     watch:{
       '$route':  function () {
-        if( this.$route.name == "index" || this.$route.name == "index-symbol" ) {
+        if( this.$route.name == "index" ) {
+          this.filterBySymbol('BTC')
+        }
+
+        if( this.$route.name == "index-symbol" ) {
           this.filterBySymbol(this.$route.params.symbol)
+        }
+
+        if( this.$route.name == "index-coins" ) {
+          this.filterBySymbol(null)
         }
 
         this.showCentralPane()
@@ -337,12 +352,16 @@
     computed: {
       colLeft: function () {
         return {
+          'col-md-1': this.$route.name != 'index-coins',
+          'active_market_cup': this.$route.name == 'index-coins',
           'col-12': this.activePane == 'left_pane',
           'active_left': this.activePane == 'left_pane',
         }
       },
       colCenter: function () {
         return {
+          'col-md-8': this.$route.name == 'index-coins',
+          'col-md-7': this.$route.name != 'index-coins',
           'col-12': this.activePane == 'center_pane',
           'active_center': this.activePane == 'center_pane',
 
@@ -367,7 +386,7 @@
         }
       },
       showPost: function () {
-        return true
+        return this.$route.name == 'index-id' || this.$route.name == 'slug-id'
       }
     },
 

@@ -207,6 +207,9 @@ h3 {
 					display: flex;
 					flex-direction: column;
 					background-color: $bg-main-color;
+					&.active_market_cup {
+						display: none;
+					}
 				}
 				.ff-right-panel {
 					display: flex;
@@ -458,19 +461,24 @@ h3 {
 		font-size: $label-size;
 		height: 36px;
 		padding-left: 24px;
-
-
 		display: flex;
+
 		.coin_details_head {
 			flex-grow: 1;
 			line-height: 36px;
 			flex-basis: 100%;
 			overflow: hidden;
+			&.i_symbol a {
+				display: none;
+			}
 		}
+
 		.i_cap, .i_volume, .i_sup {
 			flex-basis: 200%;
 		}
 	}
+
+
 }
 @media (max-width: 769px) {
 	.coin_row {
@@ -513,6 +521,12 @@ h3 {
 		.coin_header {
 			.coin_details_head {
 				display: none;
+				&.i_symbol {
+					display: block;
+					text-align: right;
+					padding-right: 10px;
+					font-size: $second_size;
+				}
 			}
 		}
 	}
@@ -1502,7 +1516,7 @@ h3 {
 				&.i_volume {
 					flex-grow: 1.5;
 					.unit {
-						display: none
+						display: none;
 					}
 				}
 			}

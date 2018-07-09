@@ -1,7 +1,8 @@
 <template>
   <div class="ff_coin_index">
+
     <div class="coin_header">
-      <div class="coin_details_head i_symbol"></div>
+      <div class="coin_details_head i_symbol"><nuxt-link :to="{name: 'index-coins'}">Market Cap &#62;</nuxt-link></div>
 <!--       <div class="coin_details_head i_cap">
         Капитализация
       </div> -->

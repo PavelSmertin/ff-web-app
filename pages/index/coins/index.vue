@@ -1,15 +1,5 @@
 <template> 
-  <main class="row ff_index no-gutters">
-    <div class="col ff_wrap">
-      <div class="row ff_content no-gutters">
-        <div class="ff-left-panel col">
-          <div class="scroll-container">
-            <coins-list-page />
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+  <coins-list-page />
 </template>
 
 

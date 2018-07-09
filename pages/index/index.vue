@@ -101,8 +101,8 @@
 
           <div class="ff_pair_item">{{ pair.exchange.name }}</div>
           <div class="ff_pair_item i_price">${{ formatPrice(pair.price) }}</div>
-          <div class="ff_pair_item i_high">${{ formatPrice(pair.high24hour) }}</div>
           <div class="ff_pair_item i_low">${{ formatPrice(pair.low24hour) }}</div>
+          <div class="ff_pair_item i_high">${{ formatPrice(pair.high24hour) }}</div>
           <div class="ff_pair_item changes">${{ formatPrice(pair.change24hour) }} ({{ formatPrice(pair.changepct24hour) }}%)</div>
           <div class="ff_pair_item i_volume">{{ formatPrice(pair.volume24hour) }} <span class="unit">BTC</span></div>
         </div>

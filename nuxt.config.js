@@ -2,9 +2,9 @@
 
 const axios = require('axios')
 
-const host = 'http://latest.ff.ru'
 
-const api = 'https://ff:tt@api.ff.ru'
+const host = 'http://ff:tt@latest.ff.ru'
+const api = 'https://api.ff.ru'
 
 module.exports = {
 
@@ -117,13 +117,17 @@ module.exports = {
       });
 
       parent.children.find((r) => r.path.includes(':id')).path = ':id(\\d+)'
-      parent.children.find((r) => r.path.includes(':symbol')).path = ':symbol([a-zA-Z0-9]+)'
+      parent.children.find((r) => r.path.includes(':id')).redirect = ''
+      parent.children.find((r) => r.path.includes(':symbol')).path = ':symbol([a-zA-Z]+[0-9]*)'
+
+      console.log(parent)
 
       parent.children.push({
         name: 'slug-id',
         path: ':id(\\d+)/:slug',
-        chunkName: 'pages/index/_id',
-        component: resolve(__dirname, 'pages/index/_id.vue')
+        chunkName: 'pages/index/_id/_slug',
+        component: resolve(__dirname, 'pages/index/_id.vue'),
+        redirect: '',
       });
     },
   },
@@ -152,7 +156,7 @@ module.exports = {
     // proxy: true,
     // proxyHeaders: true,
     // credentials: false,
-    // debug: true,
+     debug: true,
     // // proxyHeaders: false,
     // headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     // // headers: {'Access-Control-Allow-Origin': '*'},
