@@ -96,12 +96,6 @@ var YEAR = DAY * 365;
 
 export default {
 
-  transition: {
-    name: 'page',
-    mode: 'out-in',
-    type: 'transition',
-  },
-
   validate({ params }) {
     return !isNaN(+params.id)
   },
@@ -131,7 +125,6 @@ export default {
     //     attributes: params.newest,
     //   }
     // }
-    console.log(route)
     try {
       const { data } = await app.$axios.get(`/api/news/view/${+params.id}`)
  

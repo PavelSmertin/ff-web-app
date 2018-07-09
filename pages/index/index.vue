@@ -186,7 +186,7 @@
   import Jsona from 'jsona';
 
   export default {
-    transition: 'page',
+
     head() {
       return {
         title: this.headTitle,

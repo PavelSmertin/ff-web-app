@@ -475,7 +475,6 @@ h3 {
 		}
 	}
 
-
 }
 @media (max-width: 769px) {
 	.coin_row {
@@ -611,6 +610,13 @@ h3 {
 		.i_cap, .i_volume, .i_sup {
 			flex-basis: 200%;
 		}
+	}
+	&.page-enter-active {
+		transition: opacity .2s
+	}
+
+	&.page-enter, &.page-leave-active, &.page-leave {
+		opacity: 0
 	}
 }
 @media (max-width: 769px) {
@@ -1068,6 +1074,14 @@ h3 {
 	}
 	.ff_coin_tabs {
 		display: none;
+	}
+
+	&.page-enter-active, &.page-leave-active {
+		transition: opacity .2s
+	}
+
+	&.page-enter, &.page-leave-active, &.page-leave {
+		opacity: 0.5
 	}
 }
 @media (max-width: 769px) { 

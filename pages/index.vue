@@ -21,7 +21,7 @@
         <div class="ff_center_panel" v-bind:class="colCenter">
 
           <div class="ff_scroll_wrap" ref="scroll-container">
-            <nuxt-child :key="$route.params.symbol"/>
+            <nuxt-child :key="routeKey"/>
           </div>
 
           <button v-if="showPost" v-on:click="onClose()" class="ff_close">
@@ -126,6 +126,11 @@
 
   export default {
 
+    transition: {
+      name: 'page',
+      mode: 'out-in',
+      type: 'transition',
+    },
     head() {
       return {
         title: 'Рыночная капитализация криптовалют - FF.ru',
@@ -392,6 +397,10 @@
       },
       showPost: function () {
         return this.$route.name == 'index-id' || this.$route.name == 'slug-id' || (this.$route.name.indexOf('wiki') > 0)
+      },
+
+      routeKey: function () {
+        return this.$route.params.id || this.$route.params.symbol || this.$route.name
       }
     },
 
