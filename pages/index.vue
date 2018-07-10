@@ -76,7 +76,7 @@
 
         <aside class="ff-right-panel col-md-4" v-bind:class="colRight">
           <div class="news_filters_block">
-            <div class="coin_tag">{{ $store.state.filters.symbol }}</div>
+            <div class="coin_tag">Новости {{ $store.state.filters.symbol }}</div>
             <dropdowns :options="types" :selected="selectedType" v-on:updateOption="filterByType"></dropdowns>
           </div>
 
@@ -124,7 +124,7 @@
   var MONTH = DAY * 30;
   var YEAR = DAY * 365;
 
-  const api_news = process.env.apiUrl + '/v1/news/?fields[news-translated]=title,votes_positive,votes_negative,create_dt,type,slug';
+  const api_news = process.env.apiUrl + '/v1/news/?fields[news-translated]=title,votes_positive,votes_negative,create_dt,type,slug,source_url';
   const api_coins = process.env.apiUrl + '/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply';
 
   export default {

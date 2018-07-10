@@ -10,6 +10,15 @@
 
   export default {
 
+    transition: {
+      name: 'page',
+      afterLeave: function(el) { this.afterCoinsFade = true }
+    },
+    data () {
+      return {
+        afterCoinsFade: false
+      }
+    },
     head() {
       return {
         title: 'Рыночная капитализация криптовалют - FF.ru',

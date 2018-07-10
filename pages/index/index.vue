@@ -34,30 +34,30 @@
         <div class="coin_detail_unit col-6 col-md-2">
           <div class="ff-label">Изменение (1ч)</div>
           <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
-            {{ formatPrice(attributes.change1h_usd) }} USD
-          </div>
-          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change1h_rub < 0) }">
             {{ formatPrice(attributes.percent_change1h) }}%
+          </div>
+          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
+            {{ formatPrice(attributes.change1h_usd) }} USD
           </div>
         </div>
 
         <div class="coin_detail_unit col-6 col-md-2">
           <div class="ff-label">Изменение (24ч)</div>
           <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
-            {{ formatPrice(attributes.change24h_usd) }} USD
-          </div>
-          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change24h_rub < 0) }">
             {{ formatPrice(attributes.percent_change24h) }}%
+          </div>
+          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
+            {{ formatPrice(attributes.change24h_usd) }} USD
           </div>
         </div>
 
         <div class="coin_detail_unit col-6 col-md-2">
           <div class="ff-label">Изменение (7д)</div>
           <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
-            {{ formatPrice(attributes.change7d_usd) }} USD
-          </div>
-          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change7d_rub < 0) }">
             {{ formatPrice(attributes.percent_change7d) }}%
+          </div>
+          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
+            {{ formatPrice(attributes.change7d_usd) }} USD
           </div>
         </div>
 
@@ -90,10 +90,10 @@
             Макс (24ч)
           </div>
           <div class="ff_pairs_head changes">
-            Изменения
+            Изменения (24ч)
           </div>
           <div class="ff_pairs_head i_volume">
-            Объем
+            Объем (BTC)
           </div>
         </div>
 
@@ -103,8 +103,10 @@
           <div class="ff_pair_item i_price">${{ formatPrice(pair.price) }}</div>
           <div class="ff_pair_item i_low">${{ formatPrice(pair.low24hour) }}</div>
           <div class="ff_pair_item i_high">${{ formatPrice(pair.high24hour) }}</div>
-          <div class="ff_pair_item changes">${{ formatPrice(pair.change24hour) }} ({{ formatPrice(pair.changepct24hour) }}%)</div>
-          <div class="ff_pair_item i_volume">{{ formatPrice(pair.volume24hour) }} <span class="unit">BTC</span></div>
+          <div class="ff_pair_item changes positive" v-bind:class="{ negative: (pair.changepct24hour < 0) }">
+            {{ formatPrice(pair.changepct24hour) }}%
+          </div>
+          <div class="ff_pair_item i_volume">{{ formatPrice(pair.volume24hour, 0) }} </div>
         </div>
       </div>
     </div>
@@ -115,38 +117,38 @@
 
     <div class="margin6">
       <div class="row no-gutters wiki_row">
-        <nuxt-link class="col-4 wiki_item" :to="{ path: '/wiki/1' }">
+        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/1' }">
           <p class="wiki_title">Как купить биткоин?</p>
           <p class="wiki_description">Инструкция: как купить биткоин онлайн надежно с карты за рубли, доллары или через электронные кошельки QIWI, Webmoney</p>
         </nuxt-link>
-        <nuxt-link class="col-4 wiki_item" :to="{ path: '/wiki/2' }">
+        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/2' }">
           <p class="wiki_title">Где хранить биткоины?</p>
           <p class="wiki_description">Важно выбрать наиболее надежный и удобный способ хранения биткоина, для этого подойдут Bitcoin кошельки. Существует несколько типов кошельков, разберемся какой лучше</p>
         </nuxt-link>        
-        <nuxt-link class="col-4 wiki_item" :to="{ path: '/wiki/3' }">
+        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/3' }">
           <p class="wiki_title">Что такое блокчейн?</p>
           <p class="wiki_description">BlockChain (англ. Block – блок; Chain - цепь) - это база данных, которая ежедневно пополняется информацией о криптовалютных переводах между пользователями</p>
         </nuxt-link>
       </div>
 
       <div class="row no-gutters wiki_row">
-        <nuxt-link class="col-4 wiki_item" :to="{ path: '/wiki/4' }">
+        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/4' }">
           <p class="wiki_title">Как продать биткоин?</p>
           <p class="wiki_description">Продать или обналичить биткоины можно нескольким способами, например через биржи, обменники или с помощью карты</p>
         </nuxt-link>
-        <nuxt-link class="col-4 wiki_item" :to="{ path: '/wiki/5' }">
+        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/5' }">
           <p class="wiki_title">Биткоин в России</p>
           <p class="wiki_description">Биткоин в России использовать можно, отношение государства к криптовалюте на данный момент носит неопределенный характер</p>
         </nuxt-link>
-        <nuxt-link class="col-4 wiki_item" :to="{ path: '/wiki/6' }">
+        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/6' }">
           <p class="wiki_title">Что такое Биткоин?</p>
           <p class="wiki_description">Биткоин - первая криптовалюта, ставшая всемирно-известной в 2017 году. Основная суть биткоина состоит в децентрализации</p>
         </nuxt-link>
       </div>
     </div>
 
-    <div class="row no-gutters margin24">
-      <h3>Быстрая статистика Биткоина</h3>
+    <div class="row no-gutters border_top margin24">
+      <h3 class="margin12">Быстрая статистика Биткоина</h3>
     </div>
     <div class="row no-gutters margin6">
       <dl class="coin_stat">
@@ -171,7 +173,9 @@
       </dl>
     </div>
 
-    <section v-if="attributes.seo_text" class="row ff_text_block margin60" v-html="attributes.seo_text"></section>
+    <div class="row no-gutters border_top margin12">
+      <section v-if="attributes.seo_text" class="row ff_text_block margin60" v-html="attributes.seo_text"></section>
+    </div>
 
   </section>
 </template>

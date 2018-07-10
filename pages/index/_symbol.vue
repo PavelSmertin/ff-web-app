@@ -16,7 +16,9 @@
         <div>
           <span class="coin-value">${{formatPrice(attributes.price_usd)}}</span>&nbsp;
           <span class="coin-unit">USD</span>&nbsp;
-          <span class="coin-value positive">{{attributes.percent_change24h}}%</span>
+          <span class="coin-value positive" v-bind:class="{ negative: (attributes.percent_change24h < 0) }">
+            {{attributes.percent_change24h}}%
+          </span>
         </div>
         <div>
           <span class="coin-info">{{attributes.price_btc}} BTC</span>&nbsp;
@@ -26,26 +28,47 @@
     </div>
 
     <div class="row no-gutters coin-details-block">
+
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">Капитализация</div>
-        <div class="coin-detail">{{formatPrice(attributes.market_cap_usd)}} USD</div>
-        <div class="coin-detail-info">{{formatPrice(attributes.total_coin_supply)}} {{attributes.symbol}}</div>
+        <div class="coin-detail">{{ formatPrice(attributes.market_cap_usd, 0) }} USD</div>
+        <div class="coin-detail-info">{{ formatPrice(attributes.total_coin_supply, 0) }} {{attributes.symbol }}</div>
       </div>
 
       <div class="coin_detail_unit col-6 col-md-3">
-        <div class="ff-label">Объем (24ч)</div>
-        <div class="coin-detail">{{formatPrice(attributes.volume24h_usd)}} USD</div>
-        <div class="coin-detail-info">{{formatPrice(attributes.volume24h_btc)}} {{attributes.symbol}}</div>
+        <div class="ff-label">Объем торгов (24ч)</div>
+        <div class="coin-detail">{{ formatPrice(attributes.volume24h_usd, 0) }} USD</div>
+        <div class="coin-detail-info">{{ formatPrice(attributes.volume24h_btc, 0) }} {{ attributes.symbol }}</div>
       </div>
 
-      <div class="coin_detail_unit col-6 col-md-3">
-        <div class="ff-label">В обороте</div>
-        <div class="coin-detail">{{formatPrice(attributes.available_supply)}} {{attributes.symbol}}</div>
+      <div class="coin_detail_unit col-6 col-md-2">
+        <div class="ff-label">Изменение (1ч)</div>
+        <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
+          {{ formatPrice(attributes.percent_change1h) }}%
+        </div>
+        <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
+          {{ formatPrice(attributes.change1h_usd) }} USD
+        </div>
       </div>
 
-      <div class="coin_detail_unit col-6 col-md-3">
-        <div class="ff-label">В обороте (max)</div>
-        <div class="coin-detail">{{formatPrice(attributes.max_supply)}} {{attributes.symbol}}</div>
+      <div class="coin_detail_unit col-6 col-md-2">
+        <div class="ff-label">Изменение (24ч)</div>
+        <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
+          {{ formatPrice(attributes.percent_change24h) }}%
+        </div>
+        <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
+          {{ formatPrice(attributes.change24h_usd) }} USD
+        </div>
+      </div>
+
+      <div class="coin_detail_unit col-6 col-md-2">
+        <div class="ff-label">Изменение (7д)</div>
+        <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
+          {{ formatPrice(attributes.percent_change7d) }}%
+        </div>
+        <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
+          {{ formatPrice(attributes.change7d_usd) }} USD
+        </div>
       </div>
     </div>
 

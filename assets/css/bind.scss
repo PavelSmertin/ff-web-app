@@ -131,6 +131,9 @@ h3 {
 	height:40px;
 }
 
+.ff_text_block {
+	margin: 0; 
+}
 @media (min-width: 768px) {
 	.ff_text_block {
 		margin: 0 auto;
@@ -658,9 +661,15 @@ h3 {
 		margin: 8px 0 0 0;
 		padding: 0;
 		line-height: 16px;
+		display: flex;
 		li {
 			margin-right: 24px;
 			display: inline-block;
+			&.post_source {
+				text-align: right;
+    			flex-grow: 1;
+    			margin: 0;
+			}
 		}
 	}
 	.ff-news-row {
@@ -711,7 +720,7 @@ h3 {
 		}
 	}
 	.ff-news-row:hover {
-		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .15);
+		box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
 	}
 	.ff-news-row:hover {
 		color: $dark-primary-color;
@@ -728,8 +737,6 @@ h3 {
 	justify-content: space-between;
 	.coin_tag{
 		flex-grow: 0;
-		text-transform: uppercase;
-		color: $link-color;
 	}
 	.btn-group {
 		margin: 0  !important;
@@ -1458,8 +1465,6 @@ h3 {
 
 .wiki_row {
 	.wiki_item {
-		border-top: 1px solid $border-bold-color;
-		border-left: 1px solid $border-bold-color;
 		padding: 16px;
 		p {
 			margin: 0;
@@ -1475,23 +1480,11 @@ h3 {
 			margin-top: 12px;
 		}
 	}
-	.wiki_item:last-child {
-		border-right: 1px solid $border-bold-color;
-
-	}
 	.wiki_item:hover {
 		box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
 		background-color: $bg-main-color;
-		border-top: 1px solid transparent;
-		border-left: 1px solid transparent;
 	}
 }
-.wiki_row:last-child {
-	.wiki_item {
-		border-bottom: 1px solid $border-bold-color;
-	}
-}
-
 
 .ff_pairs_index {
 	border: 1px solid $border-bold-color;
