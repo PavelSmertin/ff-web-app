@@ -160,9 +160,14 @@
 
     mounted () {
       this.loadChart(this.attributes.symbol)
+      this.goto()
     },
 
     methods: {
+      goto() {
+        var element = this.$parent.$refs["scroll-container"];
+        element.scrollTo(0, 0);
+      },
       formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")

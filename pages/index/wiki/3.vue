@@ -86,7 +86,18 @@
 		{ hid: 'twitter:description', name: 'twitter:description', content: 'BlockChain (англ. Block – блок; Chain - цепь) - это база данных, которая ежедневно пополняется информацией о криптовалютных переводах между пользователями' },
 		],
 		}
-	}
+	},
+	
+  mounted () {
+    this.goto()
+  },
+
+  methods: {
+    goto() {
+      var element = this.$parent.$refs["scroll-container"];
+      element.scrollTo(0, 0);
+    },
+  }
 
  }
  

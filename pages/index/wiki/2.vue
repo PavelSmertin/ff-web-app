@@ -74,8 +74,7 @@
 
 <script>
   export default {
-
-	head() {
+    head() {
 		return {
 		title: 'Где хранить биткоины? Как выбрать биткоин кошелек - FF.ru',
 		meta: [
@@ -97,6 +96,16 @@
 		}
 	},
 
- }
+    mounted () {
+      this.goto()
+    },
+
+    methods: {
+      goto() {
+        var element = this.$parent.$refs["scroll-container"]
+        element.scrollTo(0, 0)
+      },
+    }
+  }
 
 </script>

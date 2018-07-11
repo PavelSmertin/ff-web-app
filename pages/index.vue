@@ -4,7 +4,7 @@
 
       <ul class="row ff_mobile_tabs">
         <li class="col-3"  v-on:click="setLeftTab">
-          <span v-bind:class="activeLeftTab">Market</span>
+          <span v-bind:class="activeLeftTab">Курсы</span>
         </li>
         <li class="col-3" v-on:click="setRightTab">
           <span v-bind:class="activeRightTab">Новости</span>
@@ -15,7 +15,7 @@
 
         <transition name="fade" v-on:before-enter="beforeEnter" v-on:before-leave="beforeLeave" v-on:after-leave="afterLeave">
           <div v-if="$route.name != 'index-coins'" class="ff-left-panel" v-bind:class="colLeft">
-            <div class="scroll-container">
+            <div class="scroll-container" id="ff_coin_index_scroll">
               <coins-list />
             </div>
           </div>

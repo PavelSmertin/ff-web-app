@@ -50,7 +50,18 @@
 		{ hid: 'twitter:description', name: 'twitter:description', content: 'Биткоин в России использовать можно, отношение государства к криптовалюте на данный момент носит неопределенный характер.' },
 		],
 		}
-	}
+	},
+
+	  mounted () {
+	    this.goto()
+	  },
+
+	  methods: {
+	    goto() {
+	      var element = this.$parent.$refs["scroll-container"];
+	      element.scrollTo(0, 0);
+	    },
+	  }
 
  }
  

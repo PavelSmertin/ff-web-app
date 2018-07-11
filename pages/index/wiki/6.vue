@@ -125,7 +125,18 @@
 			{ hid: 'twitter:description', name: 'twitter:description', content: 'Description Биткоин - первая криптовалюта, ставшая всемирно-известной в 2017 году. Основная суть биткоина состоит в децентрализации.' },
 			],
 		}
-	}
+	},
+
+	  mounted () {
+	    this.goto()
+	  },
+
+	  methods: {
+	    goto() {
+	      var element = this.$parent.$refs["scroll-container"];
+	      element.scrollTo(0, 0);
+	    },
+	  }
 
  }
  

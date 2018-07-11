@@ -1,6 +1,10 @@
 <template>
-  <div class="ff_coin_index">
-
+  <div class="ff_coin_index" id="ff_coin_index">
+    <transition name="tooltip">
+      <div v-if="showTooltip" class="coin_tooltip" v-bind:style="{top: topOfTooltip + 'px' }">
+        {{ tooltip }}
+      </div>
+    </transition>
     <div class="coin_header">
       <div class="coin_details_head i_symbol"><nuxt-link :to="{name: 'index-coins'}">Market Cap</nuxt-link></div>
 <!--       <div class="coin_details_head i_cap">
@@ -20,31 +24,28 @@
       </div>
     </div>
 
-    <nuxt-link 
+    <div 
         v-for="coin of $store.state.coins" 
         v-bind:key="coin.id" 
+        v-on:mouseover="mouseOver($event, coin.attributes.full_name)"
+        v-on:mouseleave="mouseLeave"
+        class="mouseover_wrap"
+      >
+      <nuxt-link 
         :to="coinPath(coin)" 
         class="currency coin_row"
       >
-      <div class="coin_details_item i_symbol" >
-        {{ coin.attributes.symbol }} 
-      </div>
-<!--       <div class="coin_details_item i_cap">
-        ${{ formatPrice(coin.attributes.market_cap_usd) }}
-      </div> -->
-      <div class="coin_details_item i_price">
-        ${{ formatPrice(coin.attributes.price_usd) }}
-      </div>
-<!--       <div class="coin_details_item i_volume">
-        ${{ formatPrice(coin.attributes.volume24h_usd) }}
-      </div> -->
-<!--       <div class="coin_details_item i_sup">
-        {{ formatPrice(coin.attributes.available_supply) }} {{ coin.attributes.symbol }}
-      </div> -->
-      <div class="coin_details_item change" v-bind:class="{ negative: (coin.attributes.percent_change24h < 0) }">
-        {{ coin.attributes.percent_change24h }}%
-      </div>
-    </nuxt-link>
+        <div class="coin_details_item i_symbol" >
+          {{ coin.attributes.symbol }} 
+        </div>
+        <div class="coin_details_item i_price">
+          ${{ formatPrice(coin.attributes.price_usd) }}
+        </div>
+        <div class="coin_details_item change" v-bind:class="{ negative: (coin.attributes.percent_change24h < 0) }">
+          {{ coin.attributes.percent_change24h }}%
+        </div>
+      </nuxt-link>
+    </div>
   </div>
 </template>
 
@@ -52,21 +53,58 @@
 
   export default {
     name: 'coins-list',
+    data() {
+      return {
+        tooltip: null,
+        topOfTooltip: 0,
+        showTooltip: false,
+      }
+    },
+
     methods: {
-      formatPrice(value) {
+      formatPrice( value ) {
         let val = (value/1).toFixed(2).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
-      downSymbol(value) {
+      downSymbol( value ) {
         return value.toLowerCase()
       },
       coinPath( coin ) {
         if( coin.attributes.symbol == 'BTC') {
           return { name: 'index' }
         }
-
         return { name: 'index-symbol',  params: { symbol: this.downSymbol(coin.attributes.symbol) }}
       },
+      mouseOver( event, name ) {
+        this.showTooltip = true
+
+        let coinRow = getCoinRow( event.target )
+        if( coinRow ) {
+          let scrollBlock = document.getElementById('ff_coin_index_scroll')
+          this.topOfTooltip = coinRow.offsetTop - scrollBlock.scrollTop
+          this.tooltip = name
+        }
+      },
+      mouseLeave() {
+        this.showTooltip = false
+      }
     }
+  }
+
+  function getCoinRow( element, deep = 3 ) {
+    if ( element.className.indexOf('coin_row') > 0 ) {
+      return element
+    }
+
+    let parentElement = element.parentElement
+    if ( parentElement.className.indexOf('coin_row') > 0 ) {
+      return parentElement
+    }
+
+    if ( deep-- <= 0 ) {
+      return null
+    } 
+    getCoinRow( parentElement, deep )
+
   }
 </script>

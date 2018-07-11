@@ -77,7 +77,17 @@
 		{ hid: 'twitter:description', name: 'twitter:description', content: 'Продать или обналичить биткоины можно нескольким способами, например через биржи, обменники или с помощью карты.' },
 		],
 		}
-	}
+	},
+	  mounted () {
+	    this.goto()
+	  },
+
+	  methods: {
+	    goto() {
+	      var element = this.$parent.$refs["scroll-container"];
+	      element.scrollTo(0, 0);
+	    },
+	  }
 
  }
  

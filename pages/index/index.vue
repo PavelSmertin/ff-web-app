@@ -71,7 +71,7 @@
     </div>
 
     <div class="row no-gutters border_top margin24">
-      <h2 class="margin12">Котировки биткоина к доллару на биржах</h2>
+      <h2 class="margin12">Курсы биткоина к доллару на биржах</h2>
     </div>
 
     <div class="row no-gutters margin6 pairs_row">
@@ -269,9 +269,15 @@
 
     mounted () {
       this.loadChart(this.attributes.symbol)
+      this.goto()
     },
 
     methods: {
+      goto() {
+        var element = this.$parent.$refs["scroll-container"];
+        element.scrollTo(0, 0);
+      },
+      
       formatPrice(value, percision = 2) {
         let val = (value/1).toFixed(percision).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
