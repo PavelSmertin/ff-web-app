@@ -4,7 +4,7 @@
 
       <ul class="row ff_mobile_tabs">
         <li class="col-3"  v-on:click="setLeftTab">
-          <span v-bind:class="activeLeftTab">Курсы</span>
+          <span v-bind:class="activeLeftTab">Market</span>
         </li>
         <li class="col-3" v-on:click="setRightTab">
           <span v-bind:class="activeRightTab">Новости</span>
@@ -76,7 +76,7 @@
 
         <aside class="ff-right-panel col-md-4" v-bind:class="colRight">
           <div class="news_filters_block">
-            <div class="coin_tag">Новости {{ $store.state.filters.symbol }}</div>
+            <div class="coin_tag">Новости {{ upFilterSymbol() }}</div>
             <dropdowns :options="types" :selected="selectedType" v-on:updateOption="filterByType"></dropdowns>
           </div>
 
@@ -346,6 +346,10 @@
           return { name: 'index-id', params: { id: post.id, newest:  post.attributes }}
         }
       },
+
+      upFilterSymbol: function () {
+        return upSymbol(this.$store.state.filters.symbol)
+      }
 
     },
 
