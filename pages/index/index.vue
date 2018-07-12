@@ -330,14 +330,14 @@
     if( params.meta_title ) {
       return params.meta_title
     }
-    return `(${params.symbol}/USD) Курс ${params.coin_name} к доллару, (${params.symbol}/RUB) курс ${getCase(params, 2)} к рублю - прогноз на сегодня - FF.ru`
+    return `Курс Биткоина на сегодня к доллару/рублю. Биткойн калькулятор`
   }
 
   function getDescription (params) {
     if( params.meta_description ) {
       return params.meta_description
     }
-    return `Актуальный курс ${params.full_name} к доллару. График курса ${getCase(params, 2)} на сегодня, новости, прогноз цены ${params.coin_name}. Когда купить ${getCase(params, 1)} - поможем принять решение.`
+    return `Курс Биткоина онлайн на графике к доллару, на разных биржах. Прогноз цены биткоина на сегодня, неделю, месяц. Биткойн калькулятор`
   }
 
   function getCase (params, variant) {

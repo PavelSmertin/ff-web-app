@@ -226,14 +226,15 @@
     if( params.meta_title ) {
       return params.meta_title
     }
-    return `(${params.symbol}/USD) Курс ${params.coin_name} к доллару, (${params.symbol}/RUB) курс ${getCase(params, 2)} к рублю - прогноз на сегодня - FF.ru`
+    return `Курс ${params.coin_name} на сегодня к доллару/рублю. График курса ${getCase(params, 2)}`
+
   }
 
   function getDescription (params) {
     if( params.meta_description ) {
       return params.meta_description
     }
-    return `Актуальный курс ${params.full_name} к доллару. График курса ${getCase(params, 2)} на сегодня, новости, прогноз цены ${params.coin_name}. Когда купить ${getCase(params, 1)} - поможем принять решение.`
+    return `Курс ${params.full_name} онлайн на графике к доллару. Актуальные новости и прогноз цены ${getCase(params, 2)} на сегодня, неделю, месяц`
   }
 
   function getCase (params, variant) {
