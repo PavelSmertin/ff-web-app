@@ -1188,6 +1188,13 @@ h3 {
 		.highcharts-graph {
 			stroke: $link-color;
 		}
+		.highcharts-navigator-mask-inside {
+			opacity: 0.2;
+			fill: $link-color;
+		}
+		.highcharts-scrollbar-thumb {
+			fill: lighten($link-color, 20%);
+		}
 
 		.highcharts-xaxis-grid .highcharts-grid-line,
 		.highcharts-xaxis .highcharts-tick,
