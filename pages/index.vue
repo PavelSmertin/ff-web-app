@@ -1,7 +1,6 @@
 <template> 
   <main class="row ff_index no-gutters">
     <div class="col ff_wrap">
-
       <ul class="row ff_mobile_tabs">
         <li class="col-3"  v-on:click="setLeftTab">
           <span v-bind:class="activeLeftTab">Курсы</span>
@@ -166,8 +165,13 @@
         activePane: 'center_pane',
         activeTab: null,
         isFiltering: null,
-        isMarketCup: false,
         fadeForRedirect: false,
+      }
+    },
+
+    async asyncData ({ route }) {
+      return {
+        isMarketCup: route.name == 'index-coins',
       }
     },
 
@@ -335,7 +339,6 @@
         this.fadeForRedirect = true 
       },
       afterLeave: function (el) {
-        this.fadeForRedirect = false 
         this.isMarketCup = this.$route.name == 'index-coins' 
       },
 

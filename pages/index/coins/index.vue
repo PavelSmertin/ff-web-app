@@ -12,13 +12,11 @@
 
     transition: {
       name: 'page',
-      afterLeave: function(el) { this.afterCoinsFade = true }
-    },
-    data () {
-      return {
-        afterCoinsFade: false
+      afterLeave: function(el) { 
+        this.fadeForRedirect = false 
       }
     },
+
     head() {
       return {
         title: 'Рыночная капитализация криптовалют - FF.ru',

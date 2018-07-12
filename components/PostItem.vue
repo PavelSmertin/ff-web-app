@@ -40,7 +40,6 @@
 
     methods: {
      sourceDomain() {
-        console.log( this.post.attributes )
         var domain = extractHostname( this.post.attributes.source_url ),
             splitArr = domain.split('.'),
             arrLen = splitArr.length;
