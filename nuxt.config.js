@@ -136,9 +136,9 @@ module.exports = {
     ['@nuxtjs/yandex-metrika', {
       id: '25598768',
       webvisor: true,
-      // clickmap:true,
+      clickmap:true,
       // useCDN:false,
-      // trackLinks:true,
+      trackLinks:true,
       // accurateTrackBounce:true,
       }
     ],
