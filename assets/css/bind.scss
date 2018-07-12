@@ -299,7 +299,7 @@ h3 {
 		transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 	}
 	&.fade-enter, &.fade-leave-to {
-		transform: translateX(-10px);
+		transform: translateX(-50px);
 		opacity: 0
 	}
 }
@@ -677,11 +677,27 @@ h3 {
 			flex-basis: 200%;
 		}
 	}
-	&.page-enter-active {
+/*	&.page-enter-active {
 		transition: opacity .2s
 	}
 
 	&.page-enter, &.page-leave-active, &.page-leave {
+		opacity: 0
+	}*/
+
+	&.page-enter-active {
+		transition: all 0.1s ease;
+	}
+
+	&.page-leave-active {
+		opacity: 0;
+	}
+
+	&.page-enter {
+		transform: translateX(-300px);
+	}
+
+	&.page-leave-to {
 		opacity: 0
 	}
 }
@@ -1097,7 +1113,7 @@ h3 {
 
 /* coin page */
 .ff_coin {
-	background-color: $bg-coin-color;
+	background-color: $bg-main-color;
 	padding-top: 1px;
 
 	.row {
@@ -1153,11 +1169,11 @@ h3 {
 		margin-top: 10px;
 		width: 100%;
 		.highcharts-background {
-			fill: $bg-coin-color;
+			fill: $bg-main-color;
 		}
 
 		.highcharts-plot-background {
-			fill: $bg-coin-color;
+			fill: $bg-main-color;
 		}
 		/*.highcharts-plot-border {
 			stroke: $border-bold-color;
@@ -1165,7 +1181,7 @@ h3 {
 		}
 		*/
 		.highcharts-area {
-			opacity: 0.9;
+			opacity: 0;
 			fill: $bg-main-color;
 		}
 
