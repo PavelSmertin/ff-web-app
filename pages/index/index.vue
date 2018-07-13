@@ -169,7 +169,7 @@
     </div>
 
     <div class="row no-gutters border_top margin24">
-      <h3 class="margin12 col-8">Другие криптовалюты</h3>
+      <h3 class="margin12 col-8">Лидеры криптовалют за 24 часа</h3>
       <div class="margin12 col-4 align-right">
           <nuxt-link class="h_link" :to="{ path: '/coins' }">Все монеты</nuxt-link>
       </div>
