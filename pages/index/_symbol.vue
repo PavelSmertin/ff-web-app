@@ -169,7 +169,7 @@
         element.scrollTo(0, 0);
       },
       formatPrice(value, percision = 2) {
-        let val = (value/1).toFixed(percision).replace('.', ',')
+        let val = (value/1).toFixed(percision)
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
       upSymbol() {
