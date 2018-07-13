@@ -168,8 +168,8 @@
         var element = this.$parent.$refs["scroll-container"];
         element.scrollTo(0, 0);
       },
-      formatPrice(value) {
-        let val = (value/1).toFixed(2).replace('.', ',')
+      formatPrice(value, percision = 2) {
+        let val = (value/1).toFixed(percision).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
       upSymbol() {
