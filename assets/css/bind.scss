@@ -10,6 +10,7 @@ $dark-primary-color: #000;
 $label-size: 12px;
 $coin-info-size: 14px;
 $block-title-size: 16px;
+$h2-size: 24px;
 
 $primary-size: 16px;
 $second_size: 14px;
@@ -1604,6 +1605,60 @@ h3 {
 	}
 	.button_link{
 		margin-top: 24px;
+	}
+}
+
+
+.calculator {
+	display: flex;
+	.calculator_item {
+		flex: 1;
+
+		border-top: 1px solid $border-bold-color;
+		border-left: 1px solid $border-bold-color;
+		border-bottom: 1px solid $border-bold-color;
+
+		.label {
+			font-size: $label-size;
+			text-transform: uppercase;
+			font-weight: bold;
+			line-height: 12px;
+			padding: 12px 0 0 8px;
+		}
+		input {
+			border: none;
+/*			height: 48px; */
+			padding: 8px 12px 12px 12px;
+			display: inline-block;
+			font-size: $h2-size;
+			line-height: 32px;
+			width: 100%;
+		}
+		input::placeholder { 
+			color: $l-color; 
+		}
+		input:focus{
+			outline: none;
+		}
+		a {
+			display: block;
+			width: 100%;
+			height: 100%;
+			background-color: $up-value-color;
+			color: $bg-main-color;
+			display: flex;
+    		align-items: flex-end;
+    		padding: 12px;
+    		font-size: $block-title-size;
+    		line-height: 20px;
+		}
+		a:hover {
+			background-color: lighten($up-value-color, 3%);
+			transition: background-color 0.2s ease-in-out;
+		}
+	}
+	.calculator_item:last-child {
+		border-right: 1px solid $border-bold-color;
 	}
 }
 

@@ -71,6 +71,27 @@
     </div>
 
     <div class="row no-gutters border_top margin24">
+      <h2 class="margin12">Калькулятор биткоина</h2>
+    </div>
+    <div class="row no-gutters calculator margin6">
+      <div class="calculator_item">
+        <div class="label">BTC</div>
+        <input type="text" name="btc" v-model="calculateBTC" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" >
+      </div>
+      <div class="calculator_item">
+        <div class="label">USD</div>
+        <input type="text" name="usd" v-model="calculateUSD" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" >
+      </div>
+      <div class="calculator_item">
+        <div class="label">RUB</div>
+        <input type="text" name="rub" v-model="calculateRUB" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" >
+      </div>
+      <div class="calculator_item">
+        <a href="https://goo.gl/fG1z8g" rel="nofollow noopener" target="_blank">КУПИТЬ BTC &rarr;</a>
+      </div>
+    </div>
+
+    <div class="row no-gutters border_top margin24">
       <h2 class="margin12">Курсы биткоина к доллару на биржах</h2>
     </div>
 
@@ -224,7 +245,8 @@
         series: {
           type: 'area',
           zIndex: 50
-        }
+        },
+
       }
     },
 
@@ -260,7 +282,15 @@
       let headTitle        = getTitle(attributes)
       let headDescription  = getDescription(attributes)
 
-      return { attributes, headTitle, headDescription, pairs }
+      return { 
+        attributes, 
+        headTitle, 
+        headDescription, 
+        pairs,
+        calculatorBTC: 1,
+        calculatorUSD: attributes.price_usd,
+        calculatorRUB: attributes.price_rub,
+      }
     },
 
     components: {
@@ -279,7 +309,7 @@
       },
       
       formatPrice(value, percision = 2) {
-        let val = (value/1).toFixed(percision).replace('.', ',')
+        let val = (value/1).toFixed(percision)
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
       upSymbol() {
@@ -315,7 +345,57 @@
         return function() {
         }
       },
+      formatCalculator(value, percision = 2) {
+        let val = (value/1).toFixed(percision)
+        return val.toString()
+      },
+      isNumber: function(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+          evt.preventDefault();;
+        } else {
+          return true;
+        }
+      }
+
     },
+
+    computed: {
+
+      calculateBTC: { 
+        get: function () {
+          return this.calculatorBTC
+        },
+        set: function( value ) {
+          this.calculatorBTC = value
+          this.calculatorUSD = value ? this.formatCalculator( value * this.attributes.price_usd, 2) : ''
+          this.calculatorRUB = value ? this.formatCalculator( value * this.attributes.price_rub, 2) : ''
+        }
+      },
+
+      calculateUSD: { 
+        get: function () {
+          return this.calculatorUSD
+        },
+        set: function( value ) {
+          this.calculatorBTC = value ? this.formatCalculator( value / this.attributes.price_usd, 6 ) : ''
+          this.calculatorUSD = value
+          this.calculatorRUB = value ? this.formatCalculator( this.attributes.price_rub * value / this.attributes.price_usd, 2 ) : ''
+        }
+      },
+
+      calculateRUB: { 
+        get: function () {
+          return this.calculatorRUB
+        },
+        set: function( value ) {
+          this.calculatorBTC = value ? this.formatCalculator( value / this.attributes.price_rub, 6 ) : ''
+          this.calculatorUSD = value ? this.formatCalculator( this.attributes.price_usd * value / this.attributes.price_rub, 2) : ''
+          this.calculatorRUB = value
+        }
+      }
+    }
 
   }
 
