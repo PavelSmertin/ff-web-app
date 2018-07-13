@@ -458,7 +458,6 @@ h3 {
 			flex-grow: 1;
 			flex-basis: 100%;
 			overflow: hidden;
-			text-align: right;
 		}
 		.coin_details_item.change {
 			color: $up-value-color;
@@ -618,6 +617,18 @@ h3 {
 		}
 	}
 }
+
+@media (max-width: 769px) {
+	.coin_row {
+		.i_price {
+			text-align: right;
+		}
+		.coin_details_item.change {
+			text-align: right;
+		}
+	}
+}
+
 
 .ff_coin_list {
 	@extend .ff_coin_index;
