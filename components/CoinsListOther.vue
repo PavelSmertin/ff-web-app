@@ -1,5 +1,5 @@
 <template>
-    <div class="ff_coin_list row">
+    <div v-if="otherCoins.length > 0" class="ff_coin_list row">
         <div class="col-lg-6 flex-row">
             <nuxt-link
                     v-for="index in 4"
@@ -55,7 +55,7 @@
         },
 
         props: {
-            otherCoins: []
+            otherCoins: ''
         }
     }
 </script>
