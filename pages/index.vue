@@ -1,7 +1,6 @@
 <template> 
   <main class="row ff_index no-gutters">
     <div class="col ff_wrap">
-
       <ul class="row ff_mobile_tabs">
         <li class="col-3"  v-on:click="setLeftTab">
           <span v-bind:class="activeLeftTab">Курсы</span>
@@ -166,8 +165,13 @@
         activePane: 'center_pane',
         activeTab: null,
         isFiltering: null,
-        isMarketCup: false,
         fadeForRedirect: false,
+      }
+    },
+
+    async asyncData ({ route }) {
+      return {
+        isMarketCup: route.name == 'index-coins',
       }
     },
 
@@ -223,6 +227,9 @@
       if( this.$route.name == "index-coins" ) {
         this.filterBySymbol(null)
       }
+
+      !function(){function t(t,e){return function(){window.carrotquestasync.push(t,arguments)}}if("undefined"==typeof carrotquest){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src="//cdn.carrotquest.io/api.min.js",document.getElementsByTagName("head")[0].appendChild(e),window.carrotquest={},window.carrotquestasync=[],carrotquest.settings={};for(var n=["connect","track","identify","auth","oth","onReady","addCallback","removeCallback","trackMessageInteraction"],a=0;a<n.length;a++)carrotquest[n[a]]=t(n[a])}}(),carrotquest.connect("19161-218776274075bfcefea82e7c38");
+
     },
 
     methods: {
@@ -335,7 +342,6 @@
         this.fadeForRedirect = true 
       },
       afterLeave: function (el) {
-        this.fadeForRedirect = false 
         this.isMarketCup = this.$route.name == 'index-coins' 
       },
 

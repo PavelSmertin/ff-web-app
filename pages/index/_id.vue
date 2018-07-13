@@ -18,7 +18,7 @@
       {{ attributes.title }}
     </h1>
 
-    <img v-if="getImageOriginal()" class="image_origin" :src="getImageOriginal()" alt="новость">
+    <img v-if="getImageOriginal()" class="image_origin" :src="getImageOriginal()" v-bind:alt="seoTitle">
 
     <div v-html="attributes.body" class="description"></div>
     <div class="post_source ff-label">
@@ -347,12 +347,7 @@ function getTitle( params ) {
   if( params.meta_title ) {
     return params.meta_title
   }
-
-  if (params.type == "news") {
-    return `${params.title} - Новости Bitcoin (BTC/USD) на FF.ru`
-  } else {
-    return `Прогноз курса криптовалют от ${formatDate(params.end_translate_dt || params.create_dt)} - ${params.title} - FF.ru`
-  }
+  return params.title
 }
 
 function formatDate( dateString ) {
