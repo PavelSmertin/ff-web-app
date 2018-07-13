@@ -148,6 +148,17 @@
     </div>
 
     <div class="row no-gutters border_top margin24">
+      <h3 class="margin12 col-8">Другие криптовалюты</h3>
+      <div class="margin12 col-4 align-right">
+          <nuxt-link class="h_link" :to="{ path: '/coins' }">Все монеты</nuxt-link>
+      </div>
+    </div>
+
+    <div>
+      <coins-list-other :otherCoins="otherCoins" />
+    </div>
+
+    <div class="row no-gutters border_top margin24">
       <h3 class="margin12">Быстрая статистика Биткоина</h3>
     </div>
     <div class="row no-gutters margin6">
@@ -173,6 +184,7 @@
       </dl>
     </div>
 
+
     <div class="row no-gutters border_top margin12">
       <section v-if="attributes.seo_text" class="row ff_text_block margin60" v-html="attributes.seo_text"></section>
     </div>
@@ -185,6 +197,7 @@
   import Vue from 'vue'
   import axios from 'axios'
   import VueHighcharts from '~/components/VueHighcharts.vue'
+  import CoinsListOther from '~/components/CoinsListOther.vue'
   import { DrilldownOptions, MapData } from '~/static/data.js'
 
   import Jsona from 'jsona';
@@ -232,17 +245,19 @@
 
       const dataFormatter = new Jsona()
 
-
       let details 
       let pairs
+      let otherCoins
       try {
-        let [ response_details, response_pairs ] = await Promise.all([
+        let [ response_details, response_pairs, responseOtherCoins ] = await Promise.all([
             app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=BTC`),
             app.$axios.get(`/api/exchanges/BTC/top?include=exchange&fields[portfolio-exchange]=name&fields[portfolio-exchange]=name&per-page=10`),
+            app.$axios.get(`/api/coins/BTC/other?per-page=8`),
         ])
 
         details = dataFormatter.deserialize(response_details.data)
         pairs = dataFormatter.deserialize(response_pairs.data)
+        otherCoins = responseOtherCoins.data.data
 
       } catch (e) {
         if( e.response && e.response.status == 404 ) {
@@ -260,11 +275,12 @@
       let headTitle        = getTitle(attributes)
       let headDescription  = getDescription(attributes)
 
-      return { attributes, headTitle, headDescription, pairs }
+      return { attributes, headTitle, headDescription, pairs, otherCoins }
     },
 
     components: {
-      VueHighcharts
+      VueHighcharts,
+      CoinsListOther
     },
 
     mounted () {

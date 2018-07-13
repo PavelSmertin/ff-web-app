@@ -51,6 +51,8 @@
 
 <script>
 
+  import { coinsMixin } from './mixins/coins.js'
+
   export default {
     name: 'coins-list',
     data() {
@@ -61,20 +63,9 @@
       }
     },
 
+    mixins: [coinsMixin],
+
     methods: {
-      formatPrice( value ) {
-        let val = (value/1).toFixed(2).replace('.', ',')
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-      },
-      downSymbol( value ) {
-        return value.toLowerCase()
-      },
-      coinPath( coin ) {
-        if( coin.attributes.symbol == 'BTC') {
-          return { name: 'index' }
-        }
-        return { name: 'index-symbol',  params: { symbol: this.downSymbol(coin.attributes.symbol) }}
-      },
       mouseOver( event, name ) {
         this.showTooltip = true
 

@@ -185,6 +185,10 @@ h3 {
 	transition: background-color 0.2s ease-in-out;
 }
 
+.align-right {
+	text-align: right;
+}
+
 
 /************ INDEX PAGE STRUCTURE **************/
 .container-fluid {
@@ -453,6 +457,7 @@ h3 {
 			flex-grow: 1;
 			flex-basis: 100%;
 			overflow: hidden;
+			text-align: right;
 		}
 		.coin_details_item.change {
 			color: $up-value-color;
@@ -607,6 +612,52 @@ h3 {
 			a {
 				color: $link-color;
 			}
+		}
+	}
+}
+
+.ff_coin_list {
+	@extend .ff_coin_index;
+
+	display: flex;
+	flex-direction: row;
+	margin:0 24px;
+	padding: 0 !important;
+	background: #fff;
+	border-left: 1px solid $border-bold-color;
+
+	.coin_row {
+		height: 81px;
+		width: calc(100%/8);
+		border: 1px solid $border-bold-color;
+		border-left:0;
+	}
+
+	.flex-row {
+		padding:0;
+		display: flex;
+	}
+
+	@media (max-width: 991px) {
+
+		.coin_row {
+			height: 81px;
+			width: calc(100%/4);
+			flex-direction: column;
+			padding: 0;
+			border-bottom: 0;
+
+			.coin_details_item {
+				font-size: $label-size;
+				line-height: 20px;
+			}
+		}
+		.currency {
+			padding: 8px 12px;
+		}
+
+		.flex-row:last-child {
+			border-bottom: 1px solid $border-bold-color;
 		}
 	}
 }
@@ -1100,6 +1151,10 @@ h3 {
 
 	.row {
 		padding: 0 24px;
+
+		.h_link {
+			font-size: $label-size;
+		}
 	}
 
 	.coin-value {
