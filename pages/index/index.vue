@@ -426,16 +426,10 @@
   }
 
   function getTitle (params) {
-    if( params.meta_title ) {
-      return params.meta_title
-    }
     return `Курс Биткоина на сегодня к доллару/рублю. Биткойн калькулятор`
   }
 
   function getDescription (params) {
-    if( params.meta_description ) {
-      return params.meta_description
-    }
     return `Курс Биткоина онлайн на графике к доллару, на разных биржах. Прогноз цены биткоина на сегодня, неделю, месяц. Биткойн калькулятор`
   }
 
