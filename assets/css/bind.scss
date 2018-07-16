@@ -853,6 +853,8 @@ h3 {
 					bottom: 0;
 					background-color: $dark-primary-color;
 					opacity: 0.5;
+					transition: opacity .2s
+
 				}
 				.ff_news_item_title {
 					flex: 1;
