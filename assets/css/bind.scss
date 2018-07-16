@@ -619,12 +619,14 @@ h3 {
 }
 
 @media (max-width: 769px) {
-	.coin_row {
-		.i_price {
-			text-align: right;
-		}
-		.coin_details_item.change {
-			text-align: right;
+	.ff_coin_list {
+		.coin_row {
+			.i_price {
+				text-align: right;
+			}
+			.coin_details_item.change {
+				text-align: right;
+			}
 		}
 	}
 }
