@@ -64,14 +64,7 @@
     </div>
 
     <div class="row no-gutters margin12">
-      <h2>График курса Биткоина</h2>
-    </div>
-    <div class="row no-gutters">
-      <vue-highcharts :options="options" ref="lineCharts" :callback="callback()"></vue-highcharts>
-    </div>
-
-    <div class="row no-gutters border_top margin24">
-      <h2 class="margin12">Калькулятор биткоина</h2>
+      <h2>Калькулятор биткоина</h2>
     </div>
     <div class="row no-gutters calculator margin6">
       <div class="calculator_item">
@@ -94,8 +87,16 @@
       </div>
     </div>
 
+
     <div class="row no-gutters border_top margin24">
-      <h2 class="margin12">Курсы биткоина к доллару на биржах</h2>
+      <h2 class="margin12">График курса Биткоина</h2>
+    </div>
+    <div class="row no-gutters">
+      <vue-highcharts :options="options" ref="lineCharts" :callback="callback()"></vue-highcharts>
+    </div>
+
+    <div class="row no-gutters border_top margin24">
+      <h2 class="margin12">Курс биткоина к доллару на биржах</h2>
     </div>
 
     <div class="row no-gutters margin6 pairs_row">

@@ -8,6 +8,7 @@ const createStore = () => {
 			authUser: null,
 			coins: [],
 			news: [],
+			topNews: [],
 			filters: {symbol: null, type: null}
 		},
 
@@ -20,6 +21,9 @@ const createStore = () => {
 			},
 			SET_NEWS: function (state, news) {
 				state.news = news
+			},
+			SET_TOP_NEWS: function (state, topNews) {
+				state.topNews = topNews
 			},
 			SET_FILTER_TYPE: function (state, type) {
 				state.filters.type = type
