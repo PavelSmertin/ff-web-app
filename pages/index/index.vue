@@ -76,15 +76,15 @@
     <div class="row no-gutters calculator margin6">
       <div class="calculator_item">
         <div class="label"><img src="~/assets/images/btc_icon.png" width="20" height="20" alt="btc_icon"><span class="label_currency">BTC</span></div>
-        <input type="text" name="btc" v-model="calculateBTC" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" >
+        <input type="text" name="btc" v-model="calculateBTC" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack" >
       </div>
       <div class="calculator_item">
         <div class="label"><img src="~/assets/images/usd_icon.svg" alt="usd_icon"><span class="label_currency">USD</span></div>
-        <input type="text" name="usd" v-model="calculateUSD" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" >
+        <input type="text" name="usd" v-model="calculateUSD" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
       </div>
       <div class="calculator_item">
         <div class="label"><img src="~/assets/images/rub_icon.svg" alt="rub_icon"><span class="label_currency">RUB</span></div>
-        <input type="text" name="rub" v-model="calculateRUB" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" >
+        <input type="text" name="rub" v-model="calculateRUB" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
       </div>
       <div class="calculator_item">
         <a href="https://goo.gl/fG1z8g" rel="nofollow noopener" target="_blank"><span class="apply">КУПИТЬ BTC</span><img src="~/assets/images/baseline-arrow_forward-24px.svg" alt="arrow"></a>
@@ -373,6 +373,9 @@
         } else {
           return true;
         }
+      },
+      calcSafaryHack: function (event) {
+        event.preventDefault();
       }
 
     },
@@ -423,16 +426,10 @@
   }
 
   function getTitle (params) {
-    if( params.meta_title ) {
-      return params.meta_title
-    }
     return `Курс Биткоина на сегодня к доллару/рублю. Биткойн калькулятор`
   }
 
   function getDescription (params) {
-    if( params.meta_description ) {
-      return params.meta_description
-    }
     return `Курс Биткоина онлайн на графике к доллару, на разных биржах. Прогноз цены биткоина на сегодня, неделю, месяц. Биткойн калькулятор`
   }
 

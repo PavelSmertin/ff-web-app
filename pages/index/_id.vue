@@ -158,7 +158,7 @@ export default {
           content: strip_social_desription(this.body, 200),
         },
         { hid: 'og:type', property: 'og:type', content: 'article' },
-        { property: 'article:published_time', content: '' },
+        { property: 'article:published_time', content: this.attributes.create_dt },
         { hid: 'og:title', property: 'og:title', content: this.title },
         { hid: 'og:url', property: 'og:url', content: process.env.baseUrl + this.$route.path },
         { hid: 'og:image', property: 'og:image', content: process.env.baseUrl + this.getImageSharing() },
