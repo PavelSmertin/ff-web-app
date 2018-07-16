@@ -87,7 +87,10 @@
         <input type="text" name="rub" v-model="calculateRUB" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
       </div>
       <div class="calculator_item">
-        <a href="https://goo.gl/fG1z8g" rel="nofollow noopener" target="_blank"><span class="apply">КУПИТЬ BTC</span><img src="~/assets/images/baseline-arrow_forward-24px.svg" alt="arrow"></a>
+        <nuxt-link :to="{path: '/wiki/1'}">
+          <span class="apply">КУПИТЬ BTC</span>
+          <img src="~/assets/images/baseline-arrow_forward-24px.svg" alt="arrow">
+        </nuxt-link >
       </div>
     </div>
 

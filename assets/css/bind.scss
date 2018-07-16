@@ -1743,5 +1743,20 @@ h3 {
 		border-right: 1px solid $border-bold-color;
 	}
 }
+@media (max-width: 769px) {
+	.calculator {
+		flex-direction: column;
+		.calculator_item {
+			border-bottom: none;
+			border-right: 1px solid $border-bold-color;
+
+		}
+		.calculator_item:last-child {
+			border-left: none;
+			border-right: none;
+			border-bottom: none;
+		}
+	}
+}
 
 
