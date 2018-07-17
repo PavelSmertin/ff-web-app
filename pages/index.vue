@@ -175,10 +175,13 @@
       }
     },
 
-    async fetch ({ app, store, params }) {
+    async fetch ({ app, store, params, route }) {
 
       if( params.symbol ) {
         store.commit('SET_FILTER_SYMBOL', params.symbol)
+      }
+      if( route.name == 'index' ) {
+        store.commit('SET_FILTER_SYMBOL', 'BTC')
       }
 
       let [news, coins] = await Promise.all([

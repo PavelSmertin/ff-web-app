@@ -313,7 +313,9 @@ h3 {
 .ff_center_panel {
 	background-color: $bg-main-color;
 	border-left: 1px solid $border-bold-color;
-	.ff_close {
+/*	box-shadow: 1px 1px 18px #666;
+    z-index: 3000;
+*/	.ff_close {
 		background: none;
 		border:none;
 		display: block;
@@ -899,6 +901,8 @@ h3 {
 	.ff-news-row:hover {
 		box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
 		color: $dark-primary-color;
+/*		background-color: lighten($link-color, 47%);
+*/
 		.ff-news-cell {
 			&.top_post_item {
 				.post_fade_overlay {

@@ -6,7 +6,7 @@
     <div class="ff_news_item_title row">
       <div class="col">
         <div class="ff-nc-title">
-            {{ post.attributes.title }}
+            <span v-if="isTopPost()">&#128293;&nbsp;</span>{{ post.attributes.title }}
         </div>
       </div>
     </div>
