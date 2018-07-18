@@ -1,98 +1,13 @@
 <template>
-  <article class="ff-post">
-
-<!--     <ul class="ff_post_tabs">
-      <li class="col-12">
-        <span>К другим новостям</span>
-      </li>
-    </ul> -->
-    <div class="news-detail">
-      <ul class="ff-label news_list_detail">
-        <li><timeago :since="attributes.create_dt" class="time-ago"></timeago></li>
-        <li v-if="attributes.type == 'news'">Новость</li>
-        <li v-else-if="attributes.type == 'prognosis'">Прогноз</li>
-      </ul>
+  <div class="ff_post_feed">
+    <post v-for="post of news" v-bind:key="post.id" :post="post" ></post>
+    <div ref="infinite_loading_container">
     </div>
-    
-    <h1 class="post-header">
-      {{ attributes.title }}
-    </h1>
-
-    <img v-if="getImageOriginal()" class="image_origin" :src="getImageOriginal()" v-bind:alt="seoTitle">
-
-    <div v-html="attributes.body" class="description"></div>
-    <div class="post_source ff-label">
-        Источник: {{ sourceDomain() }}
-    </div>
-    <div class="tools">
-
-      <button class="vote_up" v-on:click="vote(1)">
-        <span class="ic_up"></span><span class="votes_count">{{ attributes.votes_positive }}</span>
-      </button>
-       <button class="vote_down" v-on:click="vote(0)">
-        <span class="ic_down"></span><span class="votes_count">{{ attributes.votes_negative }}</span>
-      </button>
-
-      <div v-if="showSocial" class="social">
-
-        <social-sharing :networks="overriddenNetworks"
-                      :url="url"
-                      :title="title"
-                      :description="stripSocialDesription"
-                      :quote="stripSocialDesription"
-                      twitter-user="www_FF_ru"
-                      inline-template>
-          <div>
-            <network 
-              network="facebook" 
-              class="social_link fb" 
-              @open="open()" 
-              @change="change()" 
-              @close="close()">
-            </network>
-            <network 
-              network="telegram" 
-              class="social_link tg" 
-              @open="open('telegram')" 
-              @change="change('telegram')" 
-              @close="close('telegram')">
-            </network>
-            <network 
-              network="twitter" 
-              class="social_link tr" 
-              @open="open('twitter')" 
-              @change="change('twitter')" 
-              @close="close('twitter')">
-            </network>
-            <network 
-              network="vk" 
-              class="social_link vk" 
-              @open="open('vk')" 
-              @change="change('vk')" 
-              @close="close('vk')">
-            </network>
-          </div>
-        </social-sharing>
-      </div>    
-    </div>
-
-    <div class="my-widget-anchor mail_news_widget" id="mailru_widget" data-cid="b9cdb3b43490823a65345cb4608d6471"></div>
-
-  </article>
-
-
+  </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import BaseNetworks from '@/assets/networks.json';
-
-var MINUTE = 60;
-var HOUR = MINUTE * 60;
-var DAY = HOUR * 24;
-var WEEK = DAY * 7;
-var MONTH = DAY * 30;
-var YEAR = DAY * 365;
+import Post from '~/components/Post.vue'
 
 export default {
 
@@ -102,31 +17,26 @@ export default {
     return !isNaN(+params.id)
   },
 
-
   data() {
-    var title = "Новости Bitcoin (BTC) на FF.ru";
-    var seoTitle = "Новости Bitcoin (BTC) на FF.ru";
     return {
-      showSocial: false,
       url: process.env.baseUrl + this.$route.path,
-      title: title,
-      seoTitle: title,
-      body: '',
-      overriddenNetworks: BaseNetworks,
+
+      scrollParent: null,
+      scrollHandler: null,
+      isLoading: false,
+      isComplete: false,
+      isFirstLoad: true, // save the current loading whether it is the first loading
+      debounceTimer: null,
+      debounceDuration: 50,
+      distance: 100,
     }
   },
 
-  async asyncData({ app, req, params, error, redirect, route }) {
+  components: {
+    Post,
+  },
 
-    // if( process.client && params.newest) {
-    //   return {
-    //     url: process.env.baseUrl + "/" + params.newest.id,
-    //     title: params.newest.title,
-    //     seoTitle: getTitle(params.newest),
-    //     body: params.newest.body,
-    //     attributes: params.newest,
-    //   }
-    // }
+  async asyncData({ app, req, params, error, redirect, route }) {
     try {
       const { data } = await app.$axios.get(`/api/news/view/${+params.id}`)
  
@@ -139,6 +49,7 @@ export default {
           seoTitle: getTitle(data.data.attributes),
           body: data.data.attributes.body,
           attributes: data.data.attributes,
+          news: [ data.data.attributes ]
         }
       }
     } catch (e) {
@@ -172,57 +83,68 @@ export default {
   },
 
   mounted () {
-    this.$on('social_shares_open', function (network, url) {
-    });
-    this.showSocial = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
+    this.scrollParent = this.getScrollParent()
+
     this.goto()
 
+    this.scrollHandler = function scrollHandlerOriginal(ev) {
+      if (!this.isLoading) {
+        clearTimeout(this.debounceTimer)
 
-    this.injectMailCollector()
-    this.injectRecomendedWidget()
+        if (ev && ev.constructor === Event) {
+          this.debounceTimer = setTimeout(this.attemptLoad, this.debounceDuration)
+        } else {
+          this.attemptLoad()
+        }
+      }
+    }.bind( this )
+
+    setTimeout(this.scrollHandler, 1)
+    this.scrollParent.addEventListener('scroll', this.scrollHandler)
+
+    this.$on('$InfiniteLoading:loaded', (ev) => {
+      this.isFirstLoad = false
+      if (this.isLoading) {
+        this.$nextTick(this.attemptLoad.bind(null, true))
+      }
+    });
+
+    this.$on('$InfiniteLoading:complete', (ev) => {
+      this.isLoading = false
+      this.isComplete = true
+      // force re-complation computed properties to fix the problem of get slot text delay
+      this.$nextTick(() => {
+        this.$forceUpdate()
+      })
+      this.scrollParent.removeEventListener('scroll', this.scrollHandler)
+    });
+
+    this.$on('$InfiniteLoading:reset', () => {
+      this.isLoading = false
+      this.isComplete = false
+      this.isFirstLoad = true
+      this.scrollParent.addEventListener('scroll', this.scrollHandler)
+      setTimeout(this.scrollHandler, 1)
+    });
+
+    this.stateChanger = {
+      loaded: () => {
+        this.$emit('$InfiniteLoading:loaded', { target: this })
+      },
+      complete: () => {
+        this.$emit('$InfiniteLoading:complete', { target: this })
+      },
+      reset: () => {
+        this.$emit('$InfiniteLoading:reset', { target: this })
+      },
+    };
 
   },
 
-  computed: {
-    stripSocialDesription: function() {
-      var str = this.attributes.body
-      if ((str === null) || (str === ''))
-        return false;
-      else
-        str = str.toString();
-      return str.replace(/<[^>]*>/g, '');
-    }
-  },
   methods: {
     goto() {
-        var element = this.$parent.$refs["scroll-container"];
-        element.scrollTo(0, 0);
-    },
-    open( ) {
-      console.log('open ')
-    },
-    change( network ) {
-      console.log('change ')
-    },
-    close( network ) {
-      console.log('close ')
-    },
-    sourceDomain() {
-      var domain = extractHostname(this.attributes.source_url),
-          splitArr = domain.split('.'),
-          arrLen = splitArr.length;
-
-      //extracting the root domain here
-      //if there is a subdomain 
-      if (arrLen > 2) {
-          domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
-          //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
-          if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
-              //this is using a ccTLD
-              domain = splitArr[arrLen - 3] + '.' + domain;
-          }
-      }
-      return domain;
+        var element = this.scrollParent
+        element.scrollTo(0, 0)
     },
     getImageSharing() {
       if( this.attributes.images.sharing ) {
@@ -230,63 +152,51 @@ export default {
       }
       return '/FF_cover1080_b.png'
     },
-    getImageOriginal() {
-      if( this.attributes.images.original ) {
-        return '/images' + this.attributes.images.original
-      }
-      return false
+    getScrollParent() {
+      return this.$parent.$refs["scroll-container"]
     },
-    vote(is_positive) {
-      this.$axios.post(`/api/news/${this.attributes.id}/vote`, `is_positive=${is_positive}`)
-        .then(({ data }) => {
-          this.attributes = data.data.attributes
-        }).catch(e => {
-          if (e.response && e.response.status == 401) {
-            this.$router.push({ name: `account-signin` })
-          }
-        })
+    attemptLoad( isContinuousCall ) {
+      const currentDistance = this.getCurrentDistance();
+
+      // if (!this.isComplete && currentDistance <= this.distance &&
+      //   (this.$el.offsetWidth + this.$el.offsetHeight) > 0) {
+      //   this.isLoading = true
+      //   this.infiniteHandler()
+      // } else {
+      //   this.isLoading = false
+      // }
     },
-
-    injectMailCollector() {
-
-      if(document.getElementById("inject_mail_collector")) {
-        return
-      }
-
-      var chimpPopupWrap = document.createElement('script');
-      chimpPopupWrap.src = "//downloads.mailchimp.com/js/signup-forms/popup/embed.js"
-      chimpPopupWrap.setAttribute('data-dojo-config', 'usePlainJson: true, isDebug: false');
-      chimpPopupWrap.id = "inject_mail_collector";
-
-
-      document.body.appendChild(chimpPopupWrap);
-
-      var chimpPopup = document.createElement("script");
-      chimpPopup.appendChild(document.createTextNode('require(["mojo/signup-forms/Loader"], function (L) { L.start({"baseUrl":"mc.us18.list-manage.com","uuid":"f2a6cbc588ae02f3e4991dd3d","lid":"c84e62e0f7"})});'));
-
-      chimpPopupWrap.onload = function() {
-        document.body.appendChild(chimpPopup);
-      }
-
-
+    getCurrentDistance() {
+      const infiniteElmOffsetTopFromBottom = this.$refs["infinite_loading_container"].getBoundingClientRect().top
+      const scrollElmOffsetTopFromBottom = this.scrollParent === window ?
+        window.innerHeight :
+        this.scrollParent.getBoundingClientRect().bottom
+      return infiniteElmOffsetTopFromBottom - scrollElmOffsetTopFromBottom
     },
+    infiniteHandler() {
+      this.$axios.get(`/api/news/view/111`).then(({ data }) => {
+        this.isLoading = false
+        this.stateChanger.loaded()
+      });
+    },
+  },
 
-    injectRecomendedWidget() {
-
-      if(document.getElementById("my-widget-script")) {
-        myWidget.render('b9cdb3b43490823a65345cb4608d6471', document.getElementById("mailru_widget"));
-        return
-      }
-
-      var script = document.createElement("script");
-      script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: true};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'));
-      document.body.appendChild(script);
+  deactivated() {
+    this.isLoading = false;
+    this.scrollParent.removeEventListener('scroll', this.scrollHandler);
+  },
+  activated() {
+    this.scrollParent.addEventListener( 'scroll', this.scrollHandler );
+  },
+  destroyed() {
+    if (!this.isComplete) {
+      this.scrollParent.removeEventListener('scroll', this.scrollHandler);
     }
   },
 }
 
 
-function redirectToSlug(data, slug) {
+function redirectToSlug( data, slug ) {
   // Переход по ссылке со slug
   if( slug && data && slug == data ) {
     return false
@@ -305,42 +215,12 @@ function redirectToSlug(data, slug) {
   throw new Error('Newest not found');
 }
 
-function strip_social_desription(str, desriptionLength) {
+function strip_social_desription( str, desriptionLength ) {
   if ((str===null) || (str===''))
     return false;
   else
     str = str.toString();
   return str.replace(/<[^>]*>/g, '').substring(0, desriptionLength) + "...";
-}
-
-
-function open( network ) {
-  console.log('open1 ')
-}
-function change( network ) {
-  console.log('change1 ')
-}
-function close( network ) {
-  console.log('close1 ')
-}
-
-function extractHostname(url) {
-  var hostname;
-  //find & remove protocol (http, ftp, etc.) and get hostname
-
-  if (url.indexOf("://") > -1) {
-      hostname = url.split('/')[2];
-  }
-  else {
-      hostname = url.split('/')[0];
-  }
-
-  //find & remove port number
-  hostname = hostname.split(':')[0];
-  //find & remove "?"
-  hostname = hostname.split('?')[0];
-
-  return hostname;
 }
 
 function getTitle( params ) {
@@ -350,25 +230,5 @@ function getTitle( params ) {
   return params.title
 }
 
-function formatDate( dateString ) {
-  let postDate = new Date(dateString)
-  let dd    = postDate.getDate()
-  let mm    = postDate.getMonth()+1 //January is 0!
-  let yyyy  = postDate.getFullYear()
-  let yy    = postDate.getYear()
-  if( dd < 10 ){
-    dd = '0' + dd
-  } 
-  if( mm < 10 ){
-    mm ='0' + mm
-  }
-  if( yyyy >= 2000 ){
-    yy = yy - 100
-  } else {
-    yy = yyyy
-  }
-
-  return `${dd}.${mm}.${yy}`
-}
 
 </script>
