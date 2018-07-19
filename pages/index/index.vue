@@ -64,7 +64,7 @@
     </div>
 
     <div class="row no-gutters margin12">
-      <h2>Калькулятор биткоина</h2>
+      <h2>Биткойн калькулятор</h2>
     </div>
     <div class="row no-gutters calculator margin6">
       <div class="calculator_item">
@@ -89,14 +89,14 @@
 
 
     <div class="row no-gutters border_top margin24">
-      <h2 class="margin12">График курса Биткоина</h2>
+      <h2 class="margin12">График курса Bitcoin к Доллару</h2>
     </div>
     <div class="row no-gutters">
       <vue-highcharts :options="options" ref="lineCharts" :callback="callback()"></vue-highcharts>
     </div>
 
     <div class="row no-gutters border_top margin24">
-      <h2 class="margin12">Курс биткоина к доллару на биржах</h2>
+      <h2 class="margin12">Курс BTC/USD на биржах</h2>
     </div>
 
     <div class="row no-gutters margin6 pairs_row">
@@ -430,10 +430,16 @@
   }
 
   function getTitle (params) {
-    return `Курс Биткоина на сегодня к доллару/рублю. Биткойн калькулятор`
+    if( params.meta_title ) {
+      return params.meta_title
+    }
+    return `Курс Биткоина в реальном времени на биржах к доллару/рублю. Биткойн калькулятор`
   }
 
   function getDescription (params) {
+    if( params.meta_description ) {
+      return params.meta_description
+    }
     return `Курс Биткоина онлайн на графике к доллару, на разных биржах. Прогноз цены биткоина на сегодня, неделю, месяц. Биткойн калькулятор`
   }
 

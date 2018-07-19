@@ -8,6 +8,7 @@ const createStore = () => {
 			authUser: null,
 			coins: [],
 			news: [],
+			feedIds: [],
 			topNews: [],
 			filters: {symbol: null, type: null}
 		},
@@ -21,6 +22,7 @@ const createStore = () => {
 			},
 			SET_NEWS: function (state, news) {
 				state.news = news
+				state.feedIds = news.map( post =>  post.id )
 			},
 			SET_TOP_NEWS: function (state, topNews) {
 				state.topNews = topNews

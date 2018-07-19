@@ -371,7 +371,7 @@ h3 {
 
 }
 
-/* mobile tabs block */
+
 .ff-toolbar {
 	background: $bg-toolbar-color;
 	padding: 0 24px 0 24px !important;
@@ -382,6 +382,22 @@ h3 {
 
 	.normal-logo{
 		margin: 16px 0px;
+	}
+
+	nav {
+		.nav-link {
+			font-size: $label-size;
+			color: $l-color;
+			text-transform: uppercase;
+			display: inline-block;
+			&.nuxt-link-exact-active {
+				color: $post-top-color;
+			}
+
+		}
+		.nav-link:hover {
+			color: $post-top-color;
+		}
 	}
 
 	.ff_account_menu {
@@ -1075,122 +1091,128 @@ h3 {
 /************ PAGES ************/
 
 /* post page */
-.ff-post {
-	transition: all .5s cubic-bezier(.55,0,.1,1);
+.ff_post_feed {
 	padding-bottom: 140px;
-	.post-header{
-		margin: 24px 24px 0 24px;
-
-	}
-	.image_origin {
-		margin-top: 32px;
-		width: 100%;
-	}
-	.description {
-		margin: 24px 32px 0 24px;
-		img {
-			width: 100%;
-		}
-		a {
-			text-decoration: underline;
-		}
-	}
-
-
-	.post_source {
-		margin: 24px 32px 0 24px;
-	}
-	.news_list_detail {
-		list-style: none;
-		font-size: 14px;
-		line-height: 16px;
-		padding: 0;
-		margin: 48px 24px 0 24px;
-		li {
-			margin-right: 24px;
-			display: inline-block;
-		}
-	}
-	.tools {
-		margin: 24px 32px 0 24px;
-		display: flex;
-		flex-wrap: wrap;
-		justify-content:space-between;
-		.vote_up, .vote_down {
-			padding: 0 24px;
-			height: 48px;	
-			width: 110px;	
-			border: 1px solid $border-bold-color;
-			flex-shrink: 0;
-			background: none;
-			cursor: pointer;
-			color: $up-value-color;
-			font-size: 14px;
-			display: flex;
-			justify-content:space-between;
-
-			&:hover {
-				border: 1px solid $up-value-color;
-				background-color: lighten($up-value-color, 45%);
-				transition: background-color 0.2s ease-in-out;
-			}
-			&:focus {
-				outline: none;
-			}
-			.votes_count {
-				display: inline-flex;
-				line-height: 14px;
-			}
-
-		}
-		.vote_down {
-			margin-left: 8px;
-			color: $down-value-color;
-			&:hover {
-				border: 1px solid $down-value-color;
-				background-color: lighten($down-value-color, 25%);
-				transition: background-color 0.2s ease-in-out;
-			}
-
-		}
-		.social {
-			flex-grow: 1;
-			min-width: 200px;
-			margin: 24px 0 0 0;
-			text-align: center;
-
-		}
-	}
-	.ff_post_tabs {
-		display: block;
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		font-size: $coin-info-size;
-		height: 48px;
-		border-bottom: 1px solid $border-bold-color;
-		border-left: 1px solid $border-thin-color;
-		background-color: $bg-coin-color;
-		li {
-			margin: 0;
-			display: inline-block;
-			padding: 0 0px 0 24px;
-			span {
-				line-height: 48px;
-				display: inline-block;
-	    		height: 48px;
-			}
-			.active_tab {
-				border-bottom: 2px solid $bg-toolbar-color;
-			}
-		}
-	}
 
 	.mail_news_widget {
 		margin: 48px 24px 0 24px;
+		
 	}
+	.ff-post {
+		transition: all .5s cubic-bezier(.55,0,.1,1);
+		.post-header{
+			margin: 24px 24px 0 24px;
+		}
+		.image_origin {
+			margin-top: 32px;
+			width: 100%;
+		}
+		.description {
+			margin: 24px 32px 0 24px;
+			img {
+				width: 100%;
+			}
+			a {
+				text-decoration: underline;
+			}
+			em {
+				background: #fafafa;
+				padding: 30px;
+				display: inline-block;
+				border-left: 5px solid #eee;
+			}
+		}
 
-}
+		.post_source {
+			margin: 24px 32px 0 24px;
+		}
+		.news_list_detail {
+			list-style: none;
+			font-size: 14px;
+			line-height: 16px;
+			padding: 0;
+			margin: 48px 24px 0 24px;
+			li {
+				margin-right: 24px;
+				display: inline-block;
+			}
+		}
+		.tools {
+			margin: 24px 32px 0 24px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content:space-between;
+			.vote_up, .vote_down {
+				padding: 0 24px;
+				height: 48px;	
+				width: 110px;	
+				border: 1px solid $border-bold-color;
+				flex-shrink: 0;
+				background: none;
+				cursor: pointer;
+				color: $up-value-color;
+				font-size: 14px;
+				display: flex;
+				justify-content:space-between;
+
+				&:hover {
+					border: 1px solid $up-value-color;
+					background-color: lighten($up-value-color, 45%);
+					transition: background-color 0.2s ease-in-out;
+				}
+				&:focus {
+					outline: none;
+				}
+				.votes_count {
+					display: inline-flex;
+					line-height: 14px;
+				}
+
+			}
+			.vote_down {
+				margin-left: 8px;
+				color: $down-value-color;
+				&:hover {
+					border: 1px solid $down-value-color;
+					background-color: lighten($down-value-color, 25%);
+					transition: background-color 0.2s ease-in-out;
+				}
+
+			}
+			.social {
+				flex-grow: 1;
+				min-width: 200px;
+				margin: 24px 0 0 0;
+				text-align: center;
+
+			}
+		}
+		.ff_post_tabs {
+			display: block;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			font-size: $coin-info-size;
+			height: 48px;
+			border-bottom: 1px solid $border-bold-color;
+			border-left: 1px solid $border-thin-color;
+			background-color: $bg-coin-color;
+			li {
+				margin: 0;
+				display: inline-block;
+				padding: 0 0px 0 24px;
+				span {
+					line-height: 48px;
+					display: inline-block;
+		    		height: 48px;
+				}
+				.active_tab {
+					border-bottom: 2px solid $bg-toolbar-color;
+				}
+			}
+		}
+	}
+} 
 
 .ff-post.page-enter-active, .ff-post.page-leave-active {
 	transition: opacity .2s
@@ -1201,33 +1223,36 @@ h3 {
 }
 
 @media (min-width: 768px) {
-	.ff-post {
-		width: 63%;
-		margin: 0 auto;
-		.post-header{
-			margin: 24px 0 0 0;
-		}
-		.description {
-			margin: 24px 0 0 0;
-		}
-		.post_source {
-			margin: 24px 0 0 0;
-		}
-		.news_list_detail {
-			margin: 48px 0 0 0;
-		}
-		.ff_post_tabs{
-			display: none;
-		}
-		.tools {
-			margin: 24px 0 0 0;
-			.social {
-				margin: 0 0 0 0;
-				text-align: right;
-			}
-		}
+	.ff_post_feed {
 		.mail_news_widget {
-			margin: 50px 0 0 0;
+			width: 63%;
+			margin: 50px auto;
+		}
+		.ff-post {
+			width: 63%;
+			margin: 0 auto;
+			.post-header{
+				margin: 24px 0 0 0;
+			}
+			.description {
+				margin: 24px 0 0 0;
+			}
+			.post_source {
+				margin: 24px 0 0 0;
+			}
+			.news_list_detail {
+				margin: 48px 0 0 0;
+			}
+			.ff_post_tabs{
+				display: none;
+			}
+			.tools {
+				margin: 24px 0 0 0;
+				.social {
+					margin: 0 0 0 0;
+					text-align: right;
+				}
+			}
 		}
 	}
 }

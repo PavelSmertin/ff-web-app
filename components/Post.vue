@@ -30,7 +30,7 @@
     </h1>
 
     <span v-if="getImageOriginal()" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-      <img class="image_origin" v-bind:itemprop="getImageOriginal()" v-bind:alt="seoTitle" :src="getImageOriginal()"/>
+      <img class="image_origin" v-bind:itemprop="getImageOriginal()" v-bind:alt="seoTitle" v-bind:title="seoTitle" :src="getImageOriginal()"/>
     </span>
 
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
@@ -104,13 +104,11 @@
     },
 
     data() {
-      var title = "Новости Bitcoin (BTC) на FF.ru"
-      var seoTitle = "Новости Bitcoin (BTC) на FF.ru"
       return {
         showSocial: false,
         url: process.env.baseUrl + this.$route.path,
-        title: title,
-        seoTitle: title,
+        title: '',
+        seoTitle: getTitle( this.post ),        
         body: '',
         overriddenNetworks: BaseNetworks,
       }
@@ -156,7 +154,7 @@
         return false
       },
       vote(is_positive) {
-        this.$axios.post(`/api/news/${this.post.id}/vote`, `is_positive=${is_positive}`)
+        this.$axios.post(`/api/news/${ this.post.id }/vote`, `is_positive=${is_positive}`)
           .then(({ data }) => {
             this.post = data.data.attributes
           }).catch(e => {
@@ -165,6 +163,7 @@
             }
           })
       },
+
     }
   }
 
@@ -186,6 +185,13 @@
     hostname = hostname.split('?')[0]
 
     return hostname
+  }
+
+  function getTitle( params ) {
+    if( params.meta_title ) {
+      return params.meta_title
+    }
+    return params.title
   }
 
 </script>

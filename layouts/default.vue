@@ -8,6 +8,15 @@
 					<img src="/logo.svg" alt="ff" class="normal-logo">
 				</nuxt-link>
 
+				<nav>
+					<nuxt-link :to="{name: 'index'}" class="nav-link">
+						Курс биткоина
+					</nuxt-link>
+					<nuxt-link :to="{path: '/wiki/1'}" class="nav-link">
+						Купить биткоин
+					</nuxt-link>
+				</nav>
+
 				<button v-if="$auth.loggedIn" v-on:click="$auth.logout() " class="ff_account_menu">
 					Выход
 				</button>

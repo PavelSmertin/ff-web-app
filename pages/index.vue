@@ -407,7 +407,6 @@
         return {
           'col-12': this.activePane == 'right_pane',
           'active_right': this.activePane == 'right_pane',
-
         }
       },
 
@@ -441,7 +440,7 @@
     }
   });
 
-  function upSymbol(value) {
+  function upSymbol( value ) {
     if( value ) {
       return value.toUpperCase()
     } else {
@@ -449,7 +448,7 @@
     }
   }
 
-  function apiNewsPrepare(filters) {
+  function apiNewsPrepare( filters ) {
     let filterQuery = 
       (filters.type ? '&filters[news-translated][type]=' + filters.type : '') + 
       (filters.symbol ? '&filters[portfolio-coins][symbol]=' + upSymbol(filters.symbol) : '')

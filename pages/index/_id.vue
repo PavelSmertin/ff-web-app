@@ -3,6 +3,8 @@
     <post v-for="post of news" v-bind:key="post.id" :post="post" ></post>
     <div ref="infinite_loading_container">
     </div>
+    <div class="my-widget-anchor mail_news_widget" id="mailru_widget" data-cid="b9cdb3b43490823a65345cb4608d6471"></div>
+
   </div>
 </template>
 
@@ -36,7 +38,7 @@ export default {
     Post,
   },
 
-  async asyncData({ app, req, params, error, redirect, route }) {
+  async asyncData({ app, req, params, error, redirect, route, store }) {
     try {
       const { data } = await app.$axios.get(`/api/news/view/${+params.id}`)
  
@@ -49,7 +51,9 @@ export default {
           seoTitle: getTitle(data.data.attributes),
           body: data.data.attributes.body,
           attributes: data.data.attributes,
-          news: [ data.data.attributes ]
+          news: [ data.data.attributes ],
+          //feedIds: store.state.news.map( post =>  post.id ).filter( post => params.id != post.id )
+          feedIds: [],
         }
       }
     } catch (e) {
@@ -87,6 +91,9 @@ export default {
 
     this.goto()
 
+    this.injectMailCollector()
+    this.injectRecomendedWidget()
+
     this.scrollHandler = function scrollHandlerOriginal(ev) {
       if (!this.isLoading) {
         clearTimeout(this.debounceTimer)
@@ -99,13 +106,13 @@ export default {
       }
     }.bind( this )
 
-    setTimeout(this.scrollHandler, 1)
-    this.scrollParent.addEventListener('scroll', this.scrollHandler)
+    setTimeout( this.scrollHandler, 1 )
+    this.scrollParent.addEventListener( 'scroll', this.scrollHandler )
 
     this.$on('$InfiniteLoading:loaded', (ev) => {
       this.isFirstLoad = false
       if (this.isLoading) {
-        this.$nextTick(this.attemptLoad.bind(null, true))
+        this.$nextTick(this.attemptLoad.bind( null, true ))
       }
     });
 
@@ -116,26 +123,26 @@ export default {
       this.$nextTick(() => {
         this.$forceUpdate()
       })
-      this.scrollParent.removeEventListener('scroll', this.scrollHandler)
+      this.scrollParent.removeEventListener( 'scroll', this.scrollHandler )
     });
 
     this.$on('$InfiniteLoading:reset', () => {
       this.isLoading = false
       this.isComplete = false
       this.isFirstLoad = true
-      this.scrollParent.addEventListener('scroll', this.scrollHandler)
+      this.scrollParent.addEventListener( 'scroll', this.scrollHandler )
       setTimeout(this.scrollHandler, 1)
     });
 
     this.stateChanger = {
       loaded: () => {
-        this.$emit('$InfiniteLoading:loaded', { target: this })
+        this.$emit( '$InfiniteLoading:loaded', { target: this } )
       },
       complete: () => {
-        this.$emit('$InfiniteLoading:complete', { target: this })
+        this.$emit( '$InfiniteLoading:complete', { target: this } )
       },
       reset: () => {
-        this.$emit('$InfiniteLoading:reset', { target: this })
+        this.$emit( '$InfiniteLoading:reset', { target: this } )
       },
     };
 
@@ -158,13 +165,13 @@ export default {
     attemptLoad( isContinuousCall ) {
       const currentDistance = this.getCurrentDistance();
 
-      // if (!this.isComplete && currentDistance <= this.distance &&
-      //   (this.$el.offsetWidth + this.$el.offsetHeight) > 0) {
-      //   this.isLoading = true
-      //   this.infiniteHandler()
-      // } else {
-      //   this.isLoading = false
-      // }
+      if( !this.isComplete && currentDistance <= this.distance &&
+        (this.$el.offsetWidth + this.$el.offsetHeight) > 0 ) {
+        this.isLoading = true
+        this.infiniteHandler()
+      } else {
+        this.isLoading = false
+      }
     },
     getCurrentDistance() {
       const infiniteElmOffsetTopFromBottom = this.$refs["infinite_loading_container"].getBoundingClientRect().top
@@ -174,12 +181,60 @@ export default {
       return infiniteElmOffsetTopFromBottom - scrollElmOffsetTopFromBottom
     },
     infiniteHandler() {
-      this.$axios.get(`/api/news/view/111`).then(({ data }) => {
+      if( !this.nextPost() ) {
+        return
+      }
+      this.$axios.get(`/api/news/view/${ this.nextPost() }`).then(({ data }) => {
         this.isLoading = false
+        this.news.push( data.data.attributes )
         this.stateChanger.loaded()
       });
     },
+    nextPost: function () {
+      if( this.feedIds.length > 0 ) {
+        return this.feedIds.shift()
+      }
+      return
+    },
+
+
+    injectMailCollector() {
+
+      if(document.getElementById("inject_mail_collector")) {
+        return
+      }
+
+      var chimpPopupWrap = document.createElement('script');
+      chimpPopupWrap.src = "//downloads.mailchimp.com/js/signup-forms/popup/embed.js"
+      chimpPopupWrap.setAttribute('data-dojo-config', 'usePlainJson: true, isDebug: false');
+      chimpPopupWrap.id = "inject_mail_collector";
+
+
+      document.body.appendChild(chimpPopupWrap);
+
+      var chimpPopup = document.createElement("script");
+      chimpPopup.appendChild(document.createTextNode('require(["mojo/signup-forms/Loader"], function (L) { L.start({"baseUrl":"mc.us18.list-manage.com","uuid":"f2a6cbc588ae02f3e4991dd3d","lid":"c84e62e0f7"})});'));
+
+      chimpPopupWrap.onload = function() {
+        document.body.appendChild(chimpPopup);
+      }
+    },
+
+    injectRecomendedWidget() {
+
+      if(document.getElementById("my-widget-script")) {
+        myWidget.render('b9cdb3b43490823a65345cb4608d6471', document.getElementById("mailru_widget"));
+        return
+      }
+
+      var script = document.createElement("script");
+      script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: true};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'));
+      document.body.appendChild(script);
+    },
+
   },
+
+
 
   deactivated() {
     this.isLoading = false;
@@ -189,7 +244,7 @@ export default {
     this.scrollParent.addEventListener( 'scroll', this.scrollHandler );
   },
   destroyed() {
-    if (!this.isComplete) {
+    if ( !this.isComplete ) {
       this.scrollParent.removeEventListener('scroll', this.scrollHandler);
     }
   },
