@@ -3,7 +3,7 @@
     <div class="col ff_wrap">
       <ul class="row ff_mobile_tabs">
         <li class="col-3"  v-on:click="setLeftTab">
-          <span v-bind:class="activeLeftTab">Курсы</span>
+          <span v-bind:class="activeLeftTab">Крипта</span>
         </li>
         <li class="col-3" v-on:click="setRightTab">
           <span v-bind:class="activeRightTab">Новости</span>
