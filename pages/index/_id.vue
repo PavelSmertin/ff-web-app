@@ -9,7 +9,7 @@
 import Post from '~/components/Post.vue'
 import Jsona from 'jsona'
 
-const api_news = process.env.apiUrl + '/v1/news?per-page=1'
+const api_news = '/api/news?per-page=1'
 const dataFormatter = new Jsona()
 
 export default {
