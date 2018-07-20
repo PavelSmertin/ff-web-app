@@ -5,8 +5,6 @@
     itemscope itemtype="http://schema.org/NewsArticle"
     >
 
-    {{ $route.path }}
-
     <!-- Ссылка на статью -->
     <link itemprop="mainEntityOfPage" itemscope v-bind:href="url">
  
