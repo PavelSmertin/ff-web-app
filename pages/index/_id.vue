@@ -1,15 +1,16 @@
 <template>
   <div class="ff_post_feed">
     <post v-for="post of news" v-bind:key="post.id" :post="post" ></post>
-    <div ref="infinite_loading_container">
-    </div>
-    <div class="my-widget-anchor mail_news_widget" id="mailru_widget" data-cid="b9cdb3b43490823a65345cb4608d6471"></div>
-
+    <div ref="infinite_loading_container"></div>
   </div>
 </template>
 
 <script>
 import Post from '~/components/Post.vue'
+import Jsona from 'jsona'
+
+const api_news = process.env.apiUrl + '/v1/news?per-page=1'
+const dataFormatter = new Jsona()
 
 export default {
 
@@ -22,6 +23,7 @@ export default {
   data() {
     return {
       url: process.env.baseUrl + this.$route.path,
+      meta: { current_page: 0 },
 
       scrollParent: null,
       scrollHandler: null,
@@ -30,7 +32,7 @@ export default {
       isFirstLoad: true, // save the current loading whether it is the first loading
       debounceTimer: null,
       debounceDuration: 50,
-      distance: 100,
+      distance: 6000,
     }
   },
 
@@ -52,8 +54,6 @@ export default {
           body: data.data.attributes.body,
           attributes: data.data.attributes,
           news: [ data.data.attributes ],
-          //feedIds: store.state.news.map( post =>  post.id ).filter( post => params.id != post.id )
-          feedIds: [],
         }
       }
     } catch (e) {
@@ -91,8 +91,8 @@ export default {
 
     this.goto()
 
-    this.injectMailCollector()
-    this.injectRecomendedWidget()
+    // this.injectMailCollector()
+    // this.injectRecomendedWidget()
 
     this.scrollHandler = function scrollHandlerOriginal(ev) {
       if (!this.isLoading) {
@@ -181,22 +181,26 @@ export default {
       return infiniteElmOffsetTopFromBottom - scrollElmOffsetTopFromBottom
     },
     infiniteHandler() {
-      if( !this.nextPost() ) {
-        return
-      }
-      this.$axios.get(`/api/news/view/${ this.nextPost() }`).then(({ data }) => {
-        this.isLoading = false
-        this.news.push( data.data.attributes )
-        this.stateChanger.loaded()
+      this.$axios.get(apiNewsPrepare(this.$store.state.filters), {
+        params: {
+          page: this.meta.current_page + 1,
+        },
+      }).then(({ data }) => {
+        if (this.meta.current_page < data.meta.page_count) {
+          this.meta = data.meta
+          let news = dataFormatter.deserialize( data )
+          this.concatNews( news )
+          this.isLoading = false
+          this.stateChanger.loaded()
+        } else {
+          this.stateChanger.complete()
+        }
       });
     },
-    nextPost: function () {
-      if( this.feedIds.length > 0 ) {
-        return this.feedIds.shift()
-      }
-      return
-    },
 
+    concatNews( news ) {
+      this.news = this.news.concat( news.filter( post => this.news.find( current => current.id == post.id  ) == undefined ))
+    },
 
     injectMailCollector() {
 
@@ -233,8 +237,6 @@ export default {
     },
 
   },
-
-
 
   deactivated() {
     this.isLoading = false;
@@ -283,6 +285,22 @@ function getTitle( params ) {
     return params.meta_title
   }
   return params.title
+}
+
+function upSymbol( value ) {
+  if( value ) {
+    return value.toUpperCase()
+  } else {
+    return null
+  }
+}
+
+function apiNewsPrepare( filters ) {
+  let filterQuery = 
+    (filters.type ? '&filters[news-translated][type]=' + filters.type : '') + 
+    (filters.symbol ? '&filters[portfolio-coins][symbol]=' + upSymbol(filters.symbol) : '')
+
+  return api_news + filterQuery
 }
 
 

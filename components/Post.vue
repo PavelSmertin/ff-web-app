@@ -1,5 +1,11 @@
  <template>
-  <article class="ff-post" itemscope itemtype="http://schema.org/NewsArticle">
+  <article 
+    v-observe-visibility="(isVisible, entry) => visibilityChanged(isVisible, entry, post.id)" 
+    class="ff-post" 
+    itemscope itemtype="http://schema.org/NewsArticle"
+    >
+
+    {{ $route.path }}
 
     <!-- Ссылка на статью -->
     <link itemprop="mainEntityOfPage" itemscope v-bind:href="url">
@@ -153,7 +159,7 @@
         }
         return false
       },
-      vote(is_positive) {
+      vote( is_positive ) {
         this.$axios.post(`/api/news/${ this.post.id }/vote`, `is_positive=${is_positive}`)
           .then(({ data }) => {
             this.post = data.data.attributes
@@ -163,6 +169,18 @@
             }
           })
       },
+      visibilityChanged( isVisible, entry, postId ) {
+        if( isVisible ) {
+          //this.$router.replace({path: '/' + postId})
+          let path = '/' + postId
+          window.history.pushState({}, null, path )
+          if (process.env.NODE_ENV !== 'production') {
+            return
+          }
+          ga('set', 'page', path)
+          ga('send', 'pageview')
+        } 
+      }
 
     }
   }
