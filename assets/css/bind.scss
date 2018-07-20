@@ -1108,7 +1108,6 @@ h3 {
 	padding-bottom: 140px;
 	.mail_news_widget {
 		margin: 48px 24px 0 24px;
-
 	}
 	.ff-post { 
 		padding-bottom: 40px;
@@ -1140,7 +1139,7 @@ h3 {
 		a {
 			text-decoration: underline;
 		}
-		em {
+		blockquote {
 			background: #fafafa;
 			padding: 30px;
 			display: inline-block;
@@ -1270,6 +1269,11 @@ h3 {
 		.mail_news_widget {
 			width: 63%;
 			margin: 50px auto;
+		}
+		.ff-post {
+			.mail_news_widget {
+				width: 100%;
+			}
 		}
 	}
 }

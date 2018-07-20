@@ -1,6 +1,6 @@
  <template>
   <article 
-    v-observe-visibility="(isVisible, entry) => visibilityChanged(isVisible, entry, post.id)" 
+    v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, post.id )" 
     class="ff-post" 
     itemscope itemtype="http://schema.org/NewsArticle"
     >
@@ -92,6 +92,10 @@
         </social-sharing>
       </div>    
     </div>
+
+
+    <div v-if="first == post.id" class="my-widget-anchor mail_news_widget" id="mailru_widget" data-cid="b9cdb3b43490823a65345cb4608d6471"></div>
+
   </article>
 </template>
 
@@ -105,6 +109,7 @@
 
     props: {
       post: 0,
+      first: 0,
     },
 
     data() {
@@ -120,6 +125,7 @@
 
     mounted () {
       this.showSocial = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
+      this.injectRecomendedWidget()
     },
 
     computed: {
@@ -178,7 +184,18 @@
           ga('set', 'page', path)
           ga('send', 'pageview')
         } 
-      }
+      },
+      injectRecomendedWidget() {
+
+        if(document.getElementById("my-widget-script")) {
+          myWidget.render('b9cdb3b43490823a65345cb4608d6471', document.getElementById("mailru_widget"));
+          return
+        }
+
+        var script = document.createElement("script");
+        script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: true};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'));
+        document.body.appendChild(script);
+      },
 
     }
   }
