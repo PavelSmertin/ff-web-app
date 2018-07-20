@@ -125,7 +125,9 @@
 
     mounted () {
       this.showSocial = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
-      this.injectRecomendedWidget()
+      if( this.first == this.post.id ) {
+        this.injectRecomendedWidget()
+      }
     },
 
     computed: {
