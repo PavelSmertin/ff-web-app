@@ -84,6 +84,7 @@ module.exports = {
     { src: '~/plugins/ga.js', ssr: false },
     //{ src: '~/plugins/vue-socket.js', ssr: false },
     { src: '~/plugins/social.js' },
+    { src: '~/plugins/vue-observe-visibility.js', ssr: false  },
     // { src: '~/plugins/mailsform.js', ssr: false },
     //{ src: '~/plugins/vue-highcharts.js', ssr: false },
   ],

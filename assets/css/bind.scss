@@ -371,7 +371,7 @@ h3 {
 
 }
 
-/* mobile tabs block */
+
 .ff-toolbar {
 	background: $bg-toolbar-color;
 	padding: 0 24px 0 24px !important;
@@ -382,6 +382,22 @@ h3 {
 
 	.normal-logo{
 		margin: 16px 0px;
+	}
+
+	nav {
+		.nav-link {
+			font-size: $label-size;
+			color: $l-color;
+			text-transform: uppercase;
+			display: inline-block;
+			&.nuxt-link-exact-active {
+				color: $post-top-color;
+			}
+
+		}
+		.nav-link:hover {
+			color: $post-top-color;
+		}
 	}
 
 	.ff_account_menu {
@@ -400,6 +416,19 @@ h3 {
 		border: 1px solid $link-color;
 		color: $link-color;
 		transition: color 0.2s ease-in-out;
+	}
+}
+
+@media (max-width: 769px) {
+	.ff-toolbar {
+		nav {
+			.nav-link {
+				padding: 0 10px 0 0;
+			}
+		}
+		.ff_account_menu {
+			display: none;
+		}
 	}
 }
 
@@ -1076,12 +1105,28 @@ h3 {
 /************ PAGES ************/
 
 /* post page */
-.ff-post {
-	transition: all .5s cubic-bezier(.55,0,.1,1);
+.ff_post_feed {
 	padding-bottom: 140px;
+	.mail_news_widget {
+		margin: 48px 24px 0 24px;
+	}
+	.ff-post {
+		padding-bottom: 40px;
+	}
+	&.page-enter-active, &.page-leave-active {
+	transition: opacity .2s
+}
+
+	&.page-enter, &.page-leave-active, &.page-leave {
+		opacity: 0
+	}
+}
+
+.ff-post {
+	padding-bottom: 140px;
+	transition: all .5s cubic-bezier(.55,0,.1,1);
 	.post-header{
 		margin: 24px 24px 0 24px;
-
 	}
 	.image_origin {
 		margin-top: 32px;
@@ -1095,8 +1140,13 @@ h3 {
 		a {
 			text-decoration: underline;
 		}
+		blockquote {
+			background: #fafafa;
+			padding: 30px;
+			display: inline-block;
+			border-left: 5px solid #eee;
+		}
 	}
-
 
 	.post_source {
 		margin: 24px 32px 0 24px;
@@ -1187,30 +1237,18 @@ h3 {
 		}
 	}
 
-	.mail_news_widget {
-		margin: 48px 24px 0 24px;
-	}
+    /* related news block */
+    .related_news {
+      @extend .ff-news;
 
-	/* related news block */
-	.related_news {
-		@extend .ff-news;
+      padding: 0;
 
-		padding: 0;
-
-		a.ff-news-row {
-			border: 1px solid #E6E6E6;
-		}
-	}
-
+      a.ff-news-row {
+        border: 1px solid #E6E6E6;
+      }
+    }
 }
 
-.ff-post.page-enter-active, .ff-post.page-leave-active {
-	transition: opacity .2s
-}
-
-.ff-post.page-enter, .ff-post.page-leave-active, .ff-post.page-leave {
-	opacity: 0
-}
 
 @media (min-width: 768px) {
 	.ff-post {
@@ -1238,8 +1276,16 @@ h3 {
 				text-align: right;
 			}
 		}
+	}
+	.ff_post_feed {
 		.mail_news_widget {
-			margin: 50px 0 0 0;
+			width: 63%;
+			margin: 50px auto;
+		}
+		.ff-post {
+			.mail_news_widget {
+				width: 100%;
+			}
 		}
 	}
 }

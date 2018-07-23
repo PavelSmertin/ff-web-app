@@ -1,8 +1,7 @@
 <template>
   <div class="ff_post_feed">
-    <post v-for="post of news" v-bind:key="post.id" :post="post" ></post>
-    <div ref="infinite_loading_container">
-    </div>
+    <post v-for="post of news" v-bind:key="post.id" :post="post" :first="first" ></post>
+    <div ref="infinite_loading_container"></div>
   </div>
 </template>
 
@@ -10,8 +9,10 @@
 import Post from '~/components/Post.vue'
 import PostItemRelated from '~/components/PostItemRelated.vue'
 import Vue from 'vue'
-
 import Jsona from 'jsona';
+
+const api_news = '/api/news?per-page=1'
+const dataFormatter = new Jsona()
 
 export default {
 
@@ -24,6 +25,7 @@ export default {
   data() {
     return {
       url: process.env.baseUrl + this.$route.path,
+      meta: { current_page: 0 },
 
       scrollParent: null,
       scrollHandler: null,
@@ -32,7 +34,7 @@ export default {
       isFirstLoad: true, // save the current loading whether it is the first loading
       debounceTimer: null,
       debounceDuration: 50,
-      distance: 100,
+      distance: 6000,
     }
   },
 
@@ -41,7 +43,7 @@ export default {
     PostItemRelated
   },
 
-  async asyncData({ app, req, params, error, redirect, route }) {
+  async asyncData({ app, req, params, error, redirect, route, store }) {
     const dataFormatter = new Jsona();
 
     try {
@@ -58,7 +60,8 @@ export default {
           body: data.data.attributes.body,
           attributes: data.data.attributes,
           news: [ data.data.attributes ],
-          fullData: dataFormatter.deserialize(data)
+          fullData: dataFormatter.deserialize(data),
+          first: data.data.id,
         }
 
       }
@@ -112,13 +115,13 @@ export default {
       }
     }.bind( this )
 
-    setTimeout(this.scrollHandler, 1)
-    this.scrollParent.addEventListener('scroll', this.scrollHandler)
+    setTimeout( this.scrollHandler, 1 )
+    this.scrollParent.addEventListener( 'scroll', this.scrollHandler )
 
     this.$on('$InfiniteLoading:loaded', (ev) => {
       this.isFirstLoad = false
       if (this.isLoading) {
-        this.$nextTick(this.attemptLoad.bind(null, true))
+        this.$nextTick(this.attemptLoad.bind( null, true ))
       }
     });
 
@@ -129,26 +132,26 @@ export default {
       this.$nextTick(() => {
         this.$forceUpdate()
       })
-      this.scrollParent.removeEventListener('scroll', this.scrollHandler)
+      this.scrollParent.removeEventListener( 'scroll', this.scrollHandler )
     });
 
     this.$on('$InfiniteLoading:reset', () => {
       this.isLoading = false
       this.isComplete = false
       this.isFirstLoad = true
-      this.scrollParent.addEventListener('scroll', this.scrollHandler)
+      this.scrollParent.addEventListener( 'scroll', this.scrollHandler )
       setTimeout(this.scrollHandler, 1)
     });
 
     this.stateChanger = {
       loaded: () => {
-        this.$emit('$InfiniteLoading:loaded', { target: this })
+        this.$emit( '$InfiniteLoading:loaded', { target: this } )
       },
       complete: () => {
-        this.$emit('$InfiniteLoading:complete', { target: this })
+        this.$emit( '$InfiniteLoading:complete', { target: this } )
       },
       reset: () => {
-        this.$emit('$InfiniteLoading:reset', { target: this })
+        this.$emit( '$InfiniteLoading:reset', { target: this } )
       },
     };
 
@@ -171,13 +174,13 @@ export default {
     attemptLoad( isContinuousCall ) {
       const currentDistance = this.getCurrentDistance();
 
-      // if (!this.isComplete && currentDistance <= this.distance &&
-      //   (this.$el.offsetWidth + this.$el.offsetHeight) > 0) {
-      //   this.isLoading = true
-      //   this.infiniteHandler()
-      // } else {
-      //   this.isLoading = false
-      // }
+      if( !this.isComplete && currentDistance <= this.distance &&
+        (this.$el.offsetWidth + this.$el.offsetHeight) > 0 ) {
+        this.isLoading = true
+        this.infiniteHandler()
+      } else {
+        this.isLoading = false
+      }
     },
     getCurrentDistance() {
       const infiniteElmOffsetTopFromBottom = this.$refs["infinite_loading_container"].getBoundingClientRect().top
@@ -187,10 +190,59 @@ export default {
       return infiniteElmOffsetTopFromBottom - scrollElmOffsetTopFromBottom
     },
     infiniteHandler() {
-      this.$axios.get(`/api/news/view/111`).then(({ data }) => {
-        this.isLoading = false
-        this.stateChanger.loaded()
+      this.$axios.get(apiNewsPrepare(this.$store.state.filters), {
+        params: {
+          page: this.meta.current_page + 1,
+        },
+      }).then(({ data }) => {
+        if (this.meta.current_page < data.meta.page_count) {
+          this.meta = data.meta
+          let news = dataFormatter.deserialize( data )
+          this.concatNews( news )
+          this.isLoading = false
+          this.stateChanger.loaded()
+        } else {
+          this.stateChanger.complete()
+        }
       });
+    },
+
+    concatNews( news ) {
+      this.news = this.news.concat( news.filter( post => this.news.find( current => current.id == post.id  ) == undefined ))
+    },
+
+    injectMailCollector() {
+
+      if(document.getElementById("inject_mail_collector")) {
+        return
+      }
+
+      var chimpPopupWrap = document.createElement('script');
+      chimpPopupWrap.src = "//downloads.mailchimp.com/js/signup-forms/popup/embed.js"
+      chimpPopupWrap.setAttribute('data-dojo-config', 'usePlainJson: true, isDebug: false');
+      chimpPopupWrap.id = "inject_mail_collector";
+
+
+      document.body.appendChild(chimpPopupWrap);
+
+      var chimpPopup = document.createElement("script");
+      chimpPopup.appendChild(document.createTextNode('require(["mojo/signup-forms/Loader"], function (L) { L.start({"baseUrl":"mc.us18.list-manage.com","uuid":"f2a6cbc588ae02f3e4991dd3d","lid":"c84e62e0f7"})});'));
+
+      chimpPopupWrap.onload = function() {
+        document.body.appendChild(chimpPopup);
+      }
+    },
+
+    injectRecomendedWidget() {
+
+      if(document.getElementById("my-widget-script")) {
+        myWidget.render('b9cdb3b43490823a65345cb4608d6471', document.getElementById("mailru_widget"));
+        return
+      }
+
+      var script = document.createElement("script");
+      script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: true};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'));
+      document.body.appendChild(script);
     },
 
     initRelationNews() {
@@ -204,7 +256,8 @@ export default {
           instance.$mount('#ffrel_' + news.id)
         })
       }
-    }
+    },
+
   },
 
   deactivated() {
@@ -215,7 +268,7 @@ export default {
     this.scrollParent.addEventListener( 'scroll', this.scrollHandler );
   },
   destroyed() {
-    if (!this.isComplete) {
+    if ( !this.isComplete ) {
       this.scrollParent.removeEventListener('scroll', this.scrollHandler);
     }
   },
@@ -254,6 +307,22 @@ function getTitle( params ) {
     return params.meta_title
   }
   return params.title
+}
+
+function upSymbol( value ) {
+  if( value ) {
+    return value.toUpperCase()
+  } else {
+    return null
+  }
+}
+
+function apiNewsPrepare( filters ) {
+  let filterQuery =
+    (filters.type ? '&filters[news-translated][type]=' + filters.type : '') +
+    (filters.symbol ? '&filters[portfolio-coins][symbol]=' + upSymbol(filters.symbol) : '')
+
+  return api_news + filterQuery
 }
 
 
