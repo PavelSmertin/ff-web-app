@@ -82,14 +82,14 @@
           <div class="scroll-container">
             <div v-if="$store.state.news.length" class="ff-news">
 
-              <!-- ssr list -->  
+              <!-- ssr list -->
               <nuxt-link v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
-                <post-item :post="newest" ></post-item>
+                <post-item :post="newest.attributes" ></post-item>
               </nuxt-link>
 
-              <!-- client list -->              
+              <!-- client list -->
               <nuxt-link v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff-news-row">
-                <post-item :post="item"></post-item>
+                <post-item :post="item.attributes"></post-item>
               </nuxt-link>
 
               <infinite-loading v-if="$store.state.news.length" @infinite="infiniteHandler" spinner="spiral">

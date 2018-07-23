@@ -8,6 +8,10 @@
 
 <script>
 import Post from '~/components/Post.vue'
+import PostItemRelated from '~/components/PostItemRelated.vue'
+import Vue from 'vue'
+
+import Jsona from 'jsona';
 
 export default {
 
@@ -34,23 +38,29 @@ export default {
 
   components: {
     Post,
+    PostItemRelated
   },
 
   async asyncData({ app, req, params, error, redirect, route }) {
+    const dataFormatter = new Jsona();
+
     try {
-      const { data } = await app.$axios.get(`/api/news/view/${+params.id}`)
- 
+      const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews`)
+
       if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
         redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
       } else {
+
         return {
           url: process.env.baseUrl +  "/" + data.data.id,
           title: data.data.attributes.title,
           seoTitle: getTitle(data.data.attributes),
           body: data.data.attributes.body,
           attributes: data.data.attributes,
-          news: [ data.data.attributes ]
+          news: [ data.data.attributes ],
+          fullData: dataFormatter.deserialize(data)
         }
+
       }
     } catch (e) {
       if( e.response && e.response.status == 404 ) {
@@ -83,6 +93,9 @@ export default {
   },
 
   mounted () {
+
+    this.initRelationNews();
+
     this.scrollParent = this.getScrollParent()
 
     this.goto()
@@ -179,6 +192,19 @@ export default {
         this.stateChanger.loaded()
       });
     },
+
+    initRelationNews() {
+      const PostItemComponentClass = Vue.extend(PostItemRelated)
+
+      if (this.fullData.relatednews) {
+        this.fullData.relatednews.forEach(function(news, i, arr){
+          let instance = new PostItemComponentClass({
+            propsData: { newest: news }
+          })
+          instance.$mount('#ffrel_' + news.id)
+        })
+      }
+    }
   },
 
   deactivated() {
