@@ -2,7 +2,12 @@
 
 const axios = require('axios')
 
-const urls = require('./urls.js') || require('./urls_default.js')
+let urls = require( './urls_default.js' ) 
+try { 
+  urls = require( './urls.js' ) 
+}
+catch( e ) { 
+}
 
 
 module.exports = {
@@ -119,8 +124,6 @@ module.exports = {
       parent.children.find((r) => r.path.includes(':id')).path = ':id(\\d+)'
       parent.children.find((r) => r.path.includes(':id')).redirect = ''
       parent.children.find((r) => r.path.includes(':symbol')).path = ':symbol([a-zA-Z]+[0-9]*)'
-
-      console.log(parent)
 
       parent.children.push({
         name: 'slug-id',
