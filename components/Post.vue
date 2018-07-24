@@ -1,6 +1,6 @@
  <template>
   <article 
-    v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, post.id )" 
+    v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, post.id, post.slug )" 
     class="ff-post" 
     itemscope itemtype="http://schema.org/NewsArticle"
     >
@@ -175,16 +175,23 @@
             }
           })
       },
-      visibilityChanged( isVisible, entry, postId ) {
+      visibilityChanged( isVisible, entry, postId, slug ) {
+
         if( isVisible ) {
+
           //this.$router.replace({path: '/' + postId})
-          let path = '/' + postId
-          window.history.pushState({}, null, path )
-          if (process.env.NODE_ENV !== 'production') {
-            return
+          let path = '/' + postId + (slug ? '/' + slug : '')
+
+          if( window.location.pathname !=  path ) {
+            window.history.pushState({}, null, path )
+            if (process.env.NODE_ENV !== 'production') {
+              return
+            }
+
+            yaCounter25598768.hit( path )
+            ga('set', 'page', path)
+            ga('send', 'pageview')
           }
-          ga('set', 'page', path)
-          ga('send', 'pageview')
         } 
       },
       injectRecomendedWidget() {
