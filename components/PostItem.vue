@@ -69,8 +69,9 @@
 
       isTopPost() {
         if (this.$store) {
-          this.$store.state.topNews.indexOf(this.post.id) >= 0
+          return this.$store.state.topNews.indexOf( this.post.id ) >= 0
         }
+        return false
       },
     },
 

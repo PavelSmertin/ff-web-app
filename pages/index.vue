@@ -123,7 +123,7 @@
   var MONTH = DAY * 30;
   var YEAR = DAY * 365;
 
-  const api_news = process.env.apiUrl + '/v1/news/?fields[news-translated]=title,votes_positive,votes_negative,create_dt,type,slug,source_url,images';
+  const api_news = process.env.apiUrl + '/v1/news/?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images';
   const api_coins = process.env.apiUrl + '/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply';
 
   export default {
@@ -192,7 +192,7 @@
       store.commit('SET_NEWS', news.data.data)
       store.commit('SET_COINS', coins.data.data)
       if(news.data.data && news.data.data.length > 0) {
-        let tops = news.data.data.slice(0, 2).map( post => post.id )
+        let tops = news.data.data.slice(0, 2).map( post => post.attributes.id )
         console.log(tops);
         store.commit('SET_TOP_NEWS', tops)
       }

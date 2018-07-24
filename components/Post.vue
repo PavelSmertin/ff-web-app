@@ -166,7 +166,7 @@
         return false
       },
       vote( is_positive ) {
-        this.$axios.post(`/api/news/${ this.post.id }/vote`, `is_positive=${is_positive}`)
+        this.$axios.post(`/api/news/${ this.post.id }/vote`, `is_positive=${is_positive}&type=rating`)
           .then(({ data }) => {
             this.post = data.data.attributes
           }).catch(e => {
