@@ -2,9 +2,8 @@
 
 const axios = require('axios')
 
+const urls = require('./urls.js') || require('./urls_default.js')
 
-const host = 'http://latest.ff.ru'
-const api = 'http://test-api.ff.ru'
 
 module.exports = {
 
@@ -90,8 +89,8 @@ module.exports = {
   ],
 
   env: {
-    baseUrl: host,
-    apiUrl: api,
+    baseUrl: urls.host,
+    apiUrl: urls.api,
   },
 
   router: {
@@ -152,8 +151,8 @@ module.exports = {
 
 
   axios: {
-    baseUrl: host,
-    browserBaseURL: host,
+    baseUrl: urls.host,
+    browserBaseURL: urls.host,
     // proxy: true,
     // proxyHeaders: true,
     // credentials: false,
@@ -173,8 +172,8 @@ module.exports = {
   },
 
   proxy: {
-    '/api': api,
-    '/images': api,
+    '/api': urls.api,
+    '/images': urls.api,
   },
 
   auth: {
