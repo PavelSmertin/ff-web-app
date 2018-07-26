@@ -3,26 +3,19 @@
     <div v-if="isTopPost()" v-bind:style="{ backgroundImage: 'url(' + getImageSharing() + ')' }" class="top_post_background" ></div>
     <div class="post_fade_overlay" ></div>
 
-    <div class="ff_news_item_title row">
-      <div class="col">
-        <div class="ff-nc-title">
-            <span v-if="isTopPost()">&#128293;&nbsp;</span>{{ post.title }}
-        </div>
+    <div class="ff_news_item_title">
+      <div class="ff-nc-title">
+          <span v-if="isTopPost()">&#128293;&nbsp;</span>{{ post.title }}
       </div>
     </div>
-    <div class="ff_news_item_details row no-gutters">
-      <div class="col-2">
-        <post-votes :positives="post.votes_positive" :negatives="post.votes_negative">
-        </post-votes>
-      </div>
-      <div class="col-10">
+    <div class="ff_news_item_details no-gutters">
         <ul class="news_list_detail">
           <li><timeago :since="post.create_dt" class="time-ago"></timeago></li>
           <li v-if="post.type == 'news'">Новость</li>
           <li v-else-if="post.type == 'prognosis'">Прогноз</li>
+          <li><post-votes :positives="post.votes_positive" :negatives="post.votes_negative"></post-votes></li>
           <li class="post_source">{{ sourceDomain() }}</li>
         </ul>
-      </div>
     </div>
   </div>
 </template>

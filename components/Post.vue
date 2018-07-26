@@ -20,12 +20,20 @@
    
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
+        <li class="post_detail_coins">
+          <span v-for="coin of post.coins" v-bind:key="coin.id" class="coin_tag">
+            {{ coin.symbol }}
+          </span>
+        </li>
         <li >
           <timeago :since="post.create_dt" class="time-ago"></timeago>    
           <meta itemprop="datePublished" v-bind:content="post.create_dt">
         </li>
         <li v-if="post.type == 'news'">Новость</li>
         <li v-else-if="post.type == 'prognosis'">Прогноз</li>
+        <li v-if="sourceDomain()" class="post_detail_source ff-label">
+          Источник: <span itemprop="isBasedOn" >{{ sourceDomain() }}</span>
+        </li>
       </ul>
     </div>
     
@@ -38,18 +46,10 @@
     </span>
 
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
-    <div class="post_source ff-label" itemprop="isBasedOn">
-        Источник: {{ sourceDomain() }}
-    </div>
     <div class="tools">
-
-      <button class="vote_up" v-on:click="vote(1)">
-        <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
-      </button>
-      <button class="vote_down" v-on:click="vote(0)">
-        <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
-      </button>
-
+      <div class="post_author" itemprop="isBasedOn">
+        Переведено: Автор
+      </div>
       <div v-if="showSocial" class="social">
 
         <social-sharing :networks="overriddenNetworks"
@@ -90,7 +90,42 @@
             </network>
           </div>
         </social-sharing>
-      </div>    
+      </div>
+    </div>
+
+    <div class="tools">
+
+      <div class="tools_left">
+        <button class="vote vote_up" v-on:click="vote(1)">
+          <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
+        </button>
+        <button class="vote vote_down" v-on:click="vote(0)">
+          <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
+        </button>
+      </div>
+
+      <div class="tools_right">
+        <button class="vote like" v-on:click="like(1)">
+          <span class="ic_like"></span><span class="votes_count">{{ post.likes_positive }}</span>
+        </button>
+        <button class="vote dislike" v-on:click="like(0)">
+          <span class="ic_dislike"></span><span class="votes_count">{{ post.likes_negative }}</span>
+        </button>
+      </div>
+
+    </div>
+
+    <div v-if="postCoin()" class="tools">
+      <div class="tools_left">
+        <button class="watch" v-on:click="watch()">
+          <span class="button_icon ic_star"></span><span class="button_body">Отслеживать {{ postCoin() }}</span>
+        </button>
+      </div>
+      <div class="tools_right">
+        <button class="subscribe" v-on:click="subscribe()">
+          <span>Подписаться на {{ postCoin() }}</span>
+        </button>
+      </div>
     </div>
 
 
@@ -102,14 +137,19 @@
 <script>
 
   import BaseNetworks from '@/assets/networks.json'
+  import PostItemRelated from '~/components/PostItemRelated.vue'
+  import Vue from 'vue'
 
-  
   export default {
     name: 'post-item',
 
     props: {
       post: 0,
       first: 0,
+    },
+
+    components: {
+      PostItemRelated
     },
 
     data() {
@@ -128,6 +168,7 @@
       if( this.first == this.post.id ) {
         this.injectRecomendedWidget()
       }
+      this.initRelationNews();
     },
 
     computed: {
@@ -175,6 +216,40 @@
             }
           })
       },
+      like( is_positive ) {
+        this.$axios.post(`/api/news/${ this.post.id }/vote`, `is_positive=${is_positive}&type=like`)
+          .then(({ data }) => {
+            this.post = data.data.attributes
+          }).catch(e => {
+            if (e.response && e.response.status == 401) {
+              this.$router.push({ name: `account-signin` })
+            }
+          })
+      },
+
+      watch() {
+        this.$axios.post(`/api/coin/subscribe`, `symbol=${ this.postCoin() }`)
+          .then(({ data }) => {
+            this.post = data.data.attributes
+          }).catch(e => {
+            if (e.response && e.response.status == 401) {
+              this.$router.push({ name: `account-signin` })
+            }
+          })
+      },
+
+      subscribe() {
+        this.$axios.post(`/api/coin/favorite`, `symbol=${ this.postCoin() }`)
+          .then(({ data }) => {
+            this.post = data.data.attributes
+          }).catch(e => {
+            if (e.response && e.response.status == 401) {
+              this.$router.push({ name: `account-signin` })
+            }
+          })
+      },
+
+
       visibilityChanged( isVisible, entry, postId, slug ) {
 
         if( isVisible ) {
@@ -205,6 +280,26 @@
         script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: true};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'));
         document.body.appendChild(script);
       },
+
+      initRelationNews() {
+        const PostItemComponentClass = Vue.extend(PostItemRelated)
+
+        if (this.post.relatednews) {
+          this.post.relatednews.forEach(function(news, i, arr){
+            let instance = new PostItemComponentClass({
+              propsData: { newest: news }
+            })
+            instance.$mount('#ffrel_' + news.id)
+          })
+        }
+      },
+
+      postCoin() {
+        if( this.post.coins.length > 0 ) {
+          return this.post.coins[0].symbol
+        } 
+        return null
+      }
 
     }
   }
