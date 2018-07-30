@@ -123,8 +123,8 @@
   var MONTH = DAY * 30;
   var YEAR = DAY * 365;
 
-  const api_news = process.env.apiUrl + '/v1/news/?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images';
-  const api_coins = process.env.apiUrl + '/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply';
+  const api_news = `/api/news/?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images`;
+  const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`;
 
   export default {
 

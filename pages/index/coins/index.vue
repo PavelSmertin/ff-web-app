@@ -6,7 +6,7 @@
 <script>
   import CoinsListPage from '~/components/CoinsListPage.vue'
 
-  const api_coins = process.env.apiUrl + '/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply';
+  const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`;
 
   export default {
 

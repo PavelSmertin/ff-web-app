@@ -134,7 +134,7 @@
 
       let details
       try {
-        details = await app.$axios.get(process.env.apiUrl + `/v1/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
+        details = await app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
       } catch (e) {
         if( e.response && e.response.status == 404 ) {
           error ({ message: 'Такой монеты не существует', statusCode: 404 })
