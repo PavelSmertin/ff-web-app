@@ -203,13 +203,10 @@
       store.commit('SET_COINS', coins.data.data)
 
       if( app.$auth.loggedIn ) {
-        app.$axios.get(api_coins_favorites)
-          .then(favoriteCoins => {
-            let responseObj = dataFormatter.deserialize( favoriteCoins.data )
-            store.commit('SET_FAVORITE_COINS', responseObj.favoritecoins)
-            store.commit('SET_SUBSCRIBED_COINS', responseObj.subscribedcoins)
-          })
-          .catch(error => {})
+        let favoriteCoins = await app.$axios.get(api_coins_favorites)
+        let responseObj = dataFormatter.deserialize( favoriteCoins.data )
+        store.commit('SET_FAVORITE_COINS', responseObj.favoritecoins)
+        store.commit('SET_SUBSCRIBED_COINS', responseObj.subscribedcoins)
       }
     },
 

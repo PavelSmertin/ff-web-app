@@ -46,10 +46,11 @@
     </span>
 
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
+
     <div class="tools">
       <div class="post_author" itemprop="isBasedOn">
       </div>
-      <div v-if="showSocial" class="social">
+      <div class="social">
 
         <social-sharing :networks="overriddenNetworks"
                       :url="url"
@@ -157,7 +158,6 @@
 
     data() {
       return {
-        showSocial: false,
         url: process.env.baseUrl + this.$route.path,
         title: '',
         seoTitle: getTitle( this.postProp ),        
@@ -168,7 +168,6 @@
     },
 
     mounted () {
-      this.showSocial = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
       if( this.first == this.post.id ) {
         this.injectRecomendedWidget()
       }

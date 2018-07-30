@@ -166,6 +166,9 @@ export default {
       return this.$parent.$refs["scroll-container"]
     },
     attemptLoad( isContinuousCall ) {
+      if( this.$refs["infinite_loading_container"] == undefined) {
+        return
+      }
       const currentDistance = this.getCurrentDistance();
 
       if( !this.isComplete && currentDistance <= this.distance &&

@@ -510,6 +510,13 @@ h3 {
 			flex-grow: 1;
 			flex-basis: 100%;
 			overflow: hidden;
+			.ic_star {
+				position: absolute;
+				bottom: 20px;
+				left: 13px;
+				width: 20px;
+				height: 20px;
+			}
 		}
 		.coin_details_item.change {
 			color: $up-value-color;
@@ -552,6 +559,11 @@ h3 {
 	.coin_row {
 		.i_cap, .i_volume, .i_sup {
 			display: none;
+		}
+		.coin_details_item {
+			.ic_star {
+				display: none;
+			}
 		}
 	}
 	.coin_header {
