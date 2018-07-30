@@ -54,6 +54,11 @@ const createStore = () => {
 			SET_FAVORITE_COINS: function (state, favoriteCoins) { 
 				
 				state.favoriteCoins = favoriteCoins
+
+				if( favoriteCoins == undefined || favoriteCoins.length == 0)  {
+					return
+				}
+
 				let favCoins = state.coins.filter( 
 						coin => state.favoriteCoins.find( 
 							favorite => favorite.id == coin.id  ) != undefined 
