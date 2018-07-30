@@ -228,7 +228,7 @@
       },
 
       watch() {
-        this.$axios.post(`/api/coin/subscribe`, `symbol=${ this.postCoin() }`)
+        this.$axios.post(`/api/coin/favorite?include=favoritecoins`, `symbol=${ this.postCoin() }`)
           .then(({ data }) => {
             this.post = data.data.attributes
           }).catch(e => {
@@ -239,7 +239,7 @@
       },
 
       subscribe() {
-        this.$axios.post(`/api/coin/favorite`, `symbol=${ this.postCoin() }`)
+        this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=${ this.postCoin() }`)
           .then(({ data }) => {
             this.post = data.data.attributes
           }).catch(e => {
@@ -248,7 +248,6 @@
             }
           })
       },
-
 
       visibilityChanged( isVisible, entry, postId, slug ) {
 
@@ -269,6 +268,7 @@
           }
         } 
       },
+
       injectRecomendedWidget() {
 
         if(document.getElementById("my-widget-script")) {
@@ -295,7 +295,7 @@
       },
 
       postCoin() {
-        if( this.post.coins.length > 0 ) {
+        if( this.post.coins && this.post.coins.length > 0 ) {
           return this.post.coins[0].symbol
         } 
         return null
