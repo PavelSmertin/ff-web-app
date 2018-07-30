@@ -18,8 +18,26 @@ const createStore = () => {
 			SET_USER: function (state, user) {
 				state.authUser = user
 			},
-			SET_COINS: function (state, coins) {
-				state.coins = coins
+			SET_COINS: function (state, newCoins) {
+
+				if( !(state.favoriteCoins && state.favoriteCoins.length > 0) ) {
+					state.coins = newCoins
+					return
+				}
+				
+				let favCoins = newCoins.filter( 
+						coin => state.favoriteCoins.find( 
+							favorite => favorite.id == coin.id  ) != undefined 
+						)
+
+				let otherCoins = newCoins.filter( 
+						coin => state.favoriteCoins.find( 
+							favorite => favorite.id == coin.id  ) == undefined 
+						)
+				
+				state.coins = favCoins.concat(otherCoins)
+
+
 			},
 			SET_NEWS: function (state, news) {
 				state.news = news
