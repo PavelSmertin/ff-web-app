@@ -188,29 +188,37 @@
         store.commit('SET_FILTER_SYMBOL', 'BTC')
       }
 
-      // let [news, coins, favoriteCoins] = await Promise.all([
-      //   app.$axios.get(apiNewsPrepare(store.state.filters)),
-      //   app.$axios.get(api_coins),
-      //   app.$axios.get(api_coins_favorites),
-      // ])
+      let requests =  [
+        app.$axios.get(apiNewsPrepare(store.state.filters))
+          .then(news => {
+            store.commit('SET_NEWS', news.data.data)
+            if(news.data.data && news.data.data.length > 0) {
+              let tops = news.data.data.slice(0, 2).map( post => post.attributes.id )
+              store.commit('SET_TOP_NEWS', tops)
+            }
+          })
+          .catch(error => console.log('error1')),
+        app.$axios.get(api_coins)
+          .then(coins => {
+            store.commit('SET_COINS', coins.data.data)
+          })
+          .catch(error => console.log('error2')),
+      ]
 
-      let [ news, coins ] = await Promise.all([
-        app.$axios.get(apiNewsPrepare(store.state.filters)),
-        app.$axios.get(api_coins),
-      ])
-
-      store.commit('SET_NEWS', news.data.data)
-      store.commit('SET_COINS', coins.data.data)
-
-      // let response = dataFormatter.deserialize( favoriteCoins.data )
-
-      // store.commit('SET_FAVORITE_COINS', response.favoritecoins)
-      // store.commit('SET_SUBSCRIBED_COINS', response.subscribedcoins)
-
-      if(news.data.data && news.data.data.length > 0) {
-        let tops = news.data.data.slice(0, 2).map( post => post.attributes.id )
-        store.commit('SET_TOP_NEWS', tops)
+      if( app.$auth.loggedIn ) {
+        requests.push(
+          app.$axios.get(api_coins_favorites)
+            .then(favoriteCoins => {
+              let responseObj = dataFormatter.deserialize( favoriteCoins.data )
+              store.commit('SET_FAVORITE_COINS', responseObj.favoritecoins)
+              store.commit('SET_SUBSCRIBED_COINS', responseObj.subscribedcoins)
+            })
+            .catch(error => console.log('error3'))
+        )
       }
+
+      Promise.resolve(requests)
+
     },
 
     components: {
