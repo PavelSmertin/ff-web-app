@@ -48,7 +48,6 @@
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
     <div class="tools">
       <div class="post_author" itemprop="isBasedOn">
-        Переведено: Автор
       </div>
       <div v-if="showSocial" class="social">
 
@@ -118,12 +117,13 @@
     <div v-if="postCoin()" class="tools">
       <div class="tools_left">
         <button class="watch" v-on:click="watch()">
-          <span class="button_icon ic_star"></span><span class="button_body">Отслеживать {{ postCoin() }}</span>
+          <span class="button_icon ic_star" v-bind:class="activeFavourite"></span><span class="button_body">Отслеживать {{ postCoin() }}</span>
         </button>
       </div>
       <div class="tools_right">
         <button class="subscribe" v-on:click="subscribe()">
-          <span>Подписаться на {{ postCoin() }}</span>
+          <span v-if="inSubscribed()" >Подписаться на {{ postCoin() }}</span>
+          <span v-else>Отписаться от {{ postCoin() }}</span>
         </button>
       </div>
     </div>
@@ -139,12 +139,15 @@
   import BaseNetworks from '@/assets/networks.json'
   import PostItemRelated from '~/components/PostItemRelated.vue'
   import Vue from 'vue'
+  import Jsona from 'jsona'
+
+  const dataFormatter = new Jsona()
 
   export default {
     name: 'post-item',
 
     props: {
-      post: 0,
+      postProp: 0,
       first: 0,
     },
 
@@ -157,9 +160,10 @@
         showSocial: false,
         url: process.env.baseUrl + this.$route.path,
         title: '',
-        seoTitle: getTitle( this.post ),        
+        seoTitle: getTitle( this.postProp ),        
         body: '',
         overriddenNetworks: BaseNetworks,
+        post: this.postProp
       }
     },
 
@@ -172,6 +176,11 @@
     },
 
     computed: {
+      activeFavourite: function () {
+        return {
+          'active_star': this.inFavourites()
+        }
+      },
       stripSocialDesription: function() {
         var str = this.post.body
         if ((str === null) || (str === ''))
@@ -200,26 +209,29 @@
         }
         return domain
       },
+
       getImageOriginal() {
         if( this.post.images.original ) {
           return '/images' + this.post.images.original
         }
         return false
       },
+
       vote( is_positive ) {
-        this.$axios.post(`/api/news/${ this.post.id }/vote`, `is_positive=${is_positive}&type=rating`)
+        this.$axios.post(`/api/news/${ this.post.id }/vote?include=coins`, `is_positive=${is_positive}&type=rating`)
           .then(({ data }) => {
-            this.post = data.data.attributes
+            this.post = dataFormatter.deserialize( data )
           }).catch(e => {
             if (e.response && e.response.status == 401) {
               this.$router.push({ name: `account-signin` })
             }
           })
       },
+
       like( is_positive ) {
-        this.$axios.post(`/api/news/${ this.post.id }/vote`, `is_positive=${is_positive}&type=like`)
+        this.$axios.post(`/api/news/${ this.post.id }/vote?include=coins`, `is_positive=${is_positive}&type=like`)
           .then(({ data }) => {
-            this.post = data.data.attributes
+            this.post = dataFormatter.deserialize( data )
           }).catch(e => {
             if (e.response && e.response.status == 401) {
               this.$router.push({ name: `account-signin` })
@@ -230,7 +242,8 @@
       watch() {
         this.$axios.post(`/api/coin/favorite?include=favoritecoins`, `symbol=${ this.postCoin() }`)
           .then(({ data }) => {
-            this.post = data.data.attributes
+            let response = dataFormatter.deserialize( data )
+            this.$store.commit('SET_FAVORITE_COINS', response.favoritecoins)
           }).catch(e => {
             if (e.response && e.response.status == 401) {
               this.$router.push({ name: `account-signin` })
@@ -241,7 +254,8 @@
       subscribe() {
         this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=${ this.postCoin() }`)
           .then(({ data }) => {
-            this.post = data.data.attributes
+            let response = dataFormatter.deserialize( data )
+            this.$store.commit('SET_SUBSCRIBED_COINS', response.subscribedcoins)
           }).catch(e => {
             if (e.response && e.response.status == 401) {
               this.$router.push({ name: `account-signin` })
@@ -250,7 +264,6 @@
       },
 
       visibilityChanged( isVisible, entry, postId, slug ) {
-
         if( isVisible ) {
 
           //this.$router.replace({path: '/' + postId})
@@ -258,7 +271,7 @@
 
           if( window.location.pathname !=  path ) {
             window.history.pushState({}, null, path )
-            if (process.env.NODE_ENV !== 'production') {
+            if( process.env.NODE_ENV !== 'production' ) {
               return
             }
 
@@ -270,8 +283,7 @@
       },
 
       injectRecomendedWidget() {
-
-        if(document.getElementById("my-widget-script")) {
+        if( document.getElementById("my-widget-script") ) {
           myWidget.render('b9cdb3b43490823a65345cb4608d6471', document.getElementById("mailru_widget"));
           return
         }
@@ -299,6 +311,14 @@
           return this.post.coins[0].symbol
         } 
         return null
+      },
+
+      inFavourites() {
+        return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( coin =>  coin.symbol == this.postCoin() )
+      },
+
+      inSubscribed() {
+        return this.$store.state.subscribedCoins && this.$store.state.subscribedCoins.find( coin =>  coin.symbol == this.postCoin() )
       }
 
     }

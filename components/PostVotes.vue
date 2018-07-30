@@ -21,7 +21,10 @@
         if( count > 3) {
           return 3
         }
-        return count
+        if( count > 0 ) {
+          return count
+        }
+        return 0
       }
     }
   }

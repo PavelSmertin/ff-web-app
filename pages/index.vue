@@ -115,16 +115,20 @@
   import CoinsList from '~/components/CoinsList.vue'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
+  import Jsona from 'jsona'
 
-  var MINUTE = 60;
-  var HOUR = MINUTE * 60;
-  var DAY = HOUR * 24;
-  var WEEK = DAY * 7;
-  var MONTH = DAY * 30;
-  var YEAR = DAY * 365;
+  const dataFormatter = new Jsona()
 
-  const api_news = `/api/news/?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images`;
-  const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`;
+  var MINUTE = 60
+  var HOUR = MINUTE * 60
+  var DAY = HOUR * 24
+  var WEEK = DAY * 7
+  var MONTH = DAY * 30
+  var YEAR = DAY * 365
+
+  const api_news = `/api/news/?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images`
+  const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
+  const api_coins_favorites =  `api/user/myself?include=favoritecoins,subscribedcoins`
 
   export default {
 
@@ -184,16 +188,27 @@
         store.commit('SET_FILTER_SYMBOL', 'BTC')
       }
 
-      let [news, coins] = await Promise.all([
+      // let [news, coins, favoriteCoins] = await Promise.all([
+      //   app.$axios.get(apiNewsPrepare(store.state.filters)),
+      //   app.$axios.get(api_coins),
+      //   app.$axios.get(api_coins_favorites),
+      // ])
+
+      let [ news, coins ] = await Promise.all([
         app.$axios.get(apiNewsPrepare(store.state.filters)),
         app.$axios.get(api_coins),
       ])
 
       store.commit('SET_NEWS', news.data.data)
       store.commit('SET_COINS', coins.data.data)
+
+      // let response = dataFormatter.deserialize( favoriteCoins.data )
+
+      // store.commit('SET_FAVORITE_COINS', response.favoritecoins)
+      // store.commit('SET_SUBSCRIBED_COINS', response.subscribedcoins)
+
       if(news.data.data && news.data.data.length > 0) {
         let tops = news.data.data.slice(0, 2).map( post => post.attributes.id )
-        console.log(tops);
         store.commit('SET_TOP_NEWS', tops)
       }
     },

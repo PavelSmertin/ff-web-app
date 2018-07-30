@@ -7,6 +7,8 @@ const createStore = () => {
 			isMenuOpen: false,
 			authUser: null,
 			coins: [],
+			favoriteCoins: [],
+			subscribedCoins: [],
 			news: [],
 			topNews: [],
 			filters: {symbol: null, type: null}
@@ -30,6 +32,12 @@ const createStore = () => {
 			},
 			SET_FILTER_SYMBOL: function (state, symbol) {
 				state.filters.symbol = symbol
+			},
+			SET_FAVORITE_COINS: function (state, favoriteCoins) { 
+				state.favoriteCoins = favoriteCoins
+			},
+			SET_SUBSCRIBED_COINS: function (state, subscribedCoins) {
+				state.subscribedCoins = subscribedCoins
 			},
 		},
 

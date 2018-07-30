@@ -1,6 +1,6 @@
 <template>
   <div class="ff_post_feed">
-    <post v-for="post of news" v-bind:key="post.id" :post="post" :first="first" ></post>
+    <post v-for="post of news" v-bind:key="post.id" :postProp="post" :first="first" ></post>
     <div ref="infinite_loading_container"></div>
   </div>
 </template>

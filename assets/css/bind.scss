@@ -181,6 +181,9 @@ h3 {
 	width: 12px;
 	height: 12px;
 	display: inline-flex;
+	&.active_star {
+		background-image: url('~assets/images/ic_star.svg');
+	}
 }
 
 .button_link {
@@ -1326,7 +1329,11 @@ h3 {
 					transition: border 0.2s ease-in-out;
 					&.ic_star {
 						background-image: url('~assets/images/ic_star_border_hover.svg');
+						&.active_star {
+							background-image: url('~assets/images/ic_star_hover.svg');
+						}
 					}
+
 				}
 			}
 		}
