@@ -218,6 +218,9 @@
       },
 
       vote( is_positive ) {
+        if( this.setLocalStorage( "vote_" + this.post.id, is_positive )) {
+          return
+        }
         this.$axios.post(`/api/news/${ this.post.id }/vote?include=coins`, `is_positive=${is_positive}&type=rating`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
@@ -229,6 +232,9 @@
       },
 
       like( is_positive ) {
+        if( this.setLocalStorage( "like_" + this.post.id, is_positive )) {
+          return
+        }
         this.$axios.post(`/api/news/${ this.post.id }/vote?include=coins`, `is_positive=${is_positive}&type=like`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
@@ -237,6 +243,27 @@
               this.$router.push({ name: `account-signin` })
             }
           })
+      },
+
+      setLocalStorage( key, is_positive ) {
+        if (typeof localStorage === 'undefined' ) {
+          return true
+        }
+        if ( process.server ) {
+          return true
+        }
+        if( this.$auth.loggedIn ) {
+          return true
+        }
+        const value = localStorage.getItem( key )
+
+        if( value != null && value != undefined ) { // && value == is_positive ) {
+          return true
+        }
+
+        localStorage.setItem( key, is_positive )
+
+        return false
       },
 
       watch() {

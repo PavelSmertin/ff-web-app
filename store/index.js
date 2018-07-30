@@ -34,7 +34,19 @@ const createStore = () => {
 				state.filters.symbol = symbol
 			},
 			SET_FAVORITE_COINS: function (state, favoriteCoins) { 
+				
 				state.favoriteCoins = favoriteCoins
+				let favCoins = state.coins.filter( 
+						coin => state.favoriteCoins.find( 
+							favorite => favorite.id == coin.id  ) != undefined 
+						)
+
+				let otherCoins = state.coins.filter( 
+						coin => state.favoriteCoins.find( 
+							favorite => favorite.id == coin.id  ) == undefined 
+						)
+				
+				state.coins = favCoins.concat(otherCoins)
 			},
 			SET_SUBSCRIBED_COINS: function (state, subscribedCoins) {
 				state.subscribedCoins = subscribedCoins

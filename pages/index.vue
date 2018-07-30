@@ -189,36 +189,28 @@
       }
 
       let requests =  [
-        app.$axios.get(apiNewsPrepare(store.state.filters))
-          .then(news => {
-            store.commit('SET_NEWS', news.data.data)
-            if(news.data.data && news.data.data.length > 0) {
-              let tops = news.data.data.slice(0, 2).map( post => post.attributes.id )
-              store.commit('SET_TOP_NEWS', tops)
-            }
-          })
-          .catch(error => console.log('error1')),
-        app.$axios.get(api_coins)
-          .then(coins => {
-            store.commit('SET_COINS', coins.data.data)
-          })
-          .catch(error => console.log('error2')),
+        app.$axios.get(apiNewsPrepare(store.state.filters)),
+        app.$axios.get(api_coins),
       ]
 
-      if( app.$auth.loggedIn ) {
-        requests.push(
-          app.$axios.get(api_coins_favorites)
-            .then(favoriteCoins => {
-              let responseObj = dataFormatter.deserialize( favoriteCoins.data )
-              store.commit('SET_FAVORITE_COINS', responseObj.favoritecoins)
-              store.commit('SET_SUBSCRIBED_COINS', responseObj.subscribedcoins)
-            })
-            .catch(error => console.log('error3'))
-        )
+      let [ news, coins ] = await Promise.all(requests)
+
+      store.commit('SET_NEWS', news.data.data)
+      if(news.data.data && news.data.data.length > 0) {
+        let tops = news.data.data.slice(0, 2).map( post => post.attributes.id )
+        store.commit('SET_TOP_NEWS', tops)
       }
+      store.commit('SET_COINS', coins.data.data)
 
-      Promise.resolve(requests)
-
+      if( app.$auth.loggedIn ) {
+        app.$axios.get(api_coins_favorites)
+          .then(favoriteCoins => {
+            let responseObj = dataFormatter.deserialize( favoriteCoins.data )
+            store.commit('SET_FAVORITE_COINS', responseObj.favoritecoins)
+            store.commit('SET_SUBSCRIBED_COINS', responseObj.subscribedcoins)
+          })
+          .catch(error => {})
+      }
     },
 
     components: {
