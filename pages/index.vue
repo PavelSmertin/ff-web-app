@@ -84,12 +84,12 @@
 
               <!-- ssr list -->
               <nuxt-link v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
-                <post-item :post="newest.attributes" ></post-item>
+                <post-item :post="newest" ></post-item>
               </nuxt-link>
 
               <!-- client list -->
               <nuxt-link v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff-news-row">
-                <post-item :post="item.attributes"></post-item>
+                <post-item :post="item"></post-item>
               </nuxt-link>
 
               <infinite-loading v-if="$store.state.news.length" @infinite="infiniteHandler" spinner="spiral">
@@ -115,16 +115,20 @@
   import CoinsList from '~/components/CoinsList.vue'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
+  import Jsona from 'jsona'
 
-  var MINUTE = 60;
-  var HOUR = MINUTE * 60;
-  var DAY = HOUR * 24;
-  var WEEK = DAY * 7;
-  var MONTH = DAY * 30;
-  var YEAR = DAY * 365;
+  const dataFormatter = new Jsona()
 
-  const api_news = process.env.apiUrl + '/v1/news/?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images';
-  const api_coins = process.env.apiUrl + '/v1/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply';
+  var MINUTE = 60
+  var HOUR = MINUTE * 60
+  var DAY = HOUR * 24
+  var WEEK = DAY * 7
+  var MONTH = DAY * 30
+  var YEAR = DAY * 365
+
+  const api_news = `/api/news?include=coins&fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images`
+  const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
+  const api_coins_favorites =  `api/user/myself?include=favoritecoins,subscribedcoins`
 
   export default {
 
@@ -184,17 +188,32 @@
         store.commit('SET_FILTER_SYMBOL', 'BTC')
       }
 
-      let [news, coins] = await Promise.all([
+      let requests =  [
         app.$axios.get(apiNewsPrepare(store.state.filters)),
         app.$axios.get(api_coins),
-      ])
+      ]
 
-      store.commit('SET_NEWS', news.data.data)
-      store.commit('SET_COINS', coins.data.data)
-      if(news.data.data && news.data.data.length > 0) {
-        let tops = news.data.data.slice(0, 2).map( post => post.attributes.id )
-        console.log(tops);
-        store.commit('SET_TOP_NEWS', tops)
+      let [ news, coins ] = await Promise.all(requests)
+
+      let newsObj = dataFormatter.deserialize( news.data )
+
+      store.commit( 'SET_NEWS', newsObj )
+
+      if( newsObj && newsObj.length > 0 ) {
+        let tops = newsObj.slice(0, 2).map( post => post.id )
+        store.commit( 'SET_TOP_NEWS', tops )
+      }
+      store.commit( 'SET_COINS', coins.data.data )
+
+      try {
+        if( app.$auth.loggedIn ) {
+          let favoriteCoins = await app.$axios.get(api_coins_favorites)
+          let responseObj = dataFormatter.deserialize( favoriteCoins.data )
+          store.commit('SET_FAVORITE_COINS', responseObj.favoritecoins)
+          store.commit('SET_SUBSCRIBED_COINS', responseObj.subscribedcoins)
+        }
+      } catch (e) {
+        console.log(e.message)
       }
     },
 
@@ -275,7 +294,9 @@
         }).then(({ data }) => {
           if (this.meta.current_page < data.meta.page_count) {
             this.meta = data.meta
-            this.list = this.list.concat(data.data)
+            let newsObj = dataFormatter.deserialize( data )
+
+            this.list = this.list.concat( newsObj )
             $state.loaded()
           } else {
             $state.complete()
@@ -306,7 +327,8 @@
         let data = this.$axios.get(apiNewsPrepare(this.$store.state.filters))
           .then(({ data }) => {
 
-            this.$store.commit('SET_NEWS', data.data)
+            let newsObj = dataFormatter.deserialize( data )
+            this.$store.commit('SET_NEWS', newsObj)
             this.list = []
             this.meta = {current_page: 1}
             this.isFiltering = false
@@ -352,10 +374,10 @@
       },
 
       linkToPost: function (post) {
-        if( post.attributes.slug ) {
-          return { name: 'slug-id', params: { id: post.id, slug: post.attributes.slug, newest:  post.attributes }}
+        if( post.slug ) {
+          return { name: 'slug-id', params: { id: post.id, slug: post.slug, newest:  post }}
         } else {
-          return { name: 'index-id', params: { id: post.id, newest:  post.attributes }}
+          return { name: 'index-id', params: { id: post.id, newest:  post }}
         }
       },
 

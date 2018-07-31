@@ -1,17 +1,15 @@
 <template>
   <div class="ff_post_feed">
-    <post v-for="post of news" v-bind:key="post.id" :post="post" :first="first" ></post>
+    <post v-for="post of news" v-bind:key="post.id" :postProp="post" :first="first" ></post>
     <div ref="infinite_loading_container"></div>
   </div>
 </template>
 
 <script>
 import Post from '~/components/Post.vue'
-import PostItemRelated from '~/components/PostItemRelated.vue'
-import Vue from 'vue'
 import Jsona from 'jsona';
 
-const api_news = '/api/news?per-page=1'
+const api_news = '/api/news?per-page=1&include=relatednews,coins'
 const dataFormatter = new Jsona()
 
 export default {
@@ -40,28 +38,26 @@ export default {
 
   components: {
     Post,
-    PostItemRelated
   },
 
   async asyncData({ app, req, params, error, redirect, route, store }) {
     const dataFormatter = new Jsona();
 
     try {
-      const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews`)
+      const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins`)
 
       if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
         redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
       } else {
 
         return {
-          url: process.env.baseUrl +  "/" + data.data.id,
-          title: data.data.attributes.title,
-          seoTitle: getTitle(data.data.attributes),
-          body: data.data.attributes.body,
+          url:        process.env.baseUrl +  "/" + data.data.id,
+          title:      data.data.attributes.title,
+          seoTitle:   getTitle(data.data.attributes),
+          body:       data.data.attributes.body,
           attributes: data.data.attributes,
-          news: [ data.data.attributes ],
-          fullData: dataFormatter.deserialize(data),
-          first: data.data.id,
+          news:       [ dataFormatter.deserialize( data ) ],
+          first:      data.data.id,
         }
 
       }
@@ -96,8 +92,6 @@ export default {
   },
 
   mounted () {
-
-    this.initRelationNews();
 
     this.scrollParent = this.getScrollParent()
 
@@ -172,6 +166,9 @@ export default {
       return this.$parent.$refs["scroll-container"]
     },
     attemptLoad( isContinuousCall ) {
+      if( this.$refs["infinite_loading_container"] == undefined) {
+        return
+      }
       const currentDistance = this.getCurrentDistance();
 
       if( !this.isComplete && currentDistance <= this.distance &&
@@ -236,26 +233,13 @@ export default {
     injectRecomendedWidget() {
 
       if(document.getElementById("my-widget-script")) {
-        myWidget.render('b9cdb3b43490823a65345cb4608d6471', document.getElementById("mailru_widget"));
+        myWidget.render('b9cdb3b43490823a65345cb4608d6471', document.getElementById("mailru_widget"))
         return
       }
 
-      var script = document.createElement("script");
-      script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: true};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'));
-      document.body.appendChild(script);
-    },
-
-    initRelationNews() {
-      const PostItemComponentClass = Vue.extend(PostItemRelated)
-
-      if (this.fullData.relatednews) {
-        this.fullData.relatednews.forEach(function(news, i, arr){
-          let instance = new PostItemComponentClass({
-            propsData: { newest: news }
-          })
-          instance.$mount('#ffrel_' + news.id)
-        })
-      }
+      var script = document.createElement("script")
+      script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: true};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'))
+      document.body.appendChild(script)
     },
 
   },

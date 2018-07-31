@@ -37,6 +37,7 @@
       >
         <div class="coin_details_item i_symbol" >
           {{ coin.attributes.symbol }} 
+          <span class="button_icon ic_star" v-bind:class="activeFavourite( coin.attributes.symbol )"></span>
         </div>
         <div class="coin_details_item i_price">
           ${{ formatPrice(coin.attributes.price_usd) }}
@@ -65,6 +66,12 @@
 
     mixins: [coinsMixin],
 
+    computed: {
+
+
+
+    },
+
     methods: {
       mouseOver( event, name ) {
         this.showTooltip = true
@@ -78,7 +85,15 @@
       },
       mouseLeave() {
         this.showTooltip = false
-      }
+      },
+      activeFavourite: function ( coin ) {
+        return {
+          'active_star': this.inFavourites( coin )
+        }
+      },
+      inFavourites( coin ) {
+        return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( favorite =>  favorite.symbol == coin )
+      },
     }
   }
 

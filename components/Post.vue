@@ -20,12 +20,20 @@
    
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
+        <li class="post_detail_coins">
+          <span v-for="coin of post.coins" v-bind:key="coin.id" class="coin_tag">
+            {{ coin.symbol }}
+          </span>
+        </li>
         <li >
           <timeago :since="post.create_dt" class="time-ago"></timeago>    
           <meta itemprop="datePublished" v-bind:content="post.create_dt">
         </li>
         <li v-if="post.type == 'news'">Новость</li>
         <li v-else-if="post.type == 'prognosis'">Прогноз</li>
+        <li v-if="sourceDomain()" class="post_detail_source ff-label">
+          Источник: <span itemprop="isBasedOn" >{{ sourceDomain() }}</span>
+        </li>
       </ul>
     </div>
     
@@ -38,19 +46,11 @@
     </span>
 
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
-    <div class="post_source ff-label" itemprop="isBasedOn">
-        Источник: {{ sourceDomain() }}
-    </div>
+
     <div class="tools">
-
-      <button class="vote_up" v-on:click="vote(1)">
-        <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
-      </button>
-      <button class="vote_down" v-on:click="vote(0)">
-        <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
-      </button>
-
-      <div v-if="showSocial" class="social">
+      <div class="post_author" itemprop="isBasedOn">
+      </div>
+      <div class="social">
 
         <social-sharing :networks="overriddenNetworks"
                       :url="url"
@@ -90,7 +90,43 @@
             </network>
           </div>
         </social-sharing>
-      </div>    
+      </div>
+    </div>
+
+    <div class="tools">
+
+      <div class="tools_left">
+        <button class="vote vote_up" v-on:click="vote(1)">
+          <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
+        </button>
+        <button class="vote vote_down" v-on:click="vote(0)">
+          <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
+        </button>
+      </div>
+
+      <div class="tools_right">
+        <button class="vote like" v-on:click="like(1)">
+          <span class="ic_like"></span><span class="votes_count">{{ post.likes_positive }}</span>
+        </button>
+        <button class="vote dislike" v-on:click="like(0)">
+          <span class="ic_dislike"></span><span class="votes_count">{{ post.likes_negative }}</span>
+        </button>
+      </div>
+
+    </div>
+
+    <div v-if="postCoin()" class="tools">
+      <div class="tools_left">
+        <button class="watch" v-on:click="watch()">
+          <span class="button_icon ic_star" v-bind:class="activeFavourite"></span><span class="button_body">Отслеживать {{ postCoin() }}</span>
+        </button>
+      </div>
+      <div class="tools_right">
+        <button class="subscribe" v-on:click="subscribe()">
+          <span v-if="inSubscribed()" >Подписаться на {{ postCoin() }}</span>
+          <span v-else>Отписаться от {{ postCoin() }}</span>
+        </button>
+      </div>
     </div>
 
 
@@ -102,35 +138,48 @@
 <script>
 
   import BaseNetworks from '@/assets/networks.json'
+  import PostItemRelated from '~/components/PostItemRelated.vue'
+  import Vue from 'vue'
+  import Jsona from 'jsona'
 
-  
+  const dataFormatter = new Jsona()
+
   export default {
     name: 'post-item',
 
     props: {
-      post: 0,
+      postProp: 0,
       first: 0,
+    },
+
+    components: {
+      PostItemRelated
     },
 
     data() {
       return {
-        showSocial: false,
         url: process.env.baseUrl + this.$route.path,
         title: '',
-        seoTitle: getTitle( this.post ),        
+        seoTitle: getTitle( this.postProp ),        
         body: '',
         overriddenNetworks: BaseNetworks,
+        post: this.postProp
       }
     },
 
     mounted () {
-      this.showSocial = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
       if( this.first == this.post.id ) {
         this.injectRecomendedWidget()
       }
+      this.initRelationNews();
     },
 
     computed: {
+      activeFavourite: function () {
+        return {
+          'active_star': this.inFavourites()
+        }
+      },
       stripSocialDesription: function() {
         var str = this.post.body
         if ((str === null) || (str === ''))
@@ -159,24 +208,90 @@
         }
         return domain
       },
+
       getImageOriginal() {
         if( this.post.images.original ) {
           return '/images' + this.post.images.original
         }
         return false
       },
+
       vote( is_positive ) {
-        this.$axios.post(`/api/news/${ this.post.id }/vote`, `is_positive=${is_positive}&type=rating`)
+        if( this.setLocalStorage( "vote_" + this.post.id, is_positive )) {
+          return
+        }
+        this.$axios.post(`/api/news/${ this.post.id }/vote?include=coins`, `is_positive=${is_positive}&type=rating`)
           .then(({ data }) => {
-            this.post = data.data.attributes
+            this.post = dataFormatter.deserialize( data )
           }).catch(e => {
             if (e.response && e.response.status == 401) {
               this.$router.push({ name: `account-signin` })
             }
           })
       },
-      visibilityChanged( isVisible, entry, postId, slug ) {
 
+      like( is_positive ) {
+        if( this.setLocalStorage( "like_" + this.post.id, is_positive )) {
+          return
+        }
+        this.$axios.post(`/api/news/${ this.post.id }/vote?include=coins`, `is_positive=${is_positive}&type=like`)
+          .then(({ data }) => {
+            this.post = dataFormatter.deserialize( data )
+          }).catch(e => {
+            if (e.response && e.response.status == 401) {
+              this.$router.push({ name: `account-signin` })
+            }
+          })
+      },
+
+      setLocalStorage( key, is_positive ) {
+        if( typeof localStorage === 'undefined' ) {
+          return true
+        }
+
+        if( process.server ) {
+          return true
+        }
+
+        if( this.$auth.loggedIn ) {
+          localStorage.setItem( key, is_positive )
+          return false
+        }
+
+        const value = localStorage.getItem( key )
+        if( value != null && value != undefined ) { // && value == is_positive ) {
+          return true
+        }
+        localStorage.setItem( key, is_positive )
+
+        return false
+      },
+
+      watch() {
+        this.$axios.post(`/api/coin/favorite?include=favoritecoins`, `symbol=${ this.postCoin() }`)
+          .then(({ data }) => {
+            let response = dataFormatter.deserialize( data )
+            this.$store.commit('SET_FAVORITE_COINS', response.favoritecoins)
+          }).catch(e => {
+            if (e.response && e.response.status == 401) {
+              this.$router.push({ name: `account-signin` })
+            }
+          })
+      },
+
+      subscribe() {
+        this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=${ this.postCoin() }`)
+          .then(({ data }) => {
+            let response = dataFormatter.deserialize( data )
+            this.$store.commit('SET_SUBSCRIBED_COINS', response.subscribedcoins)
+          }).catch(e => {
+            if (e.response && e.response.status == 401) {
+              this.$router.push({ name: `account-signin` })
+            }
+          })
+      },
+
+      visibilityChanged( isVisible, entry, postId, slug ) {
         if( isVisible ) {
 
           //this.$router.replace({path: '/' + postId})
@@ -184,7 +299,7 @@
 
           if( window.location.pathname !=  path ) {
             window.history.pushState({}, null, path )
-            if (process.env.NODE_ENV !== 'production') {
+            if( process.env.NODE_ENV !== 'production' ) {
               return
             }
 
@@ -194,9 +309,9 @@
           }
         } 
       },
-      injectRecomendedWidget() {
 
-        if(document.getElementById("my-widget-script")) {
+      injectRecomendedWidget() {
+        if( document.getElementById("my-widget-script") ) {
           myWidget.render('b9cdb3b43490823a65345cb4608d6471', document.getElementById("mailru_widget"));
           return
         }
@@ -205,6 +320,34 @@
         script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: true};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'));
         document.body.appendChild(script);
       },
+
+      initRelationNews() {
+        const PostItemComponentClass = Vue.extend(PostItemRelated)
+
+        if (this.post.relatednews) {
+          this.post.relatednews.forEach(function(news, i, arr){
+            let instance = new PostItemComponentClass({
+              propsData: { newest: news }
+            })
+            instance.$mount('#ffrel_' + news.id)
+          })
+        }
+      },
+
+      postCoin() {
+        if( this.post.coins && this.post.coins.length > 0 ) {
+          return this.post.coins[0].symbol
+        } 
+        return null
+      },
+
+      inFavourites() {
+        return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( coin =>  coin.symbol == this.postCoin() )
+      },
+
+      inSubscribed() {
+        return this.$store.state.subscribedCoins && this.$store.state.subscribedCoins.find( coin =>  coin.symbol == this.postCoin() )
+      }
 
     }
   }

@@ -163,7 +163,27 @@ h3 {
 	width: 12px;
 	height: 12px;
 	display: inline-flex;
-
+}
+.ic_like {
+	background: transparent url('~assets/images/ic_like.svg') center center no-repeat;
+	width: 12px;
+	height: 12px;
+	display: inline-flex;
+}
+.ic_dislike {
+	background: transparent url('~assets/images/ic_dislike.svg') center center no-repeat;
+	width: 12px;
+	height: 12px;
+	display: inline-flex;
+}
+.ic_star {
+	background: transparent url('~assets/images/ic_star_border.svg') center center no-repeat;
+	width: 12px;
+	height: 12px;
+	display: inline-flex;
+	&.active_star {
+		background-image: url('~assets/images/ic_star.svg');
+	}
 }
 
 .button_link {
@@ -490,6 +510,13 @@ h3 {
 			flex-grow: 1;
 			flex-basis: 100%;
 			overflow: hidden;
+			.ic_star {
+				position: absolute;
+				bottom: 20px;
+				left: 13px;
+				width: 20px;
+				height: 20px;
+			}
 		}
 		.coin_details_item.change {
 			color: $up-value-color;
@@ -532,6 +559,11 @@ h3 {
 	.coin_row {
 		.i_cap, .i_volume, .i_sup {
 			display: none;
+		}
+		.coin_details_item {
+			.ic_star {
+				display: none;
+			}
 		}
 	}
 	.coin_header {
@@ -1148,18 +1180,42 @@ h3 {
 		}
 	}
 
-	.post_source {
-		margin: 24px 32px 0 24px;
+	.post_author {
+		font-size: $label-size;
+		line-height: 48px;
 	}
 	.news_list_detail {
 		list-style: none;
-		font-size: 14px;
 		line-height: 16px;
 		padding: 0;
 		margin: 48px 24px 0 24px;
+		display: flex;
 		li {
 			margin-right: 24px;
-			display: inline-block;
+
+		    &.post_detail_coins {
+		    	display: flex;
+		    	flex-wrap: wrap;
+		    	max-width: 200px;
+				.coin_tag {
+					background-color: $link-color;
+					color: $post-top-color;
+					border: 1px solid $link-color;
+					border-radius: 3px;
+					padding: 0 3px;
+					font-size: $label-size;
+					line-height: 16px;
+					margin-right: 5px;
+					margin-bottom: 5px;
+				}
+		    }
+
+			&.post_detail_source {
+    			flex-grow: 1;
+    			text-align: right;
+    			margin-right: 0;
+			}
+
 		}
 	}
 	.tools {
@@ -1167,23 +1223,25 @@ h3 {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content:space-between;
-		.vote_up, .vote_down {
+
+		.vote {
 			padding: 0 24px;
-			height: 48px;	
-			width: 110px;	
+			height: 41px;	
 			border: 1px solid $border-bold-color;
 			flex-shrink: 0;
+			flex-grow: 1;
 			background: none;
 			cursor: pointer;
-			color: $up-value-color;
-			font-size: 14px;
+			font-size: $label-size;
 			display: flex;
 			justify-content:space-between;
+			font-weight: bold;
 
 			&:hover {
-				border: 1px solid $up-value-color;
-				background-color: lighten($up-value-color, 45%);
-				transition: background-color 0.2s ease-in-out;
+				border: 1px solid $dark-primary-color;
+				background-color: lighten($dark-primary-color, 100%);
+				transition: border 0.2s ease-in-out;
+				z-index: 2;
 			}
 			&:focus {
 				outline: none;
@@ -1191,23 +1249,123 @@ h3 {
 			.votes_count {
 				display: inline-flex;
 				line-height: 14px;
+
 			}
 
+			&.vote_up {
+				color: $up-value-color;
+				&:hover {
+					border: 1px solid $up-value-color;
+					background-color: lighten($up-value-color, 45%);
+					transition: background-color 0.2s ease-in-out;
+				}
+			}
+			&.vote_down {
+				color: $down-value-color;
+				position: relative;
+    			left: -1px;
+				&:hover {
+					border: 1px solid $down-value-color;
+					background-color: lighten($down-value-color, 25%);
+					transition: background-color 0.2s ease-in-out;
+				}
+			}
+			&.like {
+				color: $dark-primary-color;
+				&:hover {
+					.ic_like {
+						background-image: url('~assets/images/ic_like_hover.svg');
+					}
+				}
+			}
+			&.dislike {
+				color: $dark-primary-color;
+				position: relative;
+    			left: -1px;
+    			&:hover {
+					.ic_dislike {
+						background-image: url('~assets/images/ic_dislike_hover.svg');
+					}
+				}
+			}
 		}
-		.vote_down {
-			margin-left: 8px;
-			color: $down-value-color;
+
+		.subscribe {
+			@extend .vote;
+			border: none;
+			font-size: $label-size;
+			background-color: $up-value-color;
+			color: $bg-main-color;
+			text-transform: uppercase;
+			span {
+				width: 100%;
+				text-align: center;
+				line-height: 41px;
+			}
 			&:hover {
-				border: 1px solid $down-value-color;
-				background-color: lighten($down-value-color, 25%);
+				border: none;
+				background-color: lighten($up-value-color, 3%);
 				transition: background-color 0.2s ease-in-out;
 			}
+		}
+
+		.watch {
+			@extend .vote;
+			font-size: $label-size;
+			text-transform: uppercase;
+			display: flex;
+			padding: 0;
+			.button_icon {
+				flex-grow: 0;
+				width:41px;
+				height: 39px;
+				border-right: 1px solid $border-bold-color;
+				text-align: center;
+				display: inline-block;
+
+			}
+			.button_body {
+				color: $dark-primary-color;
+				flex-grow: 1;
+				text-align: center;
+				display: inline-block;
+				line-height: 41px;
+
+			}
+			&:hover {
+				border: 1px solid $dark-primary-color;
+				background-color: lighten($dark-primary-color, 100%);
+				transition: border 0.2s ease-in-out;
+				.button_icon {
+					border-right: 1px solid $dark-primary-color;
+					transition: border 0.2s ease-in-out;
+					&.ic_star {
+						background-image: url('~assets/images/ic_star_border_hover.svg');
+						&.active_star {
+							background-image: url('~assets/images/ic_star_hover.svg');
+						}
+					}
+
+				}
+			}
+		}
+
+		.tools_left {
+			width: 0;
+			display: flex;
+			flex-grow: 1;
 
 		}
+		.tools_right {
+			width: 0;
+			display: flex;
+			flex-grow: 1;
+			margin-left: 12px;
+		}
+
 		.social {
 			flex-grow: 1;
 			min-width: 200px;
-			margin: 24px 0 0 0;
 			text-align: center;
 
 		}
@@ -1261,9 +1419,7 @@ h3 {
 		.description {
 			margin: 24px 0 0 0;
 		}
-		.post_source {
-			margin: 24px 0 0 0;
-		}
+
 		.news_list_detail {
 			margin: 48px 0 0 0;
 		}
@@ -1286,6 +1442,27 @@ h3 {
 		.ff-post {
 			.mail_news_widget {
 				width: 100%;
+			}
+		}
+	}
+}
+@media (max-width: 769px) {
+	.ff-post {
+		.post_author {
+			flex-grow: 1;
+			text-align: center;
+		}
+		.tools {
+			.tools_left {
+				flex-grow: 1;
+			}
+			.tools_left {
+				width: 100%;
+			}
+			.tools_right {
+				margin-top: 24px;
+				width: 100%;
+				margin-left: 0;
 			}
 		}
 	}
