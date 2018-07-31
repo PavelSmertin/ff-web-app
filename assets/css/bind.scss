@@ -212,6 +212,22 @@ h3 {
 }
 
 
+.coin_tag {
+	background-color: $link-color;
+	color: $post-top-color;
+	border-radius: 3px;
+	padding: 0 3px;
+	font-size: $label-size;
+	line-height: 16px;
+	height: 16px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	min-width: 30px;
+	text-align: center;
+	display: inline-block;
+}
+
+
 /************ INDEX PAGE STRUCTURE **************/
 .container-fluid {
 	display: flex;
@@ -865,7 +881,14 @@ h3 {
     			flex-grow: 1;
     			margin: 0;
 			}
+			&.coin_tags {
+				text-align: right;
+    			flex-grow: 1;
+    			margin: 0;
+    		}
 		}
+
+
 	}
 }
 
@@ -887,6 +910,13 @@ h3 {
 		.post_votes {
 			.ic_up, .ic_down {
 				margin-right: 4px;
+			}
+		}
+		.news_list_detail {
+			.coin_tag {
+				@extend .coin_tag;
+				background-color: $border-bold-color;
+				margin: 0 0 0 12px;
 			}
 		}
 
@@ -1197,17 +1227,6 @@ h3 {
 		    	display: flex;
 		    	flex-wrap: wrap;
 		    	max-width: 200px;
-				.coin_tag {
-					background-color: $link-color;
-					color: $post-top-color;
-					border: 1px solid $link-color;
-					border-radius: 3px;
-					padding: 0 3px;
-					font-size: $label-size;
-					line-height: 16px;
-					margin-right: 5px;
-					margin-bottom: 5px;
-				}
 		    }
 
 			&.post_detail_source {
