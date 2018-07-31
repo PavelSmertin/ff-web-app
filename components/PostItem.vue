@@ -15,6 +15,7 @@
           <li v-else-if="post.type == 'prognosis'">Прогноз</li>
           <li><post-votes :positives="post.votes_positive" :negatives="post.votes_negative"></post-votes></li>
           <li class="post_source">{{ sourceDomain() }}</li>
+          <li></li>
         </ul>
     </div>
   </div>

@@ -115,7 +115,7 @@
 
     </div>
 
-<!--     <div v-if="postCoin()" class="tools">
+    <div v-if="postCoin()" class="tools">
       <div class="tools_left">
         <button class="watch" v-on:click="watch()">
           <span class="button_icon ic_star" v-bind:class="activeFavourite"></span><span class="button_body">Отслеживать {{ postCoin() }}</span>
@@ -127,7 +127,7 @@
           <span v-else>Отписаться от {{ postCoin() }}</span>
         </button>
       </div>
-    </div> -->
+    </div>
 
 
     <div v-if="first == post.id" class="my-widget-anchor mail_news_widget" id="mailru_widget" data-cid="b9cdb3b43490823a65345cb4608d6471"></div>

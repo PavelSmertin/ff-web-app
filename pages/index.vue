@@ -84,12 +84,12 @@
 
               <!-- ssr list -->
               <nuxt-link v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
-                <post-item :post="newest.attributes" ></post-item>
+                <post-item :post="newest" ></post-item>
               </nuxt-link>
 
               <!-- client list -->
               <nuxt-link v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff-news-row">
-                <post-item :post="item.attributes"></post-item>
+                <post-item :post="item"></post-item>
               </nuxt-link>
 
               <infinite-loading v-if="$store.state.news.length" @infinite="infiniteHandler" spinner="spiral">
@@ -126,7 +126,7 @@
   var MONTH = DAY * 30
   var YEAR = DAY * 365
 
-  const api_news = `/api/news/?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images`
+  const api_news = `/api/news?include=coins&fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images`
   const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
   const api_coins_favorites =  `api/user/myself?include=favoritecoins,subscribedcoins`
 
@@ -195,12 +195,16 @@
 
       let [ news, coins ] = await Promise.all(requests)
 
-      store.commit('SET_NEWS', news.data.data)
-      if(news.data.data && news.data.data.length > 0) {
-        let tops = news.data.data.slice(0, 2).map( post => post.attributes.id )
-        store.commit('SET_TOP_NEWS', tops)
+      let newsObj = dataFormatter.deserialize( news.data )
+      console.log( newsObj )
+
+      store.commit( 'SET_NEWS', newsObj )
+
+      if( newsObj && newsObj.length > 0 ) {
+        let tops = newsObj.slice(0, 2).map( post => post.id )
+        store.commit( 'SET_TOP_NEWS', tops )
       }
-      store.commit('SET_COINS', coins.data.data)
+      store.commit( 'SET_COINS', coins.data.data )
 
       try {
         if( app.$auth.loggedIn ) {
@@ -368,10 +372,10 @@
       },
 
       linkToPost: function (post) {
-        if( post.attributes.slug ) {
-          return { name: 'slug-id', params: { id: post.id, slug: post.attributes.slug, newest:  post.attributes }}
+        if( post.slug ) {
+          return { name: 'slug-id', params: { id: post.id, slug: post.slug, newest:  post }}
         } else {
-          return { name: 'index-id', params: { id: post.id, newest:  post.attributes }}
+          return { name: 'index-id', params: { id: post.id, newest:  post }}
         }
       },
 
