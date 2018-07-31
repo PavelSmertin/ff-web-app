@@ -75,7 +75,7 @@
 
         <aside class="ff-right-panel col-md-4" v-bind:class="colRight">
           <div class="news_filters_block">
-            <div class="coin_tag">Новости {{ upFilterSymbol() }}</div>
+            <div class="coin_select_tag">Новости {{ upFilterSymbol() }}</div>
             <dropdowns :options="types" :selected="selectedType" v-on:updateOption="filterByType"></dropdowns>
           </div>
 
