@@ -196,7 +196,6 @@
       let [ news, coins ] = await Promise.all(requests)
 
       let newsObj = dataFormatter.deserialize( news.data )
-      console.log( newsObj )
 
       store.commit( 'SET_NEWS', newsObj )
 
@@ -295,7 +294,9 @@
         }).then(({ data }) => {
           if (this.meta.current_page < data.meta.page_count) {
             this.meta = data.meta
-            this.list = this.list.concat(data.data)
+            let newsObj = dataFormatter.deserialize( data )
+
+            this.list = this.list.concat( newsObj )
             $state.loaded()
           } else {
             $state.complete()
@@ -326,7 +327,8 @@
         let data = this.$axios.get(apiNewsPrepare(this.$store.state.filters))
           .then(({ data }) => {
 
-            this.$store.commit('SET_NEWS', data.data)
+            let newsObj = dataFormatter.deserialize( data )
+            this.$store.commit('SET_NEWS', newsObj)
             this.list = []
             this.meta = {current_page: 1}
             this.isFiltering = false
