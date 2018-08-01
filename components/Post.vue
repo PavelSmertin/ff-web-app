@@ -10,7 +10,8 @@
  
     <!-- Данные о сайте: лого, телефон, адрес, название -->
     <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
-        <meta itemprop="name" content="ff.ru">
+      <meta itemprop="logo" content="/logo77.png">
+      <meta itemprop="name" content="ff.ru">
     </div>
  
     <!-- Автор статьи -->
@@ -31,24 +32,60 @@
         </li>
         <li v-if="post.type == 'news'">Новость</li>
         <li v-else-if="post.type == 'prognosis'">Прогноз</li>
-        <li v-if="sourceDomain()" class="post_detail_source ff-label">
+<!--         <li v-if="sourceDomain()" class="post_detail_source ff-label">
           Источник: <span itemprop="isBasedOn" >{{ sourceDomain() }}</span>
-        </li>
+        </li> -->
+        <meta itemprop="isBasedOn" v-bind:content="sourceDomain()" >
       </ul>
     </div>
     
-    <h1 class="post-header" itemprop="headline" >
+    <div class="tools">
+
+      <div class="tools_left">
+        <button class="vote vote_up" v-on:click="vote(1)">
+          <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
+        </button>
+        <button class="vote vote_down" v-on:click="vote(0)">
+          <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
+        </button>
+      </div>
+
+      <div class="tools_right">
+        <button class="vote like" v-on:click="like(1)">
+          <span class="ic_like"></span><span class="votes_count">{{ post.likes_positive }}</span>
+        </button>
+        <button class="vote dislike" v-on:click="like(0)">
+          <span class="ic_dislike"></span><span class="votes_count">{{ post.likes_negative }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div v-if="postCoin()" class="tools">
+      <div class="tools_left">
+        <button class="watch" v-on:click="watch()">
+          <span class="button_icon ic_star" v-bind:class="activeFavourite"></span><span class="button_body">Отслеживать {{ postCoin() }}</span>
+        </button>
+      </div>
+      <div class="tools_right">
+        <button class="subscribe" v-on:click="subscribe()">
+          <span v-if="inSubscribed()" >Подписаться на {{ postCoin() }}</span>
+          <span v-else>Отписаться от {{ postCoin() }}</span>
+        </button>
+      </div>
+    </div>
+
+    <h1 class="post_header" itemprop="headline" >
       {{ post.title }}
     </h1>
 
-    <span v-if="getImageOriginal()" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-      <img class="image_origin" v-bind:itemprop="getImageOriginal()" v-bind:alt="seoTitle" v-bind:title="seoTitle" :src="getImageOriginal()"/>
+    <span v-if="getImageOriginal()">
+      <img class="image_origin" v-bind:alt="seoTitle" v-bind:title="seoTitle" :src="getImageOriginal()" itemprop="primaryImageOfPage" />
     </span>
 
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
 
     <div class="tools">
-      <div class="post_author" itemprop="isBasedOn">
+      <div class="post_author" itemprop="isBasedOn"> Fdnjh
       </div>
       <div class="social">
 
@@ -92,43 +129,6 @@
         </social-sharing>
       </div>
     </div>
-
-    <div class="tools">
-
-      <div class="tools_left">
-        <button class="vote vote_up" v-on:click="vote(1)">
-          <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
-        </button>
-        <button class="vote vote_down" v-on:click="vote(0)">
-          <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
-        </button>
-      </div>
-
-      <div class="tools_right">
-        <button class="vote like" v-on:click="like(1)">
-          <span class="ic_like"></span><span class="votes_count">{{ post.likes_positive }}</span>
-        </button>
-        <button class="vote dislike" v-on:click="like(0)">
-          <span class="ic_dislike"></span><span class="votes_count">{{ post.likes_negative }}</span>
-        </button>
-      </div>
-
-    </div>
-
-    <div v-if="postCoin()" class="tools">
-      <div class="tools_left">
-        <button class="watch" v-on:click="watch()">
-          <span class="button_icon ic_star" v-bind:class="activeFavourite"></span><span class="button_body">Отслеживать {{ postCoin() }}</span>
-        </button>
-      </div>
-      <div class="tools_right">
-        <button class="subscribe" v-on:click="subscribe()">
-          <span v-if="inSubscribed()" >Подписаться на {{ postCoin() }}</span>
-          <span v-else>Отписаться от {{ postCoin() }}</span>
-        </button>
-      </div>
-    </div>
-
 
     <div v-if="first == post.id" class="my-widget-anchor mail_news_widget" id="mailru_widget" data-cid="b9cdb3b43490823a65345cb4608d6471"></div>
 

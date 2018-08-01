@@ -14,8 +14,8 @@
           <li v-if="post.type == 'news'">Новость</li>
           <li v-else-if="post.type == 'prognosis'">Прогноз</li>
           <li><post-votes :positives="post.votes_positive" :negatives="post.votes_negative"></post-votes></li>
-          <li class="post_source">{{ sourceDomain() }}</li>
-          <li></li>
+<!--           <li class="post_source">{{ sourceDomain() }}</li>
+ -->          <li class="coin_tags"><coin-tags :tags="post.coins"></coin-tags></li>
         </ul>
     </div>
   </div>
@@ -23,12 +23,14 @@
 
 <script>
   import PostVotes from '~/components/PostVotes.vue'
+  import CoinTags from '~/components/CoinTags.vue'
 
   export default {
     name: 'post-item',
 
     components: {
       PostVotes,
+      CoinTags,
     },
 
     props: {
@@ -48,10 +50,10 @@
           //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
           if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
             //this is using a ccTLD
-            domain = splitArr[arrLen - 3] + '.' + domain;
+            domain = splitArr[arrLen - 3] + '.' + domain
           }
         }
-        return domain;
+        return domain
       },
 
       getImageSharing() {
@@ -75,7 +77,7 @@
           'top_post_item': this.isTopPost(),
         }
       },
-    },
+    }
 
   }
 
