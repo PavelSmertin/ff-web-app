@@ -74,7 +74,7 @@
       </div>
     </div>
 
-    <h1 class="post-header" itemprop="headline" >
+    <h1 class="post_header" itemprop="headline" >
       {{ post.title }}
     </h1>
 
@@ -85,7 +85,7 @@
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
 
     <div class="tools">
-      <div class="post_author" itemprop="isBasedOn">
+      <div class="post_author" itemprop="isBasedOn"> Fdnjh
       </div>
       <div class="social">
 
