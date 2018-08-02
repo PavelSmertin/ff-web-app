@@ -217,7 +217,7 @@
         if( this.setLocalStorage( "vote_" + this.post.id, is_positive )) {
           return
         }
-        this.$axios.post(`/api/news/${ this.post.id }/vote?include=coins`, `is_positive=${is_positive}&type=rating`)
+        this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=rating`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
           }).catch(e => {
@@ -231,7 +231,7 @@
         if( this.setLocalStorage( "like_" + this.post.id, is_positive )) {
           return
         }
-        this.$axios.post(`/api/news/${ this.post.id }/vote?include=coins`, `is_positive=${is_positive}&type=like`)
+        this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=like`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
           }).catch(e => {
