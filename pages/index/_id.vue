@@ -9,7 +9,7 @@
 import Post from '~/components/Post.vue'
 import Jsona from 'jsona';
 
-const api_news = '/api/news?per-page=1&include=relatednews,coins,similar'
+const api_news = '/api/news?per-page=1&include=relatednews,coins,similar,author'
 const dataFormatter = new Jsona()
 
 export default {
@@ -44,7 +44,7 @@ export default {
     const dataFormatter = new Jsona();
 
     try {
-      const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins,similar`)
+      const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins,similar,author`)
 
       if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
         redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
@@ -160,7 +160,7 @@ export default {
       if( this.attributes.images.sharing ) {
         return '/images' + this.attributes.images.sharing
       }
-      return '/FF_cover1080_b.png'
+      return '/FF_cover968_b.png'
     },
     getScrollParent() {
       return this.$parent.$refs["scroll-container"]

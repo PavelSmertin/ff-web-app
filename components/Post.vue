@@ -13,11 +13,6 @@
       <meta itemprop="logo" content="/logo77.png">
       <meta itemprop="name" content="ff.ru">
     </div>
- 
-    <!-- Автор статьи -->
-    <!--     <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name"></span>
-    </span> -->
    
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
@@ -32,9 +27,7 @@
         </li>
         <li v-if="post.type == 'news'">Новость</li>
         <li v-else-if="post.type == 'prognosis'">Прогноз</li>
-<!--         <li v-if="sourceDomain()" class="post_detail_source ff-label">
-          Источник: <span itemprop="isBasedOn" >{{ sourceDomain() }}</span>
-        </li> -->
+        <meta v-if="sourceDomain()" itemprop="isBasedOn" :content="sourceDomain()">
         <meta itemprop="isBasedOn" v-bind:content="sourceDomain()" >
       </ul>
     </div>
@@ -85,7 +78,9 @@
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
 
     <div class="tools">
-      <div class="post_author" itemprop="isBasedOn">
+      <!-- Автор статьи -->
+      <div class="post_author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        Автор: <span itemprop="name">{{ post.author.full_name }}</span>
       </div>
       <div class="social">
 
@@ -314,9 +309,6 @@
 
       initRelationNews() {
         const PostItemComponentClass = Vue.extend(PostItemRelated)
-
-        console.log(this.post) 
-
 
         if( this.post.relatednews ) {
           this.post.relatednews.forEach( function( post, i, arr ){

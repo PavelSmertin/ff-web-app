@@ -60,7 +60,7 @@
         if (this.post.images.sharing) {
           return '/images' + this.post.images.sharing
         }
-        return '/FF_cover1080_b.png'
+        return '/FF_cover968_b.png'
       },
 
       isTopPost() {
