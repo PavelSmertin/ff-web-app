@@ -22,7 +22,7 @@
     },
 
     methods: {
-      linkToPost(newest) {
+      linkToPost( newest ) {
 
         if( newest.slug ) {
           return '/' + newest.id + '/' + newest.slug

@@ -1,6 +1,6 @@
 <template>
   <div class="ff_post_feed">
-    <post v-for="post of news" v-bind:key="post.id" :postProp="post" :first="first" ></post>
+    <post v-for="post of news" v-bind:key="post.id" :postProp="post" ></post>
     <div ref="infinite_loading_container"></div>
   </div>
 </template>
@@ -9,7 +9,7 @@
 import Post from '~/components/Post.vue'
 import Jsona from 'jsona';
 
-const api_news = '/api/news?per-page=1&include=relatednews,coins'
+const api_news = '/api/news?per-page=1&include=relatednews,coins,similar'
 const dataFormatter = new Jsona()
 
 export default {
@@ -44,7 +44,7 @@ export default {
     const dataFormatter = new Jsona();
 
     try {
-      const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins`)
+      const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins,similar`)
 
       if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
         redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })

@@ -78,14 +78,14 @@
       {{ post.title }}
     </h1>
 
-    <span v-if="getImageOriginal()">
+    <div class="image_origin_wrap" v-if="getImageOriginal()">
       <img class="image_origin" v-bind:alt="seoTitle" v-bind:title="seoTitle" :src="getImageOriginal()" itemprop="primaryImageOfPage" />
-    </span>
+    </div>
 
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
 
     <div class="tools">
-      <div class="post_author" itemprop="isBasedOn"> Fdnjh
+      <div class="post_author" itemprop="isBasedOn">
       </div>
       <div class="social">
 
@@ -130,8 +130,12 @@
       </div>
     </div>
 
-    <div v-if="first == post.id" class="my-widget-anchor mail_news_widget" id="mailru_widget" data-cid="b9cdb3b43490823a65345cb4608d6471"></div>
-
+    <div v-if="post.similar && post.similar.length > 0" class="similar_list_wrap">
+      <h3>Похожие публикации</h3>
+      <div class="similar_list">
+        <post-similar v-for="item of post.similar" v-bind:key="item.id" :post="item"></post-similar>
+      </div>
+    </div>
   </article>
 </template>
 
@@ -139,6 +143,7 @@
 
   import BaseNetworks from '@/assets/networks.json'
   import PostItemRelated from '~/components/PostItemRelated.vue'
+  import PostSimilar from '~/components/PostSimilar.vue'
   import Vue from 'vue'
   import Jsona from 'jsona'
 
@@ -149,11 +154,11 @@
 
     props: {
       postProp: 0,
-      first: 0,
     },
 
     components: {
-      PostItemRelated
+      PostItemRelated,
+      PostSimilar,
     },
 
     data() {
@@ -168,9 +173,6 @@
     },
 
     mounted () {
-      if( this.first == this.post.id ) {
-        this.injectRecomendedWidget()
-      }
       this.initRelationNews();
     },
 
@@ -295,7 +297,7 @@
         if( isVisible ) {
 
           //this.$router.replace({path: '/' + postId})
-          let path = '/' + postId + (slug ? '/' + slug : '')
+          let path = '/' + postId + ( slug ? '/' + slug : '' )
 
           if( window.location.pathname !=  path ) {
             window.history.pushState({}, null, path )
@@ -310,26 +312,18 @@
         } 
       },
 
-      injectRecomendedWidget() {
-        if( document.getElementById("my-widget-script") ) {
-          myWidget.render('b9cdb3b43490823a65345cb4608d6471', document.getElementById("mailru_widget"));
-          return
-        }
-
-        var script = document.createElement("script");
-        script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: true};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'));
-        document.body.appendChild(script);
-      },
-
       initRelationNews() {
         const PostItemComponentClass = Vue.extend(PostItemRelated)
 
-        if (this.post.relatednews) {
-          this.post.relatednews.forEach(function(news, i, arr){
+        console.log(this.post) 
+
+
+        if( this.post.relatednews ) {
+          this.post.relatednews.forEach( function( post, i, arr ){
             let instance = new PostItemComponentClass({
-              propsData: { newest: news }
+              propsData: { newest: post }
             })
-            instance.$mount('#ffrel_' + news.id)
+            instance.$mount('#ffrel_' + post.id)
           })
         }
       },
