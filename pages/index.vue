@@ -83,12 +83,12 @@
             <div v-if="$store.state.news.length" class="ff-news">
 
               <!-- ssr list -->
-              <nuxt-link v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
+              <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
                 <post-item :post="newest" ></post-item>
               </nuxt-link>
 
               <!-- client list -->
-              <nuxt-link v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff-news-row">
+              <nuxt-link @click.native="onPostClick(newest.id)" v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff-news-row">
                 <post-item :post="item"></post-item>
               </nuxt-link>
 
@@ -116,6 +116,7 @@
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
   import Jsona from 'jsona'
+  import { analMixin } from '~/components/mixins/analitics.js'
 
   const dataFormatter = new Jsona()
 
@@ -131,6 +132,8 @@
   const api_coins_favorites =  `api/user/myself?include=favoritecoins,subscribedcoins`
 
   export default {
+
+    mixins: [ analMixin ],
 
     head() {
       return {
@@ -357,6 +360,7 @@
       },
 
       onClose: function () {
+        this.sendEvent( 'CloseButton', 'close', this.$route.path );
         this.$router.push(this.back)
       },
       onClosePane: function () {
@@ -383,6 +387,10 @@
 
       upFilterSymbol: function () {
         return upSymbol(this.$store.state.filters.symbol)
+      },
+
+      onPostClick: function ( postId ) {
+        this.sendEvent( 'NewsPanel', 'click', postId );
       },
 
     },

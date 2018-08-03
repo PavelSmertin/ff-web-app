@@ -33,7 +33,6 @@ export default {
     }
   },
   mounted() {
-    console.log('mounted')
 
     if (!this.getChart()) {
       if(this.options) {
@@ -43,7 +42,6 @@ export default {
       //this.getChart().init()
       this.getChart().destroy()
       this.chart = new Highcharts.StockChart(this.$el, this.options, this.callback())
-      console.log(Highcharts.charts)
 
     }
   },
@@ -56,11 +54,9 @@ export default {
     },
 
     addSeries(options) {
-      console.log('addSeries')
       this.delegateMethod('addSeries', options)
     },
     setData(data) {
-      console.log('setData')
       if(this.getChart().series[0]) {
         //this.getChart().series[0].setData(data, true)
       } else {
@@ -68,7 +64,6 @@ export default {
       }
     },
     removeSeries() {
-      console.log('removeSeries')
       while (this.getChart().series.length !== 0) {
         this.getChart().series[0].remove()
       }
@@ -77,17 +72,12 @@ export default {
       this.delegateMethod('update', options)
     },
     showLoading(txt) {
-      console.log('showLoading')
       this.getChart().showLoading(txt)
     },
     hideLoading() {
-      console.log('hideLoading')
-
       this.getChart().hideLoading()
     },
     delegateMethod(name, ...args) {
-      console.log('delegateMethod: ' + name)
-
       if (!this.getChart()) {
         return
       }
@@ -96,18 +86,14 @@ export default {
 
 
     init() {
-      console.log('init')
       if (!this.getChart() && this.options) {
         let chart = Highcharts.charts.find(function(element, index, array){ return element != undefined })
         if(!chart) {
-          console.log('new')
           StockInit(Highcharts)
           this.chart = new Highcharts.StockChart(this.$el, this.options, this.callback())
           //Highcharts.charts = Highcharts.charts.filter(function(n){ return typeof element !== "undefined" })
         } 
       }
-      console.log(Highcharts.charts)
-
     },
   },
 
@@ -122,7 +108,6 @@ export default {
   // },
 
   beforeDestroy() {
-    console.log('beforeDestroy')
     if (this.getChart()) {
       //this.getChart().destroy()
       // Highcharts.charts = Highcharts.charts.filter(function(n){ return true })

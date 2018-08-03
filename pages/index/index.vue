@@ -80,13 +80,12 @@
         <input type="text" name="rub" v-model="calculateRUB" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
       </div>
       <div class="calculator_item">
-        <nuxt-link :to="{path: '/wiki/1'}">
+        <nuxt-link @click.native="sendEvent('BuyBTC', 'click')" :to="{path: '/wiki/1'}">
           <span class="apply">КУПИТЬ BTC</span>
           <img src="~/assets/images/baseline-arrow_forward-24px.svg" alt="arrow">
         </nuxt-link >
       </div>
     </div>
-
 
     <div class="row no-gutters border_top margin24">
       <h2 class="margin12">График курса Bitcoin к Доллару</h2>
@@ -131,7 +130,7 @@
           <div class="ff_pair_item changes positive" v-bind:class="{ negative: (pair.changepct24hour < 0) }">
             {{ formatPrice(pair.changepct24hour) }}%
           </div>
-          <div class="ff_pair_item i_volume">{{ formatPrice(pair.volume24hour, 0) }} </div>
+          <div class="ff_pair_item i_volume">{{ formatPrice(pair.volume24hour, 0) }}</div>
         </div>
       </div>
     </div>
@@ -142,30 +141,30 @@
 
     <div class="margin6">
       <div class="row no-gutters wiki_row">
-        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/1' }">
+        <nuxt-link @click.native="onWikiClick(1)" class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/1' }">
           <p class="wiki_title">Как купить биткоин?</p>
           <p class="wiki_description">Инструкция: как купить биткоин онлайн надежно с карты за рубли, доллары или через электронные кошельки QIWI, Webmoney</p>
         </nuxt-link>
-        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/2' }">
+        <nuxt-link @click.native="onWikiClick(2)" class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/2' }">
           <p class="wiki_title">Где хранить биткоины?</p>
           <p class="wiki_description">Важно выбрать наиболее надежный и удобный способ хранения биткоина, для этого подойдут Bitcoin кошельки. Существует несколько типов кошельков, разберемся какой лучше</p>
         </nuxt-link>        
-        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/3' }">
+        <nuxt-link @click.native="onWikiClick(3)" class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/3' }">
           <p class="wiki_title">Что такое блокчейн?</p>
           <p class="wiki_description">BlockChain (англ. Block – блок; Chain - цепь) - это база данных, которая ежедневно пополняется информацией о криптовалютных переводах между пользователями</p>
         </nuxt-link>
       </div>
 
       <div class="row no-gutters wiki_row">
-        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/4' }">
+        <nuxt-link @click.native="onWikiClick(4)"  class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/4' }">
           <p class="wiki_title">Как продать биткоин?</p>
           <p class="wiki_description">Продать или обналичить биткоины можно нескольким способами, например через биржи, обменники или с помощью карты</p>
         </nuxt-link>
-        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/5' }">
+        <nuxt-link @click.native="onWikiClick(5)" class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/5' }">
           <p class="wiki_title">Биткоин в России</p>
           <p class="wiki_description">Биткоин в России использовать можно, отношение государства к криптовалюте на данный момент носит неопределенный характер</p>
         </nuxt-link>
-        <nuxt-link class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/6' }">
+        <nuxt-link @click.native="onWikiClick(6)" class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/6' }">
           <p class="wiki_title">Что такое Биткоин?</p>
           <p class="wiki_description">Биткоин - первая криптовалюта, ставшая всемирно-известной в 2017 году. Основная суть биткоина состоит в децентрализации</p>
         </nuxt-link>
@@ -226,8 +225,11 @@
   import { DrilldownOptions, MapData } from '~/static/data.js'
 
   import Jsona from 'jsona';
+  import { analMixin } from '~/components/mixins/analitics.js'
 
   export default {
+
+    mixins: [ analMixin  ],
 
     head() {
       return {
@@ -380,7 +382,11 @@
       },
       calcSafaryHack: function (event) {
         event.preventDefault();
-      }
+      },
+
+      onWikiClick: function ( wikiPage ) {
+        this.sendEvent( 'BTCWiki', 'click', wikiPage );
+      },
 
     },
 

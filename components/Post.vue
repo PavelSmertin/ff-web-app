@@ -72,7 +72,7 @@
     </h1>
 
     <div class="image_origin_wrap" v-if="getImageOriginal()">
-      <img class="image_origin" v-bind:alt="seoTitle" v-bind:title="seoTitle" :src="getImageOriginal()" itemprop="primaryImageOfPage" />
+      <img class="image_origin" v-bind:alt="seoTitle" v-bind:title="seoTitle" :src="getImageOriginal()" itemprop="image" />
     </div>
 
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
@@ -141,11 +141,14 @@
   import PostSimilar from '~/components/PostSimilar.vue'
   import Vue from 'vue'
   import Jsona from 'jsona'
+  import { analMixin } from '~/components/mixins/analitics.js'
 
   const dataFormatter = new Jsona()
 
   export default {
     name: 'post-item',
+
+    mixins: [ analMixin ],
 
     props: {
       postProp: 0,
@@ -206,6 +209,10 @@
         return domain
       },
 
+      open() {
+        console.log('open')
+      },
+
       getImageOriginal() {
         if( this.post.images.original ) {
           return '/images' + this.post.images.original
@@ -214,6 +221,8 @@
       },
 
       vote( is_positive ) {
+        this.sendEvent( 'PostVote', 'vote', is_positive );
+
         if( this.setLocalStorage( "vote_" + this.post.id, is_positive )) {
           return
         }
@@ -228,6 +237,8 @@
       },
 
       like( is_positive ) {
+        this.sendEvent( 'PostLike', 'like', is_positive );
+
         if( this.setLocalStorage( "like_" + this.post.id, is_positive )) {
           return
         }
@@ -265,6 +276,8 @@
       },
 
       watch() {
+        this.sendEvent( 'PostCoinWatch', 'watch', this.postCoin() );
+
         this.$axios.post(`/api/coin/favorite?include=favoritecoins`, `symbol=${ this.postCoin() }`)
           .then(({ data }) => {
             let response = dataFormatter.deserialize( data )
@@ -277,6 +290,8 @@
       },
 
       subscribe() {
+        this.sendEvent( 'PostCoinSubscribe', 'subscribe', this.postCoin() );
+
         this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=${ this.postCoin() }`)
           .then(({ data }) => {
             let response = dataFormatter.deserialize( data )

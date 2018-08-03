@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link class="similar_item" :to="{path: linkToPost() }">
+  <nuxt-link @click.native="onSimilarClick()" class="similar_item" :to="{path: linkToPost() }">
 
     <div class="similar_image" v-bind:style="{ backgroundImage: 'url(' + getImageShared() + ')' }"></div>
 
@@ -22,8 +22,12 @@
 
 <script>
 
+  import { analMixin } from '~/components/mixins/analitics.js'
+
   export default {
     name: 'post-similar',
+
+    mixins: [ analMixin ],
 
     props: {
       post: 0,
@@ -48,7 +52,10 @@
 
       linkToPost() {
         return '/' + this.post.id + ( this.post.slug ? '/' + this.post.slug : '' )
-      }
+      },
+      onSimilarClick: function ( ) {
+        this.sendEvent( 'NewsSimilar', 'click', this.post.id );
+      },
     },
 
   }
