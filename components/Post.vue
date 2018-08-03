@@ -133,7 +133,7 @@
       <comment v-for="newComment of newComments" v-bind:key="newComment.id" :comment="newComment"></comment>
 
       <div class="comment_footer">
-        <input type="text" name="comment" autocomplete="off" v-model="commentText" placeholder="Написать комментарий" />
+        <input type="text" name="comment" autocomplete="off" v-model="commentText" v-on:keyup.enter="sendComment()" placeholder="Написать комментарий" />
         <input type="button" value="Отправить" v-on:click="sendComment()" :disabled="commentsButtonDisabled" />
       </div>
     </div>
