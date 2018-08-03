@@ -702,13 +702,21 @@ h3 {
 				display: none;
 				&.i_symbol {
 					display: block;
-					padding-right: 10px;
 					font-size: $second_size;
 					a {
-						display: block;
 						line-height: 56px;
 						height: 56px;
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+    					align-items: flex-end;
+    					&:hover {
+							#path {
+								fill: $link-color;
+							}
+						}
 					}
+
 				}
 			}
 		}

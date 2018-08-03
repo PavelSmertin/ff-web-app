@@ -20,6 +20,7 @@
     </div>
 
     <nuxt-link 
+        @click.native="onCoinClick(coin.attributes.symbol)"
         v-for="coin of $store.state.coins" 
         v-bind:key="coin.id" 
         :to="coinPath(coin)" 
@@ -48,9 +49,13 @@
 </template>
 
 <script>
+  import { analMixin } from '~/components/mixins/analitics.js'
 
   export default {
     name: 'coins-list-page',
+
+    mixins: [ analMixin ],
+
     methods: {
       formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')
@@ -65,6 +70,9 @@
         }
 
         return { name: 'index-symbol',  params: { symbol: this.downSymbol(coin.attributes.symbol) }}
+      },
+      onCoinClick: function ( symbol ) {
+        this.sendEvent( 'MarketCup', 'click', symbol );
       },
     }
   }

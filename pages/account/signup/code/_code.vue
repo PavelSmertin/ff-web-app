@@ -46,7 +46,7 @@
       const { data } = await app.$axios.get( `/api/auth/email-confirm`, { params: { code: params.code } } )
       if(data.email_confirmed) {
 
-        app.$auth.setToken('api', data.access_token)
+        app.$auth.setToken('api', 'Bearer ' + data.access_token)
         app.$auth.setUser({})
 
         return {
