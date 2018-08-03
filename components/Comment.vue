@@ -24,7 +24,7 @@
         if (this.comment.user) {
           return this.comment.user.user_name
         } else {
-          return ' '
+          return 'Аноним'
         }
 
       }
