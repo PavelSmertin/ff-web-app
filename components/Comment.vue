@@ -20,13 +20,7 @@
 
     computed: {
       user_name: function () {
-        console.log(this.comment);
-        if (this.comment.user) {
-          return this.comment.user.user_name
-        } else {
-          return 'Аноним'
-        }
-
+        return this.comment.user ? this.comment.user.user_name : 'Аноним'
       }
     },
 

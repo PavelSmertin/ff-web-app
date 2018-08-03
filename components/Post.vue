@@ -234,7 +234,6 @@
       },
 
       open() {
-        console.log('open')
       },
 
       getImageOriginal() {
@@ -382,10 +381,11 @@
               this.newComments.push(commentObj)
               this.commentsSendProcess = false
               this.commentText = ''
+              this.commentsCount++
             })
             .catch(function (error) {
-              //this.showMessage("Не удалось добавить комментарий")
-              //console.log(error)
+              this.showMessage("Не удалось добавить комментарий")
+              console.log(error)
               this.commentsSendProcess = false
             });
       },
