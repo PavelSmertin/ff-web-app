@@ -1,6 +1,6 @@
 <template>
   <div class="ff_post_feed">
-    <post v-for="post of news" v-bind:key="post.id" :postProp="post" ></post>
+    <post v-for="post of news" v-bind:key="post.id" :postProp="post" :first="first" :comments="comments" :commentsCount="commentsCount" ></post>
     <div ref="infinite_loading_container"></div>
   </div>
 </template>
@@ -36,8 +36,10 @@
         debounceTimer: null,
         debounceDuration: 50,
         distance: 6000,
-      }
-    },
+        comments: [],
+        commentsCount: 0
+    }
+  },
 
     components: {
       Post,
@@ -48,6 +50,7 @@
 
       try {
         const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins,similar,author`)
+        const commentsData  = await app.$axios.get(`/api/news/${ params.id }/comments?include=user&per-page=10`)
 
         if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
           redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
@@ -61,6 +64,8 @@
             attributes: data.data.attributes,
             news:       [ dataFormatter.deserialize( data ) ],
             first:      data.data.id,
+            comments:   dataFormatter.deserialize( commentsData.data ),
+            commentsCount: commentsData.data.meta.total_count
           }
 
         }
@@ -75,9 +80,9 @@
       return {
         title: this.seoTitle,
         meta: [
-          { 
-            hid: 'description', 
-            name: 'description', 
+          {
+            hid: 'description',
+            name: 'description',
             content: strip_social_desription(this.body, 200),
           },
           { hid: 'og:type', property: 'og:type', content: 'article' },
@@ -267,7 +272,7 @@
     // Переход по ссылке со slug
     if( slug && data && slug == data ) {
       return false
-    } 
+    }
 
     // Переход по ссылке без slug
     if( !slug && !data ) {
@@ -277,7 +282,7 @@
     // Редирект на slug
     if( !slug ) {
       return true
-    } 
+    }
 
     throw new Error('Newest not found');
   }

@@ -12,6 +12,10 @@
         <input type="email" name="email" v-model="email" placeholder="Ваш e-mail">
       </div>
       <div class="row_field">
+        <label class="ff-label">Ваше имя</label>
+        <input type="email" name="user_name" v-model="name" placeholder="Ваше имя">
+      </div>
+      <div class="row_field">
         <label class="ff-label">Пароль</label>
         <input type="password" v-model="password" name="password">
       </div>
@@ -44,6 +48,7 @@
         email: null,
         password: null,
         repassword: null,
+        name: null,
         errors: null,
         busy: false,
       }
@@ -59,10 +64,11 @@
           this.$auth.$storage.setUniversal('username',  this.email )
         }
 
-        return this.$axios.post(`/api/auth/signup`, 'SignupForm[email]=' 
-                  + this.email + '&SignupForm[password]=' 
-                  + this.password + '&SignupForm[rePassword]=' 
-                  + this.repassword
+        return this.$axios.post(`/api/auth/signup`,
+            'SignupForm[email]=' + this.email +
+            '&SignupForm[password]=' + this.password +
+            '&SignupForm[rePassword]=' + this.repassword +
+            '&SignupForm[user_name]=' + this.name
           )
           .then((response) => {
             this.$router.push({ name: `account-signup-success` })
