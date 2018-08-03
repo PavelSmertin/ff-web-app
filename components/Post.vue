@@ -13,11 +13,6 @@
       <meta itemprop="logo" content="/logo77.png">
       <meta itemprop="name" content="ff.ru">
     </div>
- 
-    <!-- Автор статьи -->
-    <!--     <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name"></span>
-    </span> -->
    
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
@@ -32,9 +27,7 @@
         </li>
         <li v-if="post.type == 'news'">Новость</li>
         <li v-else-if="post.type == 'prognosis'">Прогноз</li>
-<!--         <li v-if="sourceDomain()" class="post_detail_source ff-label">
-          Источник: <span itemprop="isBasedOn" >{{ sourceDomain() }}</span>
-        </li> -->
+        <meta v-if="sourceDomain()" itemprop="isBasedOn" :content="sourceDomain()">
         <meta itemprop="isBasedOn" v-bind:content="sourceDomain()" >
       </ul>
     </div>
@@ -78,14 +71,16 @@
       {{ post.title }}
     </h1>
 
-    <span v-if="getImageOriginal()">
-      <img class="image_origin" v-bind:alt="seoTitle" v-bind:title="seoTitle" :src="getImageOriginal()" itemprop="primaryImageOfPage" />
-    </span>
+    <div class="image_origin_wrap" v-if="getImageOriginal()">
+      <img class="image_origin" v-bind:alt="seoTitle" v-bind:title="seoTitle" :src="getImageOriginal()" itemprop="image" />
+    </div>
 
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
 
     <div class="tools">
-      <div class="post_author" itemprop="isBasedOn"> Fdnjh
+      <!-- Автор статьи -->
+      <div class="post_author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        Автор: <span itemprop="name">{{ post.author.full_name }}</span>
       </div>
       <div class="social">
 
@@ -130,8 +125,12 @@
       </div>
     </div>
 
-    <div v-if="first == post.id" class="my-widget-anchor mail_news_widget" id="mailru_widget" data-cid="b9cdb3b43490823a65345cb4608d6471"></div>
-
+    <div v-if="post.similar && post.similar.length > 0" class="similar_list_wrap">
+      <h3>Похожие публикации</h3>
+      <div class="similar_list">
+        <post-similar v-for="item of post.similar" v-bind:key="item.id" :post="item"></post-similar>
+      </div>
+    </div>
   </article>
 </template>
 
@@ -139,21 +138,25 @@
 
   import BaseNetworks from '@/assets/networks.json'
   import PostItemRelated from '~/components/PostItemRelated.vue'
+  import PostSimilar from '~/components/PostSimilar.vue'
   import Vue from 'vue'
   import Jsona from 'jsona'
+  import { analMixin } from '~/components/mixins/analitics.js'
 
   const dataFormatter = new Jsona()
 
   export default {
     name: 'post-item',
 
+    mixins: [ analMixin ],
+
     props: {
       postProp: 0,
-      first: 0,
     },
 
     components: {
-      PostItemRelated
+      PostItemRelated,
+      PostSimilar,
     },
 
     data() {
@@ -168,9 +171,6 @@
     },
 
     mounted () {
-      if( this.first == this.post.id ) {
-        this.injectRecomendedWidget()
-      }
       this.initRelationNews();
     },
 
@@ -209,6 +209,10 @@
         return domain
       },
 
+      open() {
+        console.log('open')
+      },
+
       getImageOriginal() {
         if( this.post.images.original ) {
           return '/images' + this.post.images.original
@@ -217,10 +221,12 @@
       },
 
       vote( is_positive ) {
+        this.sendEvent( 'PostVote', 'vote', is_positive );
+
         if( this.setLocalStorage( "vote_" + this.post.id, is_positive )) {
           return
         }
-        this.$axios.post(`/api/news/${ this.post.id }/vote?include=coins`, `is_positive=${is_positive}&type=rating`)
+        this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=rating`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
           }).catch(e => {
@@ -231,10 +237,12 @@
       },
 
       like( is_positive ) {
+        this.sendEvent( 'PostLike', 'like', is_positive );
+
         if( this.setLocalStorage( "like_" + this.post.id, is_positive )) {
           return
         }
-        this.$axios.post(`/api/news/${ this.post.id }/vote?include=coins`, `is_positive=${is_positive}&type=like`)
+        this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=like`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
           }).catch(e => {
@@ -268,6 +276,8 @@
       },
 
       watch() {
+        this.sendEvent( 'PostCoinWatch', 'watch', this.postCoin() );
+
         this.$axios.post(`/api/coin/favorite?include=favoritecoins`, `symbol=${ this.postCoin() }`)
           .then(({ data }) => {
             let response = dataFormatter.deserialize( data )
@@ -280,6 +290,8 @@
       },
 
       subscribe() {
+        this.sendEvent( 'PostCoinSubscribe', 'subscribe', this.postCoin() );
+
         this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=${ this.postCoin() }`)
           .then(({ data }) => {
             let response = dataFormatter.deserialize( data )
@@ -295,7 +307,7 @@
         if( isVisible ) {
 
           //this.$router.replace({path: '/' + postId})
-          let path = '/' + postId + (slug ? '/' + slug : '')
+          let path = '/' + postId + ( slug ? '/' + slug : '' )
 
           if( window.location.pathname !=  path ) {
             window.history.pushState({}, null, path )
@@ -310,26 +322,15 @@
         } 
       },
 
-      injectRecomendedWidget() {
-        if( document.getElementById("my-widget-script") ) {
-          myWidget.render('b9cdb3b43490823a65345cb4608d6471', document.getElementById("mailru_widget"));
-          return
-        }
-
-        var script = document.createElement("script");
-        script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: true};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'));
-        document.body.appendChild(script);
-      },
-
       initRelationNews() {
         const PostItemComponentClass = Vue.extend(PostItemRelated)
 
-        if (this.post.relatednews) {
-          this.post.relatednews.forEach(function(news, i, arr){
+        if( this.post.relatednews ) {
+          this.post.relatednews.forEach( function( post, i, arr ){
             let instance = new PostItemComponentClass({
-              propsData: { newest: news }
+              propsData: { newest: post }
             })
-            instance.$mount('#ffrel_' + news.id)
+            instance.$mount('#ffrel_' + post.id)
           })
         }
       },

@@ -1,7 +1,7 @@
 <template>
   <div class='related_news'>
     <div class='ff-label'>Статья по теме:</div>
-    <a :href="linkToPost(newest)" class="ff-news-row">
+    <a @click.native="onRelatedClick( newest.id )" :href="linkToPost(newest)" class="ff-news-row">
       <post-item :post="newest" ></post-item>
     </a>
   </div>
@@ -9,9 +9,12 @@
 
 <script>
   import PostItem from '~/components/PostItem.vue'
+  import { analMixin } from '~/components/mixins/analitics.js'
 
   export default {
     name: "releted-post-item",
+
+    mixins: [analMixin],
 
     props: {
       newest: 0,
@@ -22,14 +25,17 @@
     },
 
     methods: {
-      linkToPost(newest) {
 
+      linkToPost( newest ) {
         if( newest.slug ) {
           return '/' + newest.id + '/' + newest.slug
         }
-
         return '/' + newest.id;
-      }
+      },
+
+      onPostClick: function ( postId ) {
+        this.sendEvent( 'NewsRelated', 'click', postId );
+      },
     }
   }
 </script>

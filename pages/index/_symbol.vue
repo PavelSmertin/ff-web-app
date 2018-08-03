@@ -192,7 +192,7 @@
         })
       },
       getImageSharing() {
-        return '/FF_cover1080_b.png'
+        return '/FF_cover968_b.png'
       },
 
       getBTCCase() {

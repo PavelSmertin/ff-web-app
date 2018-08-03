@@ -32,6 +32,7 @@
         class="mouseover_wrap"
       >
       <nuxt-link 
+        @click.native="onCoinClick(coin.attributes.symbol)"
         :to="coinPath(coin)" 
         class="currency coin_row"
       >
@@ -52,7 +53,8 @@
 
 <script>
 
-  import { coinsMixin } from './mixins/coins.js'
+  import { coinsMixin } from '~/components/mixins/coins.js'
+  import { analMixin } from '~/components/mixins/analitics.js'
 
   export default {
     name: 'coins-list',
@@ -64,13 +66,7 @@
       }
     },
 
-    mixins: [coinsMixin],
-
-    computed: {
-
-
-
-    },
+    mixins: [ coinsMixin, analMixin  ],
 
     methods: {
       mouseOver( event, name ) {
@@ -94,6 +90,10 @@
       inFavourites( coin ) {
         return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( favorite =>  favorite.symbol == coin )
       },
+      onCoinClick: function ( symbol ) {
+        this.sendEvent( 'CoinsPanel', 'click', symbol );
+      },
+
     }
   }
 

@@ -4,7 +4,7 @@
     <div class="post_fade_overlay" ></div>
 
     <div class="ff_news_item_title">
-      <div class="ff-nc-title">
+      <div class="ff_nc_title">
           <span v-if="isTopPost()">&#128293;&nbsp;</span>{{ post.title }}
       </div>
     </div>
@@ -60,7 +60,7 @@
         if (this.post.images.sharing) {
           return '/images' + this.post.images.sharing
         }
-        return '/FF_cover1080_b.png'
+        return '/FF_cover968_b.png'
       },
 
       isTopPost() {

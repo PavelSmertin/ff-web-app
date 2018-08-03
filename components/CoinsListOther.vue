@@ -2,6 +2,7 @@
     <div v-if="otherCoins.length > 0" class="ff_coin_list row">
         <div class="col-lg-6 flex-row">
             <nuxt-link
+                    @click.native="onCoinClick( otherCoins[index-1].attributes.symbol )"
                     v-for="index in 4"
                     v-bind:key="otherCoins[index-1].id"
                     :to="coinPath(otherCoins[index-1])"
@@ -20,6 +21,7 @@
         </div>
         <div class="col-lg-6 flex-row">
             <nuxt-link
+                    @click.native="onCoinClick( otherCoins[index-1].attributes.symbol )"
                     v-for="index in 8"
                     v-bind:key="otherCoins[index-1].id"
                     :to="coinPath(otherCoins[index-1])"
@@ -44,14 +46,18 @@
 
 <script>
 
-    import { coinsMixin } from './mixins/coins.js'
+    import { coinsMixin } from '~/components/mixins/coins.js'
+    import { analMixin } from '~/components/mixins/analitics.js'
 
     export default {
         name: 'coins-list-top',
 
-        mixins: [coinsMixin],
+        mixins: [ coinsMixin, analMixin ],
 
         methods: {
+            onCoinClick: function ( symbol ) {
+              this.sendEvent( 'BTCCoinsOther', 'click', symbol );
+            },
         },
 
         props: {
