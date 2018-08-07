@@ -114,6 +114,9 @@
           { hid: 'twitter:title', name: 'twitter:title', content: `Курс ${this.attributes.full_name} на сегодня -  FF.ru` },
           { hid: 'twitter:description', name: 'twitter:description', content: this.headDescription },
         ],
+        // link: [
+        //   { rel: 'canonical', href: process.env.baseUrl + '/' + this.downSymbol }
+        // ]
 
       }
     },
@@ -151,7 +154,7 @@
       let headTitle        = getTitle(attributes)
       let headDescription  = getDescription(attributes)
 
-      return { attributes, headTitle, headDescription }
+      return { attributes, headTitle, headDescription, downSymbol: downSymbol( params.symbol ) }
     },
 
     components: {
@@ -219,6 +222,11 @@
   function upSymbol(value) {
     if(value) {
       return value.toUpperCase()
+    }
+  }
+  function downSymbol( value ) {
+    if(value) {
+      return value.toLowerCase()
     }
   }
 
