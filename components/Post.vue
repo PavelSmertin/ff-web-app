@@ -10,7 +10,7 @@
  
     <!-- Данные о сайте: лого, телефон, адрес, название -->
     <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
-      <meta itemprop="logo" content="/logo77.png">
+      <meta itemprop="logo" :content="host + '/logo77.png'">
       <meta itemprop="name" content="ff.ru">
     </div>
    
@@ -39,6 +39,7 @@
     <div class="image_origin_wrap" v-if="getImageOriginal()">
       <img class="image_origin" v-bind:alt="seoTitle" v-bind:title="seoTitle" :src="getImageOriginal()" itemprop="image" />
     </div>
+    <meta v-else itemprop="image" :content="host + '/FF_cover968_b.png'" >
 
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
 
@@ -167,7 +168,8 @@
         seoTitle: getTitle( this.postProp ),        
         body: '',
         overriddenNetworks: BaseNetworks,
-        post: this.postProp
+        post: this.postProp,
+        host: process.env.baseUrl,
       }
     },
 
