@@ -49,7 +49,7 @@
     <div class="tools">
       <!-- Автор статьи -->
       <div class="post_author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        Автор: <span itemprop="name">{{ post.author.full_name }}</span>
+        Автор: <nuxt-link :to="{ path: '/authors' }" itemprop="name">{{ post.author.full_name }}</nuxt-link>
       </div>
       <div class="social">
 

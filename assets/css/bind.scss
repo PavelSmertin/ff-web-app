@@ -1106,6 +1106,15 @@ h3 {
 	span {
 		line-height: 48px;
 	}
+	.nav-link {
+		@extend .ff-label;
+		display: inline;
+		line-height: 48px;
+		padding: 0 20px 0 0;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
 }
 
 /* social block */
@@ -2154,4 +2163,27 @@ h3 {
 	}
 }
 
+.ff_authors {
+	margin: 0 auto;
+	width: 75%;
+	padding-bottom: 120px;
+}
+.ff_contacts {
+	margin: 0 auto;
+	width: 75%;
+	padding-bottom: 120px;
+	.contact_row {
+		display: flex;
+		dt {
+			flex-grow: 0;
+			width: 45px;
+			font-size: $label-size;
+			color: $label-color;
+		}
+		dd {
+			flex-grow: 10;
+			width: 0;
+		}
+	}
+}
 

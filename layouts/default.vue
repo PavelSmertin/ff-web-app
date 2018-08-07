@@ -48,7 +48,24 @@
     	<nuxt/>
 
 		<footer class="ff-footer row justify-content-between" >
-			<div class="d-none d-md-block col-md-8 ff-label"><span>Copyright &copy; FF.ru</span></div>
+			<div class="d-none d-md-block col-md-4 ff-label"><span>Copyright &copy; FF.ru</span></div>
+
+			<div class="d-none d-md-block col-md-4">
+				<nuxt-link  
+					@click.native="sendEvent( 'Footer', 'click', 'О компании' )" 
+					:to="{path: '/contacts'}" 
+					class="nav-link"
+					>
+					О компании
+				</nuxt-link>
+				<nuxt-link  
+					@click.native="sendEvent( 'Footer', 'click', 'Авторы' )" 
+					:to="{path: '/authors'}" 
+					class="nav-link"
+					>
+					Авторы
+				</nuxt-link>
+			</div>
 
 			<div class="social col-12 col-md-4">
 				<a @click.native="onSocialClick('vk')" href="https://vk.com/cryptoff" class="social_link vk" alt="vk" target="_blank"></a>
