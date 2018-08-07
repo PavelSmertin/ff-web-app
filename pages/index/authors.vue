@@ -1,6 +1,6 @@
 <template> 
   <div class="ff-authors">
-  	<h1>authors</h1>
+  	<h1>Список всех авторов</h1>
 <!--     <div v-for="author of authors">{{ author }}</div>
  -->  </div>
 </template>

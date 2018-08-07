@@ -28,7 +28,6 @@
         <li v-if="post.type == 'news'">Новость</li>
         <li v-else-if="post.type == 'prognosis'">Прогноз</li>
         <meta v-if="sourceDomain()" itemprop="isBasedOn" :content="sourceDomain()">
-        <meta itemprop="isBasedOn" v-bind:content="sourceDomain()" >
       </ul>
     </div>
 
@@ -218,8 +217,14 @@
 
     methods: {
       sourceDomain() {
-        var domain = extractHostname(this.post.source_url),
-            splitArr = domain.split('.'),
+        var domain = extractHostname(this.post.source_url)
+
+        if( !domain ) {
+          return false
+        }
+
+
+        var splitArr = domain.split('.'),
             arrLen = splitArr.length
 
         //extracting the root domain here
@@ -396,6 +401,10 @@
   }
 
   function extractHostname( url ) {
+
+    if( url == null || url == undefined ) {
+      return false
+    }
 
     var hostname;
     //find & remove protocol (http, ftp, etc.) and get hostname
