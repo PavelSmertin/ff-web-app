@@ -31,7 +31,7 @@
         <meta itemprop="isBasedOn" v-bind:content="sourceDomain()" >
       </ul>
     </div>
-    
+
     <h1 class="post_header" itemprop="headline" >
       {{ post.title }}
     </h1>
@@ -126,6 +126,18 @@
       </div>
     </div>
 
+    <div v-if="first == post.id" class="comments">
+      <div class="comments_head">Комментарии {{ commentsCount }}</div>
+
+      <comment v-for="comment of comments" v-bind:key="comment.id" :comment="comment"></comment>
+
+      <comment v-for="newComment of newComments" v-bind:key="newComment.id" :comment="newComment"></comment>
+
+      <div class="comment_footer">
+        <input type="text" name="comment" autocomplete="off" v-model="commentText" v-on:keyup.enter="sendComment()" placeholder="Написать комментарий" />
+        <input type="button" value="Отправить" v-on:click="sendComment()" :disabled="commentsButtonDisabled" />
+      </div>
+    </div>
 
     <div v-if="post.similar && post.similar.length > 0" class="similar_list_wrap">
       <h3>Похожие публикации</h3>
@@ -141,6 +153,7 @@
   import BaseNetworks from '@/assets/networks.json'
   import PostItemRelated from '~/components/PostItemRelated.vue'
   import PostSimilar from '~/components/PostSimilar.vue'
+  import Comment from '~/components/Comment.vue'
   import Vue from 'vue'
   import Jsona from 'jsona'
   import { analMixin } from '~/components/mixins/analitics.js'
@@ -154,10 +167,14 @@
 
     props: {
       postProp: 0,
+      first: 0,
+      comments: null,
+      commentsCount: 0
     },
 
     components: {
       PostItemRelated,
+      Comment,
       PostSimilar,
     },
 
@@ -170,6 +187,9 @@
         overriddenNetworks: BaseNetworks,
         post: this.postProp,
         host: process.env.baseUrl,
+        commentText: '',
+        newComments: [],
+        commentsSendProcess: false,
       }
     },
 
@@ -190,6 +210,9 @@
         else
           str = str.toString();
         return str.replace(/<[^>]*>/g, '')
+      },
+      commentsButtonDisabled: function () {
+        return this.commentText.length < 1 || this.commentsSendProcess === true;
       }
     },
 
@@ -213,7 +236,6 @@
       },
 
       open() {
-        console.log('open')
       },
 
       getImageOriginal() {
@@ -351,7 +373,24 @@
 
       inSubscribed() {
         return this.$store.state.subscribedCoins && this.$store.state.subscribedCoins.find( coin =>  coin.symbol == this.postCoin() )
-      }
+      },
+
+      sendComment() {
+        this.commentsSendProcess = true
+        this.$axios.post( `/api/news/${this.post.id}/add-comment?include=user`, `parent_id=0&comment=${this.commentText}`)
+            .then( ({ data }) => {
+              let commentObj = dataFormatter.deserialize( data )
+              this.newComments.push(commentObj)
+              this.commentsSendProcess = false
+              this.commentText = ''
+              this.commentsCount++
+            })
+            .catch(function (error) {
+              this.showMessage("Не удалось добавить комментарий")
+              console.log(error)
+              this.commentsSendProcess = false
+            });
+      },
 
     }
   }
