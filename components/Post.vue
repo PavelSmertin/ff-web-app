@@ -10,7 +10,11 @@
  
     <!-- Данные о сайте: лого, телефон, адрес, название -->
     <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
-      <meta itemprop="logo" :content="host + '/logo77.png'">
+      <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+        <meta itemprop="image" :content="host + '/logo77.png'">
+        <meta itemprop="width" content="77">
+        <meta itemprop="height" content="77">
+      </div>
       <meta itemprop="name" content="ff.ru">
     </div>
    
