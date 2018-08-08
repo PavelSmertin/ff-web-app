@@ -1,6 +1,6 @@
 <template>
   <div class="ff_post_feed">
-    <post v-for="post of news" v-bind:key="post.id" :postProp="post" :first="first" :comments="comments" :commentsCount="commentsCount" ></post>
+    <post v-for="post of news" v-bind:key="post.id" :postProp="post" :comments="post.comments" :commentsCount="post.comments ? post.comments.length : 0" ></post>
     <div ref="infinite_loading_container"></div>
   </div>
 </template>
@@ -10,7 +10,7 @@
   import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
 
-  const api_news = '/api/news?per-page=1&include=relatednews,coins,similar,author'
+  const api_news = '/api/news?per-page=1&include=relatednews,coins,similar,author,comments'
   const dataFormatter = new Jsona()
 
   export default {
@@ -49,8 +49,8 @@
       const dataFormatter = new Jsona();
 
       try {
-        const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins,similar,author`)
-        const commentsData  = await app.$axios.get(`/api/news/${ params.id }/comments?include=user&per-page=10`)
+        const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins,similar,author,comments`)
+        //const commentsData  = await app.$axios.get(`/api/news/${ params.id }/comments?include=user&per-page=10`)
 
         if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
           redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
@@ -63,9 +63,8 @@
             body:       data.data.attributes.body,
             attributes: data.data.attributes,
             news:       [ dataFormatter.deserialize( data ) ],
-            first:      data.data.id,
-            comments:   dataFormatter.deserialize( commentsData.data ),
-            commentsCount: commentsData.data.meta.total_count
+            //comments:   dataFormatter.deserialize( commentsData.data ),
+            //commentsCount: commentsData.data.meta.total_count
           }
 
         }

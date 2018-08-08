@@ -129,7 +129,7 @@
       </div>
     </div>
 
-    <div v-if="first == post.id" class="comments">
+    <div class="comments">
       <div class="comments_head">Комментарии {{ commentsCount }}</div>
 
       <comment v-for="comment of comments" v-bind:key="comment.id" :comment="comment"></comment>
@@ -170,7 +170,6 @@
 
     props: {
       postProp: 0,
-      first: 0,
       comments: null,
       commentsCount: 0
     },
