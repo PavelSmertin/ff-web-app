@@ -2,7 +2,10 @@
   <section class="ff_coin">
       
     <div class="row no-gutters margin24">
-      <h1 class="col-12 col-md-6">Курс {{ getBTCCase() }}</h1>
+      <div class="col-12 col-md-6 coin_title" v-on:click="watch()">
+        <span class="button_icon ic_star" v-bind:class="activeFavourite"></span>
+        <h1>Курс {{ getBTCCase() }}</h1>
+      </div>
       <div class="col-12 col-md-6">
         <div>
           <span class="coin-value">${{ formatPrice(attributes.price_usd) }}</span>&nbsp;
@@ -227,6 +230,8 @@
   import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
 
+  const dataFormatter = new Jsona()
+
   export default {
 
     mixins: [ analMixin  ],
@@ -269,8 +274,6 @@
     },
 
     async asyncData ({ app, params, error }) {
-
-      const dataFormatter = new Jsona()
 
       let details 
       let pairs
@@ -334,9 +337,6 @@
         let val = (value/1).toFixed(percision)
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
-      upSymbol() {
-        return this.symbol ? this.symbol.toUpperCase() : ''
-      },
       loadChart(symbol) {
 
         let lineCharts = this.$refs.lineCharts
@@ -388,6 +388,22 @@
         this.sendEvent( 'BTCWiki', 'click', wikiPage );
       },
 
+      watch() {
+        this.sendEvent( 'CoinWatch', 'watch', 'BTC' );
+        this.$axios.post(`/api/coin/favorite?include=favoritecoins`, `symbol=BTC`)
+          .then(({ data }) => {
+            let response = dataFormatter.deserialize( data )
+            this.$store.commit('SET_FAVORITE_COINS', response.favoritecoins)
+          }).catch(e => {
+            if (e.response && e.response.status == 401) {
+              this.$router.push({ name: `account-signin` })
+            }
+          })
+      },
+      inFavourites() {
+        return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( coin =>  coin.symbol == 'BTC' )
+      },
+
     },
 
     computed: {
@@ -423,7 +439,12 @@
           this.calculatorUSD = value ? this.formatCalculator( this.attributes.price_usd * value / this.attributes.price_rub, 2) : ''
           this.calculatorRUB = value
         }
-      }
+      },
+      activeFavourite: function () {
+        return {
+          'active_star': this.inFavourites()
+        }
+      },
     }
 
   }

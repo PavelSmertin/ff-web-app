@@ -1350,7 +1350,6 @@ h3 {
 				border-right: 1px solid $border-bold-color;
 				text-align: center;
 				display: inline-block;
-
 			}
 			.button_body {
 				color: $dark-primary-color;
@@ -1358,7 +1357,6 @@ h3 {
 				text-align: center;
 				display: inline-block;
 				line-height: 41px;
-
 			}
 			&:hover {
 				border: 1px solid $dark-primary-color;
@@ -1782,6 +1780,28 @@ h3 {
 		dd {
 			color: $dark-primary-color;
 			font-weight: bold;
+		}
+	}
+
+	.coin_title {
+		cursor: pointer;
+		.button_icon {
+			width:28px;
+			height: 35px;
+			vertical-align: bottom;
+		}
+		h1 {
+			display: inline;
+		}
+		&:hover {
+			.button_icon {
+				&.ic_star {
+					background-image: url('~assets/images/ic_star_border_hover.svg');
+					&.active_star {
+						background-image: url('~assets/images/ic_star_hover.svg');
+					}
+				}
+			}
 		}
 	}
 }

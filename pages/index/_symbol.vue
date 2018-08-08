@@ -1,17 +1,10 @@
 <template>
   <section class="ff_coin">
-
-<!--     <ul class="row ff_coin_tabs">
-      <li class="col-2">
-        <span>Все монеты</span>
-      </li>
-      <li class="col-2">
-        <span>Новости {{attributes.symbol}}</span>
-      </li>
-    </ul> -->
-      
     <div class="row no-gutters margin24">
-      <h1 class="col-12 col-md-6">Курс {{ getBTCCase() }}</h1>
+      <div class="col-12 col-md-6 coin_title" v-on:click="watch()">
+        <span class="button_icon ic_star" v-bind:class="activeFavourite"></span>
+        <h1>Курс {{ getBTCCase() }}</h1>
+      </div>
       <div class="col-12 col-md-6">
         <div>
           <span class="coin-value">${{formatPrice(attributes.price_usd)}}</span>&nbsp;
@@ -90,13 +83,19 @@
   import axios from 'axios'
   import VueHighcharts from '~/components/VueHighcharts.vue'
   import { DrilldownOptions, MapData } from '~/static/data.js'
+  import { analMixin } from '~/components/mixins/analitics.js'
+  import Jsona from 'jsona'
+
+  const dataFormatter = new Jsona()
 
   export default {
     transition: 'page',
+
+    mixins: [ analMixin ],
+
     head() {
       return {
         title: this.headTitle,
-        symbol: false,
         meta: [
           { 
             hid: 'description', 
@@ -154,7 +153,7 @@
       let headTitle        = getTitle(attributes)
       let headDescription  = getDescription(attributes)
 
-      return { attributes, headTitle, headDescription, downSymbol: downSymbol( params.symbol ) }
+      return { attributes, headTitle, headDescription, downSymbol: downSymbol( params.symbol ), symbol: upSymbol( params.symbol )  }
     },
 
     components: {
@@ -166,6 +165,14 @@
       this.goto()
     },
 
+    computed: {
+      activeFavourite: function () {
+        return {
+          'active_star': this.inFavourites()
+        }
+      },
+    },
+
     methods: {
       goto() {
         var element = this.$parent.$refs["scroll-container"];
@@ -174,9 +181,6 @@
       formatPrice(value, percision = 2) {
         let val = (value/1).toFixed(percision)
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-      },
-      upSymbol() {
-        return this.symbol ? this.symbol.toUpperCase() : ''
       },
       loadChart(symbol) {
 
@@ -208,6 +212,22 @@
         return function() {
         }
       },
+      watch() {
+        this.sendEvent( 'CoinWatch', 'watch', this.symbol );
+        this.$axios.post(`/api/coin/favorite?include=favoritecoins`, `symbol=${ this.symbol }`)
+          .then(({ data }) => {
+            let response = dataFormatter.deserialize( data )
+            this.$store.commit('SET_FAVORITE_COINS', response.favoritecoins)
+          }).catch(e => {
+            if (e.response && e.response.status == 401) {
+              this.$router.push({ name: `account-signin` })
+            }
+          })
+      },
+      inFavourites() {
+        return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( coin =>  coin.symbol == this.symbol )
+      },
+
     },
 
     beforeRouteUpdate (to, from, next) {

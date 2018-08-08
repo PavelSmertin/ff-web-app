@@ -123,8 +123,8 @@
       </div>
       <div class="tools_right">
         <button class="subscribe" v-on:click="subscribe()">
-          <span v-if="inSubscribed()" >Подписаться на {{ postCoin() }}</span>
-          <span v-else>Отписаться от {{ postCoin() }}</span>
+          <span v-if="inSubscribed()" >Отписаться от {{ postCoin() }}</span>
+          <span v-else>Подписаться на {{ postCoin() }}</span>
         </button>
       </div>
     </div>
