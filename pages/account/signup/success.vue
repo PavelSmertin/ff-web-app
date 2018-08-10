@@ -59,7 +59,6 @@
           })
           .catch(function (error) {
             this.showMessage("Письмо не отправлено")
-            console.log(error);
           });
       },
 

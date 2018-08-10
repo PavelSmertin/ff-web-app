@@ -337,6 +337,7 @@
       },
 
       visibilityChanged( isVisible, entry, postId, slug ) {
+
         if( isVisible ) {
 
           //this.$router.replace({path: '/' + postId})
@@ -395,7 +396,6 @@
             })
             .catch(function (error) {
               this.showMessage("Не удалось добавить комментарий")
-              console.log(error)
               this.commentsSendProcess = false
             });
       },

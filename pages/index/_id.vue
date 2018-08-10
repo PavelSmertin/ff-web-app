@@ -37,7 +37,7 @@
         debounceDuration: 50,
         distance: 6000,
         comments: [],
-        commentsCount: 0
+        commentsCount: 0,
     }
   },
 
@@ -211,45 +211,9 @@
           }
         });
       },
-
       concatNews( news ) {
         this.news = this.news.concat( news.filter( post => this.news.find( current => current.id == post.id  ) == undefined ))
       },
-
-      injectMailCollector() {
-
-        if(document.getElementById("inject_mail_collector")) {
-          return
-        }
-
-        var chimpPopupWrap = document.createElement('script');
-        chimpPopupWrap.src = "//downloads.mailchimp.com/js/signup-forms/popup/embed.js"
-        chimpPopupWrap.setAttribute('data-dojo-config', 'usePlainJson: true, isDebug: false');
-        chimpPopupWrap.id = "inject_mail_collector";
-
-
-        document.body.appendChild(chimpPopupWrap);
-
-        var chimpPopup = document.createElement("script");
-        chimpPopup.appendChild(document.createTextNode('require(["mojo/signup-forms/Loader"], function (L) { L.start({"baseUrl":"mc.us18.list-manage.com","uuid":"f2a6cbc588ae02f3e4991dd3d","lid":"c84e62e0f7"})});'));
-
-        chimpPopupWrap.onload = function() {
-          document.body.appendChild(chimpPopup);
-        }
-      },
-
-      injectRecomendedWidget() {
-
-        if(document.getElementById("my-widget-script")) {
-          myWidget.render('b9cdb3b43490823a65345cb4608d6471', document.getElementById("mailru_widget"))
-          return
-        }
-
-        var script = document.createElement("script")
-        script.appendChild(document.createTextNode('window.myWidgetInit = {useDomReady: true};(function(d, s, id) {var js, t = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://likemore-go.imgsmail.ru/widget.js";t.parentNode.insertBefore(js, t);}(document, "script", "my-widget-script"));'))
-        document.body.appendChild(script)
-      },
-
     },
 
     deactivated() {

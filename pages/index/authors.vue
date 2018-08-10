@@ -36,7 +36,6 @@
 
   async asyncData ({ app, params, error }) {
     let { data } = await app.$axios.get(`/api/news/authors`)
-    console.log( data.data )
     return  { authors: data.data }
   },
 
