@@ -1,6 +1,6 @@
  <template>
   <article 
-    v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, post.id, post.slug )" 
+    v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, post )" 
     class="ff-post" 
     itemscope itemtype="http://schema.org/NewsArticle"
     >
@@ -55,7 +55,7 @@
 
         <social-sharing :networks="overriddenNetworks"
                       :url="url"
-                      :title="title"
+                      :title="seoTitle"
                       :description="stripSocialDesription"
                       :quote="stripSocialDesription"
                       twitter-user="www_FF_ru"
@@ -180,10 +180,15 @@
       PostSimilar,
     },
 
+    head() {
+      return {
+        title: this.seoTitle,
+      }
+    },
+
     data() {
       return {
         url: process.env.baseUrl + this.$route.path,
-        title: '',
         seoTitle: getTitle( this.postProp ),        
         body: '',
         overriddenNetworks: BaseNetworks,
@@ -336,15 +341,16 @@
           })
       },
 
-      visibilityChanged( isVisible, entry, postId, slug ) {
+      visibilityChanged( isVisible, entry, post ) {
 
         if( isVisible ) {
 
           //this.$router.replace({path: '/' + postId})
-          let path = '/' + postId + ( slug ? '/' + slug : '' )
+          let path = '/' + post.id + ( post.slug ? '/' + post.slug : '' )
 
           if( window.location.pathname !=  path ) {
             window.history.pushState({}, null, path )
+            this.seoTitle = post.title
             if( process.env.NODE_ENV !== 'production' ) {
               return
             }

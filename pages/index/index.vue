@@ -94,7 +94,7 @@
       <h2 class="margin12">График курса Bitcoin к Доллару</h2>
     </div>
     <div class="row no-gutters">
-      <vue-highcharts :options="options" ref="lineCharts" :callback="callback()"></vue-highcharts>
+      <div id="tradingview_53a94" class="tradingview" ref="tradingview"></div>
     </div>
 
     <div class="row no-gutters border_top margin24">
@@ -223,9 +223,7 @@
 <script>
   import Vue from 'vue'
   import axios from 'axios'
-  import VueHighcharts from '~/components/VueHighcharts.vue'
   import CoinsListOther from '~/components/CoinsListOther.vue'
-  import { DrilldownOptions, MapData } from '~/static/data.js'
 
   import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
@@ -265,7 +263,6 @@
       return {
         enabled: true,
         showLine: false,
-        options: DrilldownOptions,
         series: {
           type: 'area',
           zIndex: 50
@@ -318,13 +315,12 @@
     },
 
     components: {
-      VueHighcharts,
-      CoinsListOther
+      CoinsListOther,
     },
 
     mounted () {
-      this.loadChart(this.attributes.symbol)
       this.goto()
+      this.initTradingViewChart()
     },
 
     methods: {
@@ -337,26 +333,9 @@
         let val = (value/1).toFixed(percision)
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
-      loadChart(symbol) {
-
-        let lineCharts = this.$refs.lineCharts
-        lineCharts.delegateMethod('showLoading', 'Loading...')
-
-        axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=` + upSymbol(symbol) + `&tsym=USD&limit=720&aggregate=3&e=CCCAGG`)
-        .then((data) => {
-          this.series.data = data.data.Data.map(a => [a.time*1000, a.close] )
-          lineCharts.removeSeries()
-          lineCharts.addSeries(this.series)
-          lineCharts.hideLoading()
-        })
-        .catch(e => {
-          lineCharts.hideLoading();
-        })
-      },
       getImageSharing() {
         return '/FF_cover968_b.png'
       },
-
       getBTCCase() {
         return this.attributes.symbol == 'BTC' ? getCase(this.attributes, 2) : this.attributes.coin_name
       },
@@ -383,11 +362,9 @@
       calcSafaryHack: function (event) {
         event.preventDefault();
       },
-
       onWikiClick: function ( wikiPage ) {
         this.sendEvent( 'BTCWiki', 'click', wikiPage );
       },
-
       watch() {
         this.sendEvent( 'CoinWatch', 'watch', 'BTC' );
         this.$axios.post(`/api/coin/favorite?include=favoritecoins`, `symbol=BTC`)
@@ -403,7 +380,21 @@
       inFavourites() {
         return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( coin =>  coin.symbol == 'BTC' )
       },
+      initTradingViewChart() {
+        var script = document.createElement('script');
+        script.src = "https://s3.tradingview.com/tv.js"
+        document.body.appendChild(script);
 
+        var chimpPopup = document.createElement("script");
+        chimpPopup.appendChild(document.createTextNode('new TradingView.widget({"autosize": true,"symbol": "BITFINEX:BTCUSD","interval": "D","timezone": "Etc/UTC","theme": "Light","style": "0","locale": "ru","toolbar_bg": "#f1f3f6","enable_publishing": false,"container_id": "tradingview_53a94"});'));
+
+        script.onload = function() {
+          document.body.appendChild(chimpPopup);
+        }
+
+        //var element = this.$refs["tradingview"];
+        //element.addEventListener("wheel", onWheel);
+      },
     },
 
     computed: {
@@ -482,6 +473,11 @@
     }
 
     return params.coin_name
+  }
+
+  function onWheel(e) {
+    e = e || window.event;
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
   }
 
 </script>

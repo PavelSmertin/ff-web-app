@@ -1804,6 +1804,12 @@ h3 {
 			}
 		}
 	}
+
+	.tradingview {
+		width: 100%;
+		height: 400px;
+		margin-top: 12px;
+	}
 }
 @media (max-width: 769px) { 
 	.ff_coin {
@@ -1845,6 +1851,9 @@ h3 {
 					}
 				}
 			}
+		}
+		.tradingview {
+			height: 200px;
 		}
 	}
 }
@@ -2206,4 +2215,5 @@ h3 {
 		}
 	}
 }
+
 
