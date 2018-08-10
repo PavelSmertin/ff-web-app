@@ -40,7 +40,7 @@
     </h1>
 
     <div class="image_origin_wrap" v-if="getImageOriginal()">
-      <img class="image_origin" v-bind:alt="seoTitle" v-bind:title="seoTitle" :src="getImageOriginal()" itemprop="image" />
+      <img class="image_origin" v-bind:alt="post.title" v-bind:title="post.title" :src="getImageOriginal()" itemprop="image" />
     </div>
     <meta v-else itemprop="image" :content="host + '/FF_cover968_b.png'" >
 
@@ -55,7 +55,7 @@
 
         <social-sharing :networks="overriddenNetworks"
                       :url="url"
-                      :title="seoTitle"
+                      :title="post.title"
                       :description="stripSocialDesription"
                       :quote="stripSocialDesription"
                       twitter-user="www_FF_ru"
@@ -180,16 +180,16 @@
       PostSimilar,
     },
 
-    head() {
-      return {
-        title: this.seoTitle,
-      }
-    },
+    // head() {
+    //   return {
+    //     title: this.feedSeoTitle,
+    //   }
+    // },
 
     data() {
       return {
         url: process.env.baseUrl + this.$route.path,
-        seoTitle: getTitle( this.postProp ),        
+        feedSeoTitle: '',        
         body: '',
         overriddenNetworks: BaseNetworks,
         post: this.postProp,
