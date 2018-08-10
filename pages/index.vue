@@ -88,7 +88,7 @@
               </nuxt-link>
 
               <!-- client list -->
-              <nuxt-link @click.native="onPostClick(newest.id)" v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff-news-row">
+              <nuxt-link @click.native="onPostClick(item.id)" v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff-news-row">
                 <post-item :post="item"></post-item>
               </nuxt-link>
 

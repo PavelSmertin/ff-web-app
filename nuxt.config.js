@@ -46,6 +46,9 @@ module.exports = {
       prefix: 'og: http://ogp.me/ns# article: http://ogp.me/ns/article# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#',
       lang: 'ru',
     },
+    link: [
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700&amp;amp;subset=cyrillic' }
+    ]
   },
 
   /*
