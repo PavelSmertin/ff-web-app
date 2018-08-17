@@ -36,8 +36,18 @@ const createStore = () => {
 						)
 				
 				state.coins = favCoins.concat(otherCoins)
+			},
 
+			UPDATE_COIN_PRICE: function (state, up) {
+				state.coins.map( coin => {
+					if( coin.attributes.symbol ==  up.symbol ){
+						coin.attributes.up = up.price - coin.attributes.price_usd >= 0 ? true : false
+						coin.attributes.price_usd = up.price
 
+						//coin.attributes.percent_change24h 	= ((up.price - coin.attributes.open) / coin.attributes.open * 100).toFixed(2)
+					}
+					return coin
+				})
 			},
 			SET_NEWS: function (state, news) {
 				state.news = news

@@ -47,9 +47,11 @@
           {{ coin.attributes.symbol }} 
           <span class="button_icon ic_star" v-bind:class="activeFavourite( coin.attributes.symbol )"></span>
         </div>
-        <div class="coin_details_item i_price">
-          ${{ formatPrice(coin.attributes.price_usd) }}
-        </div>
+        <transition name="slide-fade" mode="out-in">
+          <div :key="coin.attributes.price_usd" class="coin_details_item i_price" v-bind:class="isUp( coin )">
+            ${{ formatPrice(coin.attributes.price_usd) }}
+          </div>
+        </transition>
         <div class="coin_details_item change" v-bind:class="{ negative: (coin.attributes.percent_change24h < 0) }">
           {{ coin.attributes.percent_change24h }}%
         </div>
@@ -101,7 +103,15 @@
         this.sendEvent( 'CoinsPanel', 'click', symbol );
       },
 
-    }
+      isUp: function ( coin ) {
+        return {
+          'up': coin.attributes.up,
+          'down': !coin.attributes.up,
+        }
+      },
+
+    },
+
   }
 
   function getCoinRow( element, deep = 3 ) {

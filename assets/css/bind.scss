@@ -556,6 +556,34 @@ h3 {
 				width: 20px;
 				height: 20px;
 			}
+
+			transition: all 0.9s ease;
+			color: $label-color;
+
+			&.up {
+				&.slide-fade-enter-active {
+					transition: all 0.1s ease;
+					color: $up-value-color;
+				}
+
+				&.slide-fade-enter {
+					transition: all 0.1s ease;
+					color: $up-value-color;
+				}
+			}
+
+			&.down {				
+				&.slide-fade-enter-active {
+					transition: all 0.1s ease;
+					color: $down-value-color;
+				}
+
+				&.slide-fade-enter {
+					transition: all 0.1s ease;
+					color: $down-value-color;
+				}
+			}
+
 		}
 		.coin_details_item.change {
 			color: $up-value-color;
@@ -1782,12 +1810,13 @@ h3 {
 	.coin_title {
 		cursor: pointer;
 		.button_icon {
-			width:28px;
+			width:20px;
 			height: 35px;
 			vertical-align: bottom;
 		}
 		h1 {
 			display: inline;
+			margin-left: 12px;
 		}
 		&:hover {
 			.button_icon {
