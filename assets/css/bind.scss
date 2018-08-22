@@ -1622,6 +1622,33 @@ h3 {
 		font-size: 32px;
 		color: $dark-primary-color;
 		font-weight: 100;
+
+		transition: all 0.9s ease;
+
+		&.up {
+			&.slide-fade-enter-active {
+				transition: all 0.1s ease;
+				color: $up-value-color;
+			}
+
+			&.slide-fade-enter {
+				transition: all 0.1s ease;
+				color: $up-value-color;
+			}
+		}
+
+		&.down {				
+			&.slide-fade-enter-active {
+				transition: all 0.1s ease;
+				color: $down-value-color;
+			}
+
+			&.slide-fade-enter {
+				transition: all 0.1s ease;
+				color: $down-value-color;
+			}
+		}
+
 	}
 	.coin-unit {
 		color: $dark-primary-color;

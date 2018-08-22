@@ -42,13 +42,18 @@
         @click.native="onCoinClick(coin.attributes.symbol)"
         :to="coinPath(coin)" 
         class="currency coin_row"
+        v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, coin )" 
       >
         <div class="coin_details_item i_symbol" >
           {{ coin.attributes.symbol }} 
           <span class="button_icon ic_star" v-bind:class="activeFavourite( coin.attributes.symbol )"></span>
         </div>
         <transition name="slide-fade" mode="out-in">
-          <div :key="coin.attributes.price_usd" class="coin_details_item i_price" v-bind:class="isUp( coin )">
+          <div 
+            :key="coin.attributes.price_usd" 
+            class="coin_details_item i_price" 
+            v-bind:class="isUp( coin )"
+            >
             ${{ formatPrice(coin.attributes.price_usd) }}
           </div>
         </transition>
@@ -107,6 +112,12 @@
         return {
           'up': coin.attributes.up,
           'down': !coin.attributes.up,
+        }
+      },
+
+      visibilityChanged( isVisible, entry, coin ) {
+        if( isVisible ) {
+          this.$store.commit( 'PUSH_SOCKET_COIN', coin.attributes.symbol )
         }
       },
 

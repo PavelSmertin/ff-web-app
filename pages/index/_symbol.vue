@@ -7,7 +7,16 @@
       </div>
       <div class="col-12 col-md-6">
         <div>
-          <span class="coin-value">${{formatPrice(attributes.price_usd)}}</span>&nbsp;
+          <transition name="slide-fade" mode="out-in">
+            <span 
+              :key="price()" 
+              class="coin-value"
+              v-bind:class="isUp( attributes )"
+            >
+              ${{ price() }}
+            </span>
+          </transition>
+          &nbsp;
           <span class="coin-unit">USD</span>&nbsp;
           <span class="coin-value positive" v-bind:class="{ negative: (attributes.percent_change24h < 0) }">
             {{attributes.percent_change24h}}%
@@ -150,8 +159,8 @@
       }
 
       const { attributes }  = details.data.data[0] 
-      let headTitle        = getTitle(attributes)
-      let headDescription  = getDescription(attributes)
+      let headTitle         = getTitle(attributes)
+      let headDescription   = getDescription(attributes)
 
       return { attributes, headTitle, headDescription, downSymbol: downSymbol( params.symbol ), symbol: upSymbol( params.symbol )  }
     },
@@ -163,6 +172,7 @@
     mounted () {
       this.loadChart(this.attributes.symbol)
       this.goto()
+      this.watchSocketCoin()
     },
 
     computed: {
@@ -187,7 +197,7 @@
         let lineCharts = this.$refs.lineCharts
         lineCharts.delegateMethod('showLoading', 'Loading...')
 
-        axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=` + upSymbol(symbol) + `&tsym=USD&limit=720&aggregate=3&e=CCCAGG`)
+        axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=` + upSymbol(symbol) + `&tsym=USDT&limit=720&aggregate=3&e=CCCAGG`)
         .then((data) => {
           this.series.data = data.data.Data.map(a => [a.time*1000, a.close] )
           lineCharts.removeSeries()
@@ -226,6 +236,35 @@
       },
       inFavourites() {
         return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( coin =>  coin.symbol == this.symbol )
+      },
+
+      price() {
+        let coin = this.$store.state.coins.find( coin => coin.attributes.symbol == this.symbol )
+        if( coin ) {
+          return this.formatPrice( coin.attributes.price_usd )
+        }
+
+        if( this.$store.state.pageSocketCoin 
+            && this.$store.state.pageSocketCoin.attributes 
+            && this.$store.state.pageSocketCoin.attributes.price_usd ) {
+          return this.formatPrice( this.$store.state.pageSocketCoin.attributes.price_usd )
+        }
+        return this.formatPrice( this.attributes.price_usd )
+      },
+
+      watchSocketCoin() {
+        if( this.$store.state.pageSocketCoin ) {
+          this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~USDT`]} )
+        }
+        this.$store.commit( 'SET_PAGE_SOCKET_COIN', this.attributes )
+        this.$socket.emit( 'SubAdd', { subs: [`5~CCCAGG~${this.symbol}~USDT`] })
+      },
+
+      isUp: function ( coin ) {
+        return {
+          'up': coin.up,
+          'down': !coin.up,
+        }
       },
 
     },

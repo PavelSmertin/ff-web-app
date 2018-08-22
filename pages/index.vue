@@ -117,6 +117,7 @@
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
   import Jsona from 'jsona'
   import { analMixin } from '~/components/mixins/analitics.js'
+  import _ from 'lodash'
 
   const dataFormatter = new Jsona()
 
@@ -416,68 +417,66 @@
       dataUnpack(message) {
         var data = this.unpack(message);
 
-        if(!data['PRICE']) {
-          return;
+        if( !data['PRICE'] ) {
+          return
         }
         // if(!data['OPEN24HOUR']) {
         //   return;
         // }
-
         // var delta = ((data['PRICE'] - data['OPEN24HOUR']) / data['OPEN24HOUR'] * 100).toFixed(2);
-        
         // console.log(data['FROMSYMBOL'], data['PRICE'], delta)
 
-        return {symbol: data['FROMSYMBOL'], price: data['PRICE'] } //, delta: delta};
+        return { symbol: data['FROMSYMBOL'], price: data['PRICE'] } //, delta: delta};
       },
 
       unpack(value) {
-        var valuesArray = value.split("~");
-        var valuesArrayLenght = valuesArray.length;
-        var mask = valuesArray[valuesArrayLenght-1];
-        var maskInt = parseInt(mask,16);
-        var unpackedCurrent = {};
-        var currentField = 0;
-        for(var property in CURRENTFIELDS) {
+        var valuesArray = value.split( "~" )
+        var valuesArrayLenght = valuesArray.length
+        var mask = valuesArray[valuesArrayLenght-1]
+        var maskInt = parseInt( mask,16 )
+        var unpackedCurrent = {}
+        var currentField = 0
+        for( var property in CURRENTFIELDS ) {
           if(CURRENTFIELDS[property] === 0) {
-            unpackedCurrent[property] = valuesArray[currentField];
-            currentField++;
-          }  else if(maskInt&CURRENTFIELDS[property]){
-            if(property === 'LASTMARKET'){
-              unpackedCurrent[property] = valuesArray[currentField];
-            }else{
-              unpackedCurrent[property] = parseFloat(valuesArray[currentField]);
+            unpackedCurrent[property] = valuesArray[ currentField ]
+            currentField++
+          }  else if(maskInt & CURRENTFIELDS[property]){
+            if( property === 'LASTMARKET' ){
+              unpackedCurrent[property] = valuesArray[ currentField ]
+            } else {
+              unpackedCurrent[property] = parseFloat( valuesArray[currentField] )
             }
-            currentField++;
+            currentField++
           }
         }
 
-        return unpackedCurrent;
+        return unpackedCurrent
       },
 
       getSubscribtions() {
-        return this.$store.state.coins.map( coin => `5~CCCAGG~${coin.attributes.symbol}~USD` )
+        return this.$store.state.socketCoins.map( coin => `5~CCCAGG~${coin}~USDT` )
       }
     },
 
     socket: {
       events: {
-        m(msg) {
+        m( msg ) {
           var change = this.dataUnpack(msg);
           if( change ) {
             this.$store.commit( 'UPDATE_COIN_PRICE', change )
           }
         },
         connect() {
-          this.$socket.emit('SubAdd', { subs: this.getSubscribtions() });
+          //this.$socket.emit( 'SubAdd', { subs: this.getSubscribtions() })
         },
         disconnect() {
-          console.log("Websocket disconnected from " + this.$socket.nsp);
+          console.log( "Websocket disconnected from " + this.$socket.nsp )
         },
-        error(err) {
-          console.error("Websocket error!", err);
+        error( err ) {
+          console.error( "Websocket error!", err )
         },
-        changed(msg) {
-          console.log("Something changed: " + msg);
+        changed( msg ) {
+          console.log( "Something changed: " + msg )
         }
 
       }
@@ -498,7 +497,18 @@
         }
 
         this.showCentralPane()
-      }
+      },
+
+      '$store.state.updateSocketCoins':  _.debounce( function ( newValue ) {
+
+        let remove  =  this.$store.state.currentSocketCoins.filter( coin => -1 === newValue.indexOf( coin ))
+        let add     =  newValue.filter( coin => -1 === this.$store.state.currentSocketCoins.indexOf( coin ))
+
+        this.$store.commit( 'SET_CURRENT_SOCKET_COINS', newValue.slice() )
+        this.$socket.emit( 'SubAdd', { subs: add.map( coin => `5~CCCAGG~${coin}~USDT` ) })
+        this.$socket.emit( 'SubRemove', { subs: remove.map( coin => `5~CCCAGG~${coin}~USDT` ) })
+
+      }, 1000 )
     },
 
     computed: {
@@ -516,7 +526,6 @@
           'fade_for_redirect': this.fadeForRedirect,
           'col-12': this.activePane == 'center_pane',
           'active_center': this.activePane == 'center_pane',
-
         }
       },
       colRight: function () {
