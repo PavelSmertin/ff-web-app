@@ -146,6 +146,22 @@
       </div>
     </div>
 
+<!-- f1f5fc -->
+    <div class="tg_banner_wrap">
+      <div class="tg_banner">
+        <div class="tg_banner_icon">
+          <span class="banner_icon"></span>
+        </div>
+        <div class="tg_banner_body">
+          <p class="ff_nc_title">Подпишитесь на наш Телеграм канал</p>
+          <p>Инсайдерские новости. обучающие материалы. Прогнозы курсов</p>
+        </div>
+        <a @click.native="onSocialClick('tg')" href=" https://t.me/FF_RUS" class="subscribe tg" alt="tg" target="_blank">
+          <span class="banner_icon"></span>Подписаться
+        </a>
+      </div>
+    </div>
+
     <div v-if="post.similar && post.similar.length > 0" class="similar_list_wrap">
       <h3>Похожие публикации</h3>
       <div class="similar_list">

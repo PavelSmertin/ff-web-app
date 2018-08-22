@@ -29,6 +29,9 @@ $up-value-color: #8FCC14;
 $down-value-color: #FF6666;
 
 
+$bg-tg-banner: #f1f5fc;
+$bg-tg-icon: #0088cc;
+
 
 
 
@@ -1426,7 +1429,7 @@ h3 {
 	}
 
 	.similar_list_wrap {
-		margin: 48px 0 0 0;
+		margin: 0;
 		padding: 24px 0;
 		background-color: $bg-coin-color;
 		border-bottom: 1px solid $border-bold-color;
@@ -1563,6 +1566,81 @@ h3 {
 	}
 
 
+	.tg_banner_wrap {
+		margin: 48px 0 0 0;
+		padding: 12px 0;
+		background-color: $bg-tg-banner;
+		.tg_banner {
+			@extend .content_width;
+			display: flex;
+			margin-top: 0;
+
+			p {
+				margin: 0;
+			}
+
+			.banner_icon {
+				background-image: url('~assets/images/telegram_white.svg');
+				width:16px;
+				height:16px;
+			}
+
+			.tg_banner_icon {
+				display: flex;
+				justify-content:space-between;
+				flex-grow: 0;
+				flex-shrink: 0;
+				width: 48px;
+				height:48px;
+				margin-right: 12px;
+				border-radius: 24px;
+				background-color: $bg-tg-icon;
+				align-self: center;
+				.banner_icon {
+					display:block;
+					width:24px;
+					height:24px;
+					align-self: center;
+					margin: 0 auto;
+				}
+			}
+
+			.tg_banner_body {
+				flex-grow: 1;
+			}
+
+			.subscribe.tg {
+				border: none;
+				font-size: $label-size;
+				background-color: $up-value-color;
+				color: $bg-main-color;
+				text-transform: uppercase;
+				height: 41px;
+				line-height: 41px;
+				margin-left: 12px;
+
+				padding: 0 24px;
+				cursor: pointer;
+				font-size: $label-size;
+				display: flex;
+				justify-content:space-between;
+				font-weight: bold;
+				align-self: center;
+
+				.banner_icon {
+					align-self: center;
+					margin-right: 12px;
+				}
+				&:hover {
+					border: none;
+					background-color: lighten($up-value-color, 3%);
+					transition: background-color 0.2s ease-in-out;
+				}
+			}
+		}
+	}
+
+
 }
 @media (max-width: 769px) {
 	.ff-post {
@@ -1617,6 +1695,24 @@ h3 {
 			}
 		}
 
+
+		.tg_banner_wrap {
+			.tg_banner {
+				flex-wrap: wrap;
+				.tg_banner_icon {
+					display: none;
+				}
+
+				.tg_banner_body {
+					width: 100%;
+					flex-grow: 1;
+				}
+
+				.subscribe.tg {
+					margin: 12px auto 0;
+				}
+			}
+		}
 
 		.similar_list_wrap {
 			.similar_list {

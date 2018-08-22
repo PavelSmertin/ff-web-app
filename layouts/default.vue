@@ -90,7 +90,7 @@
 
 			<div class="social col-12 col-md-2">
 				<a @click.native="onSocialClick('vk')" href="https://vk.com/cryptoff" class="social_link vk" alt="vk" target="_blank"></a>
-				<a @click.native="onSocialClick('tg')" href="https://t.me/ff_ru" class="social_link tg" alt="tg" target="_blank"></a>
+				<a @click.native="onSocialClick('tg')" href=" https://t.me/FF_RUS" class="social_link tg" alt="tg" target="_blank"></a>
 				<a @click.native="onSocialClick('twitter')" href="https://twitter.com/www_FF_ru" class="social_link tr" alt="twitter" target="_blank"></a>
 				<a @click.native="onSocialClick('fb')" href="https://fb.com/crypto.ff.ru/" class="social_link fb" alt="fb" target="_blank"></a>
 			</div>
