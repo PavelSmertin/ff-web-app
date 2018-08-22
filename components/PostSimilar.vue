@@ -10,12 +10,12 @@
     </ul>
 
     <div>
-      <div class="ff_nc_title margin8">
+      <div class="item_title ff_nc_title margin8">
         {{ post.title }}
       </div>
     </div>
 
-    <div class="second_font margin12">{{ stripSocialDesription( 150 ) }}</div>
+    <div class="item_body second_font margin12">{{ stripSocialDesription( 150 ) }}</div>
 
   </nuxt-link>
 </template>

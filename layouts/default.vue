@@ -48,9 +48,9 @@
     	<nuxt/>
 
 		<footer class="ff-footer row justify-content-between" >
-			<div class="d-none d-md-block col-md-4 ff-label"><span>Copyright &copy; FF.ru</span></div>
+			<div class="d-none d-md-block col-md-2 ff-label"><span>Copyright &copy; FF.ru</span></div>
 
-			<div class="d-none d-md-block col-md-4">
+			<div class="d-none d-md-block col-md-8">
 				<nuxt-link  
 					@click.native="sendEvent( 'Footer', 'click', 'О компании' )" 
 					:to="{path: '/contacts'}" 
@@ -65,9 +65,30 @@
 					>
 					Авторы
 				</nuxt-link>
+				<nuxt-link  
+					@click.native="sendEvent( 'Footer', 'click', 'Политика конфиденциальности' )" 
+					:to="{path: '/privacy-policy'}" 
+					class="nav-link"
+					>
+					Политика конфиденциальности
+				</nuxt-link>
+				<nuxt-link  
+					@click.native="sendEvent( 'Footer', 'click', 'Отказ от ответственности' )" 
+					:to="{path: '/disclaimer'}" 
+					class="nav-link"
+					>
+					Отказ от ответственности
+				</nuxt-link>
+				<nuxt-link  
+					@click.native="sendEvent( 'Footer', 'click', 'Пользовательское соглашение' )" 
+					:to="{path: '/terms'}" 
+					class="nav-link"
+					>
+					Пользовательское соглашение
+				</nuxt-link>
 			</div>
 
-			<div class="social col-12 col-md-4">
+			<div class="social col-12 col-md-2">
 				<a @click.native="onSocialClick('vk')" href="https://vk.com/cryptoff" class="social_link vk" alt="vk" target="_blank"></a>
 				<a @click.native="onSocialClick('tg')" href="https://t.me/ff_ru" class="social_link tg" alt="tg" target="_blank"></a>
 				<a @click.native="onSocialClick('twitter')" href="https://twitter.com/www_FF_ru" class="social_link tr" alt="twitter" target="_blank"></a>

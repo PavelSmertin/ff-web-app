@@ -31,7 +31,11 @@
         </li>
         <li v-if="post.type == 'news'">Новость</li>
         <li v-else-if="post.type == 'prognosis'">Прогноз</li>
-        <meta v-if="sourceDomain()" itemprop="isBasedOn" :content="sourceDomain()">
+
+        <li v-if="sourceDomain()" class="post_detail_source ff-label">
+          Источник: <span itemprop="isBasedOn" >{{ sourceDomain() }}</span>
+        </li>
+
       </ul>
     </div>
 

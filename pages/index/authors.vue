@@ -1,5 +1,5 @@
 <template> 
-  <div class="ff_authors">
+  <div class="ff_page">
   	<h1 class="margin40">Список всех авторов</h1>
     <div class="author_row margin60" v-for="author of authors" v-bind:key="author.id" >
       <h3 class="author_name">{{ author.attributes.full_name }}</h3>
