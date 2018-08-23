@@ -501,9 +501,14 @@
 
       '$store.state.updateSocketCoins':  _.debounce( function ( newValue ) {
 
-        let remove  =  this.$store.state.currentSocketCoins.filter( coin => -1 === newValue.indexOf( coin ))
-        let add     =  newValue.filter( coin => -1 === this.$store.state.currentSocketCoins.indexOf( coin ))
-
+        // Удалим из сокета монеты, которые не видно, исключая монету со страницы монеты
+        let remove  =  this.$store.state.currentSocketCoins.filter( 
+          coin => -1 === newValue.indexOf( coin ) &&  this.$store.state.pageSocketCoin.symbol !=  coin
+        )
+        let add =  newValue.filter( 
+          coin => -1 === this.$store.state.currentSocketCoins.indexOf( coin ) 
+        )
+        
         this.$store.commit( 'SET_CURRENT_SOCKET_COINS', newValue.slice() )
         this.$socket.emit( 'SubAdd', { subs: add.map( coin => `5~CCCAGG~${coin}~USDT` ) })
         this.$socket.emit( 'SubRemove', { subs: remove.map( coin => `5~CCCAGG~${coin}~USDT` ) })

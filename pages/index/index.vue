@@ -425,7 +425,6 @@
 
       watchSocketCoin() {
         if( this.$store.state.pageSocketCoin ) {
-          console.log( this.$store.state.pageSocketCoin )
           this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~USDT`]} )
         }
         this.$store.commit( 'SET_PAGE_SOCKET_COIN', this.attributes )
