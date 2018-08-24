@@ -39,13 +39,6 @@
       }
     },
 
-    async fetch ({ app, store, params }) {
-      let [coins] = await Promise.all([
-        app.$axios.get(api_coins),
-      ])
-      store.commit('SET_COINS', coins.data.data)
-    },
-
     components: {
       CoinsListPage,
     },

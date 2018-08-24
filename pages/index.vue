@@ -92,7 +92,7 @@
                 <post-item :post="item"></post-item>
               </nuxt-link>
 
-              <infinite-loading v-if="$store.state.news.length" @infinite="infiniteHandler" spinner="spiral">
+              <infinite-loading @infinite="infiniteHandler" spinner="spiral">
                 <span slot="no-more">Вы достигли конца списка</span>
                 <span slot="no-results">Вы достигли конца списка</span>
               </infinite-loading>
@@ -181,7 +181,7 @@
     data() {
       return {
         infiniteState: null,
-        meta: {current_page: 1} ,
+        meta: {current_page: 1},
         list: [],
         types: [
           { name: 'Все новости' }, 
@@ -454,7 +454,7 @@
       },
 
       getSubscribtions() {
-        return this.$store.state.socketCoins.map( coin => `5~CCCAGG~${coin}~USDT` )
+        return this.$store.state.socketCoins.map( coin => `5~CCCAGG~${coin}~USD` )
       }
     },
 
@@ -508,10 +508,10 @@
         let add =  newValue.filter( 
           coin => -1 === this.$store.state.currentSocketCoins.indexOf( coin ) 
         )
-        
+
         this.$store.commit( 'SET_CURRENT_SOCKET_COINS', newValue.slice() )
-        this.$socket.emit( 'SubAdd', { subs: add.map( coin => `5~CCCAGG~${coin}~USDT` ) })
-        this.$socket.emit( 'SubRemove', { subs: remove.map( coin => `5~CCCAGG~${coin}~USDT` ) })
+        this.$socket.emit( 'SubAdd', { subs: add.map( coin => `5~CCCAGG~${coin}~USD` ) })
+        this.$socket.emit( 'SubRemove', { subs: remove.map( coin => `5~CCCAGG~${coin}~USD` ) })
 
       }, 1000 )
     },

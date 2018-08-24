@@ -13,6 +13,7 @@ const createStore = () => {
 			currentSocketCoins: [],
 			updateSocketCoins: [],
 			pageSocketCoin: {},
+			coinsMeta: {current_page: 1},
 			news: [],
 			topNews: [],
 			filters: {symbol: null, type: null}
@@ -39,6 +40,10 @@ const createStore = () => {
 
 			SET_COINS: function (state, newCoins) {
 
+				newCoins.forEach( coin => coin.attributes.start = { 
+					price_usd: coin.attributes.price_usd / (1 + coin.attributes.percent_change24h/100),
+				})
+
 				if( !(state.favoriteCoins && state.favoriteCoins.length > 0) ) {
 					state.coins = newCoins
 					return
@@ -57,12 +62,26 @@ const createStore = () => {
 				state.coins = favCoins.concat(otherCoins)
 			},
 
+			APPEND_COINS: function (state, data) {
+				data.data.forEach( coin => coin.attributes.start = { 
+					price_usd: coin.attributes.price_usd / (1 + coin.attributes.percent_change24h/100),
+				})
+
+				let add =  data.data.filter( 
+		          coin => undefined == state.coins.find( stored => coin.id == stored.id ) 
+		        )
+
+				state.coins = state.coins.concat( add )
+
+				state.coinsMeta = data.meta
+			},
+
 			UPDATE_COIN_PRICE: function (state, up) {
 				state.coins.map( coin => {
 					if( coin.attributes.symbol ==  up.symbol ){
 						coin.attributes.up = up.price - coin.attributes.price_usd >= 0 ? true : false
 						coin.attributes.price_usd = up.price
-						//coin.attributes.percent_change24h 	= ((up.price - coin.attributes.open) / coin.attributes.open * 100).toFixed(2)
+						coin.attributes.percent_change24h 	= ((up.price - coin.attributes.start.price_usd) / coin.attributes.start.price_usd * 100).toFixed(2)
 					}
 					return coin
 				})
@@ -70,6 +89,13 @@ const createStore = () => {
 				if( state.pageSocketCoin.symbol == up.symbol ) {
 					state.pageSocketCoin.up = up.price - state.pageSocketCoin.price_usd >= 0 ? true : false
 					state.pageSocketCoin.price_usd = up.price
+
+					state.pageSocketCoin.percent_change24h 	= ((up.price - state.pageSocketCoin.start.price_usd) / state.pageSocketCoin.start.price_usd * 100).toFixed(2)
+					state.pageSocketCoin.percent_change1h 	= ((up.price - state.pageSocketCoin.start.price_usd_1h) / state.pageSocketCoin.start.price_usd_1h * 100).toFixed(2)
+					state.pageSocketCoin.percent_change7d 	= ((up.price - state.pageSocketCoin.start.price_usd_7d) / state.pageSocketCoin.start.price_usd_7d * 100).toFixed(2)
+					state.pageSocketCoin.change1h_usd = up.price - state.pageSocketCoin.start.change1h_usd
+					state.pageSocketCoin.change24h_usd = up.price - state.pageSocketCoin.start.change24h_usd
+					state.pageSocketCoin.change7d_usd = up.price - state.pageSocketCoin.start.change7d_usd
 				}
 			},
 			SET_FAVORITE_COINS: function (state, favoriteCoins) { 
@@ -108,6 +134,14 @@ const createStore = () => {
 			},
 			SET_PAGE_SOCKET_COIN: function (state, coin) {
 				state.pageSocketCoin = coin
+				state.pageSocketCoin.start = {
+					price_usd: coin.price_usd / ( 1 + coin.percent_change24h / 100 ),
+					price_usd_1h: coin.price_usd / ( 1 + coin.percent_change1h / 100 ),
+					price_usd_7d: coin.price_usd / ( 1 + coin.percent_change7d / 100 ),
+					change1h_usd: coin.price_usd - coin.change1h_usd,
+					change24h_usd: coin.price_usd - coin.change24h_usd,
+					change7d_usd: coin.price_usd - coin.change7d_usd,
+				}
 			},
 		},
 

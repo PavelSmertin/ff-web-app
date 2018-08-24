@@ -197,7 +197,7 @@
         let lineCharts = this.$refs.lineCharts
         lineCharts.delegateMethod('showLoading', 'Loading...')
 
-        axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=` + upSymbol(symbol) + `&tsym=USDT&limit=720&aggregate=3&e=CCCAGG`)
+        axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=` + upSymbol(symbol) + `&tsym=USD&limit=720&aggregate=3&e=CCCAGG`)
         .then((data) => {
           this.series.data = data.data.Data.map(a => [a.time*1000, a.close] )
           lineCharts.removeSeries()
@@ -254,10 +254,10 @@
 
       watchSocketCoin() {
         if( this.$store.state.pageSocketCoin ) {
-          this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~USDT`]} )
+          this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~USD`]} )
         }
         this.$store.commit( 'SET_PAGE_SOCKET_COIN', this.attributes )
-        this.$socket.emit( 'SubAdd', { subs: [`5~CCCAGG~${this.symbol}~USDT`] })
+        this.$socket.emit( 'SubAdd', { subs: [`5~CCCAGG~${this.symbol}~USD`] })
       },
 
       isUp: function ( coin ) {

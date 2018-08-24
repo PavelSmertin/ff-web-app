@@ -45,16 +45,39 @@
         {{ coin.attributes.percent_change24h }}%
       </div>
     </nuxt-link>
+
+    <infinite-loading v-if="$store.state.coins.length" @infinite="infiniteHandler" spinner="spiral">
+      <span slot="no-more">Вы достигли конца списка</span>
+      <span slot="no-results">Вы достигли конца списка</span>
+    </infinite-loading>
+
   </div>
 </template>
 
 <script>
+  import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
+
   import { analMixin } from '~/components/mixins/analitics.js'
+
+  const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
 
   export default {
     name: 'coins-list-page',
 
+    components: {
+      InfiniteLoading,
+    },
+
     mixins: [ analMixin ],
+
+    data() {
+      return {
+        isFiltering: null,
+        infiniteState: null,
+      }
+    },
+
+
 
     methods: {
       formatPrice(value) {
@@ -74,6 +97,59 @@
       onCoinClick: function ( symbol ) {
         this.sendEvent( 'MarketCup', 'click', symbol );
       },
+
+      infiniteHandler( $state ) {
+        this.infiniteState = $state
+        this.$axios.get(apiCoinsPrepare(), {
+          params: {
+            page: this.$store.state.coinsMeta.current_page + 1,
+          },
+        })
+        .then(({ data }) => {
+          if( this.$store.state.coinsMeta.current_page < data.meta.page_count ) {
+            let coinsObj = data.data
+            this.$store.commit( 'APPEND_COINS', data )
+            $state.loaded()
+          } else {
+            $state.complete()
+          }
+        });
+      },
+
+      filter() {
+        this.isFiltering = true
+        if(this.infiniteState) { 
+          this.infiniteState.reset()
+        }
+
+        let data = this.$axios.get(apiCoinsPrepare( this.meta.current_page ), {
+          params: {
+            request: 'BTC',
+          },
+        })
+          .then(({ data }) => {
+
+            let newsObj = dataFormatter.deserialize( data )
+            this.$store.commit('SET_NEWS', newsObj)
+            this.list = []
+            this.meta = {current_page: 1}
+            this.isFiltering = false
+
+          }).catch(e => {
+            this.isFiltering = false
+          })
+      },
+    }
+  }
+  function apiCoinsPrepare( page ) {
+    return api_coins
+  }
+
+  function upSymbol( value ) {
+    if( value ) {
+      return value.toUpperCase()
+    } else {
+      return null
     }
   }
 </script>

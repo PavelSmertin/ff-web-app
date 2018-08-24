@@ -14,18 +14,9 @@
           </svg>
         </nuxt-link>
       </div>
-<!--       <div class="coin_details_head i_cap">
-        Капитализация
-      </div> -->
       <div class="coin_details_head">
         Цена
       </div>
-<!--       <div class="coin_details_head i_volume">
-        Объем(24ч)
-      </div> -->
-<!--       <div class="coin_details_head i_sup">
-        Оборот
-      </div> -->
       <div class="coin_details_head">
         Цена(%)
       </div>
@@ -42,8 +33,7 @@
         @click.native="onCoinClick(coin.attributes.symbol)"
         :to="coinPath(coin)" 
         class="currency coin_row"
-        v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, coin )" 
-      >
+        v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, coin )">
         <div class="coin_details_item i_symbol" >
           {{ coin.attributes.symbol }} 
           <span class="button_icon ic_star" v-bind:class="activeFavourite( coin.attributes.symbol )"></span>
@@ -57,18 +47,34 @@
             ${{ formatPrice(coin.attributes.price_usd) }}
           </div>
         </transition>
-        <div class="coin_details_item change" v-bind:class="{ negative: (coin.attributes.percent_change24h < 0) }">
+
+        <div 
+          class="coin_details_item change" 
+          v-bind:class="{ negative: (coin.attributes.percent_change24h < 0) }"
+          >
           {{ coin.attributes.percent_change24h }}%
         </div>
       </nuxt-link>
     </div>
+
+    <infinite-loading v-if="$store.state.coins.length" @infinite="infiniteHandler" spinner="spiral">
+      <span slot="no-more">Вы достигли конца списка</span>
+      <span slot="no-results">Вы достигли конца списка</span>
+    </infinite-loading>
+
+    <div class="fading" v-bind:class="{ filtered: isFiltering }"></div>
+
   </div>
 </template>
 
 <script>
 
+  import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
+
   import { coinsMixin } from '~/components/mixins/coins.js'
   import { analMixin } from '~/components/mixins/analitics.js'
+
+  const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
 
   export default {
     name: 'coins-list',
@@ -77,7 +83,13 @@
         tooltip: null,
         topOfTooltip: 0,
         showTooltip: false,
+        isFiltering: null,
+        infiniteState: null,
       }
+    },
+
+    components: {
+      InfiniteLoading,
     },
 
     mixins: [ coinsMixin, analMixin  ],
@@ -121,6 +133,48 @@
         }
       },
 
+      infiniteHandler( $state ) {
+        this.infiniteState = $state
+        this.$axios.get(apiCoinsPrepare(), {
+          params: {
+            page: this.$store.state.coinsMeta.current_page + 1,
+          },
+        })
+        .then(({ data }) => {
+          if( this.$store.state.coinsMeta.current_page < data.meta.page_count ) {
+            let coinsObj = data.data
+            this.$store.commit( 'APPEND_COINS', data )
+            $state.loaded()
+          } else {
+            $state.complete()
+          }
+        });
+      },
+
+      filter() {
+        this.isFiltering = true
+        if(this.infiniteState) { 
+          this.infiniteState.reset()
+        }
+
+        let data = this.$axios.get(apiCoinsPrepare( this.$store.state.coinsMeta.current_page ), {
+          params: {
+            request: 'BTC',
+          },
+        })
+          .then(({ data }) => {
+
+            let newsObj = dataFormatter.deserialize( data )
+            this.$store.commit('SET_NEWS', newsObj)
+            this.list = []
+            this.meta = {current_page: 1}
+            this.isFiltering = false
+
+          }).catch(e => {
+            this.isFiltering = false
+          })
+      },
+
     },
 
   }
@@ -141,4 +195,18 @@
     getCoinRow( parentElement, deep )
 
   }
+
+  function apiCoinsPrepare( page ) {
+    return api_coins
+  }
+
+  function upSymbol( value ) {
+    if( value ) {
+      return value.toUpperCase()
+    } else {
+      return null
+    }
+  }
+
+
 </script>

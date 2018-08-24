@@ -425,10 +425,10 @@
 
       watchSocketCoin() {
         if( this.$store.state.pageSocketCoin ) {
-          this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~USDT`]} )
+          this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~USD`]} )
         }
         this.$store.commit( 'SET_PAGE_SOCKET_COIN', this.attributes )
-        this.$socket.emit( 'SubAdd', { subs: [`5~CCCAGG~${this.symbol}~USDT`] })
+        this.$socket.emit( 'SubAdd', { subs: [`5~CCCAGG~${this.symbol}~USD`] })
       },
 
       isUp: function ( coin ) {
