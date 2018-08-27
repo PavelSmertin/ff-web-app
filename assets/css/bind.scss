@@ -2046,6 +2046,8 @@ h3 {
 
 /* articles */
 table.article_table {
+    width:100%;
+
 	thead tr {
 		background-color: $border-thin-color;
 	}
@@ -2055,13 +2057,15 @@ table.article_table {
 	td {
 		padding: 5px;
 		border: 1px solid $border-bold-color;
-
+        font-size: 12px;
 	}
 }
 @media (max-width: 1300px) {
-	td:nth-child(2n) {
-		display:none;
-	}
+  table.article_table.how_buy_bitcoin {
+    td:nth-child(2n) {
+      display:none;
+    }
+  }
 }
 
 

@@ -121,7 +121,7 @@
 			<a name="how-8"></a>
 			<h2 class="margin30">Как купить биткоин выгодно</h2>
 			<p class="margin24">Рассмотрим несколько вариантов покупки биткоина с карты с самым выгодным итоговым курсом покупки</p>
-			<table class="article_table margin24">
+			<table class="article_table how_buy_bitcoin margin24">
 				<thead>
 				<tr>
 					<td>Биржа/Обменник</td>
