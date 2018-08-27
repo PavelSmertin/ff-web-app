@@ -2044,6 +2044,26 @@ h3 {
 	}
 }
 
+/* articles */
+table.article_table {
+	thead tr {
+		background-color: $border-thin-color;
+	}
+	tbody tr:nth-child(2n) {
+		background-color: #fafafa;
+	}
+	td {
+		padding: 5px;
+		border: 1px solid $border-bold-color;
+
+	}
+}
+@media (max-width: 1300px) {
+	td:nth-child(2n) {
+		display:none;
+	}
+}
+
 
 /* account page */
 .ff_account {

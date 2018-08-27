@@ -25,11 +25,11 @@
 
 			<a name="how-2"></a>
 			<h3 class="margin30">Купить биткоин через обменник</h3>
-			<img class="margin6" src="http://backend.ff.crypto/uploads/articles/manual/best-change.png" alt="Best-Change" border="0">
+			<img class="margin6" src="/images/uploads/articles/manual/best-change.png" alt="Best-Change" border="0">
 			<p class="margin24">Существует сайт агрегатор обменников Bestchange.ru с различными курсами и условиями покупки. Вам достаточно выбрать способ покупки и курс, по которому вы готовы купить Bitcoin. Далее сервис переместит вас на сайт выбранного обменника.</p>
 			<p>Существуют обменники, которые не берут комиссию за операцию покупки, но цены на покупку будут значительно выше биржевых.</p>
 			<p>Популярным обменником считается международная p2p биржа <a target="_blank" href="https://localbitcoins.net">Localbitcoins.net</a> . На бирже доступен большой выбор способов оплаты покупки от карты до наличных.</p>
-			<img class="margin6" src="http://backend.ff.crypto/uploads/articles/manual/localbit.png" alt="Localbitcoins" border="0">
+			<img class="margin6" src="/uploads/uploads/articles/manual/localbit.png" alt="Localbitcoins" border="0">
 			<p>Сервис достаточно прост. Пользователи из разных городов и стран публикуют объявления на сайте, где они указывают цену за которую готовы купить или продать биткоин и способы оплаты. Другие пользователи отвечают на эти объявления и соглашаются пойти на сделку. Чаще всего сделки происходят с оплатой по карте или переводом через другие сервисы безналичной оплаты - это безопаснее.</p>
 			<p>Вы находите приемлемое объявление, списываетесь с продавцом (обязательно обратите внимание на рейтинг продавца) и, если обе стороны согласны, совершаете сделку. При покупке помимо курса вы должны учитывать комиссию, которую возьмет с вас Localbitcoins: c пользователей, создающих объявления, взимается комиссия в размере 1% за каждую совершенную сделку.</p>
 
@@ -39,7 +39,7 @@
 				<br />Exmo, Livecoin, WEX  - покупка через электронные деньги или кошельки, на которые вам придется зачислить деньги с карты и CEX.IO - здесь вы можете купить биткоин напрямую с карты.</p>
 			<b><u>Exmo.me</u></b>
 			<p class="margin12">Для покупки <b>биткоина за рубли на Exmo.me вам необходимо завести рубли на счет биржи через партнера:</b></p>
-			<img class="margin6" src="http://backend.ff.crypto/uploads/articles/manual/exmo.png" alt="Exmo" border="0">
+			<img class="margin6" src="/uploads/uploads/articles/manual/exmo.png" alt="Exmo" border="0">
 			<ul class="margin20">
 				<li><b>AdvCash</b> - система в которой вы можете открыть счет и заказать карту. Комиссия за пополнение счета в системе AdvCash с карты составит 60 RUB + 3,95%.</li>
 				<li><b>Yandex.Money</b> - система онлайн переводов.</li>
@@ -49,7 +49,7 @@
 
 			<b><u>Livecoin</u></b>
 			<p class="margin12">Для покупки биткоина, вам необходимо завести рубли на счет биржи через одного из партнеров:</p>
-			<img class="margin6" src="http://backend.ff.crypto/uploads/articles/manual/livecoin-1.png" alt="Livecoin" border="0">
+			<img class="margin6" src="/uploads/uploads/articles/manual/livecoin-1.png" alt="Livecoin" border="0">
 			<ul class="margin20">
 				<li><b>Capitalist</b> - система онлайн переводов.</li>
 				<li><b>Payeer</b> - сперсональный кошелек.</li>
@@ -59,7 +59,7 @@
 
 			<b><u>WEX</u></b>
 			<p class="margin12">Биржа WEX также не принимает платежи напрямую с карты, придется завести деньги на онлайн кошелек или в систему переводов.</p>
-			<img class="margin6" src="http://backend.ff.crypto/uploads/articles/manual/wex.png" alt="WEX" border="0">
+			<img class="margin6" src="/uploads/uploads/articles/manual/wex.png" alt="WEX" border="0">
 			<ul class="margin20">
 				<li><b>Яндекс.деньги</b> - система онлайн переводов.</li>
 				<li><b>Payeer</b> - сперсональный кошелек.</li>
@@ -68,7 +68,7 @@
 
 			<b><u>CEX.io</u></b>
 			<p class="margin12">Единственная биржа на сегодня, где вы можете купить биткоин с карты за рубли без посредников. Для этого необходимо верифицироваться, указать данные карты и затем отправить фото карты с двух сторон и сделать селфи с картой. Советуем вам скрыть часть информации с карты во избежании мошенничества. Средства почти моментально зачисляются на счет на бирже, далее вам необходимо разместить ордер на покупку биткоина за рубли. Комиссия за ввод средств составит 5% + 15,57 RUB.</p>
-			<img class="margin6" src="http://backend.ff.crypto/uploads/articles/manual/exmo.png" alt="CEX" border="0">
+			<img class="margin6" src="/uploads/uploads/articles/manual/exmo.png" alt="CEX" border="0">
 
 			<a name="how-4"></a>
 			<h3 class="margin30">Купить биткоин с QIWI, Яндекс.Деньги и др.</h3>
@@ -88,7 +88,7 @@
 			<a name="how-5"></a>
 			<h3 class="margin30">Купить биткоин через телеграмм бота</h3>
 			<p class="margin24">Сделки по покупке биткоина происходят в Telegram чатах через бота. Достаточно добавить необходимый канал в свой телеграмм и пользуясь подсказками системы разместить объявление. В данном случае, телеграмм бот выступает посредником между покупателем и продавцом.</p>
-			<img class="margin6" src="http://backend.ff.crypto/uploads/articles/manual/buy-bit-telegram.png" alt="Telegramm buy bitcoins" border="0">
+			<img class="margin6" src="/uploads/uploads/articles/manual/buy-bit-telegram.png" alt="Telegramm buy bitcoins" border="0">
 			<p class="margin24">Сделки между продавцом и покупателем совершаются практически моментально, система берет в среднем 1% комиссии. Более 40 способ оплаты в России, включая Сбербанк, Альфа-Банк, Tinkoff, ВТБ24, Райффайзен, Рокетбанк, VISA/MasterCard, Наличные, ПромСвязьБанк, МТС банк, Кукуруза, Touch Банк, Advanced Cash, ГазпромБанк, Авангард, Почта Банк, Русский Стандарт, Ethereum, Банк Москвы, QIWI, Яндекс.Деньги, Webmoney, безналичный расчёт между юрлицами и другие способы платежей.</p>
 			<p>Стоит быть осторожным, существует очень много мошеннических telegram bot. Перед использованием необходимо почитать отзывы.</p>
 
@@ -121,7 +121,7 @@
 			<a name="how-8"></a>
 			<h2 class="margin30">Как купить биткоин выгодно</h2>
 			<p class="margin24">Рассмотрим несколько вариантов покупки биткоина с карты с самым выгодным итоговым курсом покупки</p>
-			<table class="margin24">
+			<table class="article_table margin24">
 				<thead>
 				<tr>
 					<td>Биржа/Обменник</td>
