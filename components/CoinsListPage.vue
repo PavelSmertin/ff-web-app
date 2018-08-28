@@ -145,7 +145,7 @@
 
       apiCoinsPrepare( page ) {
         if( this.coinSearch ) {
-          return api_coins + '&filters[portfolio-coins][symbol]=' + this.coinSearch
+          return api_coins + '&request=' + this.coinSearch
         } 
         return api_coins
       }
