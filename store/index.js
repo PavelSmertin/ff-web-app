@@ -14,6 +14,7 @@ const createStore = () => {
 			updateSocketCoins: [],
 			pageSocketCoin: {},
 			coinsMeta: {current_page: 1},
+			coinsSearch: null,
 			news: [],
 			topNews: [],
 			filters: {symbol: null, type: null}
@@ -80,6 +81,10 @@ const createStore = () => {
 
 			SET_COINS_META: function (state, meta) {
 				state.coinsMeta = meta
+			},
+
+			SET_COINS_SEARCH: function (state, coin) {
+				state.coinsSearch = coin
 			},
 
 			UPDATE_COIN_PRICE: function (state, up) {

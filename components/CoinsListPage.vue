@@ -2,7 +2,7 @@
   <div class="ff_coin_page">
     <div class="coin_tools">
       <form autocomplete="off">
-        <input class="coin_search" type="text" name="coin" v-model="coinSearch" placeholder="Поиск...">
+        <input class="coin_search" type="text" name="coin" v-model="$store.state.coinsSearch" placeholder="Поиск...">
       </form>
     </div>
     <div class="coin_header">
@@ -82,8 +82,6 @@
       return {
         isFiltering: null,
         infiniteState: null,
-        coinSearch: null,
-
       }
     },
 
@@ -138,7 +136,6 @@
           })
           .then(({ data }) => {
             this.$store.commit('SET_COINS', data)
-            console.log(data)
             this.isFiltering = false
           }).catch(e => {
             this.isFiltering = false
@@ -146,15 +143,15 @@
       },
 
       apiCoinsPrepare( page ) {
-        if( this.coinSearch ) {
-          return api_coins + '&request=' + this.coinSearch
+        if( this.$store.state.coinsSearch ) {
+          return api_coins + '&request=' + this.$store.state.coinsSearch
         } 
         return api_coins
       }
     },
 
     watch:{
-      'coinSearch':  _.debounce( function ( newValue ) {
+      '$store.state.coinsSearch':  _.debounce( function ( newValue ) {
         this.filter()
       }, 500 )
     },

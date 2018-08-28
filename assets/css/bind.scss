@@ -540,6 +540,27 @@ h3 {
 	.currency:hover {
 		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .15);
 	}
+
+	.coin_tools {
+		border-bottom: 1px solid #D9D9D9;
+		height: 36px !important;
+
+		padding: 0 12px;
+		line-height: 36px;
+
+		text-align: left;
+		.coin_search {
+			border: none;
+			background: transparent url('~assets/images/ic_search.svg') 100% 50% no-repeat;
+			padding-right: 30px;
+			line-height: 24px;
+			width: 100%;
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+
 	.coin_row {
 		display: flex;
 		position: relative;
@@ -645,6 +666,12 @@ h3 {
 	.coin_tooltip {
 		display: none;
 	}
+
+	.coin_tools {
+		.coin_search {
+			padding-left: 12px;
+		}
+	}
 }
 
 @media (min-width: 768px) {
@@ -726,11 +753,35 @@ h3 {
 			.coin_details_head {
 				display: none;
 				&.i_symbol {
-					display: block;
+					display: flex;
 					font-size: $second_size;
+					justify-content: flex-end;
+					form {
+						display: flex;
+						flex-grow: 1;
+						width: 0;
+						margin-right: 6px;
+						.coin_search {
+							border: none;
+							background: transparent url('~assets/images/ic_search.svg') 100% 50% no-repeat;
+							padding-right: 22px;
+							line-height: 24px;
+							width: 100%;
+							cursor: pointer;
+							&:focus {
+								outline: none;
+								background: transparent url('~assets/images/ic_search_hover.svg') 100% 50% no-repeat;
+							}
+							&:hover {
+								background: transparent url('~assets/images/ic_search_hover.svg') 100% 50% no-repeat;
+							}
+						}
+					}
+
 					a {
 						line-height: 56px;
 						height: 56px;
+						flex-grow: 0;
 						display: flex;
 						flex-direction: column;
 						justify-content: center;
@@ -746,9 +797,6 @@ h3 {
 			}
 		}
 		.coin_header:hover {
-
-			cursor: pointer;
-			box-shadow: 0 5px 30px rgba($bg-toolbar-color, .15);
 			a {
 				color: $link-color;
 			}
@@ -847,7 +895,7 @@ h3 {
 		.coin_search {
 			border: none;
 			background: transparent url('~assets/images/ic_search.svg') 0% 50% no-repeat;
-			padding-left: 30px;
+			padding-left: 24px;
 			line-height: 24px;
 			&:focus {
 				outline: none;
@@ -885,14 +933,14 @@ h3 {
 		font-size: $label-size;
 		height: 36px;
 		padding-left: 24px;
-
-
 		display: flex;
+
 		.coin_details_head {
 			flex-grow: 1;
 			line-height: 36px;
 			flex-basis: 100%;
 			overflow: hidden;
+
 		}
 		.i_cap, .i_volume, .i_sup {
 			flex-basis: 200%;

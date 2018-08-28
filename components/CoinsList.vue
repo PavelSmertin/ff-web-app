@@ -5,8 +5,14 @@
         {{ tooltip }}
       </div>
     </transition>
+
+
     <div class="coin_header">
       <div class="coin_details_head i_symbol">
+
+        <form autocomplete="off">
+          <input class="coin_search" type="text" v-model="$store.state.coinsSearch" name="coin">
+        </form>
         <nuxt-link @click.native="sendEvent( 'CoinsPanel', 'open', 'MarketCup' )" :to="{name: 'index-coins'}">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="ic_more">
             <path d="M0 0h24v24H0z" fill="none"/>
@@ -21,6 +27,12 @@
         Цена(%)
       </div>
     </div>
+<!-- 
+    <div class="coin_tools">
+      <form autocomplete="off">
+        <input class="coin_search" type="text" name="coin" v-model="$store.state.coinsSearch" placeholder="Поиск...">
+      </form>
+    </div> -->
 
     <div 
         v-for="coin of $store.state.coins" 
@@ -70,6 +82,7 @@
 <script>
 
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
+  import _ from 'lodash'
 
   import { coinsMixin } from '~/components/mixins/coins.js'
   import { analMixin } from '~/components/mixins/analitics.js'
@@ -135,7 +148,7 @@
 
       infiniteHandler( $state ) {
         this.infiniteState = $state
-        this.$axios.get(apiCoinsPrepare(), {
+        this.$axios.get(this.apiCoinsPrepare(), {
           params: {
             page: this.$store.state.coinsMeta.current_page + 1,
           },
@@ -151,31 +164,42 @@
         });
       },
 
-      filter() {
+      filter( symbol ) {
         this.isFiltering = true
         if(this.infiniteState) { 
           this.infiniteState.reset()
         }
 
-        let data = this.$axios.get(apiCoinsPrepare(), {
-          params: {
-            request: 'BTC',
-          },
-        })
+
+        let data = this.$axios.get(this.apiCoinsPrepare(), {
+            params: {
+              page: 1,
+            },
+          })
           .then(({ data }) => {
-
-            let newsObj = dataFormatter.deserialize( data )
-            this.$store.commit('SET_NEWS', newsObj)
-            this.list = []
-            this.meta = {current_page: 1}
+            this.$store.commit('SET_COINS', data)
+            console.log( data.data )
             this.isFiltering = false
-
           }).catch(e => {
             this.isFiltering = false
           })
       },
 
+      apiCoinsPrepare( page ) {
+        if( this.$store.state.coinsSearch ) {
+          return api_coins + '&request=' + this.$store.state.coinsSearch
+        } 
+        return api_coins
+      }
+
     },
+
+    watch: {
+      '$store.state.coinsSearch':  _.debounce( function ( newValue ) {
+        console.log(newValue)
+        this.filter()
+      }, 500 )
+    }
 
   }
 
@@ -194,10 +218,6 @@
     } 
     getCoinRow( parentElement, deep )
 
-  }
-
-  function apiCoinsPrepare( page ) {
-    return api_coins
   }
 
   function upSymbol( value ) {
