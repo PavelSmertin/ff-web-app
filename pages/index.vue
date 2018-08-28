@@ -227,7 +227,7 @@
         let tops = newsObj.slice(0, 2).map( post => post.id )
         store.commit( 'SET_TOP_NEWS', tops )
       }
-      store.commit( 'SET_COINS', coins.data.data )
+      store.commit( 'SET_COINS', coins.data )
 
       try {
         if( app.$auth.loggedIn ) {
@@ -325,7 +325,7 @@
           } else {
             $state.complete()
           }
-        });
+        })
       },
 
       filterByType(payload) {

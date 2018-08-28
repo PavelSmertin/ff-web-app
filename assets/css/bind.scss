@@ -259,6 +259,20 @@ h3 {
 	font-weight: bold;
 }
 
+.fading {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: transparentize($bg-main-color, 0.45);
+	z-index: 3;
+	display: none;
+	&.filtered {
+		display:block;
+	}
+}
+
 /************ INDEX PAGE STRUCTURE **************/
 .container-fluid {
 	display: flex;
@@ -416,24 +430,6 @@ h3 {
 		opacity: 0
 	}
 }
-
-.ff-right-panel {
-	position: relative;
-	.fading {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		background: transparentize($bg-main-color, 0.45);
-		z-index: 3;
-		display: none;
-		&.filtered {
-			display:block;
-		}
-	}
-}
-
 
 .ff-toolbar {
 	background: $bg-toolbar-color;
@@ -821,6 +817,7 @@ h3 {
 
 /* coins block page */
 .ff_coin_page {
+	padding-bottom: 50px;
 	.currency {
 		padding: 0px 0px 0px 24px;
 		height: 56px;
@@ -835,6 +832,24 @@ h3 {
 		&.nuxt-link-active {
 			.i_symbol {
 				transition: color 0.1s ease-in-out;
+			}
+		}
+	}
+
+	.coin_tools {
+		border-bottom: 1px solid #D9D9D9;
+		height: 56px !important;
+
+		padding: 0 24px;
+		line-height: 56px;
+
+		text-align: right;
+		.coin_search {
+			border: none;
+			background: transparent url('~assets/images/ic_search.svg') 100% 50% no-repeat;
+			padding-right: 36px;
+			&:focus {
+				outline: none;
 			}
 		}
 	}

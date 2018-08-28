@@ -157,7 +157,7 @@
           this.infiniteState.reset()
         }
 
-        let data = this.$axios.get(apiCoinsPrepare( this.$store.state.coinsMeta.current_page ), {
+        let data = this.$axios.get(apiCoinsPrepare(), {
           params: {
             request: 'BTC',
           },

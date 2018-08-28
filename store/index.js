@@ -38,28 +38,30 @@ const createStore = () => {
 			},
 
 
-			SET_COINS: function (state, newCoins) {
+			SET_COINS: function (state, data) {
 
-				newCoins.forEach( coin => coin.attributes.start = { 
+				data.data.forEach( coin => coin.attributes.start = { 
 					price_usd: coin.attributes.price_usd / (1 + coin.attributes.percent_change24h/100),
 				})
 
 				if( !(state.favoriteCoins && state.favoriteCoins.length > 0) ) {
-					state.coins = newCoins
+					state.coins = data.data
 					return
 				}
 				
-				let favCoins = newCoins.filter( 
+				let favCoins = data.data.filter( 
 						coin => state.favoriteCoins.find( 
 							favorite => favorite.id == coin.id  ) != undefined 
 						)
 
-				let otherCoins = newCoins.filter( 
+				let otherCoins = data.data.filter( 
 						coin => state.favoriteCoins.find( 
 							favorite => favorite.id == coin.id  ) == undefined 
 						)
 				
 				state.coins = favCoins.concat(otherCoins)
+
+				state.coinsMeta = data.meta
 			},
 
 			APPEND_COINS: function (state, data) {
@@ -74,6 +76,10 @@ const createStore = () => {
 				state.coins = state.coins.concat( add )
 
 				state.coinsMeta = data.meta
+			},
+
+			SET_COINS_META: function (state, meta) {
+				state.coinsMeta = meta
 			},
 
 			UPDATE_COIN_PRICE: function (state, up) {

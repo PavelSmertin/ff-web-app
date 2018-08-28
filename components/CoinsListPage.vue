@@ -1,5 +1,8 @@
 <template>
   <div class="ff_coin_page">
+    <div class="coin_tools">
+      <input class="coin_search" type="text" name="coin" v-model="coinSearch" placeholder="Поиск...">
+    </div>
     <div class="coin_header">
       <div class="coin_details_head i_symbol"></div>
       <div class="coin_details_head i_cap">
@@ -51,11 +54,14 @@
       <span slot="no-results">Вы достигли конца списка</span>
     </infinite-loading>
 
+    <div class="fading" v-bind:class="{ filtered: isFiltering }"></div>
+
   </div>
 </template>
 
 <script>
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
+  import _ from 'lodash'
 
   import { analMixin } from '~/components/mixins/analitics.js'
 
@@ -74,10 +80,10 @@
       return {
         isFiltering: null,
         infiniteState: null,
+        coinSearch: null,
+
       }
     },
-
-
 
     methods: {
       formatPrice(value) {
@@ -100,7 +106,7 @@
 
       infiniteHandler( $state ) {
         this.infiniteState = $state
-        this.$axios.get(apiCoinsPrepare(), {
+        this.$axios.get(this.apiCoinsPrepare( ), {
           params: {
             page: this.$store.state.coinsMeta.current_page + 1,
           },
@@ -116,34 +122,43 @@
         });
       },
 
-      filter() {
+      filter( symbol ) {
         this.isFiltering = true
         if(this.infiniteState) { 
           this.infiniteState.reset()
         }
 
-        let data = this.$axios.get(apiCoinsPrepare( this.meta.current_page ), {
-          params: {
-            request: 'BTC',
-          },
-        })
+
+        let data = this.$axios.get(this.apiCoinsPrepare(), {
+            params: {
+              page: 1,
+            },
+          })
           .then(({ data }) => {
-
-            let newsObj = dataFormatter.deserialize( data )
-            this.$store.commit('SET_NEWS', newsObj)
-            this.list = []
-            this.meta = {current_page: 1}
+            this.$store.commit('SET_COINS', data)
+            console.log(data)
             this.isFiltering = false
-
           }).catch(e => {
             this.isFiltering = false
           })
       },
-    }
+
+      apiCoinsPrepare( page ) {
+        if( this.coinSearch ) {
+          return api_coins + '&filters[portfolio-coins][symbol]=' + this.coinSearch
+        } 
+        return api_coins
+      }
+    },
+
+    watch:{
+      'coinSearch':  _.debounce( function ( newValue ) {
+        this.filter()
+      }, 500 )
+    },
   }
-  function apiCoinsPrepare( page ) {
-    return api_coins
-  }
+
+
 
   function upSymbol( value ) {
     if( value ) {
