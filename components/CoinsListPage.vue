@@ -1,7 +1,9 @@
 <template>
   <div class="ff_coin_page">
     <div class="coin_tools">
-      <input class="coin_search" type="text" name="coin" v-model="coinSearch" placeholder="Поиск...">
+      <form autocomplete="off">
+        <input class="coin_search" type="text" name="coin" v-model="coinSearch" placeholder="Поиск...">
+      </form>
     </div>
     <div class="coin_header">
       <div class="coin_details_head i_symbol"></div>

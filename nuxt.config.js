@@ -124,7 +124,7 @@ module.exports = {
 
       parent.children.find((r) => r.path.includes(':id')).path = ':id(\\d+)'
       parent.children.find((r) => r.path.includes(':id')).redirect = ''
-      parent.children.find((r) => r.path.includes(':symbol')).path = ':symbol([a-zA-Z]+[0-9]*)'
+      parent.children.find((r) => r.path.includes(':symbol')).path = ':symbol([a-zA-Z]+[0-9]*\\*?)'
 
       parent.children.push({
         name: 'slug-id',

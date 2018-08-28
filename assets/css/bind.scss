@@ -843,11 +843,11 @@ h3 {
 		padding: 0 24px;
 		line-height: 56px;
 
-		text-align: right;
+		text-align: left;
 		.coin_search {
 			border: none;
-			background: transparent url('~assets/images/ic_search.svg') 100% 50% no-repeat;
-			padding-right: 36px;
+			background: transparent url('~assets/images/ic_search.svg') 0% 50% no-repeat;
+			padding-left: 30px;
 			line-height: 24px;
 			&:focus {
 				outline: none;
