@@ -577,7 +577,7 @@ h3 {
 				height: 20px;
 			}
 
-			transition: all 0.9s ease;
+			transition: color 0.9s ease;
 			color: $label-color;
 
 			&.up {
@@ -587,19 +587,19 @@ h3 {
 				}
 
 				&.slide-fade-enter {
-					transition: all 0.1s ease;
+					transition: color 0.1s ease;
 					color: $up-value-color;
 				}
 			}
 
 			&.down {				
 				&.slide-fade-enter-active {
-					transition: all 0.1s ease;
+					transition: color 0.1s ease;
 					color: $down-value-color;
 				}
 
 				&.slide-fade-enter {
-					transition: all 0.1s ease;
+					transition: color 0.1s ease;
 					color: $down-value-color;
 				}
 			}
@@ -916,6 +916,36 @@ h3 {
 			flex-basis: 100%;
 			overflow: hidden;
 		}
+
+		.coin_details_item {
+			transition: color 0.9s ease;
+			color: $label-color;
+
+			&.up {
+				&.slide-fade-enter-active {
+					transition: all 0.1s ease;
+					color: $up-value-color;
+				}
+
+				&.slide-fade-enter {
+					transition: color 0.1s ease;
+					color: $up-value-color;
+				}
+			}
+
+			&.down {				
+				&.slide-fade-enter-active {
+					transition: color 0.1s ease;
+					color: $down-value-color;
+				}
+
+				&.slide-fade-enter {
+					transition: color 0.1s ease;
+					color: $down-value-color;
+				}
+			}
+		}
+
 		.coin_details_item.change {
 			color: $up-value-color;
 			font-weight: bold;

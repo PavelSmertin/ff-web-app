@@ -122,9 +122,6 @@
           { hid: 'twitter:title', name: 'twitter:title', content: `Курс ${this.attributes.full_name} на сегодня -  FF.ru` },
           { hid: 'twitter:description', name: 'twitter:description', content: this.headDescription },
         ],
-        // link: [
-        //   { rel: 'canonical', href: process.env.baseUrl + '/' + this.downSymbol }
-        // ]
 
       }
     },

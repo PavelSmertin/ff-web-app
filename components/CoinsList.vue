@@ -178,7 +178,6 @@
           })
           .then(({ data }) => {
             this.$store.commit('SET_COINS', data)
-            console.log( data.data )
             this.isFiltering = false
           }).catch(e => {
             this.isFiltering = false
@@ -196,7 +195,6 @@
 
     watch: {
       '$store.state.coinsSearch':  _.debounce( function ( newValue ) {
-        console.log(newValue)
         this.filter()
       }, 500 )
     }

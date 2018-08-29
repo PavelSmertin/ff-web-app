@@ -30,6 +30,7 @@
         v-bind:key="coin.id" 
         :to="coinPath(coin)" 
         class="currency coin_row"
+        v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, coin )"
       >
       <div class="coin_details_item i_symbol" >
         {{ coin.attributes.symbol }}
@@ -37,12 +38,27 @@
       <div class="coin_details_item i_cap">
         ${{ formatPrice(coin.attributes.market_cap_usd) }}
       </div>
-      <div class="coin_details_item">
-        ${{ formatPrice(coin.attributes.price_usd) }}
-      </div>
-      <div class="coin_details_item i_volume">
-        ${{ formatPrice(coin.attributes.volume24h_usd) }}
-      </div>
+
+      <transition name="slide-fade" mode="out-in">
+        <div 
+          :key="coin.attributes.price_usd" 
+          class="coin_details_item i_price" 
+          v-bind:class="isUp( coin )"
+          >
+          ${{ formatPrice(coin.attributes.price_usd) }}
+        </div>
+      </transition>
+
+      <transition name="slide-fade" mode="out-in">
+        <div 
+          :key="coin.attributes.price_usd" 
+          class="coin_details_item i_volume" 
+          v-bind:class="isUp( coin )"
+          >
+          ${{ formatPrice(coin.attributes.volume24h_usd) }}
+        </div>
+      </transition>
+      
       <div class="coin_details_item i_sup">
         {{ formatPrice(coin.attributes.available_supply) }} {{ coin.attributes.symbol }}
       </div>
@@ -102,6 +118,19 @@
       },
       onCoinClick: function ( symbol ) {
         this.sendEvent( 'MarketCup', 'click', symbol );
+      },
+
+      isUp: function ( coin ) {
+        return {
+          'up': coin.attributes.up,
+          'down': !coin.attributes.up,
+        }
+      },
+
+      visibilityChanged( isVisible, entry, coin ) {
+        if( isVisible ) {
+          this.$store.commit( 'PUSH_SOCKET_COIN', coin.attributes.symbol )
+        }
       },
 
       infiniteHandler( $state ) {

@@ -426,7 +426,7 @@
         // var delta = ((data['PRICE'] - data['OPEN24HOUR']) / data['OPEN24HOUR'] * 100).toFixed(2);
         // console.log(data['FROMSYMBOL'], data['PRICE'], delta)
 
-        return { symbol: data['FROMSYMBOL'], price: data['PRICE'] } //, delta: delta};
+        return { symbol: data['FROMSYMBOL'], price: data['PRICE'], volume24h: data['VOLUME24HOUR'] } //, delta: delta};
       },
 
       unpack(value) {

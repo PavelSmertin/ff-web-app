@@ -371,6 +371,7 @@
           if( window.location.pathname !=  path ) {
             window.history.pushState({}, null, path )
             this.seoTitle = post.title
+            this.$emit('post-visible', post.title)
             if( process.env.NODE_ENV !== 'production' ) {
               return
             }

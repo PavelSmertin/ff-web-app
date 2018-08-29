@@ -1,6 +1,6 @@
 <template>
   <div class="ff_post_feed">
-    <post v-for="post of news" v-bind:key="post.id" :postProp="post" :comments="post.comments" :commentsCount="post.comments ? post.comments.length : 0" ></post>
+    <post v-for="post of news" v-on:post-visible="seoTitle = $event" v-bind:key="post.id" :postProp="post" :comments="post.comments" :commentsCount="post.comments ? post.comments.length : 0" ></post>
     <div ref="infinite_loading_container"></div>
   </div>
 </template>
@@ -93,8 +93,10 @@
           { hid: 'twitter:title',name: 'twitter:title', content: this.title },
           { hid: 'twitter:description', name: 'twitter:description', content: strip_social_desription(this.body, 200) },
           { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + this.getImageSharing() },
-
         ],
+        link: [
+          { rel: 'canonical', href: process.env.baseUrl + '/' + this.attributes.id }
+        ]
       }
     },
 
@@ -159,6 +161,9 @@
     },
 
     methods: {
+      log( event ) {
+        console.log(event)
+      },
       goto() {
           var element = this.scrollParent
           element.scrollTo(0, 0)
