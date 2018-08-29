@@ -95,7 +95,7 @@
           { hid: 'twitter:image', name: 'twitter:image', content: process.env.baseUrl + this.getImageSharing() },
         ],
         link: [
-          { rel: 'canonical', href: process.env.baseUrl + '/' + this.attributes.id }
+          { rel: 'canonical', href: this.canonical() }
         ]
       }
     },
@@ -161,9 +161,6 @@
     },
 
     methods: {
-      log( event ) {
-        console.log(event)
-      },
       goto() {
           var element = this.scrollParent
           element.scrollTo(0, 0)
@@ -219,6 +216,10 @@
       concatNews( news ) {
         this.news = this.news.concat( news.filter( post => this.news.find( current => current.id == post.id  ) == undefined ))
       },
+      canonical() {
+        let path = this.attributes.id + ( this.attributes.slug ? '/' + this.attributes.slug : '' )
+        return process.env.baseUrl + '/' + path
+      }
     },
 
     deactivated() {
