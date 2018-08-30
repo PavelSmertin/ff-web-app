@@ -29,7 +29,7 @@
         v-for="coin of $store.state.coins" 
         v-bind:key="coin.id" 
         :to="coinPath(coin)" 
-        class="currency coin_row"
+        class="coin_row"
         v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, coin )"
       >
       <div class="coin_details_item i_symbol" >

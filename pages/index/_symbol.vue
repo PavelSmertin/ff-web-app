@@ -159,7 +159,14 @@
       let headTitle         = getTitle(attributes)
       let headDescription   = getDescription(attributes)
 
-      return { attributes, headTitle, headDescription, downSymbol: downSymbol( params.symbol ), symbol: upSymbol( params.symbol )  }
+      return { 
+        attributes, 
+        headTitle, 
+        headDescription, 
+        downSymbol: downSymbol( params.symbol ), 
+        symbol: upSymbol( params.symbol ),
+        tsym:  upSymbol( params.symbol ) == 'USDT' ? 'USD' : 'USDT',
+      }
     },
 
     components: {
@@ -167,7 +174,7 @@
     },
 
     mounted () {
-      this.loadChart(this.attributes.symbol)
+      this.loadChart()
       this.goto()
       this.watchSocketCoin()
     },
@@ -189,12 +196,12 @@
         let val = (value/1).toFixed(percision)
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
-      loadChart(symbol) {
+      loadChart() {
 
         let lineCharts = this.$refs.lineCharts
         lineCharts.delegateMethod('showLoading', 'Loading...')
 
-        axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=` + upSymbol(symbol) + `&tsym=USD&limit=720&aggregate=3&e=CCCAGG`)
+        axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=${this.symbol}&tsym=${this.tsym}&limit=720&aggregate=3&e=CCCAGG`)
         .then((data) => {
           this.series.data = data.data.Data.map(a => [a.time*1000, a.close] )
           lineCharts.removeSeries()
@@ -210,7 +217,7 @@
       },
 
       getBTCCase() {
-        return this.attributes.symbol == 'BTC' ? getCase(this.attributes, 2) : this.attributes.coin_name
+        return this.symbol == 'BTC' ? getCase(this.attributes, 2) : this.attributes.coin_name
       },
       getCase(value) {
         return getCase(this.attributes, 2)
@@ -251,10 +258,10 @@
 
       watchSocketCoin() {
         if( this.$store.state.pageSocketCoin ) {
-          this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~USD`]} )
+          this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~${this.tsym}`]} )
         }
         this.$store.commit( 'SET_PAGE_SOCKET_COIN', this.attributes )
-        this.$socket.emit( 'SubAdd', { subs: [`5~CCCAGG~${this.symbol}~USD`] })
+        this.$socket.emit( 'SubAdd', { subs: [`5~CCCAGG~${this.symbol}~${this.tsym}`] })
       },
 
       isUp: function ( coin ) {

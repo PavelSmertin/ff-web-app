@@ -187,7 +187,7 @@
 
     <div class="row no-gutters border_top margin24">
       <h3 class="margin12 col-8">Лидеры криптовалют за 24 часа</h3>
-      <div class="margin12 col-4 align-right">
+      <div class="margin12 col-4 align_right">
           <nuxt-link class="h_link" :to="{ path: '/coins' }">Все монеты</nuxt-link>
       </div>
     </div>
@@ -425,10 +425,10 @@
 
       watchSocketCoin() {
         if( this.$store.state.pageSocketCoin ) {
-          this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~USD`]} )
+          this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~USDT`]} )
         }
         this.$store.commit( 'SET_PAGE_SOCKET_COIN', this.attributes )
-        this.$socket.emit( 'SubAdd', { subs: [`5~CCCAGG~${this.symbol}~USD`] })
+        this.$socket.emit( 'SubAdd', { subs: [`5~CCCAGG~${this.symbol}~USDT`] })
       },
 
       isUp: function ( coin ) {

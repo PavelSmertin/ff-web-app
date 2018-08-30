@@ -1,7 +1,7 @@
  <template>
   <article 
     v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, post )" 
-    class="ff-post" 
+    class="ff_post" 
     itemscope itemtype="http://schema.org/NewsArticle"
     >
 

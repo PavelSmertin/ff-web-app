@@ -454,7 +454,7 @@
       },
 
       getSubscribtions() {
-        return this.$store.state.socketCoins.map( coin => `5~CCCAGG~${coin}~USD` )
+        return this.$store.state.socketCoins.map( coin => `5~CCCAGG~${coin}~USDT` )
       }
     },
 
@@ -510,8 +510,8 @@
         )
 
         this.$store.commit( 'SET_CURRENT_SOCKET_COINS', newValue.slice() )
-        this.$socket.emit( 'SubAdd', { subs: add.map( coin => `5~CCCAGG~${coin}~USD` ) })
-        this.$socket.emit( 'SubRemove', { subs: remove.map( coin => `5~CCCAGG~${coin}~USD` ) })
+        this.$socket.emit( 'SubAdd', { subs: add.map( coin => `5~CCCAGG~${coin}~USDT` ) })
+        this.$socket.emit( 'SubRemove', { subs: remove.map( coin => `5~CCCAGG~${coin}~USDT` ) })
 
       }, 1000 )
     },

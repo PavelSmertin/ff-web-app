@@ -6,19 +6,24 @@
       </div>
     </transition>
 
-
+    <nuxt-link @click.native="sendEvent( 'CoinsPanel', 'open', 'MarketCup' )" :to="{name: 'index-coins'}" class="coin_details_head button_more">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="ic_more">
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path fill="#999" id="path" d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+      </svg>
+    </nuxt-link>
+      
+    <div class="coin_tools">
+      <form autocomplete="off">
+        <input class="coin_search" type="text" name="coin" v-model="$store.state.coinsSearch" placeholder="Поиск">
+      </form>
+    </div>
+    
     <div class="coin_header">
       <div class="coin_details_head i_symbol">
-
-        <form autocomplete="off">
+<!--         <form autocomplete="off">
           <input class="coin_search" type="text" v-model="$store.state.coinsSearch" name="coin">
-        </form>
-        <nuxt-link @click.native="sendEvent( 'CoinsPanel', 'open', 'MarketCup' )" :to="{name: 'index-coins'}">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="ic_more">
-            <path d="M0 0h24v24H0z" fill="none"/>
-            <path fill="#999" id="path" d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-          </svg>
-        </nuxt-link>
+        </form> -->
       </div>
       <div class="coin_details_head">
         Цена
@@ -26,13 +31,9 @@
       <div class="coin_details_head">
         Цена(%)
       </div>
+
     </div>
-<!-- 
-    <div class="coin_tools">
-      <form autocomplete="off">
-        <input class="coin_search" type="text" name="coin" v-model="$store.state.coinsSearch" placeholder="Поиск...">
-      </form>
-    </div> -->
+
 
     <div 
         v-for="coin of $store.state.coins" 
@@ -44,7 +45,7 @@
       <nuxt-link 
         @click.native="onCoinClick(coin.attributes.symbol)"
         :to="coinPath(coin)" 
-        class="currency coin_row"
+        class="coin_row"
         v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, coin )">
         <div class="coin_details_item i_symbol" >
           {{ coin.attributes.symbol }} 
@@ -202,12 +203,12 @@
   }
 
   function getCoinRow( element, deep = 3 ) {
-    if ( element.className.indexOf('coin_row') > 0 ) {
+    if ( element.className.indexOf('coin_row') >= 0 ) {
       return element
     }
 
     let parentElement = element.parentElement
-    if ( parentElement.className.indexOf('coin_row') > 0 ) {
+    if ( parentElement.className.indexOf('coin_row') >= 0 ) {
       return parentElement
     }
 

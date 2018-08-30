@@ -1,5 +1,5 @@
 <template> 
-	<article class="ff-post">
+	<article class="ff_post">
 	  	<div class="description">
 
 	  		<h1 class="margin60">Что такое Биткоин?</h1>
