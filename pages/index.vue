@@ -74,6 +74,7 @@
 
 
         <aside class="ff-right-panel col-md-4" v-bind:class="colRight">
+
           <div class="news_filters_block">
             <div class="coin_select_tag">Новости {{ upFilterSymbol() }}</div>
             <dropdowns :options="types" :selected="selectedType" v-on:updateOption="filterByType"></dropdowns>
@@ -82,6 +83,8 @@
           <div class="scroll-container">
             <div v-if="$store.state.news.length" class="ff-news">
 
+<!--               <news-coin></news-coin>
+ -->
               <!-- ssr list -->
               <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
                 <post-item :post="newest" ></post-item>
@@ -113,6 +116,7 @@
   import Dropdowns from '~/components/Dropdowns.vue'
   import PostItem from '~/components/PostItem.vue'
   import CoinsList from '~/components/CoinsList.vue'
+  import NewsCoin from '~/components/NewsCoin.vue'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
   import Jsona from 'jsona'
@@ -247,6 +251,7 @@
       Dropdowns,
       PostItem,
       CoinsList,
+      NewsCoin,
     },
 
     beforeRouteEnter (to, from, next) {
