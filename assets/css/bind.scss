@@ -343,6 +343,13 @@ h3 {
 	}
 }
 
+.page-enter-active, .page-leave-active {
+	transition: opacity .2s
+}
+.page-enter, .page-leave-active, .page-leave {
+	opacity: 0.5
+}
+
 
 /************ INDEX PAGE STRUCTURE **************/
 .container-fluid {
@@ -378,9 +385,6 @@ h3 {
 					flex-direction: column;
 					.ff_close {
 						display: block;
-					}
-					.ff_close_mobile {
-						display: none;
 					}
 					.ff_scroll_wrap {
 						position: absolute;
@@ -421,13 +425,6 @@ h3 {
 					}
 					.ff_center_panel {
 						display: none;
-						.ff_close {
-							display: none;
-						}
-						.ff_close_mobile {
-							display: block;
-						}
-						/*top:-49px;*/
 					}
 					.ff_center_panel.active_center {
 						display: flex;
@@ -484,10 +481,6 @@ h3 {
 		#close {
 			fill: $link-color;
 		}
-	}
-
-	.ff_close_mobile {
-		@extend .ff_close;
 	}
 
 	&.fade-enter-active {
@@ -575,12 +568,13 @@ h3 {
 		margin: 0;
 		display: inline-block;
 		padding: 0 0px 0 24px;
-		span {
+		a {
 			line-height: 48px;
 			display: inline-block;
     		height: 48px;
 		}
-		.active_tab {
+		.nuxt-link-exact-active {
+			color: $primary-color;
 			border-bottom: 2px solid $bg-toolbar-color;
 		}
 	}
@@ -1266,12 +1260,6 @@ h3 {
 	.ff_post {
 		padding-bottom: 40px;
 	}
-	&.page-enter-active, &.page-leave-active {
-		transition: opacity .2s
-	}
-	&.page-enter, &.page-leave-active, &.page-leave {
-		opacity: 0
-	}
 }
 .ff_post {
 	padding-bottom: 140px;
@@ -1884,14 +1872,6 @@ h3 {
 		font-size: 12px;
 	}
 
-	&.page-enter-active, &.page-leave-active {
-		transition: opacity .2s
-	}
-
-	&.page-enter, &.page-leave-active, &.page-leave {
-		opacity: 0.5
-	}
-
 	.vue-highcharts {
 		margin-top: 10px;
 		width: 100%;
@@ -2136,6 +2116,9 @@ h3 {
 }
 @media (max-width: 769px) { 
 	.ff_coin {
+		.coin_mobile {
+			display: none;
+		}
 		.coin_detail_unit {
 			margin: 10px 0;
 			.coin-detail {

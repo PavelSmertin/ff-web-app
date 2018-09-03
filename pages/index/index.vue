@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="row no-gutters coin-details-block">
+    <div class="row no-gutters coin-details-block coin_mobile">
 
         <div class="coin_detail_unit col-6 col-md-3">
           <div class="ff-label">Капитализация</div>
@@ -77,10 +77,10 @@
 
     </div>
 
-    <div class="row no-gutters margin12">
+    <div class="row no-gutters margin12 coin_mobile">
       <h2>Биткойн калькулятор</h2>
     </div>
-    <div class="row no-gutters calculator margin6">
+    <div class="row no-gutters calculator margin6 coin_mobile">
       <div class="calculator_item">
         <div class="label"><img src="~/assets/images/btc_icon.png" width="20" height="20" alt="btc_icon"><span class="label_currency">BTC</span></div>
         <input type="text" name="btc" v-model="calculateBTC" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack" >
@@ -101,18 +101,18 @@
       </div>
     </div>
 
-    <div class="row no-gutters border_top margin24">
+    <div class="row no-gutters border_top margin24 coin_mobile">
       <h2 class="margin12">График курса Bitcoin к Доллару</h2>
     </div>
-    <div class="row no-gutters">
+    <div class="row no-gutters coin_mobile">
       <div id="tradingview_53a94" class="tradingview" ref="tradingview"></div>
     </div>
 
-    <div class="row no-gutters border_top margin24">
+    <div class="row no-gutters border_top margin24 coin_mobile">
       <h2 class="margin12">Курс BTC/USD на биржах</h2>
     </div>
 
-    <div class="row no-gutters margin6 pairs_row">
+    <div class="row no-gutters margin6 pairs_row coin_mobile">
       <div class="ff_pairs_index">
         <div class="ff_pairs_header">
           <div class="ff_pairs_head">
@@ -149,11 +149,11 @@
       </div>
     </div>
 
-    <div class="row no-gutters border_top margin24">
+    <div class="row no-gutters border_top margin24 coin_mobile">
       <h3 class="margin12">Руководство для начинающих</h3>
     </div>
 
-    <div class="margin6">
+    <div class="margin6 coin_mobile">
       <div class="row no-gutters wiki_row">
         <nuxt-link @click.native="onWikiClick(1)" class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/1' }">
           <p class="wiki_title">Как купить биткоин?</p>
@@ -185,21 +185,21 @@
       </div>
     </div>
 
-    <div class="row no-gutters border_top margin24">
+    <div class="row no-gutters border_top margin24 coin_mobile">
       <h3 class="margin12 col-8">Лидеры криптовалют за 24 часа</h3>
       <div class="margin12 col-4 align_right">
           <nuxt-link class="h_link" :to="{ path: '/coins' }">Все монеты</nuxt-link>
       </div>
     </div>
 
-    <div>
+    <div class="coin_mobile">
       <coins-list-other :otherCoins="otherCoins" />
     </div>
 
-    <div class="row no-gutters border_top margin24">
+    <div class="row no-gutters border_top margin24 coin_mobile">
       <h3 class="margin12">Быстрая статистика Биткоина</h3>
     </div>
-    <div class="row no-gutters margin6">
+    <div class="row no-gutters margin6 coin_mobile">
       <dl class="coin_stat">
         <dt>Дата запуска</dt><dd>Январь 3, 2009</dd>
         <dt>Позиция в рейтинге MarketCap</dt><dd>№1</dd>
@@ -223,7 +223,7 @@
     </div>
 
 
-    <div class="row no-gutters border_top margin12">
+    <div class="row no-gutters border_top margin12 coin_mobile">
       <section v-if="attributes.seo_text" class="row ff_text_block margin60" v-html="attributes.seo_text"></section>
     </div>
 

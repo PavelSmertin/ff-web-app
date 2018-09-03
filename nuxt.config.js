@@ -120,19 +120,28 @@ module.exports = {
     extendRoutes (routes, resolve) {
       let parent = routes.find((route) => {
         return route.path === '/'
-      });
+      })
 
-      parent.children.find((r) => r.path.includes(':id')).path = ':id(\\d+)'
-      parent.children.find((r) => r.path.includes(':id')).redirect = ''
-      parent.children.find((r) => r.path.includes(':symbol')).path = ':symbol([a-zA-Z]+[0-9]*\\*?)'
+      let symbolRoute = parent.children.find( r => r.path.includes(':symbol') )
+      let postRoute = symbolRoute.children.find( r => r.path.includes(':id') )
 
-      parent.children.push({
+
+      symbolRoute.path = ':symbol([a-zA-Z]+[0-9]*\\*?)?'
+      postRoute.path = '/:id(\\d+)'
+      postRoute.redirect = ''
+
+      symbolRoute.children.push({
         name: 'slug-id',
-        path: ':id(\\d+)/:slug',
-        chunkName: 'pages/index/_id/_slug',
-        component: resolve(__dirname, 'pages/index/_id.vue'),
+        path: '/:id(\\d+)/:slug',
+        chunkName: 'pages/index/_symbol/_id',
+        component: resolve(__dirname, 'pages/index/_symbol/_id.vue'),
         redirect: '',
-      });
+      })
+
+      parent.children.forEach( el => {
+        console.log(el); 
+        console.log(el.children);
+      })
     },
   },
 
