@@ -333,6 +333,7 @@
       this.goto()
       this.initTradingViewChart()
       this.watchSocketCoin()
+      this.sendPulsePushScript()
 
     },
 
@@ -408,8 +409,13 @@
         //var element = this.$refs["tradingview"];
         //element.addEventListener("wheel", onWheel);
       },
-
-
+      sendPulsePushScript() {
+        var script = document.createElement('script');
+        script.src = "//cdn.sendpulse.com/js/push/845b8969d01c47a192966fd308146a33_1.js"
+        script.setAttribute('async', '')
+        script.setAttribute('charset', 'UTF-8')
+        document.head.appendChild(script);
+      },
       price() {
         let coin = this.$store.state.coins.find( coin => coin.attributes.symbol == 'BTC' )
         if( coin ) {
