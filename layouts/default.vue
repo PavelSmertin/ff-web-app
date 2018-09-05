@@ -27,12 +27,12 @@
 						>
 						Купить биткоин
 					</nuxt-link>
-					<a href="https://t.me/FF_RUS" class="tg_banner_2" target="_blank">
-							<span class="ic_telegram_white"></span>
-							<span class="text">
-								TELEGRAM<br/>
-								<small>10250 подписчиков</small>
-							</span>
+					<a href="https://telegram.im/@FF_RUS?lang=ru" class="tg_banner_2" rel="nofollow noopener" target="_blank">
+						<span class="ic_telegram_white"></span>
+						<span class="text">
+							TELEGRAM<br/>
+							<small>10250 подписчиков</small>
+						</span>
 					</a>
 
 				</nav>
@@ -97,10 +97,10 @@
 			</div>
 
 			<div class="social col-12 col-md-2">
-				<a @click.native="onSocialClick('vk')" href="https://vk.com/cryptoff" class="social_link vk" alt="vk" target="_blank"></a>
-				<a @click.native="onSocialClick('tg')" href="https://telegram.im/@FF_RUS?lang=ru" class="social_link tg" alt="tg" target="_blank"></a>
-				<a @click.native="onSocialClick('twitter')" href="https://twitter.com/www_FF_ru" class="social_link tr" alt="twitter" target="_blank"></a>
-				<a @click.native="onSocialClick('fb')" href="https://fb.com/crypto.ff.ru/" class="social_link fb" alt="fb" target="_blank"></a>
+				<a @click.native="onSocialClick('vk')" rel="nofollow noopener" href="https://vk.com/cryptoff" class="social_link vk" alt="vk" target="_blank"></a>
+				<a @click.native="onSocialClick('tg')" rel="nofollow noopener" href="https://telegram.im/@FF_RUS?lang=ru" class="social_link tg" alt="tg" target="_blank"></a>
+				<a @click.native="onSocialClick('twitter')" rel="nofollow noopener" href="https://twitter.com/www_FF_ru" class="social_link tr" alt="twitter" target="_blank"></a>
+				<a @click.native="onSocialClick('fb')" rel="nofollow noopener" href="https://fb.com/crypto.ff.ru/" class="social_link fb" alt="fb" target="_blank"></a>
 			</div>
 		</footer>
 

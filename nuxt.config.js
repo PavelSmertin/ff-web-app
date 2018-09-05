@@ -138,10 +138,10 @@ module.exports = {
         redirect: '',
       })
 
-      parent.children.forEach( el => {
-        console.log(el); 
-        console.log(el.children);
-      })
+      // parent.children.forEach( el => {
+      //   console.log(el); 
+      //   console.log(el.children);
+      // })
     },
   },
 
