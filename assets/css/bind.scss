@@ -617,14 +617,13 @@ h3 {
 		line-height: 32px;
 		background: none;
 	}
+	.ff_account_menu_short {
+		display: none;
+	}
 	.ff_account_menu:hover {
 		border: 1px solid $link-color;
 		color: $link-color;
 		transition: color 0.2s ease-in-out;
-	}
-
-	.ff_account_menu_mob {
-		display: none;
 	}
 
 	.tg_banner_2 {
@@ -664,10 +663,10 @@ h3 {
 				padding: 0 10px 0 0;
 			}
 		}
-		.ff_account_menu {
+		.ff_account_menu_mob {
 			display: none;
 		}
-		.ff_account_menu_mob {
+		.ff_account_menu_short {
 			display: block;
 		}
 		.tg_banner_2 {
