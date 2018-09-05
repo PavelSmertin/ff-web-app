@@ -27,6 +27,14 @@
 						>
 						Купить биткоин
 					</nuxt-link>
+					<a href="https://t.me/FF_RUS" class="tg_banner_2" target="_blank">
+							<span class="ic_telegram_white"></span>
+							<span class="text">
+								TELEGRAM<br/>
+								<small>10250 подписчиков</small>
+							</span>
+					</a>
+
 				</nav>
 
 				<button 

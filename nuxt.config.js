@@ -151,6 +151,10 @@ module.exports = {
     '@nuxtjs/auth',
     //['@nuxtjs/moment', { locales: ['ru'], plugin: false }],
     ['@nuxtjs/proxy', { pathRewrite: { '^/api' : '/v1', '^/images' : '/' } }],
+    ['nuxt-facebook-pixel-module', {
+        track: 'PageView',
+        pixelId: '252822442112684',
+    }],
   ],
 
 

@@ -32,9 +32,9 @@
         <li v-if="post.type == 'news'">Новость</li>
         <li v-else-if="post.type == 'prognosis'">Прогноз</li>
 
-        <li v-if="sourceDomain()" class="post_detail_source ff-label">
+        <!-- li v-if="sourceDomain()" class="post_detail_source ff-label">
           Источник: <span itemprop="isBasedOn" >{{ sourceDomain() }}</span>
-        </li>
+        </li -->
 
       </ul>
     </div>
@@ -222,6 +222,7 @@
 
     mounted () {
       this.initRelationNews();
+      this.addClickImageListener();
     },
 
     computed: {
@@ -430,6 +431,59 @@
       onSocialClick: function ( network ) {
         this.sendEvent( 'SocialPost', 'click', network );
       },
+
+        addClickImageListener: function () {
+            let articles = document.getElementsByTagName('article')
+            if (articles) {
+                for (let aItem = 0; aItem < articles.length; aItem++) {
+                    let imgs = articles.item(aItem).getElementsByClassName("description").item(0).getElementsByTagName('img')
+                    for (let imgItem = 0; imgItem < imgs.length; imgItem++) {
+                        let img = imgs.item(imgItem);
+                        let handle = {
+                            img: img,
+                            handleEvent: function(){
+
+                                let showImgContainer = document.createElement('div')
+                                showImgContainer.setAttribute('id', 'showImgContainer')
+
+                                let showImgBgr = document.createElement('div')
+                                showImgBgr.setAttribute('id', 'showImgBgr')
+                                showImgContainer.addEventListener('click', {
+                                    showImgBgr: showImgBgr,
+                                    showImgContainer: showImgContainer,
+                                    handleEvent: function(){
+                                        this.showImgBgr.remove()
+                                        this.showImgContainer.remove()
+                                    }
+                                }, false)
+
+                                let image = document.createElement('img')
+                                image.src = this.img.getAttribute('src')
+
+                                showImgContainer.appendChild(image)
+
+                                document.body.appendChild(showImgBgr)
+                                document.body.appendChild(showImgContainer)
+                            }
+                        }
+
+                        if (!img.getAttribute('scl')) {
+                            if (img.addEventListener) {
+                                img.addEventListener('click', handle, false);
+                            }
+                            else if (img.attachEvent) {
+                                img.attachEvent('onclick', handle);
+                            }
+                            else {
+                                img['onclick'] = handle;
+                            }
+                            img.setAttribute('scl', 'true');
+                        }
+
+                    }
+                }
+            }
+        },
 
     }
   }
