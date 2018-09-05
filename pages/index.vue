@@ -298,6 +298,7 @@
         this.filterBySymbol(null)
       }
 
+      // устанавливаем высоту шапки для мобильной версии
       this.topOffset = this.$refs["scroll_news"].offsetParent === null ? 100 : this.$refs["right_pane"].offsetTop
       this.$refs["scroll_news"].addEventListener('scroll', this.handleScroll, false);
 
@@ -450,7 +451,7 @@
         // this.$refs["scroll_news"].scrollTo( 0, 0 );
         // return;
         var sh = this.$refs["scroll_news"].scrollHeight
-        var st = this.$refs["scroll_news"].scrollTop
+        var st = this.$refs["scroll_news"].scrollTop/5
         var oh = this.$refs["scroll_news"].offsetHeight
 
 
