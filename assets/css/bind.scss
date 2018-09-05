@@ -1245,6 +1245,16 @@ h3 {
 	}
 }
 
+@media (max-width: 769px) {
+	.ff-news-row {
+		.news_list_detail {
+			.post_type {
+				display:none;
+			}
+		}
+	}
+}
+
 /* news filter block */
 .news_filters_block {
 	display: flex;
