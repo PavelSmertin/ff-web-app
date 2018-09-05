@@ -208,7 +208,7 @@
         <dt>Дата ATH</dt><dd>16.12.2017</dd>
         <dt>Доступный объем</dt><dd>17.1 миллионов</dd>
         <dt>Общий объем</dt><dd>21.0 миллион</dd>
-        <dt>Официальный сайт</dt><dd><a href="https://bitcoin.org/" rel="nofollow noopener" target="_blank">bitcoin.org</a></dd>
+        <dt>Официальный сайт</dt><dd>bitcoin.org</dd>
         <dt>Форум</dt><dd>bitcointalk.org</dd>
         <dt>Алгоритм хеширования</dt><dd>SHA-256</dd>
         <dt>Скорость хеширования</dt><dd>577,744 PH/s</dd>

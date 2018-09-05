@@ -50,6 +50,12 @@
 					class="ff_account_menu">
 					Вход/Регистрация
 				</nuxt-link>
+				<nuxt-link
+						@click.native="sendEvent( 'Toolbar', 'click', 'auth' )"
+						v-if="!$auth.loggedIn" :to="{ name: 'account-signin' }"
+						class="ff_account_menu ff_account_menu_mob">
+					Вход
+				</nuxt-link>
 			</div>
 		</header>
 

@@ -250,13 +250,13 @@ h3 {
 		display: inline-block;
 		&.post_source {
 			text-align: right;
-			flex-grow: 1;
+			flex-grow: 4;
 			margin: 0;
 		}
 		&.coin_tags {
 			text-align: right;
-			flex-grow: 1;
 			margin: 0;
+			width: 57px;
 		}
 	}
 }
@@ -623,13 +623,17 @@ h3 {
 		transition: color 0.2s ease-in-out;
 	}
 
+	.ff_account_menu_mob {
+		display: none;
+	}
+
 	.tg_banner_2 {
 		position: relative;
 		top: 7px;
 		padding:0 16px;
 		color: $l-color;
 		small {
-			font-size: 11px;
+			font-size: 9px;
 			letter-spacing: normal;
 		}
 		.ic_telegram_white {
@@ -638,10 +642,10 @@ h3 {
 			height: 20px;
 		}
 		.text {
-			font-size: 18px;
+			font-size: 12px;
 			line-height: 12px;
 			display: inline-block;
-			letter-spacing: 2.2px;
+			letter-spacing: 2.9px;
 		}
 	}
 
@@ -652,6 +656,9 @@ h3 {
 @media (max-width: 769px) {
 	.ff-toolbar {
 		nav {
+			flex-grow: 2;
+			padding-right: 20px;
+			text-align: right;
 			.nav-link {
 				display: none;
 				padding: 0 10px 0 0;
@@ -659,6 +666,9 @@ h3 {
 		}
 		.ff_account_menu {
 			display: none;
+		}
+		.ff_account_menu_mob {
+			display: block;
 		}
 		.tg_banner_2 {
 			top: 4px;
