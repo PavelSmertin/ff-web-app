@@ -82,6 +82,8 @@
   import _ from 'lodash'
 
   import { analMixin } from '~/components/mixins/analitics.js'
+  import { coinsMixin } from '~/components/mixins/coins.js'
+
 
   const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
 
