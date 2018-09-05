@@ -47,8 +47,14 @@
 				<nuxt-link 
 					@click.native="sendEvent( 'Toolbar', 'click', 'auth' )" 
 					v-else :to="{ name: 'account-signin' }" 
-					class="ff_account_menu">
+					class="ff_account_menu ff_account_menu_mob">
 					Вход/Регистрация
+				</nuxt-link>
+				<nuxt-link
+						@click.native="sendEvent( 'Toolbar', 'click', 'auth' )"
+						v-if="!$auth.loggedIn" :to="{ name: 'account-signin' }"
+						class="ff_account_menu ff_account_menu_short">
+					Вход
 				</nuxt-link>
 			</div>
 		</header>
