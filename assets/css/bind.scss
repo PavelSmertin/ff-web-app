@@ -386,6 +386,9 @@ h3 {
 					.ff_close {
 						display: block;
 					}
+					.ff_close_mobile {
+						display: none;
+					}
 					.ff_scroll_wrap {
 						position: absolute;
 						top:0;
@@ -410,8 +413,19 @@ h3 {
 					display: block;
 				}
 				.ff_content {
+
+					justify-items: stretch;
+    				align-items: stretch;
+
 					.ff-right-panel.active_right {
 						display: flex;
+
+						position: absolute;
+    					bottom: 0;
+    					top: 100px;
+    					background-color: $bg-main-color;
+    					border-top: 1px solid $border-bold-color;
+    					margin-top: -1px;
 					}
 					.ff-right-panel {
 						display: none;
@@ -425,9 +439,33 @@ h3 {
 					}
 					.ff_center_panel {
 						display: none;
+						border: none;
+						.ff_close_mobile {
+							display: block;
+							margin-top: 20px;
+    						margin-right: 20px;
+							.svgDemoGraphic {
+							    width: 48px;
+							    height: 48px;
+							    border-radius: 24px;
+    							box-shadow: 0px 0px 48px #ccc;
+    							background-color: $bg-main-color;
+							}
+							&.expand {
+							}
+							&.collapse {
+
+							}
+							&.hidden {
+								display: none;
+							}
+						}
 					}
 					.ff_center_panel.active_center {
 						display: flex;
+/*						.ff_scroll_wrap {
+							position: relative;
+						}*/
 					}
 				}
 
@@ -481,6 +519,10 @@ h3 {
 		#close {
 			fill: $link-color;
 		}
+	}
+
+	.ff_close_mobile {
+		@extend .ff_close;
 	}
 
 	&.fade-enter-active {
@@ -2117,8 +2159,8 @@ h3 {
 @media (max-width: 769px) { 
 	.ff_coin {
 		.coin_mobile {
-			display: none;
-		}
+/*			display: none;
+*/		}
 		.coin_detail_unit {
 			margin: 10px 0;
 			.coin-detail {

@@ -24,7 +24,7 @@
           </div>
         </transition>
 
-        <div class="ff_center_panel" v-bind:class="colCenter">
+        <div class="ff_center_panel" v-bind:class="colCenter" ref="center_pane">
 
           <div class="ff_scroll_wrap" ref="scroll-container">
             <nuxt-child :key="routeKey"/>
@@ -50,17 +50,54 @@
                 </g>
               </g>
             </svg>
-          </button> 
+          </button>
+
+
+          <button v-if="coinExpand" v-on:click="onClosePane()" class="ff_close_mobile" v-bind:class="coinExpandButton">
+            <svg id="ic_expand_collapse" viewBox="0 0 24 24" class="svgDemoGraphic">
+              <g id="chevron" transform="translate(12,10)">
+                <g id="leftBar" transform="rotate(-45)">
+                  <g transform="translate(0,3)">
+                    <path id="leftBarPath" class="delightIconFillPath" d="M1-4v8h-0.7v-8z"></path>
+                  </g>
+                </g>
+                <g id="rightBar" transform="rotate(225)">
+                  <g transform="translate(0,-3)">
+                    <path id="rightBarPath" class="delightIconFillPath" d="M1-4v8h-0.7v-8z"></path>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </button>
+
+          <button v-else v-on:click="onClosePane()" class="ff_close_mobile" v-bind:class="coinExpandButton">
+            <svg id="ic_expand_collapse" viewBox="0 0 24 24" class="svgDemoGraphic">
+              <g id="chevron" transform="translate(12,15)">
+                <g id="leftBar" transform="rotate(135)">
+                  <g transform="translate(0,3)">
+                    <path id="leftBarPath" class="delightIconFillPath" d="M1-4v8h-0.7v-8z"></path>
+                  </g>
+                </g>
+                <g id="rightBar" transform="rotate(45)">
+                  <g transform="translate(0,-3)">
+                    <path id="rightBarPath" class="delightIconFillPath" d="M1-4v8h-0.7v-8z"></path>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </button>
+
+
         </div>
 
-        <aside class="ff-right-panel col-md-4" v-bind:class="colRight">
+        <aside class="ff-right-panel col-md-4" ref="right_pane" v-bind:class="colRight">
 
           <div class="news_filters_block">
             <div class="coin_select_tag">Новости {{ upFilterSymbol() }}</div>
             <dropdowns :options="types" :selected="selectedType" v-on:updateOption="filterByType"></dropdowns>
           </div>
 
-          <div class="scroll-container">
+          <div class="scroll-container" ref="scroll_news">
             <div v-if="$store.state.news.length" class="ff-news">
 
               <!-- ssr list -->
@@ -77,9 +114,9 @@
                 <span slot="no-more">Вы достигли конца списка</span>
                 <span slot="no-results">Вы достигли конца списка</span>
               </infinite-loading>
-              
+
             </div>
-          </div> 
+          </div>
           <div class="fading" v-bind:class="{ filtered: isFiltering }"></div>
         </aside>
       </div>
@@ -171,10 +208,10 @@
         ],
         selectedType: {name: 'Все новости'},
         back: { name: 'index' },
-        activePane: 'center_pane',
         activeTab: null,
         isFiltering: null,
         fadeForRedirect: false,
+        coinExpand: false,
       }
     },
 
@@ -260,6 +297,9 @@
       if( this.$route.name == "index-coins" ) {
         this.filterBySymbol(null)
       }
+
+      this.topOffset = this.$refs["right_pane"].offsetTop
+      this.$refs["scroll_news"].addEventListener('scroll', this.handleScroll, false);
 
     },
 
@@ -405,7 +445,32 @@
       },
       getSubscribtions() {
         return this.$store.state.socketCoins.map( coin => `5~CCCAGG~${coin}~USDT` )
-      }
+      },
+      handleScroll () {
+        // this.$refs["scroll_news"].scrollTo( 0, 0 );
+        // return;
+        var sh = this.$refs["scroll_news"].scrollHeight
+        var st = this.$refs["scroll_news"].scrollTop
+        var oh = this.$refs["scroll_news"].offsetHeight
+
+
+        if( st > this.topOffset ) {
+          st = this.topOffset
+        }
+        let blockTop =  this.topOffset - st
+        this.$refs["right_pane"].style.top = blockTop +'px'
+
+      },
+
+      onClosePane: function () {
+        this.$refs["scroll-container"].scrollTo(0, 0)
+        this.coinExpand = !this.coinExpand
+      },
+
+      tabCoin: function () {
+        return this.$route.params.symbol && this.$route.params.symbol != 'btc' ? upSymbol(this.$route.params.symbol)  : 'Новости'
+      },
+
     },
 
     socket: {
@@ -475,18 +540,25 @@
           'col-md-8': this.isMarketCup,
           'col-md-7': !this.isMarketCup,
           'fade_for_redirect': this.fadeForRedirect,
-          'col-12': this.activePane == 'center_pane',
-          'active_center': this.activePane == 'center_pane',
+          'col-12': true,
+          'active_center': true,
         }
       },
 
       colRight: function () {
         return {
           'col-12': this.$route.name == 'index' || this.$route.name == 'index-symbol',
-          'active_right': this.$route.name == 'index' || this.$route.name == 'index-symbol',
+          'active_right': (this.$route.name == 'index' || this.$route.name == 'index-symbol') && !this.coinExpand
         }
       },
 
+      coinExpandButton: function () {
+        return {
+          'expand': !this.coinExpand,
+          'collapse': this.coinExpand,
+          'hidden': !(this.$route.name == 'index' || this.$route.name == 'index-symbol'),
+        }
+      },
 
       showPost: function () {
         return this.$route.name == 'index-symbol-id' || this.$route.name == 'slug-id' || (this.$route.name.indexOf('wiki') > 0)
@@ -494,6 +566,11 @@
       routeKey: function () {
         return this.$route.params.id || this.$route.params.symbol || this.$route.name
       }
+    },
+
+    beforeDestroy() {
+      this.$refs["scroll_news"].removeEventListener('scroll', this.handleScroll, false)
+      //console.log('scrolling Destroyed');
     },
 
   };
@@ -522,5 +599,6 @@
 
     return api_news + filterQuery
   }
+
 
 </script>
