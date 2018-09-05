@@ -451,7 +451,7 @@
         // this.$refs["scroll_news"].scrollTo( 0, 0 );
         // return;
         var sh = this.$refs["scroll_news"].scrollHeight
-        var st = this.$refs["scroll_news"].scrollTop/5
+        var st = this.$refs["scroll_news"].scrollTop
         var oh = this.$refs["scroll_news"].offsetHeight
 
 
