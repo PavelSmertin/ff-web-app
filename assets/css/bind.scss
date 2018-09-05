@@ -383,6 +383,13 @@ h3 {
 	}
 }
 
+.page-enter-active, .page-leave-active {
+	transition: opacity .2s
+}
+.page-enter, .page-leave-active, .page-leave {
+	opacity: 0.5
+}
+
 
 /************ INDEX PAGE STRUCTURE **************/
 .container-fluid {
@@ -446,8 +453,19 @@ h3 {
 					display: block;
 				}
 				.ff_content {
+
+					justify-items: stretch;
+    				align-items: stretch;
+
 					.ff-right-panel.active_right {
 						display: flex;
+
+						position: absolute;
+    					bottom: 0;
+    					top: 100px;
+    					background-color: $bg-main-color;
+    					border-top: 1px solid $border-bold-color;
+    					margin-top: -1px;
 					}
 					.ff-right-panel {
 						display: none;
@@ -461,16 +479,33 @@ h3 {
 					}
 					.ff_center_panel {
 						display: none;
-						.ff_close {
-							display: none;
-						}
+						border: none;
 						.ff_close_mobile {
 							display: block;
+							margin-top: 20px;
+    						margin-right: 20px;
+							.svgDemoGraphic {
+							    width: 48px;
+							    height: 48px;
+							    border-radius: 24px;
+    							box-shadow: 0px 0px 48px #ccc;
+    							background-color: $bg-main-color;
+							}
+							&.expand {
+							}
+							&.collapse {
+
+							}
+							&.hidden {
+								display: none;
+							}
 						}
-						/*top:-49px;*/
 					}
 					.ff_center_panel.active_center {
 						display: flex;
+/*						.ff_scroll_wrap {
+							position: relative;
+						}*/
 					}
 				}
 
@@ -646,12 +681,13 @@ h3 {
 		margin: 0;
 		display: inline-block;
 		padding: 0 0px 0 24px;
-		span {
+		a {
 			line-height: 48px;
 			display: inline-block;
     		height: 48px;
 		}
-		.active_tab {
+		.nuxt-link-exact-active {
+			color: $primary-color;
 			border-bottom: 2px solid $bg-toolbar-color;
 		}
 	}
@@ -1337,12 +1373,6 @@ h3 {
 	.ff_post {
 		padding-bottom: 40px;
 	}
-	&.page-enter-active, &.page-leave-active {
-		transition: opacity .2s
-	}
-	&.page-enter, &.page-leave-active, &.page-leave {
-		opacity: 0
-	}
 }
 .ff_post {
 	padding-bottom: 140px;
@@ -1956,14 +1986,6 @@ h3 {
 		font-size: 12px;
 	}
 
-	&.page-enter-active, &.page-leave-active {
-		transition: opacity .2s
-	}
-
-	&.page-enter, &.page-leave-active, &.page-leave {
-		opacity: 0.5
-	}
-
 	.vue-highcharts {
 		margin-top: 10px;
 		width: 100%;
@@ -2208,6 +2230,9 @@ h3 {
 }
 @media (max-width: 769px) { 
 	.ff_coin {
+		.coin_mobile {
+/*			display: none;
+*/		}
 		.coin_detail_unit {
 			margin: 10px 0;
 			.coin-detail {

@@ -2,11 +2,15 @@
   <main class="row ff_index no-gutters">
     <div class="col ff_wrap">
       <ul class="row ff_mobile_tabs">
-        <li class="col-3"  v-on:click="setLeftTab">
-          <span v-bind:class="activeLeftTab">Крипта</span>
+        <li class="col-3">
+          <nuxt-link :to="{name: 'index-coins'}">
+            Крипта
+          </nuxt-link>
         </li>
-        <li class="col-3" v-on:click="setRightTab">
-          <span v-bind:class="activeRightTab">Новости</span>
+        <li class="col-3">
+          <nuxt-link :to="{name: 'index'}">
+            Новости
+          </nuxt-link >
         </li>
       </ul>
 
@@ -20,7 +24,7 @@
           </div>
         </transition>
 
-        <div class="ff_center_panel" v-bind:class="colCenter">
+        <div class="ff_center_panel" v-bind:class="colCenter" ref="center_pane">
 
           <div class="ff_scroll_wrap" ref="scroll-container">
             <nuxt-child :key="routeKey"/>
@@ -48,43 +52,54 @@
             </svg>
           </button>
 
-          <button v-on:click="onClosePane()" class="ff_close_mobile">
-            <svg width="106px" height="106px" viewBox="0 0 106 106" id="ff_close">
-              <defs>
-                <circle id="path-1" cx="24" cy="24" r="24"></circle>
-                <filter x="-104.2%" y="-83.3%" width="308.3%" height="308.3%" filterUnits="objectBoundingBox" id="filter-mobile">
-                  <feOffset dx="0" dy="10" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
-                  <feGaussianBlur stdDeviation="15" in="shadowOffsetOuter2" result="shadowBlurOuter1"></feGaussianBlur>
-                  <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
-                </filter>
-              </defs>
-              <g transform="translate(-890.000000, -211.000000)">
-                <g transform="translate(928.000000, 230.000000)">
-                  <g>
-                    <use fill="black" fill-opacity="1" filter="url(#filter-mobile)" xlink:href="#path-1"></use>
-                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+
+          <button v-if="coinExpand" v-on:click="onClosePane()" class="ff_close_mobile" v-bind:class="coinExpandButton">
+            <svg id="ic_expand_collapse" viewBox="0 0 24 24" class="svgDemoGraphic">
+              <g id="chevron" transform="translate(12,10)">
+                <g id="leftBar" transform="rotate(-45)">
+                  <g transform="translate(0,3)">
+                    <path id="leftBarPath" class="delightIconFillPath" d="M1-4v8h-0.7v-8z"></path>
                   </g>
-                  <polygon id="close" fill="#000000" points="19 19.8 23.2 24.0000063 19 28.2 19.8 29 24 24.8 28.2 29 29 28.2 24.8 24.0000063 29 19.8 28.2 19 24 23.2 19.8 19"></polygon>
+                </g>
+                <g id="rightBar" transform="rotate(225)">
+                  <g transform="translate(0,-3)">
+                    <path id="rightBarPath" class="delightIconFillPath" d="M1-4v8h-0.7v-8z"></path>
+                  </g>
                 </g>
               </g>
             </svg>
           </button>
-          
+
+          <button v-else v-on:click="onClosePane()" class="ff_close_mobile" v-bind:class="coinExpandButton">
+            <svg id="ic_expand_collapse" viewBox="0 0 24 24" class="svgDemoGraphic">
+              <g id="chevron" transform="translate(12,15)">
+                <g id="leftBar" transform="rotate(135)">
+                  <g transform="translate(0,3)">
+                    <path id="leftBarPath" class="delightIconFillPath" d="M1-4v8h-0.7v-8z"></path>
+                  </g>
+                </g>
+                <g id="rightBar" transform="rotate(45)">
+                  <g transform="translate(0,-3)">
+                    <path id="rightBarPath" class="delightIconFillPath" d="M1-4v8h-0.7v-8z"></path>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </button>
+
+
         </div>
 
-
-        <aside class="ff-right-panel col-md-4" v-bind:class="colRight">
+        <aside class="ff-right-panel col-md-4" ref="right_pane" v-bind:class="colRight">
 
           <div class="news_filters_block">
             <div class="coin_select_tag">Новости {{ upFilterSymbol() }}</div>
             <dropdowns :options="types" :selected="selectedType" v-on:updateOption="filterByType"></dropdowns>
           </div>
 
-          <div class="scroll-container">
+          <div class="scroll-container" ref="scroll_news">
             <div v-if="$store.state.news.length" class="ff-news">
 
-<!--               <news-coin></news-coin>
- -->
               <!-- ssr list -->
               <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
                 <post-item :post="newest" ></post-item>
@@ -99,11 +114,10 @@
                 <span slot="no-more">Вы достигли конца списка</span>
                 <span slot="no-results">Вы достигли конца списка</span>
               </infinite-loading>
-              
-            </div>
-          </div> 
-          <div class="fading" v-bind:class="{ filtered: isFiltering }"></div>
 
+            </div>
+          </div>
+          <div class="fading" v-bind:class="{ filtered: isFiltering }"></div>
         </aside>
       </div>
     </div>
@@ -194,10 +208,10 @@
         ],
         selectedType: {name: 'Все новости'},
         back: { name: 'index' },
-        activePane: 'center_pane',
         activeTab: null,
         isFiltering: null,
         fadeForRedirect: false,
+        coinExpand: false,
       }
     },
 
@@ -217,8 +231,8 @@
       }
 
       let requests =  [
-        app.$axios.get(apiNewsPrepare(store.state.filters)),
-        app.$axios.get(api_coins),
+        app.$axios.get( apiNewsPrepare(store.state.filters) ),
+        app.$axios.get( api_coins ),
       ]
 
       let [ news, coins ] = await Promise.all(requests)
@@ -284,10 +298,12 @@
         this.filterBySymbol(null)
       }
 
+      this.topOffset = this.$refs["right_pane"].offsetTop
+      this.$refs["scroll_news"].addEventListener('scroll', this.handleScroll, false);
+
     },
 
     methods: {
-
       applyBackStack(to, from) {
         if(to.name == "index" || to.name == "index-symbol") {
           this.back = { name: 'index-coins' } 
@@ -295,11 +311,7 @@
         }
 
         if(from.name == "index-symbol") {
-          this.back = { name: 'index-symbol', 
-            params: { 
-              symbol: from.params.symbol
-            }
-          }
+          this.back = { path: `/${from.params.symbol}` }
           return
         }
 
@@ -313,7 +325,6 @@
           return
         }
       },
-
       infiniteHandler($state) {
         this.infiniteState = $state
         this.$axios.get(apiNewsPrepare(this.$store.state.filters), {
@@ -332,13 +343,11 @@
           }
         })
       },
-
       filterByType(payload) {
         this.$store.commit('SET_FILTER_TYPE', payload.value)
         this.selectedType = payload
         this.filter()
       },
-
       filterBySymbol(symbol) {
         if(upSymbol(this.$store.state.filters.symbol) == upSymbol(symbol)) {
           return
@@ -346,7 +355,6 @@
         this.$store.commit('SET_FILTER_SYMBOL', symbol)
         this.filter()
       },
-
       filter() {
         this.isFiltering = true
         if(this.infiniteState) { 
@@ -366,33 +374,10 @@
             this.isFiltering = false
           })
       },
-      setRightTab: function () {
-        this.activeTab = 'right_tab'
-        this.activePane = 'right_pane'
-      },
-      setLeftTab: function () {
-        this.activeTab = 'left_tab'
-        this.activePane = 'left_pane'
-      },
-      showCentralPane: function () {
-        this.activePane = 'center_pane'
-      },
-      hideCentralPane: function () {
-        if( this.activeTab == 'right_tab' ) {
-          this.activePane = 'right_pane'
-        } else {
-          this.activePane = 'left_pane'
-        }
-      },
-
       onClose: function () {
         this.sendEvent( 'CloseButton', 'close', this.$route.path );
         this.$router.push(this.back)
       },
-      onClosePane: function () {
-        this.hideCentralPane()
-      },
-
       beforeEnter: function (el) {
         this.isMarketCup = this.$route.name == 'index-coins' 
       },
@@ -402,23 +387,25 @@
       afterLeave: function (el) {
         this.isMarketCup = this.$route.name == 'index-coins' 
       },
-
       linkToPost: function (post) {
         if( post.slug ) {
-          return { name: 'slug-id', params: { id: post.id, slug: post.slug, newest:  post }}
+          return { name: 'slug-id', params: { id: post.id, slug: post.slug, newest:  post, }}
         } else {
-          return { name: 'index-id', params: { id: post.id, newest:  post }}
+          return { name: 'index-symbol-id', params: { 
+              symbol: this.$route.params.symbol ? this.$route.params.symbol : 'btc',
+              id: post.id, 
+              newest:  post,
+            }
+          }
+
         }
       },
-
       upFilterSymbol: function () {
         return upSymbol(this.$store.state.filters.symbol)
       },
-
       onPostClick: function ( postId ) {
         this.sendEvent( 'NewsPanel', 'click', postId );
       },
-
       dataUnpack(message) {
         var data = this.unpack(message);
 
@@ -433,7 +420,6 @@
 
         return { symbol: data['FROMSYMBOL'], price: data['PRICE'], volume24h: data['VOLUME24HOUR'] } //, delta: delta};
       },
-
       unpack(value) {
         var valuesArray = value.split( "~" )
         var valuesArrayLenght = valuesArray.length
@@ -457,10 +443,34 @@
 
         return unpackedCurrent
       },
-
       getSubscribtions() {
         return this.$store.state.socketCoins.map( coin => `5~CCCAGG~${coin}~USDT` )
-      }
+      },
+      handleScroll () {
+        // this.$refs["scroll_news"].scrollTo( 0, 0 );
+        // return;
+        var sh = this.$refs["scroll_news"].scrollHeight
+        var st = this.$refs["scroll_news"].scrollTop
+        var oh = this.$refs["scroll_news"].offsetHeight
+
+
+        if( st > this.topOffset ) {
+          st = this.topOffset
+        }
+        let blockTop =  this.topOffset - st
+        this.$refs["right_pane"].style.top = blockTop +'px'
+
+      },
+
+      onClosePane: function () {
+        this.$refs["scroll-container"].scrollTo(0, 0)
+        this.coinExpand = !this.coinExpand
+      },
+
+      tabCoin: function () {
+        return this.$route.params.symbol && this.$route.params.symbol != 'btc' ? upSymbol(this.$route.params.symbol)  : 'Новости'
+      },
+
     },
 
     socket: {
@@ -500,8 +510,6 @@
         if( this.$route.name == "index-coins" ) {
           this.filterBySymbol(null)
         }
-
-        this.showCentralPane()
       },
 
       '$store.state.updateSocketCoins':  _.debounce( function ( newValue ) {
@@ -525,8 +533,6 @@
       colLeft: function () {
         return {
           'col-md-1': this.$route.name != 'index-coins',
-          'col-12': this.activePane == 'left_pane',
-          'active_left': this.activePane == 'left_pane',
         }
       },
       colCenter: function () {
@@ -534,34 +540,37 @@
           'col-md-8': this.isMarketCup,
           'col-md-7': !this.isMarketCup,
           'fade_for_redirect': this.fadeForRedirect,
-          'col-12': this.activePane == 'center_pane',
-          'active_center': this.activePane == 'center_pane',
+          'col-12': true,
+          'active_center': true,
         }
       },
+
       colRight: function () {
         return {
-          'col-12': this.activePane == 'right_pane',
-          'active_right': this.activePane == 'right_pane',
+          'col-12': this.$route.name == 'index' || this.$route.name == 'index-symbol',
+          'active_right': (this.$route.name == 'index' || this.$route.name == 'index-symbol') && !this.coinExpand
         }
       },
 
-      activeRightTab: function () {
+      coinExpandButton: function () {
         return {
-          'active_tab': this.activeTab == 'right_tab',
+          'expand': !this.coinExpand,
+          'collapse': this.coinExpand,
+          'hidden': !(this.$route.name == 'index' || this.$route.name == 'index-symbol'),
         }
       },
-      activeLeftTab: function () {
-        return {
-          'active_tab': this.activeTab == 'left_tab',
-        }
-      },
+
       showPost: function () {
-        return this.$route.name == 'index-id' || this.$route.name == 'slug-id' || (this.$route.name.indexOf('wiki') > 0)
+        return this.$route.name == 'index-symbol-id' || this.$route.name == 'slug-id' || (this.$route.name.indexOf('wiki') > 0)
       },
-
       routeKey: function () {
         return this.$route.params.id || this.$route.params.symbol || this.$route.name
       }
+    },
+
+    beforeDestroy() {
+      this.$refs["scroll_news"].removeEventListener('scroll', this.handleScroll, false)
+      //console.log('scrolling Destroyed');
     },
 
   };
@@ -590,5 +599,6 @@
 
     return api_news + filterQuery
   }
+
 
 </script>

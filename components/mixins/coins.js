@@ -11,7 +11,7 @@ export const coinsMixin = {
             if( coin.attributes.symbol == 'BTC') {
                 return { name: 'index' }
             }
-            return { name: 'index-symbol',  params: { symbol: this.downSymbol(coin.attributes.symbol) }}
+            return { path: `/${this.downSymbol(coin.attributes.symbol)}` }
         },
     }
 }

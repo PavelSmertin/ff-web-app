@@ -15,8 +15,6 @@
 
   export default {
 
-    transition: 'page',
-
     mixins: [ analMixin ],
 
     validate({ params }) {
@@ -172,7 +170,7 @@
         return '/FF_cover968_b.png'
       },
       getScrollParent() {
-        return this.$parent.$refs["scroll-container"]
+        return this.$parent.$parent.$refs["scroll-container"]
       },
       attemptLoad( isContinuousCall ) {
         if( this.$refs["infinite_loading_container"] == undefined) {
