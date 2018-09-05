@@ -298,7 +298,7 @@
         this.filterBySymbol(null)
       }
 
-      this.topOffset = this.$refs["right_pane"].offsetTop
+      this.topOffset = this.$refs["scroll_news"].offsetParent === null ? 100 : this.$refs["right_pane"].offsetTop
       this.$refs["scroll_news"].addEventListener('scroll', this.handleScroll, false);
 
     },
