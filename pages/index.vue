@@ -299,8 +299,13 @@
       }
 
       // устанавливаем высоту шапки для мобильной версии
-      this.topOffset = this.$refs["scroll_news"].offsetParent === null ? 100 : this.$refs["right_pane"].offsetTop
-      this.$refs["scroll_news"].addEventListener('scroll', this.handleScroll, false);
+       this.topOffset = this.$refs["scroll_news"].offsetParent === null ? 100 : this.$refs["right_pane"].offsetTop
+      // this.$refs["scroll_news"].addEventListener('scroll', this.handleScroll, false);
+
+
+      this.$refs["scroll_news"].ontouchmove  = this.handleScroll
+      this.$refs["scroll_news"].onwheel  = this.handleScroll
+
 
     },
 
@@ -447,21 +452,35 @@
       getSubscribtions() {
         return this.$store.state.socketCoins.map( coin => `5~CCCAGG~${coin}~USDT` )
       },
-      handleScroll () {
+      handleScroll( e ) {
+
+
+        console.log(e)
+        var st = this.$refs["scroll_news"].scrollTop
+        this.$refs["right_pane"].style.height = (this.$refs["right_pane"].offsetHeight + 5) +'px'
+
+
+        e = e || window.event
+        if (e.preventDefault)
+          e.preventDefault()
+        e.returnValue = false
+
+        return
+
+
         // this.$refs["scroll_news"].scrollTo( 0, 0 );
         // return;
-        var sh = this.$refs["scroll_news"].scrollHeight
-        var st = this.$refs["scroll_news"].scrollTop
-        var oh = this.$refs["scroll_news"].offsetHeight
+        // var sh = this.$refs["scroll_news"].scrollHeight
+        // var st = this.$refs["scroll_news"].scrollTop
+        // var oh = this.$refs["scroll_news"].offsetHeight
 
 
-        if( st > this.topOffset ) {
-          st = this.topOffset
-        }
+        // if( st > this.topOffset ) {
+        //   st = this.topOffset
+        // }
 
-        console.log(st, oh)
-        let blockTop =  this.topOffset - st
-        this.$refs["right_pane"].style.height = (this.$refs["right_pane"].offsetHeight + st/100) +'px'
+        // let blockTop =  this.topOffset - st
+        // this.$refs["right_pane"].style.height = (this.$refs["right_pane"].offsetHeight + st/10) +'px'
 
       },
 
@@ -602,6 +621,14 @@
 
     return api_news + filterQuery
   }
+
+  function preventDefault(e) {
+    e = e || window.event;
+    if (e.preventDefault)
+        e.preventDefault();
+    e.returnValue = false;  
+  }
+
 
 
 </script>
