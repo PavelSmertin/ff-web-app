@@ -299,13 +299,11 @@
       }
 
       // устанавливаем высоту шапки для мобильной версии
-       this.topOffset = this.$refs["scroll_news"].offsetParent === null ? 100 : this.$refs["right_pane"].offsetTop
-      // this.$refs["scroll_news"].addEventListener('scroll', this.handleScroll, false);
-
-
-      this.$refs["scroll_news"].ontouchmove  = this.handleScroll
-      this.$refs["scroll_news"].onwheel  = this.handleScroll
-
+      this.topOffset = this.$refs["scroll_news"].offsetParent === null ? 100 : this.$refs["right_pane"].offsetTop
+      this.$refs["scroll_news"].addEventListener('touchmove', this.handleScroll )
+      this.$refs["scroll_news"].addEventListener('wheel', this.handleScroll )
+      this.$refs["scroll_news"].addEventListener('DOMMouseScroll', this.handleScroll )
+      this.$refs["scroll_news"].addEventListener('mousewheel', this.handleScroll )
 
     },
 
@@ -454,33 +452,23 @@
       },
       handleScroll( e ) {
 
-
-        console.log(e)
-        var st = this.$refs["scroll_news"].scrollTop
-        this.$refs["right_pane"].style.height = (this.$refs["right_pane"].offsetHeight + 5) +'px'
-
-
-        e = e || window.event
-        if (e.preventDefault)
-          e.preventDefault()
-        e.returnValue = false
-
-        return
-
-
         // this.$refs["scroll_news"].scrollTo( 0, 0 );
         // return;
-        // var sh = this.$refs["scroll_news"].scrollHeight
-        // var st = this.$refs["scroll_news"].scrollTop
-        // var oh = this.$refs["scroll_news"].offsetHeight
+        var sh = this.$refs["scroll_news"].scrollHeight
+        var st = this.$refs["scroll_news"].scrollTop
+        var oh = this.$refs["scroll_news"].offsetHeight
 
 
-        // if( st > this.topOffset ) {
-        //   st = this.topOffset
-        // }
+        if( st > this.topOffset ) {
+          st = this.topOffset
+        }
+        let blockTop =  this.topOffset - st
+        this.$refs["right_pane"].style.top = blockTop +'px'
 
-        // let blockTop =  this.topOffset - st
-        // this.$refs["right_pane"].style.height = (this.$refs["right_pane"].offsetHeight + st/10) +'px'
+        // e = e || window.event
+        // if (e.preventDefault)
+        //   e.preventDefault()
+        // e.returnValue = false
 
       },
 
@@ -591,8 +579,11 @@
     },
 
     beforeDestroy() {
-      this.$refs["scroll_news"].removeEventListener('scroll', this.handleScroll, false)
-      //console.log('scrolling Destroyed');
+      this.$refs["scroll_news"].removeEventListener('touchmove', this.handleScroll, false)
+      this.$refs["scroll_news"].removeEventListener('wheel', this.handleScroll, false)
+      this.$refs["scroll_news"].removeEventListener('DOMMouseScroll', this.handleScroll, false)
+      this.$refs["scroll_news"].removeEventListener('mousewheel', this.handleScroll, false)
+
     },
 
   };
@@ -621,14 +612,6 @@
 
     return api_news + filterQuery
   }
-
-  function preventDefault(e) {
-    e = e || window.event;
-    if (e.preventDefault)
-        e.preventDefault();
-    e.returnValue = false;  
-  }
-
 
 
 </script>
