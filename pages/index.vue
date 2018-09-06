@@ -212,6 +212,9 @@
         isFiltering: null,
         fadeForRedirect: false,
         coinExpand: false,
+        coinExpandAnimation: false,
+        prevScrollTop: 0,
+
       }
     },
 
@@ -297,6 +300,9 @@
       if( this.$route.name == "index-coins" ) {
         this.filterBySymbol(null)
       }
+
+
+
 
       // устанавливаем высоту шапки для мобильной версии
       this.topOffset = this.$refs["scroll_news"].offsetParent === null ? 100 : this.$refs["right_pane"].offsetTop
@@ -459,17 +465,51 @@
         var oh = this.$refs["scroll_news"].offsetHeight
 
 
-        if( st > this.topOffset ) {
-          st = this.topOffset
+
+        if( st < this.topOffset ) {
+          this.start( st > this.prevScrollTop )
         }
-        let blockTop =  this.topOffset - st
-        this.$refs["right_pane"].style.top = blockTop +'px'
+        this.prevScrollTop = st
+        // if( st > this.topOffset ) {
+        //   st = this.topOffset
+        // }
+
+
+        // let blockTop =  this.topOffset - st
+        // this.$refs["right_pane"].style.top = blockTop +'px'
 
         // e = e || window.event
         // if (e.preventDefault)
         //   e.preventDefault()
         // e.returnValue = false
 
+      },
+
+
+      start( direction ) {
+        if( this.coinExpandAnimation ) {
+          return
+        }
+        this.coinExpandAnimation = true
+
+
+        let start = Date.now()
+        let el = this.$refs["right_pane"]
+        let position = this.topOffset
+        this.timer = setInterval(function() {
+          let timePassed = Date.now() - start
+
+          let toPosition = moveHead(el, position,  timePassed * (direction ? -1 : 1))
+          if( toPosition > 0 ) {
+            el.style.top = toPosition + 'px'
+          } else {
+            el.style.top = '0px'
+            clearInterval( this.timer )
+            //app.coinExpandAnimation = false
+
+            return
+          }
+        }, 20)
       },
 
       onClosePane: function () {
@@ -612,6 +652,12 @@
 
     return api_news + filterQuery
   }
+
+
+  function moveHead( el, position, delta ) {
+    return position - delta/2
+  }
+
 
 
 </script>
