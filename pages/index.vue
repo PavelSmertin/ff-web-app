@@ -458,8 +458,10 @@
         if( st > this.topOffset ) {
           st = this.topOffset
         }
+
+        console.log(st, oh)
         let blockTop =  this.topOffset - st
-        this.$refs["right_pane"].style.top = blockTop +'px'
+        this.$refs["right_pane"].style.height = (this.$refs["right_pane"].offsetHeight + st/100) +'px'
 
       },
 

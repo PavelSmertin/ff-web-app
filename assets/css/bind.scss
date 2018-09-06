@@ -462,8 +462,9 @@ h3 {
 
 						position: absolute;
     					bottom: 0;
-    					top: 100px;
-    					background-color: $bg-main-color;
+    					height: 50%;
+/*    					top: 100px;
+*/    					background-color: $bg-main-color;
     					border-top: 1px solid $border-bold-color;
     					margin-top: -1px;
 					}
