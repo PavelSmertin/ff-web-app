@@ -52,7 +52,7 @@
 				</nuxt-link>
 				<nuxt-link
 						@click.native="sendEvent( 'Toolbar', 'click', 'auth' )"
-						v-if="!$auth.loggedIn" :to="{ name: 'account-signin' }"
+						v-if="$auth.loggedIn === false" :to="{ name: 'account-signin' }"
 						class="ff_account_menu ff_account_menu_short">
 					Вход
 				</nuxt-link>
