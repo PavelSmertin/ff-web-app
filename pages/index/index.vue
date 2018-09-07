@@ -428,7 +428,7 @@
         if( process.server ) {
           return getTitle( this.attributes )
         } else {
-          return `${this.price()}$ ${this.dinamic()}${this.attributes.percent_change24h} — Курс Биткоина в реальном времени на биржах к доллару/рублю. Биткойн калькулятор`
+          return `${this.price()}$ ${this.dinamic()}${this.attributes.percent_change24h}% — Курс Биткоина в реальном времени на биржах к доллару/рублю. Биткойн калькулятор`
         }
       },
 

@@ -258,7 +258,7 @@
         if( process.server ) {
           return getTitle( this.attributes )
         } else {
-          return `${this.price()}$ ${this.dinamic()}${this.attributes.percent_change24h} — Курс ${this.symbol} на сегодня к доллару/рублю. График курса ${this.symbol}`
+          return `${this.price()}$ ${this.dinamic()}${this.attributes.percent_change24h}% — Курс ${this.symbol} на сегодня к доллару/рублю. График курса ${this.symbol}`
         }
       },
 
