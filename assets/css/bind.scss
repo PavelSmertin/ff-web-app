@@ -705,6 +705,7 @@ h3 {
 /* coins block */
 .ff_coin_index {
 	.button_more {
+		border-bottom: 1px solid #E6E6E6;
 		box-shadow: 0 5px 30px rgba($bg-toolbar-color, .0);
 		transition: box-shadow 0.1s ease-in-out;
 		display: inline-flex;
@@ -734,7 +735,7 @@ h3 {
 			padding-left: 24px;
 			line-height: 24px;
 			width: 100%;
-			cursor: pointer;
+			cursor: text;
 			&:focus {
 				outline: none;
 				background: transparent url('~assets/images/ic_search_hover.svg') 0% 50% no-repeat;
