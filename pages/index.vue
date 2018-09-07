@@ -348,37 +348,36 @@
           }
         })
       },
-      checkNewNews()
-      {
-          this.$axios.get(apiNewsPrepare(this.$store.state.filters), {
-              params: {
-                  page: 1,
-              },
-          }).then(({ data }) => {
+      checkNewNews() {
+        this.$axios.get(apiNewsPrepare(this.$store.state.filters), {
+          params: {
+            page: 1,
+          },
+        }).then(({ data }) => {
 
-            let newsObj = dataFormatter.deserialize( data )
-            let newNews = [];
-            let newNewsId = [];
-            let stop = false;
+          let newsObj = dataFormatter.deserialize( data )
+          let newNews = [];
+          let newNewsId = [];
+          let stop = false;
 
-            newsObj.forEach(function(news, index){
-              if (news.id == this.firstNews.id) {
-                  this.stop = true
-              }
-              if (!this.stop) {
-                  this.newNews.push(news)
-                  this.newNewsId.push(news.id)
-              }
-            }, {
-              firstNews: this.$store.state.news[0],
-              newNews: newNews,
-              newNewsId: newNewsId,
-              stop: stop,
-            })
-            this.$store.state.news = newNews.concat(this.$store.state.news)
-            let tops = newNewsId.concat(this.$store.state.topNews).slice(0,2)
-            this.$store.commit( 'SET_TOP_NEWS', tops )
+          newsObj.forEach(function(news, index){
+            if (news.id == this.firstNews.id) {
+              this.stop = true
+            }
+            if (!this.stop) {
+              this.newNews.push(news)
+              this.newNewsId.push(news.id)
+            }
+          }, {
+            firstNews: this.$store.state.news[0],
+            newNews: newNews,
+            newNewsId: newNewsId,
+            stop: stop,
           })
+          this.$store.state.news = newNews.concat(this.$store.state.news)
+          this.$store.state.topNews = newNewsId.concat(this.$store.state.topNews).slice(0,2)
+          this.$store.commit( 'SET_TOP_NEWS', this.$store.state.topNews )
+        })
       },
       filterByType(payload) {
         this.$store.commit('SET_FILTER_TYPE', payload.value)
