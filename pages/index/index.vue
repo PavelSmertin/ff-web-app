@@ -241,7 +241,7 @@
 
     head() {
       return {
-        title: this.headTitle,
+        title: this.title(),
         symbol: false,
         meta: [
           { 
@@ -423,6 +423,17 @@
         return this.formatPrice( this.attributes.price_usd )
       },
 
+      title() {
+        if( process.server ) {
+          return getTitle( this.attributes )
+        } else {
+          return `${this.price()}$ ${this.dinamic()}${this.attributes.percent_change24h} — Курс Биткоина в реальном времени на биржах к доллару/рублю. Биткойн калькулятор.`
+        }
+      },
+      dinamic( ) {
+        return this.attributes.percent_change24h > 0 ? '▲' : '▼'
+      },
+
       watchSocketCoin() {
         if( this.$store.state.pageSocketCoin ) {
           this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~USDT`]} )
@@ -431,7 +442,7 @@
         this.$socket.emit( 'SubAdd', { subs: [`5~CCCAGG~${this.symbol}~USDT`] })
       },
 
-      isUp: function ( coin ) {
+      isUp ( coin ) {
         return {
           'up': coin.up,
           'down': !coin.up,

@@ -102,7 +102,7 @@
 
     head() {
       return {
-        title: this.headTitle,
+        title: this.title(),
         meta: [
           { 
             hid: 'description', 
@@ -190,7 +190,7 @@
         var element = this.$parent.$parent.$refs["scroll-container"];
         element.scrollTo(0, 0);
       },
-      formatPrice(value, percision = 2) {
+      formatPrice( value, percision = 2 ) {
         let val = (value/1).toFixed(percision)
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
@@ -252,6 +252,19 @@
           return this.formatPrice( this.$store.state.pageSocketCoin.attributes.price_usd )
         }
         return this.formatPrice( this.attributes.price_usd )
+      },
+
+      title() {
+        if( process.server ) {
+          return getTitle( this.attributes )
+        } else {
+          return `${this.price()}$ ${this.dinamic()}${this.attributes.percent_change24h} — Курс ${this.symbol} на сегодня к доллару/рублю. График курса ${this.symbol}`
+        }
+
+      },
+
+      dinamic( ) {
+        return this.attributes.percent_change24h > 0 ? '▲' : '▼'
       },
 
       watchSocketCoin() {
