@@ -282,9 +282,10 @@
       vote( is_positive ) {
         this.sendEvent( 'PostVote', 'vote', is_positive );
 
-        if( this.setLocalStorage( "vote_" + this.post.id, is_positive )) {
+        if( this.setLocalStorage( "vote", this.post.id, is_positive )) {
           return
         }
+
         this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=rating`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
@@ -298,9 +299,10 @@
       like( is_positive ) {
         this.sendEvent( 'PostLike', 'like', is_positive );
 
-        if( this.setLocalStorage( "like_" + this.post.id, is_positive )) {
+        if( this.setLocalStorage( "like", this.post.id, is_positive )) {
           return
         }
+
         this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=like`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
@@ -311,7 +313,10 @@
           })
       },
 
-      setLocalStorage( key, is_positive ) {
+      setLocalStorage( type, id, is_positive ) {
+
+        const key = type + '_' + id;
+
         if( typeof localStorage === 'undefined' ) {
           return true
         }
@@ -321,7 +326,25 @@
         }
 
         if( this.$auth.loggedIn ) {
-          localStorage.setItem( key, is_positive )
+          const value = localStorage.getItem( key )
+          if ( value !== null && value !== undefined ) {
+            if ( value == is_positive ) {
+              this.post[type + 's' + (is_positive ? '_positive' : '_negative')]--
+              localStorage.removeItem( key )
+            } else {
+              if (is_positive) {
+                this.post[type + 's_positive']++
+                this.post[type + 's_negative']--
+              } else {
+                this.post[type + 's_positive']--
+                this.post[type + 's_negative']++
+              }
+              localStorage.setItem( key, is_positive )
+            }
+          } else {
+            this.post[type + 's' + (is_positive ? '_positive' : '_negative')]++
+            localStorage.setItem( key, is_positive )
+          }
           return false
         }
 
@@ -329,6 +352,7 @@
         if( value != null && value != undefined ) { // && value == is_positive ) {
           return true
         }
+        this.post[type + 's' + (is_positive ? '_positive' : '_negative')]++
         localStorage.setItem( key, is_positive )
 
         return false
