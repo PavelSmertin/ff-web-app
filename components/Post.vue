@@ -184,7 +184,6 @@
   const dataFormatter = new Jsona()
 
   export default {
-    name: 'post-item',
 
     mixins: [ analMixin ],
 

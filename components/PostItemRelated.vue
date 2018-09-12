@@ -12,7 +12,6 @@
   import { analMixin } from '~/components/mixins/analitics.js'
 
   export default {
-    name: "releted-post-item",
 
     mixins: [analMixin],
 

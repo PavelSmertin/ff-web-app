@@ -105,7 +105,10 @@
       <h2 class="margin12">График курса Bitcoin к Доллару</h2>
     </div>
     <div class="row no-gutters coin_mobile">
-      <div id="tradingview_53a94" class="tradingview" ref="tradingview"></div>
+      <no-ssr placeholder="Loading...">
+        <chart-trading-view v-if="showLine"/>
+    
+      </no-ssr>
     </div>
 
     <div class="row no-gutters border_top margin24 coin_mobile">
@@ -229,6 +232,7 @@
   import Vue from 'vue'
   import axios from 'axios'
   import CoinsListOther from '~/components/CoinsListOther.vue'
+  //import ChartTradingView from '~/components/ChartTradingView.vue'
 
   import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
@@ -321,14 +325,15 @@
 
     components: {
       CoinsListOther,
+      //ChartTradingView,
     },
 
     mounted () {
+      this.showLine = true
       this.goto()
-      this.initTradingViewChart()
+      //this.initTradingViewChart()
       this.watchSocketCoin()
       this.sendPulsePushScript()
-
     },
 
     methods: {
