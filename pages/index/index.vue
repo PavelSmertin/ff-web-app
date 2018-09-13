@@ -106,8 +106,7 @@
     </div>
     <div class="row no-gutters coin_mobile">
       <no-ssr placeholder="Loading...">
-        <chart-trading-view v-if="showLine"/>
-    
+        <chart-trading-view v-if="showLine" />
       </no-ssr>
     </div>
 
@@ -232,10 +231,10 @@
   import Vue from 'vue'
   import axios from 'axios'
   import CoinsListOther from '~/components/CoinsListOther.vue'
-  //import ChartTradingView from '~/components/ChartTradingView.vue'
 
   import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
+
 
   const dataFormatter = new Jsona()
 
@@ -325,7 +324,6 @@
 
     components: {
       CoinsListOther,
-      //ChartTradingView,
     },
 
     mounted () {
