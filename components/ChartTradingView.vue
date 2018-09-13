@@ -10,7 +10,7 @@
   //  этот озалуп не заработал
   //import { widget } from '~/assets/js/charting_library.min'
 
-  let { Datafeeds } = require('~/assets/js/datafeeds/udf/dist/bundle.js')
+  //let { Datafeeds } = require('~/assets/js/datafeeds/udf/dist/bundle.js')
   let { TradingView } = require('~/assets/js/charting_library.min')
 
   export default {
