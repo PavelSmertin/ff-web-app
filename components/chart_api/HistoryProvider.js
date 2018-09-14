@@ -1,7 +1,5 @@
-//var rp = require('request-promise').defaults({json: true})
 
 import axios from 'axios'
-
 
 const api_root = 'https://min-api.cryptocompare.com'
 const history = {}
@@ -10,12 +8,12 @@ export default {
 	history: history,
 
     getBars: function(symbolInfo, resolution, from, to, first, limit) {
-		var split_symbol = symbolInfo.name.split(/[:/]/)
+		var split_symbol = symbolInfo.name.split('/')
 			const url = resolution === 'D' ? '/data/histoday' : resolution >= 60 ? '/data/histohour' : '/data/histominute'
 			const qs = {
-					e: split_symbol[0],
-					fsym: split_symbol[1],
-					tsym: split_symbol[2],
+					e: 'CCCAGG',
+					fsym: split_symbol[0],
+					tsym: split_symbol[1],
 					toTs:  to ? to : '',
 					limit: limit ? limit : 2000, 
 					// aggregate: 1//resolution 
@@ -24,12 +22,12 @@ export default {
         return axios.get(`${api_root}${url}`, {params: qs})
             .then(data => {
 				if (data.Response && data.Response === 'Error') {
-					console.log('CryptoCompare API error:',data.Message)
+					//console.log('CryptoCompare API error:',data.Message)
 					return []
 				}
 
 				if (data.data.Data.length) {
-					console.log(`Actually returned: ${new Date(data.data.TimeFrom * 1000).toISOString()} - ${new Date(data.data.TimeTo * 1000).toISOString()}`)
+					//console.log(`Actually returned: ${new Date(data.data.TimeFrom * 1000).toISOString()} - ${new Date(data.data.TimeTo * 1000).toISOString()}`)
 					var bars = data.data.Data.map(el => {
 						return {
 							time: el.time * 1000, //TradingView requires bar time in ms

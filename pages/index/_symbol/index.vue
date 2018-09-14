@@ -78,8 +78,11 @@
       <h2>График курса {{ attributes.coin_name }}</h2>
     </div>
     <div class="row no-gutters coin_mobile">
-      <vue-highcharts :options="options" ref="lineCharts" :callback="callback()"></vue-highcharts>
+      <no-ssr placeholder="Loading...">
+        <chart-trading-view :symbol="ticker"/>
+      </no-ssr>
     </div>
+
 
     <section v-if="attributes.seo_text" class="row ff_text_block margin60 coin_mobile" v-html="attributes.seo_text"></section>
   </section>
@@ -89,8 +92,6 @@
 <script>
   import Vue from 'vue'
   import axios from 'axios'
-  import VueHighcharts from '~/components/VueHighcharts.vue'
-  import { DrilldownOptions, MapData } from '~/static/data.js'
   import { analMixin } from '~/components/mixins/analitics.js'
   import Jsona from 'jsona'
 
@@ -124,18 +125,6 @@
       }
     },
 
-    data() {
-      return {
-        enabled: true,
-        showLine: false,
-        options: DrilldownOptions,
-        series: {
-          type: 'area',
-          zIndex: 50
-        }
-      }
-    },
-
     async asyncData ({ app, params, error }) {
 
       let details
@@ -157,23 +146,23 @@
       let headTitle         = getTitle(attributes)
       let headDescription   = getDescription(attributes)
 
+      let symbol = upSymbol( params.symbol )
+      let tsym = symbol == 'USDT' ? 'USD' : 'USDT'
+
       return { 
         attributes, 
         headTitle, 
         headDescription, 
         downSymbol: downSymbol( params.symbol ), 
-        symbol: upSymbol( params.symbol ),
-        tsym:  upSymbol( params.symbol ) == 'USDT' ? 'USD' : 'USDT',
+        symbol: symbol,
+        tsym: tsym,
+        ticker:  `${symbol}/${tsym}`
       }
     },
 
-    components: {
-      VueHighcharts
-    },
 
     mounted () {
       this.goto()
-      this.loadChart()
       this.watchSocketCoin()
     },
 
@@ -194,22 +183,7 @@
         let val = (value/1).toFixed(percision)
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
-      loadChart() {
 
-        let lineCharts = this.$refs.lineCharts
-        lineCharts.delegateMethod('showLoading', 'Loading...')
-
-        axios.get(`https://min-api.cryptocompare.com/data/histohour?fsym=${this.symbol}&tsym=${this.tsym}&limit=720&aggregate=3&e=CCCAGG`)
-        .then((data) => {
-          this.series.data = data.data.Data.map(a => [a.time*1000, a.close] )
-          lineCharts.removeSeries()
-          lineCharts.addSeries(this.series)
-          lineCharts.hideLoading()
-        })
-        .catch(e => {
-          lineCharts.hideLoading();
-        })
-      },
       getImageSharing() {
         return '/FF_cover968_b.png'
       },
@@ -282,12 +256,6 @@
       },
     },
 
-    beforeRouteUpdate (to, from, next) {
-      if(to.name == "index-symbol") {
-        this.loadChart(to.params.symbol)
-      }
-      next();
-    },
   }
 
 

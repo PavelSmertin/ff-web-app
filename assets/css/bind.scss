@@ -1929,6 +1929,12 @@ h3 {
 	}
 }
 
+
+		.chart-page {
+			background: $bg-main-color !important; 
+			border: 1px solid $border-thin-color !important;
+		}
+
 /* coin page */
 .ff_coin {
 	background-color: $bg-main-color;
@@ -2004,73 +2010,6 @@ h3 {
 		line-height: $coin-info-size;
 		margin-top: 4px;
 		font-size: 12px;
-	}
-
-	.vue-highcharts {
-		margin-top: 10px;
-		width: 100%;
-		.highcharts-background {
-			fill: $bg-main-color;
-		}
-
-		.highcharts-plot-background {
-			fill: $bg-main-color;
-		}
-		/*.highcharts-plot-border {
-			stroke: $border-bold-color;
-			stroke-width: 1px;
-		}
-		*/
-		.highcharts-area {
-			opacity: 0;
-			fill: $bg-main-color;
-		}
-
-		.highcharts-graph {
-			stroke: $link-color;
-		}
-		.highcharts-navigator-mask-inside {
-			opacity: 0.2;
-			fill: $link-color;
-		}
-		.highcharts-scrollbar-thumb {
-			fill: lighten($link-color, 20%);
-		}
-
-		.highcharts-xaxis-grid .highcharts-grid-line,
-		.highcharts-xaxis .highcharts-tick,
-		.highcharts-yaxis-grid .highcharts-grid-line,
-		.highcharts-yaxis .highcharts-tick {
-			stroke-width: 1px;
-			stroke: $border-thin-color;
-		}
-
-		.highcharts-minor-grid-line {
-		    stroke: transparent;
-		}
-		.highcharts-crosshair-thin {
-		    stroke-width: 1px;
-		    stroke: $dark-primary-color;
-		}
-		.highcharts-markers {
-		    stroke-width: 1px;
-		    opacity: 1;
-		    stroke: $dark-primary-color;
-		    fill: $dark-primary-color;
-		}
-
-
-		.highcharts-graph {
-			stroke-width: 2px;
-		}
-
-		.highcharts-tooltip-box .highcharts-label-box {
-		    fill: $dark-primary-color;
-		    stroke: $dark-primary-color;
-		}
-		.highcharts-credits{
-			display: none !important;
-		}
 	}
 
 	.wiki_row {
@@ -2173,10 +2112,11 @@ h3 {
 		}
 	}
 
-	.tradingview {
+	.сhart_сontainer {
 		width: 100%;
-		height: 400px;
-		margin-top: 12px;
+		height: calc(100vh/2);
+
+
 	}
 
 	.calculator {

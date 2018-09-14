@@ -92,7 +92,6 @@ module.exports = {
     { src: '~/plugins/vue-observe-visibility.js', ssr: false  },
     { src: '~/plugins/chart-trading-view.js', ssr: false  },
     // { src: '~/plugins/mailsform.js', ssr: false },
-    { src: '~/plugins/vue-highcharts.js', ssr: true },
   ],
 
   env: {

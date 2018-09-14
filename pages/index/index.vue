@@ -106,7 +106,7 @@
     </div>
     <div class="row no-gutters coin_mobile">
       <no-ssr placeholder="Loading...">
-        <chart-trading-view v-if="showLine" />
+        <chart-trading-view :symbol="'BTC/USDT'"/>
       </no-ssr>
     </div>
 
@@ -218,7 +218,6 @@
       </dl>
     </div>
 
-
     <div class="row no-gutters border_top margin12 coin_mobile">
       <section v-if="attributes.seo_text" class="row ff_text_block margin60" v-html="attributes.seo_text"></section>
     </div>
@@ -270,7 +269,6 @@
     data() {
       return {
         enabled: true,
-        showLine: false,
         series: {
           type: 'area',
           zIndex: 50
@@ -327,9 +325,7 @@
     },
 
     mounted () {
-      this.showLine = true
       this.goto()
-      //this.initTradingViewChart()
       this.watchSocketCoin()
       this.sendPulsePushScript()
     },
