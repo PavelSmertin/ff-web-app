@@ -83,6 +83,7 @@
         fullscreen: this.fullscreen,
         autosize: this.autosize,
         studies_overrides: this.studiesOverrides,
+        toolbar_bg: '#fff',
         overrides: {
           "mainSeriesProperties.showCountdown": true,
           //"paneProperties.background": "#131722",
@@ -101,7 +102,9 @@
           "mainSeriesProperties.candleStyle.wickUpColor": '#8FCC14',
           "mainSeriesProperties.candleStyle.wickDownColor": '#FF6666',
           "mainSeriesProperties.candleStyle.barColorsOnPrevClose": false,
-        }
+        },
+
+
       }
 
       const tvWidget = new TradingView.widget(widgetOptions)
@@ -113,6 +116,6 @@
 <style lang="scss" scoped>
 .сhart_сontainer {
   width: 100%;
-  height: calc(100vh/2);
+  height: calc(100vh/1.8);
 }
 </style>
