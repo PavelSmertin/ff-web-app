@@ -12,7 +12,6 @@
   //  этот озалуп не заработал
   //import { widget } from '~/assets/js/charting_library.min'
 
-  // пришлось вот так делать
   let { TradingView } = require('~/assets/js/charting_library.min')
 
   export default {
@@ -61,15 +60,7 @@
         type: Boolean,
       },
       studiesOverrides: {
-          // "volume.volume.color": "#000000",
-
-          // "volume.volume.transparency": 70,
-          // "volume.volume ma.color": "#000000",
-          // "volume.volume ma.transparency": 0,
-          // "volume.volume ma.linewidth": 0,
-          // "volume.show ma": false,
-          // "bollinger bands.median.color": "#FF6666",
-          // "bollinger bands.upper.linewidth": 7
+        type: Object,
       }
     },
 
@@ -118,3 +109,10 @@
   }
 
 </script>
+
+<style lang="scss" scoped>
+.сhart_сontainer {
+  width: 100%;
+  height: calc(100vh/2);
+}
+</style>
