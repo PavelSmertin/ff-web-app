@@ -1,19 +1,16 @@
 <template> 
   <main class="row ff_index no-gutters">
     <div class="col ff_wrap">
-      <ul class="row ff_mobile_tabs">
+      <ul class="row ff_mobile_tabs" v-if="$route.name != 'index-coins'">
         <li class="tab_item">
           <nuxt-link :to="{name: 'index-coins'}">
             Крипта
           </nuxt-link>
         </li>
-        &rarr;
+        <span class="caret_right"></span>
         <li class="tab_item">
-          <nuxt-link v-if="$route.name == 'index-coins'" :to="{name: 'index'}">
-            Новости
-          </nuxt-link >
-          <span v-else class="ff_mobile_tabs_active"> 
-            {{ upFilterSymbol() == 'BTC' ? 'Новости' : upFilterSymbol() }}
+          <span class="ff_mobile_tabs_active"> 
+            {{ upFilterSymbol() }}
           </span>
         </li>
       </ul>

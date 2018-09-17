@@ -306,6 +306,24 @@ h3 {
 	}
 }
 
+
+.caret {
+	width: 0;
+	height: 0;
+	border-top: 4px dashed;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+}
+
+.caret_right {
+	width: 4px;
+	height: 8px;
+	border-top: 4px solid transparent;
+	border-left: 4px solid;
+	border-bottom: 4px solid transparent;
+	display: inline-block;
+}
+
 #showImgBgr {
 	top: 0;
 	left:0;
@@ -1341,23 +1359,21 @@ h3 {
 		.caret {
 			top: 25px;
 			margin-left: 13px;
-			display: relative;
-			width: 0;
 			position: relative;
-			height: 0;
 			vertical-align: middle;
-			border-top: 4px dashed;
-			border-top: 4px solid \9;
-			border-right: 4px solid transparent;
-			border-left: 4px solid transparent;
 			float: right;
 		}
+
 	}
 }
 @media (max-width: 769px) {
 	.news_filters_block {
 		height: 48px !important;
+		justify-content: flex-end;
 		line-height: 48px;
+		.coin_select_tag {
+			display: none;
+		}
 		.btn-group {
 			height: 48px !important;
 			line-height: 48px;
