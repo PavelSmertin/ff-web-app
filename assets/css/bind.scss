@@ -4,6 +4,7 @@ $font-stack: 'IBM Plex Sans', serif;
 $primary-color: #333;
 $dark-primary-color: #000;
 $post-top-color: #fff;
+$label-size-mobile: 10px;
 $label-size: 12px;
 $coin-info-size: 14px;
 $block-title-size: 16px;
@@ -1297,94 +1298,31 @@ h3 {
 	border-bottom: 1px solid $border-bold-color;
 	height: 56px !important;
 	line-height: 56px;
-	padding: 0 24px;
 	justify-content: space-between;
-	.coin_select_tag {
-		flex-grow: 0;
-	}
-	.btn-group {
-		margin: 0  !important;
-		height: 56px !important;
-		flex-grow: 0;
-		li {
-			list-style: none;
-			margin: 0;
-			padding: 0; 
-		}
-		.dropdown_menu {
-			position: absolute;
-			top: 100%;
-			z-index: 1000;
-			left: auto;
-			right: 0;
-			padding: 5px 0;
-			margin: 2px 0 0;
-			background-color: $bg-main-color;
-			border: 1px solid $border-bold-color;
-			box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-			background-clip: padding-box;
-			> li {
-				overflow: hidden;
-				width: 100%;
-				position: relative;
-				margin: 0;
-				> a {
-					padding: 10px 30px;
-					display: block;
-					font-weight: normal;
-					line-height: 1.6;
-					white-space: nowrap;
-					text-decoration: none;
-					text-transform: uppercase;
-					font-size: $label-size;
-					&:hover {
-						background: $border-thin-color;
-					}
-				}
-			}
-		}
-		.dropdown_toggle {
-			height: 56px;
-			line-height: 56px;
-			color: $dark-primary-color;
-			text-transform: uppercase;
-			font-weight: bold;
-			font-size: $label-size;
-			cursor: pointer;
-			&::after {
-				display: none;
-			}
-		}
+	.filters_tab {
+		flex-grow: 1;
+		border-left: 1px solid $border-bold-color; 
+		text-align: center;
+		text-transform: uppercase;
+		font-size: $label-size;
+		font-weight: bold;
 
-		.caret {
-			top: 25px;
-			margin-left: 13px;
-			position: relative;
-			vertical-align: middle;
-			float: right;
+		&.active_type {
+			color: $link-color;
 		}
-
+		&:first-child {
+			border-left: none;
+		}
 	}
 }
 @media (max-width: 769px) {
 	.news_filters_block {
 		height: 48px !important;
-		justify-content: flex-end;
 		line-height: 48px;
-		.coin_select_tag {
-			display: none;
+		.filters_tab {
+			font-size: $label-size-mobile;
 		}
-		.btn-group {
-			height: 48px !important;
-			line-height: 48px;
-			.dropdown_toggle {
-				height: 48px;
-				line-height: 48px;
-			}
-			.caret {
-				top: 22px !important;
-			}
-		}
+
 	}
 }
 

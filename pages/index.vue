@@ -94,8 +94,10 @@
         <aside class="ff-right-panel col-md-4" ref="right_pane" v-bind:class="colRight">
 
           <div class="news_filters_block">
-            <div class="coin_select_tag">Новости {{ upFilterSymbol() }}</div>
-            <dropdowns :options="types" :selected="selectedType" v-on:updateOption="filterByType"></dropdowns>
+            <a href="#" v-on:click.stop.prevent="filterByType()" class="filters_tab" v-bind:class="activeType()">Все</a>
+            <a href="#" v-on:click.stop.prevent="filterByType('news')" class="filters_tab" v-bind:class="activeType('news')">Новости</a>
+            <a href="#" v-on:click.stop.prevent="filterByType('prognosis')" class="filters_tab" v-bind:class="activeType('prognosis')">Прогнозы</a>
+            <a href="#" v-on:click.stop.prevent="filterByType('signals')" class="filters_tab" v-bind:class="activeType('signals')">Сигналы</a>
           </div>
 
           <div class="scroll-container" ref="scroll_news">
@@ -202,12 +204,7 @@
         infiniteState: null,
         meta: {current_page: 1},
         list: [],
-        types: [
-          { name: 'Все новости' }, 
-          { name: 'Новость', value: 'news' },
-          { name: 'Прогноз', value: 'prognosis' }
-        ],
-        selectedType: {name: 'Все новости'},
+        selectedType: 'all',
         back: { name: 'index' },
         activeTab: null,
         isFiltering: null,
@@ -381,9 +378,10 @@
           this.$store.commit( 'SET_TOP_NEWS', this.$store.state.topNews )
         })
       },
-      filterByType(payload) {
-        this.$store.commit('SET_FILTER_TYPE', payload.value)
-        this.selectedType = payload
+      filterByType(value) {
+        console.log('test')
+        this.$store.commit('SET_FILTER_TYPE', value)
+        this.selectedType = value
         this.filter()
       },
       filterBySymbol(symbol) {
@@ -507,6 +505,12 @@
 
       tabCoin: function () {
         return this.$route.params.symbol && this.$route.params.symbol != 'btc' ? upSymbol(this.$route.params.symbol)  : 'Новости'
+      },
+
+      activeType: function ( type ) {
+        return {
+          'active_type': type == this.$store.state.filters.type,
+        }
       },
 
     },
