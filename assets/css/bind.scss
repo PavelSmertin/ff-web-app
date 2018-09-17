@@ -406,6 +406,10 @@ h3 {
 			.ff_mobile_tabs {
 				display:none;
 				flex-grow: 0;
+
+				.ff_mobile_tabs_active {
+					color: $link-color;
+				}
 			}
 			.ff_content {
 				position: relative;
@@ -689,15 +693,19 @@ h3 {
 	li {
 		margin: 0;
 		display: inline-block;
-		padding: 0 0px 0 24px;
+		padding-left: 6px;
+		padding-right: 6px;
+		&:first-child {
+			padding-left: 24px;
+		}
 		a {
 			line-height: 48px;
 			display: inline-block;
     		height: 48px;
 		}
 		.nuxt-link-exact-active {
-			color: $primary-color;
-			border-bottom: 2px solid $bg-toolbar-color;
+			color: $link-color;
+			/*border-bottom: 2px solid $bg-toolbar-color;*/
 		}
 	}
 }
@@ -2091,6 +2099,8 @@ h3 {
 
 	.coin_title {
 		cursor: pointer;
+		text-overflow: clip;
+		white-space: nowrap;
 		.button_icon {
 			width:20px;
 			height: 35px;
@@ -2099,6 +2109,7 @@ h3 {
 		h1 {
 			display: inline;
 			margin-left: 12px;
+			text-overflow: clip;
 		}
 		&:hover {
 			.button_icon {

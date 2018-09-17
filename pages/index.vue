@@ -2,15 +2,19 @@
   <main class="row ff_index no-gutters">
     <div class="col ff_wrap">
       <ul class="row ff_mobile_tabs">
-        <li class="col-3">
+        <li class="tab_item">
           <nuxt-link :to="{name: 'index-coins'}">
             Крипта
           </nuxt-link>
         </li>
-        <li class="col-3">
-          <nuxt-link :to="{name: 'index'}">
+        &rarr;
+        <li class="tab_item">
+          <nuxt-link v-if="$route.name == 'index-coins'" :to="{name: 'index'}">
             Новости
           </nuxt-link >
+          <span v-else class="ff_mobile_tabs_active"> 
+            {{ upFilterSymbol() == 'BTC' ? 'Новости' : upFilterSymbol() }}
+          </span>
         </li>
       </ul>
 
@@ -297,8 +301,6 @@
       if( this.$route.name == "index-coins" ) {
         this.filterBySymbol(null)
       }
-
-      document.getElementById('ff_coin_index').getElementsByClassName('coin_search').item(0).focus()
 
       // устанавливаем высоту шапки для мобильной версии
       this.topOffset = this.$refs["scroll_news"].offsetParent === null ? 100 : this.$refs["right_pane"].offsetTop

@@ -194,6 +194,10 @@
 
     },
 
+    mounted () {
+      document.getElementById('ff_coin_index').getElementsByClassName('coin_search').item(0).focus()
+    },
+
     watch: {
       '$store.state.coinsSearch':  _.debounce( function ( newValue ) {
         this.filter()
