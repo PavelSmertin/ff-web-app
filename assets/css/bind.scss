@@ -459,6 +459,7 @@ h3 {
 						right: 0;
 						left: 0;
 						overflow-y: scroll;
+						-webkit-overflow-scrolling: touch;
 					}
 					&.fade_for_redirect {
 						opacity: 0;
