@@ -210,6 +210,7 @@
         isFiltering: null,
         fadeForRedirect: false,
         coinExpand: false,
+        blockTop: 0,
       }
     },
 
@@ -379,7 +380,6 @@
         })
       },
       filterByType(value) {
-        console.log('test')
         this.$store.commit('SET_FILTER_TYPE', value)
         this.selectedType = value
         this.filter()
@@ -392,6 +392,9 @@
         this.filter()
       },
       filter() {
+
+        this.newsScrollToTop()
+
         this.isFiltering = true
         if(this.infiniteState) { 
           this.infiniteState.reset()
@@ -497,8 +500,8 @@
         if( st > this.topOffset ) {
           st = this.topOffset
         }
-        let blockTop =  this.topOffset - st
-        this.$refs["right_pane"].style.top = blockTop +'px'
+        this.blockTop =  this.topOffset - st
+        this.$refs["right_pane"].style.top = this.blockTop +'px'
 
       },
 
@@ -515,6 +518,13 @@
         return {
           'active_type': type == this.$store.state.filters.type,
         }
+      },
+
+      newsScrollToTop: function () {
+        var element = this.$refs["scroll_news"]
+
+        // чтобы шапка не расхлапывалась при смене фильтра
+        element.scrollTo(0, this.topOffset-this.blockTop)
       },
 
     },
