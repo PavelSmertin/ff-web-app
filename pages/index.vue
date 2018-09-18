@@ -485,10 +485,14 @@
       handleScroll () {
         // this.$refs["scroll_news"].scrollTo( 0, 0 );
         // return;
+
         var sh = this.$refs["scroll_news"].scrollHeight
         var st = this.$refs["scroll_news"].scrollTop
         var oh = this.$refs["scroll_news"].offsetHeight
 
+        if( st < 0 ) {
+          return
+        }
 
         if( st > this.topOffset ) {
           st = this.topOffset
