@@ -111,7 +111,7 @@
     </div>
 
     <div class="row no-gutters border_top margin24 coin_mobile">
-      <h2 class="margin12">Курс BTC/USD на биржах</h2>
+      <h2 class="margin12">Курс BTC/USDT на биржах</h2>
     </div>
 
     <div class="row no-gutters margin6 pairs_row coin_mobile">
@@ -152,7 +152,7 @@
     </div>
 
     <div class="row no-gutters border_top margin24 coin_mobile">
-      <h3 class="margin12">Руководство для начинающих</h3>
+      <h3 class="margin12">Полезная информация</h3>
     </div>
 
     <div class="margin6 coin_mobile">

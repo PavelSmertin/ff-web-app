@@ -4,7 +4,7 @@
       <ul class="row ff_mobile_tabs" v-if="$route.name != 'index-coins'">
         <li class="tab_item">
           <nuxt-link :to="{name: 'index-coins'}">
-            Крипта
+            &#9776; Крипта
           </nuxt-link>
         </li>
         <span class="caret_right"></span>

@@ -70,7 +70,7 @@
     <div class="tools">
       <!-- Автор статьи -->
       <div class="post_author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        Автор: <nuxt-link :to="{ path: '/authors' }" itemprop="name">{{ post.author.full_name }}</nuxt-link>
+        Перевод: <nuxt-link :to="{ path: '/authors' }" itemprop="name">{{ post.author.full_name }}</nuxt-link>
       </div>
       <div class="social">
 
