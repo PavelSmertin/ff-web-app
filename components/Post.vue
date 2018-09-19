@@ -17,6 +17,24 @@
       </div>
       <meta itemprop="name" content="ff.ru">
     </div>
+
+    <div class="sticky_block">
+      <div class="sticky_inner">
+        <button class="vote vote_up" v-on:click="vote(1)">
+          <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
+        </button>
+        <button class="vote vote_down" v-on:click="vote(0)">
+          <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
+        </button>
+        <button class="vote like" v-on:click="like(1)">
+          <span class="ic_like"></span><span class="votes_count">{{ post.likes_positive }}</span>
+        </button>
+        <button class="vote dislike" v-on:click="like(0)">
+          <span class="ic_dislike"></span><span class="votes_count">{{ post.likes_negative }}</span>
+        </button>
+
+      </div>
+    </div>
    
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
@@ -97,26 +115,6 @@
       </div>
     </div>
 
-    <div class="tools">
-
-      <div class="tools_left">
-        <button class="vote vote_up" v-on:click="vote(1)">
-          <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
-        </button>
-        <button class="vote vote_down" v-on:click="vote(0)">
-          <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
-        </button>
-      </div>
-
-      <div class="tools_right">
-        <button class="vote like" v-on:click="like(1)">
-          <span class="ic_like"></span><span class="votes_count">{{ post.likes_positive }}</span>
-        </button>
-        <button class="vote dislike" v-on:click="like(0)">
-          <span class="ic_dislike"></span><span class="votes_count">{{ post.likes_negative }}</span>
-        </button>
-      </div>
-    </div>
 
     <div v-if="postCoin()" class="tools">
       <div class="tools_left">
@@ -145,7 +143,6 @@
       </div>
     </div>
 
-<!-- f1f5fc -->
     <div class="tg_banner_wrap">
       <div class="tg_banner">
         <div class="tg_banner_icon">

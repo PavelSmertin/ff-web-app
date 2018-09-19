@@ -32,27 +32,10 @@
           </div>
 
           <button v-if="showPost" v-on:click="onClose()" class="ff_close">
-            <svg width="106px" height="106px" viewBox="0 0 106 106" id="ff_close">
-              <defs>
-                <circle id="path-1" cx="24" cy="24" r="24"></circle>
-                <filter x="-104.2%" y="-83.3%" width="308.3%" height="308.3%" filterUnits="objectBoundingBox" id="filter-2">
-                  <feOffset dx="0" dy="10" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-                  <feGaussianBlur stdDeviation="15" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-                  <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
-                </filter>
-              </defs>
-              <g transform="translate(-890.000000, -211.000000)">
-                <g transform="translate(928.000000, 230.000000)">
-                  <g>
-                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
-                  </g>
-                  <polygon id="close" fill="#000000" points="19 19.8 23.2 24.0000063 19 28.2 19.8 29 24 24.8 28.2 29 29 28.2 24.8 24.0000063 29 19.8 28.2 19 24 23.2 19.8 19"></polygon>
-                </g>
-              </g>
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 14">
+              <path class="stroked" fill="#000" stroke="black" stroke-linecap="square" d="M 4.5 4.5 L 11.5 11.5 M 4.5 11.5 L 11.5 4.5"/>
             </svg>
           </button>
-
 
           <button v-if="coinExpand" v-on:click="onClosePane()" class="ff_close_mobile" v-bind:class="coinExpandButton">
             <svg id="ic_expand_collapse" viewBox="0 0 24 24" class="svgDemoGraphic">
@@ -87,8 +70,6 @@
               </g>
             </svg>
           </button>
-
-
         </div>
 
         <aside class="ff-right-panel col-md-4" ref="right_pane" v-bind:class="colRight">
@@ -494,7 +475,7 @@
         var oh = this.$refs["scroll_news"].offsetHeight
 
         if( st < 0 ) {
-          return
+          st = 0
         }
 
         if( st > this.topOffset ) {
