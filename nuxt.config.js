@@ -16,7 +16,7 @@ module.exports = {
     title: 'Рыночная капитализация криптовалют - FF.ru',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no' },
       { 
         hid: 'description', 
         name: 'description', 
@@ -90,8 +90,8 @@ module.exports = {
     { src: '~/plugins/vue-socket.js', ssr: false },
     { src: '~/plugins/social.js' },
     { src: '~/plugins/vue-observe-visibility.js', ssr: false  },
+    { src: '~/plugins/chart-trading-view.js', ssr: false  },
     // { src: '~/plugins/mailsform.js', ssr: false },
-    //{ src: '~/plugins/vue-highcharts.js', ssr: false },
   ],
 
   env: {

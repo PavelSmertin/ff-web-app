@@ -20,7 +20,6 @@
     "@nuxtjs/proxy": "^1.2.4",
     "@nuxtjs/yandex-metrika": "^0.1.0",
     "axios": "^0.18.0",
-    "highcharts": "^6.1.0",
     "intersection-observer": "^0.5.0",
     "jsona": "^1.1.12",
     "jsonapi-datastore": "^0.4.0-beta",

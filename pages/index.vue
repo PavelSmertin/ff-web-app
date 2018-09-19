@@ -1,16 +1,17 @@
 <template> 
   <main class="row ff_index no-gutters">
     <div class="col ff_wrap">
-      <ul class="row ff_mobile_tabs">
-        <li class="col-3">
+      <ul class="row ff_mobile_tabs" v-if="$route.name != 'index-coins'">
+        <li class="tab_item">
           <nuxt-link :to="{name: 'index-coins'}">
-            Крипта
+            &#9776; Крипта
           </nuxt-link>
         </li>
-        <li class="col-3">
-          <nuxt-link :to="{name: 'index'}">
-            Новости
-          </nuxt-link >
+        <span class="caret_right"></span>
+        <li class="tab_item">
+          <span class="ff_mobile_tabs_active"> 
+            {{ upFilterSymbol() }}
+          </span>
         </li>
       </ul>
 
@@ -31,27 +32,10 @@
           </div>
 
           <button v-if="showPost" v-on:click="onClose()" class="ff_close">
-            <svg width="106px" height="106px" viewBox="0 0 106 106" id="ff_close">
-              <defs>
-                <circle id="path-1" cx="24" cy="24" r="24"></circle>
-                <filter x="-104.2%" y="-83.3%" width="308.3%" height="308.3%" filterUnits="objectBoundingBox" id="filter-2">
-                  <feOffset dx="0" dy="10" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-                  <feGaussianBlur stdDeviation="15" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-                  <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
-                </filter>
-              </defs>
-              <g transform="translate(-890.000000, -211.000000)">
-                <g transform="translate(928.000000, 230.000000)">
-                  <g>
-                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
-                  </g>
-                  <polygon id="close" fill="#000000" points="19 19.8 23.2 24.0000063 19 28.2 19.8 29 24 24.8 28.2 29 29 28.2 24.8 24.0000063 29 19.8 28.2 19 24 23.2 19.8 19"></polygon>
-                </g>
-              </g>
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 14">
+              <path class="stroked" fill="#000" stroke="black" stroke-linecap="square" d="M 4.5 4.5 L 11.5 11.5 M 4.5 11.5 L 11.5 4.5"/>
             </svg>
           </button>
-
 
           <button v-if="coinExpand" v-on:click="onClosePane()" class="ff_close_mobile" v-bind:class="coinExpandButton">
             <svg id="ic_expand_collapse" viewBox="0 0 24 24" class="svgDemoGraphic">
@@ -86,15 +70,15 @@
               </g>
             </svg>
           </button>
-
-
         </div>
 
         <aside class="ff-right-panel col-md-4" ref="right_pane" v-bind:class="colRight">
 
           <div class="news_filters_block">
-            <div class="coin_select_tag">Новости {{ upFilterSymbol() }}</div>
-            <dropdowns :options="types" :selected="selectedType" v-on:updateOption="filterByType"></dropdowns>
+            <a href="#" v-on:click.stop.prevent="filterByType()" class="filters_tab" v-bind:class="activeType()">Все</a>
+            <a href="#" v-on:click.stop.prevent="filterByType('news')" class="filters_tab" v-bind:class="activeType('news')">Новости</a>
+            <a href="#" v-on:click.stop.prevent="filterByType('prognosis')" class="filters_tab" v-bind:class="activeType('prognosis')">Прогнозы</a>
+            <a href="#" v-on:click.stop.prevent="filterByType('signals')" class="filters_tab" v-bind:class="activeType('signals')">Сигналы</a>
           </div>
 
           <div class="scroll-container" ref="scroll_news">
@@ -201,17 +185,13 @@
         infiniteState: null,
         meta: {current_page: 1},
         list: [],
-        types: [
-          { name: 'Все новости' }, 
-          { name: 'Новость', value: 'news' },
-          { name: 'Прогноз', value: 'prognosis' }
-        ],
-        selectedType: {name: 'Все новости'},
+        selectedType: 'all',
         back: { name: 'index' },
         activeTab: null,
         isFiltering: null,
         fadeForRedirect: false,
         coinExpand: false,
+        blockTop: 0,
       }
     },
 
@@ -298,8 +278,6 @@
         this.filterBySymbol(null)
       }
 
-      document.getElementById('ff_coin_index').getElementsByClassName('coin_search').item(0).focus()
-
       // устанавливаем высоту шапки для мобильной версии
       this.topOffset = this.$refs["scroll_news"].offsetParent === null ? 100 : this.$refs["right_pane"].offsetTop
       this.$refs["scroll_news"].addEventListener('scroll', this.handleScroll, false);
@@ -382,9 +360,9 @@
           this.$store.commit( 'SET_TOP_NEWS', this.$store.state.topNews )
         })
       },
-      filterByType(payload) {
-        this.$store.commit('SET_FILTER_TYPE', payload.value)
-        this.selectedType = payload
+      filterByType(value) {
+        this.$store.commit('SET_FILTER_TYPE', value)
+        this.selectedType = value
         this.filter()
       },
       filterBySymbol(symbol) {
@@ -395,6 +373,9 @@
         this.filter()
       },
       filter() {
+
+        this.newsScrollToTop()
+
         this.isFiltering = true
         if(this.infiniteState) { 
           this.infiniteState.reset()
@@ -488,16 +469,20 @@
       handleScroll () {
         // this.$refs["scroll_news"].scrollTo( 0, 0 );
         // return;
+
         var sh = this.$refs["scroll_news"].scrollHeight
         var st = this.$refs["scroll_news"].scrollTop
         var oh = this.$refs["scroll_news"].offsetHeight
 
+        if( st < 0 ) {
+          st = 0
+        }
 
         if( st > this.topOffset ) {
           st = this.topOffset
         }
-        let blockTop =  this.topOffset - st
-        this.$refs["right_pane"].style.top = blockTop +'px'
+        this.blockTop =  this.topOffset - st
+        this.$refs["right_pane"].style.top = this.blockTop +'px'
 
       },
 
@@ -508,6 +493,19 @@
 
       tabCoin: function () {
         return this.$route.params.symbol && this.$route.params.symbol != 'btc' ? upSymbol(this.$route.params.symbol)  : 'Новости'
+      },
+
+      activeType: function ( type ) {
+        return {
+          'active_type': type == this.$store.state.filters.type,
+        }
+      },
+
+      newsScrollToTop: function () {
+        var element = this.$refs["scroll_news"]
+
+        // чтобы шапка не расхлапывалась при смене фильтра
+        element.scrollTo(0, this.topOffset-this.blockTop)
       },
 
     },

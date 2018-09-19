@@ -17,6 +17,24 @@
       </div>
       <meta itemprop="name" content="ff.ru">
     </div>
+
+    <div class="sticky_block">
+      <div class="sticky_inner">
+        <button class="vote vote_up" v-on:click="vote(1)">
+          <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
+        </button>
+        <button class="vote vote_down" v-on:click="vote(0)">
+          <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
+        </button>
+        <button class="vote like" v-on:click="like(1)">
+          <span class="ic_like"></span><span class="votes_count">{{ post.likes_positive }}</span>
+        </button>
+        <button class="vote dislike" v-on:click="like(0)">
+          <span class="ic_dislike"></span><span class="votes_count">{{ post.likes_negative }}</span>
+        </button>
+
+      </div>
+    </div>
    
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
@@ -29,8 +47,7 @@
           <timeago :since="post.create_dt" class="time-ago"></timeago>    
           <meta itemprop="datePublished" v-bind:content="post.create_dt">
         </li>
-        <li v-if="post.type == 'news'">Новость</li>
-        <li v-else-if="post.type == 'prognosis'">Прогноз</li>
+        <li>{{ postType() }}</li>
 
         <!-- li v-if="sourceDomain()" class="post_detail_source ff-label">
           Источник: <span itemprop="isBasedOn" >{{ sourceDomain() }}</span>
@@ -53,7 +70,7 @@
     <div class="tools">
       <!-- Автор статьи -->
       <div class="post_author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        Автор: <nuxt-link :to="{ path: '/authors' }" itemprop="name">{{ post.author.full_name }}</nuxt-link>
+        Перевод: <nuxt-link :to="{ path: '/authors' }" itemprop="name">{{ post.author.full_name }}</nuxt-link>
       </div>
       <div class="social">
 
@@ -98,26 +115,6 @@
       </div>
     </div>
 
-    <div class="tools">
-
-      <div class="tools_left">
-        <button class="vote vote_up" v-on:click="vote(1)">
-          <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
-        </button>
-        <button class="vote vote_down" v-on:click="vote(0)">
-          <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
-        </button>
-      </div>
-
-      <div class="tools_right">
-        <button class="vote like" v-on:click="like(1)">
-          <span class="ic_like"></span><span class="votes_count">{{ post.likes_positive }}</span>
-        </button>
-        <button class="vote dislike" v-on:click="like(0)">
-          <span class="ic_dislike"></span><span class="votes_count">{{ post.likes_negative }}</span>
-        </button>
-      </div>
-    </div>
 
     <div v-if="postCoin()" class="tools">
       <div class="tools_left">
@@ -146,7 +143,6 @@
       </div>
     </div>
 
-<!-- f1f5fc -->
     <div class="tg_banner_wrap">
       <div class="tg_banner">
         <div class="tg_banner_icon">
@@ -184,7 +180,6 @@
   const dataFormatter = new Jsona()
 
   export default {
-    name: 'post-item',
 
     mixins: [ analMixin ],
 
@@ -456,58 +451,71 @@
         this.sendEvent( 'SocialPost', 'click', network );
       },
 
-        addClickImageListener: function () {
-            let articles = document.getElementsByTagName('article')
-            if (articles) {
-                for (let aItem = 0; aItem < articles.length; aItem++) {
-                    let imgs = articles.item(aItem).getElementsByClassName("description").item(0).getElementsByTagName('img')
-                    for (let imgItem = 0; imgItem < imgs.length; imgItem++) {
-                        let img = imgs.item(imgItem);
-                        let handle = {
-                            img: img,
-                            handleEvent: function(){
+      addClickImageListener: function () {
+          let articles = document.getElementsByTagName('article')
+          if (articles) {
+              for (let aItem = 0; aItem < articles.length; aItem++) {
+                  let imgs = articles.item(aItem).getElementsByClassName("description").item(0).getElementsByTagName('img')
+                  for (let imgItem = 0; imgItem < imgs.length; imgItem++) {
+                      let img = imgs.item(imgItem);
+                      let handle = {
+                          img: img,
+                          handleEvent: function(){
 
-                                let showImgContainer = document.createElement('div')
-                                showImgContainer.setAttribute('id', 'showImgContainer')
+                              let showImgContainer = document.createElement('div')
+                              showImgContainer.setAttribute('id', 'showImgContainer')
 
-                                let showImgBgr = document.createElement('div')
-                                showImgBgr.setAttribute('id', 'showImgBgr')
-                                showImgContainer.addEventListener('click', {
-                                    showImgBgr: showImgBgr,
-                                    showImgContainer: showImgContainer,
-                                    handleEvent: function(){
-                                        this.showImgBgr.remove()
-                                        this.showImgContainer.remove()
-                                    }
-                                }, false)
+                              let showImgBgr = document.createElement('div')
+                              showImgBgr.setAttribute('id', 'showImgBgr')
+                              showImgContainer.addEventListener('click', {
+                                  showImgBgr: showImgBgr,
+                                  showImgContainer: showImgContainer,
+                                  handleEvent: function(){
+                                      this.showImgBgr.remove()
+                                      this.showImgContainer.remove()
+                                  }
+                              }, false)
 
-                                let image = document.createElement('img')
-                                image.src = this.img.getAttribute('src')
+                              let image = document.createElement('img')
+                              image.src = this.img.getAttribute('src')
 
-                                showImgContainer.appendChild(image)
+                              showImgContainer.appendChild(image)
 
-                                document.body.appendChild(showImgBgr)
-                                document.body.appendChild(showImgContainer)
-                            }
-                        }
+                              document.body.appendChild(showImgBgr)
+                              document.body.appendChild(showImgContainer)
+                          }
+                      }
 
-                        if (!img.getAttribute('scl')) {
-                            if (img.addEventListener) {
-                                img.addEventListener('click', handle, false);
-                            }
-                            else if (img.attachEvent) {
-                                img.attachEvent('onclick', handle);
-                            }
-                            else {
-                                img['onclick'] = handle;
-                            }
-                            img.setAttribute('scl', 'true');
-                        }
+                      if (!img.getAttribute('scl')) {
+                          if (img.addEventListener) {
+                              img.addEventListener('click', handle, false);
+                          }
+                          else if (img.attachEvent) {
+                              img.attachEvent('onclick', handle);
+                          }
+                          else {
+                              img['onclick'] = handle;
+                          }
+                          img.setAttribute('scl', 'true');
+                      }
 
-                    }
-                }
-            }
-        },
+                  }
+              }
+          }
+      },
+
+      postType: function () {
+        if( this.post.type == 'news' ) {
+          return 'Новость'
+        }
+        if( this.post.type == 'prognosis' ) {
+          return 'Прогноз'
+        }
+        if( this.post.type == 'signals' ) {
+          return 'Сигнал'
+        }
+        return ''
+      },
 
     }
   }

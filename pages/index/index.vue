@@ -105,11 +105,13 @@
       <h2 class="margin12">График курса Bitcoin к Доллару</h2>
     </div>
     <div class="row no-gutters coin_mobile">
-      <div id="tradingview_53a94" class="tradingview" ref="tradingview"></div>
+      <no-ssr placeholder="Loading...">
+        <chart-trading-view :symbol="'BTC/USDT'"/>
+      </no-ssr>
     </div>
 
     <div class="row no-gutters border_top margin24 coin_mobile">
-      <h2 class="margin12">Курс BTC/USD на биржах</h2>
+      <h2 class="margin12">Курс BTC/USDT на биржах</h2>
     </div>
 
     <div class="row no-gutters margin6 pairs_row coin_mobile">
@@ -150,7 +152,7 @@
     </div>
 
     <div class="row no-gutters border_top margin24 coin_mobile">
-      <h3 class="margin12">Руководство для начинающих</h3>
+      <h3 class="margin12">Полезная информация</h3>
     </div>
 
     <div class="margin6 coin_mobile">
@@ -216,7 +218,6 @@
       </dl>
     </div>
 
-
     <div class="row no-gutters border_top margin12 coin_mobile">
       <section v-if="attributes.seo_text" class="row ff_text_block margin60" v-html="attributes.seo_text"></section>
     </div>
@@ -232,6 +233,7 @@
 
   import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
+
 
   const dataFormatter = new Jsona()
 
@@ -267,7 +269,6 @@
     data() {
       return {
         enabled: true,
-        showLine: false,
         series: {
           type: 'area',
           zIndex: 50
@@ -325,10 +326,8 @@
 
     mounted () {
       this.goto()
-      this.initTradingViewChart()
       this.watchSocketCoin()
       this.sendPulsePushScript()
-
     },
 
     methods: {
