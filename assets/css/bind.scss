@@ -1639,30 +1639,6 @@ h3 {
 		right: 12px;
 		text-align: center;
 		z-index: 999 !important;
-		&:before {
-			content: '';
-			display: block;  
-			position: absolute;
-			left: 50%;
-			top: -10px;
-			width: 0;
-			height: 0;
-			border-bottom: 10px solid $border-bold-color; 
-			border-right: 10px solid transparent; 
-			border-left: 10px solid transparent; 
-		}
-		&:after {
-			content: '';
-			display: block;  
-			position: absolute;
-			left: 50%;
-			top: -9px;
-			width: 0;
-			height: 0;
-			border-bottom: 10px solid $bg-main-color; 
-			border-right: 10px solid transparent; 
-			border-left: 10px solid transparent; 
-		}
 
 		&.vote_up_style {
 			color: darken($up-value-color, 3%);
