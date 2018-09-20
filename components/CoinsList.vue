@@ -1,7 +1,7 @@
 <template>
   <div class="ff_coin_index" id="ff_coin_index">
     <transition name="tooltip">
-      <div v-if="showTooltip" class="coin_tooltip" v-bind:style="{top: topOfTooltip + 'px' }">
+      <div v-if="showTooltip" class="ff_tooltip" v-bind:style="{top: topOfTooltip + 'px' }">
         {{ tooltip }}
       </div>
     </transition>

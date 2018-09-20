@@ -20,21 +20,48 @@
 
     <div class="sticky_block">
       <div class="sticky_inner">
-        <button class="vote vote_up" v-on:click="vote(1)">
+        <button 
+          class="vote vote_up" 
+          v-on:click="vote(1)"
+          v-on:mouseover="mouseOverVoteUp"
+          v-on:mouseleave="mouseLeave"
+          >
           <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
         </button>
-        <button class="vote vote_down" v-on:click="vote(0)">
+        <button 
+          class="vote vote_down" 
+          v-on:click="vote(0)"
+          v-on:mouseover="mouseOverVoteDown"
+          v-on:mouseleave="mouseLeave"
+          >
           <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
         </button>
-        <button class="vote like" v-on:click="like(1)">
+        <button 
+          class="vote like" 
+          v-on:click="like(1)"
+          v-on:mouseover="mouseOverLike"
+          v-on:mouseleave="mouseLeave"
+          >
           <span class="ic_like"></span><span class="votes_count">{{ post.likes_positive }}</span>
         </button>
-        <button class="vote dislike" v-on:click="like(0)">
+        <button
+          class="vote dislike"
+          v-on:click="like(0)"
+          v-on:mouseover="mouseOverDislike"
+          v-on:mouseleave="mouseLeave"
+          >
           <span class="ic_dislike"></span><span class="votes_count">{{ post.likes_negative }}</span>
         </button>
 
       </div>
+
+      <transition name="tooltip">
+        <div v-if="showTooltip" class="ff_tooltip" v-bind:class="buttonColor">
+          {{ tooltipText }}
+        </div>
+      </transition>
     </div>
+
    
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
@@ -179,6 +206,11 @@
 
   const dataFormatter = new Jsona()
 
+  const TOOLTIP_UP_TYPE = 'tooltip_up_type'
+  const TOOLTIP_DOWN_TYPE = 'tooltip_down_type'
+  const TOOLTIP_LIKE_TYPE = 'tooltip_like_type'
+  const TOOLTIP_DISLIKE_TYPE = 'tooltip_dislike_type'
+
   export default {
 
     mixins: [ analMixin ],
@@ -195,16 +227,9 @@
       PostSimilar,
     },
 
-    // head() {
-    //   return {
-    //     title: this.feedSeoTitle,
-    //   }
-    // },
-
     data() {
       return {
         url: process.env.baseUrl + this.$route.path,
-        feedSeoTitle: '',        
         body: '',
         overriddenNetworks: BaseNetworks,
         post: this.postProp,
@@ -212,6 +237,9 @@
         commentText: '',
         newComments: [],
         commentsSendProcess: false,
+        showTooltip: false,
+        tooltipText: null,
+        tooltipType: null,
       }
     },
 
@@ -236,6 +264,13 @@
       },
       commentsButtonDisabled: function () {
         return this.commentText.length < 1 || this.commentsSendProcess === true;
+      },
+
+      buttonColor: function () {
+        return {
+          'vote_up_style': this.tooltipType == TOOLTIP_UP_TYPE,
+          'vote_down_style': this.tooltipType == TOOLTIP_DOWN_TYPE,
+        }
       }
     },
 
@@ -304,6 +339,31 @@
               this.$router.push({ name: `account-signin` })
             }
           })
+      },
+
+      mouseOverVoteUp( event ) {
+        this.showTooltip = true
+        this.tooltipType = TOOLTIP_UP_TYPE
+        this.tooltipText = 'Проголосуйте, если этот пост сигнализирует о положительном влиянии на цену'
+      },
+      mouseOverVoteDown( event ) {
+        this.showTooltip = true
+        this.tooltipType = TOOLTIP_DOWN_TYPE
+        this.tooltipText = 'Проголосуйте, если этот пост сигнализирует об отрицательном влиянии на цену'
+      },
+      mouseOverLike( event ) {
+        this.showTooltip = true
+        this.tooltipType = TOOLTIP_LIKE_TYPE
+        this.tooltipText = 'Проголосуйте, если вам нравится этот пост'
+      },
+      mouseOverDislike( event ) {
+        this.showTooltip = true
+        this.tooltipType = TOOLTIP_DISLIKE_TYPE
+        this.tooltipText = 'Проголосуйте, если вам не нравится этот пост'
+      },
+
+      mouseLeave() {
+        this.showTooltip = false
       },
 
       setLocalStorage( key, is_positive ) {
