@@ -82,7 +82,7 @@
     </div>
     <div class="row no-gutters calculator margin6 coin_mobile">
       <div class="calculator_item">
-        <div class="label"><img src="~/assets/images/btc_icon.png" width="20" height="20" alt="btc_icon"><span class="label_currency">BTC</span></div>
+        <div class="label"><img src="~/assets/images/btc_icon_white.png" width="20" height="20" alt="btc_icon"><span class="label_currency">BTC</span></div>
         <input type="text" name="btc" v-model="calculateBTC" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack" >
       </div>
       <div class="calculator_item">
