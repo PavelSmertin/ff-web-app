@@ -96,7 +96,7 @@
 
     <div class="tools">
       <!-- Автор статьи -->
-      <div class="post_author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <div v-if="post.type != 'signals'" class="post_author" itemprop="author" itemscope itemtype="http://schema.org/Person">
         Перевод: <nuxt-link :to="{ path: '/authors' }" itemprop="name">{{ post.author.full_name }}</nuxt-link>
       </div>
       <div class="social">
