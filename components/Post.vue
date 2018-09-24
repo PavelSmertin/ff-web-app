@@ -447,9 +447,9 @@
       },
 
       visibilityTGBanner( isVisible, entry ) {
-        if( isVisible && this.showTutorial) {
+        if( isVisible && this.$store.state.showTutorial) {
           _t.push({start:'Walkthrough FF site'})
-          this.showTutorial = false
+          this.$store.commit('SHOW_TUTORIAL')
         }
       },
 
