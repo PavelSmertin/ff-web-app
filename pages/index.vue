@@ -286,10 +286,27 @@
           obj.checkNewNews()
       }, 120000, this)
 
+      this.tutorial()
 
     },
 
     methods: {
+
+      tutorial() {
+        var tu = document.createElement('script')
+        tu.type = 'text/javascript'
+        tu.async = true
+        tu.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dpi1c6z6qg9qf.cloudfront.net/client/v3/tutorialize.js.gz'
+        var sc = document.getElementsByTagName('script')[0]
+        sc.parentNode.insertBefore(tu, sc)
+
+        var pushScript = document.createElement("script")
+        pushScript.appendChild(document.createTextNode('var _t = _t || [];_t.push = function(){if(typeof window.tutorialize !== "undefined"){window.tutorialize.process(arguments[0]);} return Array.prototype.push.apply(this, arguments);};_t.push({publisher_id: "5b9f875f1cf38f5fc40034d8"});'))
+
+        sc.parentNode.insertBefore(pushScript, sc)
+
+      },
+
       applyBackStack(to, from) {
         if(to.name == "index" || to.name == "index-symbol") {
           this.back = { name: 'index-coins' } 

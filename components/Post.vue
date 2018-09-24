@@ -179,8 +179,14 @@
           <p class="ff_nc_title">Подпишитесь на наш Телеграм канал</p>
           <p>Инсайдерские новости.  Обучающие материалы. Прогнозы курсов криптовалют</p>
         </div>
-        <a @click.native="onSocialClick('tg')" href="https://telegram.im/@FF_RUS?lang=ru" class="subscribe tg" alt="tg" target="_blank">
-          <span class="banner_icon"></span>Подписаться
+        <a 
+          v-observe-visibility="( isVisible, entry ) => visibilityTGBanner( isVisible, entry )" 
+          @click.native="onSocialClick('tg')" 
+          href="https://telegram.im/@FF_RUS?lang=ru" 
+          class="subscribe tg" 
+          alt="tg" 
+          target="_blank">
+            <span class="banner_icon"></span>Подписаться
         </a>
       </div>
     </div>
@@ -240,6 +246,7 @@
         showTooltip: false,
         tooltipText: null,
         tooltipType: null,
+        showTutorial: true,
       }
     },
 
@@ -437,6 +444,13 @@
             ga('send', 'pageview')
           }
         } 
+      },
+
+      visibilityTGBanner( isVisible, entry ) {
+        if( isVisible && this.showTutorial) {
+          _t.push({start:'Walkthrough FF site'})
+          this.showTutorial = false
+        }
       },
 
       initRelationNews() {
