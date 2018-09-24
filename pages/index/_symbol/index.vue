@@ -219,6 +219,9 @@
             }
           })
       },
+      inFavourites() {
+        return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( coin =>  coin.symbol == this.symbol )
+      },
       subscribe() {
         this.sendEvent( 'CoinSubscribe', 'subscribe', this.symbol );
         this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=${ this.symbol}`)
@@ -230,9 +233,6 @@
               this.$router.push({ name: `account-signin` })
             }
           })
-      },
-      inFavourites() {
-        return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( coin =>  coin.symbol == this.symbol )
       },
       inSubscribed() {
         return this.$store.state.subscribedCoins && this.$store.state.subscribedCoins.find( coin =>  coin.symbol == this.symbol )
