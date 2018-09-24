@@ -434,6 +434,32 @@ h3 {
 }
 
 
+.button_class {
+	padding: 0 24px;
+	height: 41px;	
+	border: 1px solid $border-bold-color;
+	flex-shrink: 0;
+	flex-grow: 1;
+	background: none;
+	cursor: pointer;
+	font-size: $label-size;
+	display: flex;
+	justify-content:space-between;
+	font-weight: bold;
+	text-transform: uppercase;
+	&:focus{
+		outline: none;
+	}
+}
+
+._tme-helper {
+	display: none;
+}
+
+
+
+
+
 /************ INDEX PAGE STRUCTURE **************/
 .container-fluid {
 	display: flex;
@@ -1499,26 +1525,11 @@ h3 {
 		flex-wrap: wrap;
 		justify-content:space-between;
 
-		.button_class {
-			padding: 0 24px;
-			height: 41px;	
-			border: 1px solid $border-bold-color;
-			flex-shrink: 0;
-			flex-grow: 1;
-			background: none;
-			cursor: pointer;
-			font-size: $label-size;
-			display: flex;
-			justify-content:space-between;
-			font-weight: bold;
-		}
-
 		.subscribe {
 			@extend .button_class;
 			border: none;
 			background-color: $up-value-color;
 			color: $bg-main-color;
-			text-transform: uppercase;
 			span {
 				width: 100%;
 				text-align: center;
@@ -1533,7 +1544,6 @@ h3 {
 
 		.watch {
 			@extend .button_class;
-			text-transform: uppercase;
 			display: flex;
 			padding: 0;
 			.button_icon {
@@ -2041,6 +2051,64 @@ h3 {
 			font-size: $label-size;
 		}
 	}
+
+	.coin_head_block {
+		padding: 24px 24px 0;
+		display: flex;
+		.coin_title {
+			width: 50%;
+			.coin_favourite_hover {
+				cursor: pointer;
+				text-overflow: clip;
+				white-space: nowrap;
+				.button_icon {
+					width:20px;
+					height: 35px;
+					vertical-align: bottom;
+				}
+				h1 {
+					display: inline;
+					margin-left: 12px;
+					text-overflow: clip;
+				}
+				&:hover {
+					.button_icon {
+						&.ic_star {
+							background-image: url('~assets/images/ic_star_border_hover.svg');
+							&.active_star {
+								background-image: url('~assets/images/ic_star_hover.svg');
+							}
+						}
+					}
+				}
+			}
+			.subscribe {
+				@extend .button_class;
+				margin-top: 6px;
+				padding: 0 12px;
+				border: none;
+				background-color: $up-value-color;
+				color: $bg-main-color;
+				.subscribe_icon {
+					font-size: 24px;
+					text-align: center;
+					margin: 0 6px 0 0;
+					position: relative;
+    				top: 2px;
+    				font-weight: 100;
+				}
+				&:hover {
+					border: none;
+					background-color: lighten($up-value-color, 3%);
+					transition: background-color 0.2s ease-in-out;
+				}
+			}
+		}
+		.coin_price {
+			width: 50%;
+		}
+	}
+
 	.coin-value {
 		font-size: 32px;
 		color: $dark-primary-color;
@@ -2180,32 +2248,6 @@ h3 {
 		}
 	}
 
-	.coin_title {
-		cursor: pointer;
-		text-overflow: clip;
-		white-space: nowrap;
-		.button_icon {
-			width:20px;
-			height: 35px;
-			vertical-align: bottom;
-		}
-		h1 {
-			display: inline;
-			margin-left: 12px;
-			text-overflow: clip;
-		}
-		&:hover {
-			.button_icon {
-				&.ic_star {
-					background-image: url('~assets/images/ic_star_border_hover.svg');
-					&.active_star {
-						background-image: url('~assets/images/ic_star_hover.svg');
-					}
-				}
-			}
-		}
-	}
-
 	.calculator {
 		display: flex;
 		.calculator_item {
@@ -2275,13 +2317,24 @@ h3 {
 		}
 	}
 
-
 	.сhart_сontainer {
 		border: 1px solid $border-thin-color;
 	}
 }
 @media (max-width: 769px) { 
 	.ff_coin {
+		.coin_head_block {
+			flex-wrap: wrap;
+			.coin_title {
+				width:100%;
+				.subscribe {
+					display: none;
+				}
+			}
+			.coin_price {
+				width:100%;
+			}
+		}
 		.coin_mobile {
 /*			display: none;
 */		}

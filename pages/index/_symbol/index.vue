@@ -1,12 +1,20 @@
 <template>
   <section class="ff_coin">
 
-    <div class="row no-gutters margin24">
-      <div class="col-12 col-md-6 coin_title" v-on:click="watch()">
-        <span class="button_icon ic_star" v-bind:class="activeFavourite"></span>
-        <h1>Курс {{ getBTCCase() }}</h1>
+    <div class="coin_head_block">
+      <div class="coin_title">
+        <div class="coin_favourite_hover" v-on:click="watch()">
+          <span class="button_icon ic_star" v-bind:class="activeFavourite"></span>
+          <h1>Курс {{ getBTCCase() }}</h1>
+        </div>
+
+        <button class="subscribe" v-on:click="subscribe()">
+          <div v-if="inSubscribed()" ><span class="subscribe_icon">&minus;</span>Не отслеживать</div>
+          <div v-else><span class="subscribe_icon">&plus;</span> Отслеживать курс и прогноз по монете</div>
+        </button>
       </div>
-      <div class="col-12 col-md-6">
+
+      <div class="coin_price">
         <div>
           <transition name="slide-fade" mode="out-in">
             <span 
@@ -27,6 +35,7 @@
           <span class="coin-info">{{ attributes.price_btc }} BTC</span>&nbsp;
         </div>
       </div>
+
     </div>
 
     <div class="row no-gutters coin-details-block coin_mobile">
@@ -210,8 +219,23 @@
             }
           })
       },
+      subscribe() {
+        this.sendEvent( 'CoinSubscribe', 'subscribe', this.symbol );
+        this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=${ this.symbol}`)
+          .then(({ data }) => {
+            let response = dataFormatter.deserialize( data )
+            this.$store.commit('SET_SUBSCRIBED_COINS', response.subscribedcoins)
+          }).catch(e => {
+            if (e.response && e.response.status == 401) {
+              this.$router.push({ name: `account-signin` })
+            }
+          })
+      },
       inFavourites() {
         return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( coin =>  coin.symbol == this.symbol )
+      },
+      inSubscribed() {
+        return this.$store.state.subscribedCoins && this.$store.state.subscribedCoins.find( coin =>  coin.symbol == this.symbol )
       },
 
       price() {
