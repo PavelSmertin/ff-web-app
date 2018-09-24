@@ -61,10 +61,10 @@
 
     	<nuxt/>
 
-		<footer class="ff-footer row justify-content-between" >
-			<div class="d-none d-md-block col-md-2 ff-label"><span>Copyright &copy; FF.ru</span></div>
+		<footer class="ff_footer" >
+			<div class="ff_copyright ff-label"><span>Copyright &copy; FF.ru</span></div>
 
-			<div class="d-none d-md-block col-md-8">
+			<div class="ff_license">
 				<nuxt-link  
 					@click.native="sendEvent( 'Footer', 'click', 'О компании' )" 
 					:to="{path: '/contacts'}" 
@@ -102,7 +102,7 @@
 				</nuxt-link>
 			</div>
 
-			<div class="social col-12 col-md-2">
+			<div class="ff_social social">
 				<a @click.native="onSocialClick('vk')" rel="nofollow noopener" href="https://vk.com/cryptoff" class="social_link vk" alt="vk" target="_blank"></a>
 				<a @click.native="onSocialClick('tg')" rel="nofollow noopener" href="https://telegram.im/@FF_RUS?lang=ru" class="social_link tg" alt="tg" target="_blank"></a>
 				<a @click.native="onSocialClick('twitter')" rel="nofollow noopener" href="https://twitter.com/www_FF_ru" class="social_link tr" alt="twitter" target="_blank"></a>
