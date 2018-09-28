@@ -111,7 +111,6 @@
 
 <script>
   import VueTimeago from 'vue-timeago'
-  import Dropdowns from '~/components/Dropdowns.vue'
   import PostItem from '~/components/PostItem.vue'
   import CoinsList from '~/components/CoinsList.vue'
   import NewsCoin from '~/components/NewsCoin.vue'
@@ -242,7 +241,6 @@
     components: {
       VueTimeago,
       InfiniteLoading,
-      Dropdowns,
       PostItem,
       CoinsList,
       NewsCoin,

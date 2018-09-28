@@ -65,13 +65,12 @@
 			<div class="ff_copyright ff-label"><span>Copyright &copy; FF.ru</span></div>
 
 			<div class="ff_license">
-				<nuxt-link  
-					@click.native="sendEvent( 'Footer', 'click', 'О компании' )" 
-					:to="{path: '/contacts'}" 
+				<a href="https://welcome.ff.ru"
 					class="nav-link"
+					alt="о проекте"
 					>
-					О компании
-				</nuxt-link>
+					О проекте
+				</a>
 				<nuxt-link  
 					@click.native="sendEvent( 'Footer', 'click', 'Авторы' )" 
 					:to="{path: '/authors'}" 
