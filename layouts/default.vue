@@ -13,6 +13,7 @@
 				</nuxt-link>
 
 				<nav>
+
 					<nuxt-link 
 						@click.native="sendEvent( 'Toolbar', 'click', 'курс биткоина' )" 
 						:to="{name: 'index'}" 
@@ -27,6 +28,13 @@
 						>
 						Купить биткоин
 					</nuxt-link>
+					<a href="https://welcome.ff.ru/?utm_source=ff&utm_medium=topmenu"
+						class="nav-link"
+						alt="о проекте"
+						>
+						О проекте
+					</a>
+
 					<a href="https://telegram.im/@FF_RUS?lang=ru" class="tg_banner_2" rel="nofollow noopener" target="_blank">
 						<span class="ic_telegram_white"></span>
 						<span class="text">
@@ -34,6 +42,7 @@
 							<small>10250 подписчиков</small>
 						</span>
 					</a>
+
 
 				</nav>
 
@@ -65,7 +74,7 @@
 			<div class="ff_copyright ff-label"><span>Copyright &copy; FF.ru</span></div>
 
 			<div class="ff_license">
-				<a href="https://welcome.ff.ru"
+				<a href="https://welcome.ff.ru/?utm_source=ff&utm_medium=btmmenu"
 					class="nav-link"
 					alt="о проекте"
 					>
