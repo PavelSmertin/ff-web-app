@@ -96,7 +96,7 @@
 
     <div class="tools">
       <!-- Автор статьи -->
-      <div v-if="post.type != 'signals'" class="post_author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <div v-if="post.type != 'signals' && post.author !== undefined" class="post_author" itemprop="author" itemscope itemtype="http://schema.org/Person">
         Перевод: <nuxt-link :to="{ path: '/authors' }" itemprop="name">{{ post.author.full_name }}</nuxt-link>
       </div>
       <div class="social">
@@ -289,17 +289,16 @@
           return false
         }
 
-
         var splitArr = domain.split('.'),
             arrLen = splitArr.length
 
-        //extracting the root domain here
-        //if there is a subdomain 
+        // extracting the root domain here
+        // if there is a subdomain 
         if (arrLen > 2) {
           domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1]
-          //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
+          // check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
           if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
-            //this is using a ccTLD
+            // this is using a ccTLD
             domain = splitArr[arrLen - 3] + '.' + domain
           }
         }
@@ -351,22 +350,22 @@
       mouseOverVoteUp( event ) {
         this.showTooltip = true
         this.tooltipType = TOOLTIP_UP_TYPE
-        this.tooltipText = 'Проголосуйте, если этот пост сигнализирует о положительном влиянии на цену'
+        this.tooltipText = 'Проголосуйте, если эта новость сигнализирует о положительном влиянии на цену'
       },
       mouseOverVoteDown( event ) {
         this.showTooltip = true
         this.tooltipType = TOOLTIP_DOWN_TYPE
-        this.tooltipText = 'Проголосуйте, если этот пост сигнализирует об отрицательном влиянии на цену'
+        this.tooltipText = 'Проголосуйте, если эта новость сигнализирует об отрицательном влиянии на цену'
       },
       mouseOverLike( event ) {
         this.showTooltip = true
         this.tooltipType = TOOLTIP_LIKE_TYPE
-        this.tooltipText = 'Проголосуйте, если вам нравится этот пост'
+        this.tooltipText = 'Проголосуйте, если вам нравится эта новость'
       },
       mouseOverDislike( event ) {
         this.showTooltip = true
         this.tooltipType = TOOLTIP_DISLIKE_TYPE
-        this.tooltipText = 'Проголосуйте, если вам не нравится этот пост'
+        this.tooltipText = 'Проголосуйте, если вам не нравится эта новость'
       },
 
       mouseLeave() {
