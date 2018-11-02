@@ -170,6 +170,10 @@
       </div>
     </div>
 
+    <a class="tt_banner_wrap" href="https://tt.ff.ru" alt="trader trends">
+      <img src="/tt_banner.png" class="tt_banner" alt="tt_banner" >
+    </a>
+
     <div class="tg_banner_wrap">
       <div class="tg_banner">
         <div class="tg_banner_icon">
