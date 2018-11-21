@@ -20,21 +20,48 @@
 
     <div class="sticky_block">
       <div class="sticky_inner">
-        <button class="vote vote_up" v-on:click="vote(1)">
+        <button 
+          class="vote vote_up" 
+          v-on:click="vote(1)"
+          v-on:mouseover="mouseOverVoteUp"
+          v-on:mouseleave="mouseLeave"
+          >
           <span class="ic_up"></span><span class="votes_count">{{ post.votes_positive }}</span>
         </button>
-        <button class="vote vote_down" v-on:click="vote(0)">
+        <button 
+          class="vote vote_down" 
+          v-on:click="vote(0)"
+          v-on:mouseover="mouseOverVoteDown"
+          v-on:mouseleave="mouseLeave"
+          >
           <span class="ic_down"></span><span class="votes_count">{{ post.votes_negative }}</span>
         </button>
-        <button class="vote like" v-on:click="like(1)">
+        <button 
+          class="vote like" 
+          v-on:click="like(1)"
+          v-on:mouseover="mouseOverLike"
+          v-on:mouseleave="mouseLeave"
+          >
           <span class="ic_like"></span><span class="votes_count">{{ post.likes_positive }}</span>
         </button>
-        <button class="vote dislike" v-on:click="like(0)">
+        <button
+          class="vote dislike"
+          v-on:click="like(0)"
+          v-on:mouseover="mouseOverDislike"
+          v-on:mouseleave="mouseLeave"
+          >
           <span class="ic_dislike"></span><span class="votes_count">{{ post.likes_negative }}</span>
         </button>
 
       </div>
+
+      <transition name="tooltip">
+        <div v-if="showTooltip" class="ff_tooltip" v-bind:class="buttonColor">
+          {{ tooltipText }}
+        </div>
+      </transition>
     </div>
+
    
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
@@ -69,7 +96,7 @@
 
     <div class="tools">
       <!-- Автор статьи -->
-      <div class="post_author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <div v-if="post.type != 'signals' && post.author !== undefined" class="post_author" itemprop="author" itemscope itemtype="http://schema.org/Person">
         Перевод: <nuxt-link :to="{ path: '/authors' }" itemprop="name">{{ post.author.full_name }}</nuxt-link>
       </div>
       <div class="social">
@@ -143,6 +170,10 @@
       </div>
     </div>
 
+    <a class="tt_banner_wrap" href="https://tt.ff.ru" alt="trader trends">
+      <img src="/tt_banner.png" class="tt_banner" alt="tt_banner" >
+    </a>
+
     <div class="tg_banner_wrap">
       <div class="tg_banner">
         <div class="tg_banner_icon">
@@ -152,8 +183,14 @@
           <p class="ff_nc_title">Подпишитесь на наш Телеграм канал</p>
           <p>Инсайдерские новости.  Обучающие материалы. Прогнозы курсов криптовалют</p>
         </div>
-        <a @click.native="onSocialClick('tg')" href="https://telegram.im/@FF_RUS?lang=ru" class="subscribe tg" alt="tg" target="_blank">
-          <span class="banner_icon"></span>Подписаться
+        <a 
+          v-observe-visibility="( isVisible, entry ) => visibilityTGBanner( isVisible, entry )" 
+          @click.native="onSocialClick('tg')" 
+          href="https://telegram.im/@FF_RUS?lang=ru" 
+          class="subscribe tg" 
+          alt="tg" 
+          target="_blank">
+            <span class="banner_icon"></span>Подписаться
         </a>
       </div>
     </div>
@@ -179,6 +216,11 @@
 
   const dataFormatter = new Jsona()
 
+  const TOOLTIP_UP_TYPE = 'tooltip_up_type'
+  const TOOLTIP_DOWN_TYPE = 'tooltip_down_type'
+  const TOOLTIP_LIKE_TYPE = 'tooltip_like_type'
+  const TOOLTIP_DISLIKE_TYPE = 'tooltip_dislike_type'
+
   export default {
 
     mixins: [ analMixin ],
@@ -195,16 +237,9 @@
       PostSimilar,
     },
 
-    // head() {
-    //   return {
-    //     title: this.feedSeoTitle,
-    //   }
-    // },
-
     data() {
       return {
         url: process.env.baseUrl + this.$route.path,
-        feedSeoTitle: '',        
         body: '',
         overriddenNetworks: BaseNetworks,
         post: this.postProp,
@@ -212,6 +247,10 @@
         commentText: '',
         newComments: [],
         commentsSendProcess: false,
+        showTooltip: false,
+        tooltipText: null,
+        tooltipType: null,
+        showTutorial: true,
       }
     },
 
@@ -236,6 +275,13 @@
       },
       commentsButtonDisabled: function () {
         return this.commentText.length < 1 || this.commentsSendProcess === true;
+      },
+
+      buttonColor: function () {
+        return {
+          'vote_up_style': this.tooltipType == TOOLTIP_UP_TYPE,
+          'vote_down_style': this.tooltipType == TOOLTIP_DOWN_TYPE,
+        }
       }
     },
 
@@ -247,17 +293,16 @@
           return false
         }
 
-
         var splitArr = domain.split('.'),
             arrLen = splitArr.length
 
-        //extracting the root domain here
-        //if there is a subdomain 
+        // extracting the root domain here
+        // if there is a subdomain 
         if (arrLen > 2) {
           domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1]
-          //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
+          // check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
           if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
-            //this is using a ccTLD
+            // this is using a ccTLD
             domain = splitArr[arrLen - 3] + '.' + domain
           }
         }
@@ -277,10 +322,9 @@
       vote( is_positive ) {
         this.sendEvent( 'PostVote', 'vote', is_positive );
 
-        if( this.setLocalStorage( "vote", this.post.id, is_positive )) {
+        if( this.setLocalStorage( "vote_" + this.post.id, is_positive )) {
           return
         }
-
         this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=rating`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
@@ -294,10 +338,9 @@
       like( is_positive ) {
         this.sendEvent( 'PostLike', 'like', is_positive );
 
-        if( this.setLocalStorage( "like", this.post.id, is_positive )) {
+        if( this.setLocalStorage( "like_" + this.post.id, is_positive )) {
           return
         }
-
         this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=like`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
@@ -308,10 +351,32 @@
           })
       },
 
-      setLocalStorage( type, id, is_positive ) {
+      mouseOverVoteUp( event ) {
+        this.showTooltip = true
+        this.tooltipType = TOOLTIP_UP_TYPE
+        this.tooltipText = 'Проголосуйте, если эта новость сигнализирует о положительном влиянии на цену'
+      },
+      mouseOverVoteDown( event ) {
+        this.showTooltip = true
+        this.tooltipType = TOOLTIP_DOWN_TYPE
+        this.tooltipText = 'Проголосуйте, если эта новость сигнализирует об отрицательном влиянии на цену'
+      },
+      mouseOverLike( event ) {
+        this.showTooltip = true
+        this.tooltipType = TOOLTIP_LIKE_TYPE
+        this.tooltipText = 'Проголосуйте, если вам нравится эта новость'
+      },
+      mouseOverDislike( event ) {
+        this.showTooltip = true
+        this.tooltipType = TOOLTIP_DISLIKE_TYPE
+        this.tooltipText = 'Проголосуйте, если вам не нравится эта новость'
+      },
 
-        const key = type + '_' + id;
+      mouseLeave() {
+        this.showTooltip = false
+      },
 
+      setLocalStorage( key, is_positive ) {
         if( typeof localStorage === 'undefined' ) {
           return true
         }
@@ -321,25 +386,7 @@
         }
 
         if( this.$auth.loggedIn ) {
-          const value = localStorage.getItem( key )
-          if ( value !== null && value !== undefined ) {
-            if ( value == is_positive ) {
-              this.post[type + 's' + (is_positive ? '_positive' : '_negative')]--
-              localStorage.removeItem( key )
-            } else {
-              if (is_positive) {
-                this.post[type + 's_positive']++
-                this.post[type + 's_negative']--
-              } else {
-                this.post[type + 's_positive']--
-                this.post[type + 's_negative']++
-              }
-              localStorage.setItem( key, is_positive )
-            }
-          } else {
-            this.post[type + 's' + (is_positive ? '_positive' : '_negative')]++
-            localStorage.setItem( key, is_positive )
-          }
+          localStorage.setItem( key, is_positive )
           return false
         }
 
@@ -347,7 +394,6 @@
         if( value != null && value != undefined ) { // && value == is_positive ) {
           return true
         }
-        this.post[type + 's' + (is_positive ? '_positive' : '_negative')]++
         localStorage.setItem( key, is_positive )
 
         return false
@@ -401,6 +447,13 @@
             ga('send', 'pageview')
           }
         } 
+      },
+
+      visibilityTGBanner( isVisible, entry ) {
+        if( isVisible && this.$store.state.showTutorial) {
+          _t.push({start:'Walkthrough FF site'})
+          this.$store.commit('SHOW_TUTORIAL')
+        }
       },
 
       initRelationNews() {

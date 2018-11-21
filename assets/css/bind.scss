@@ -192,7 +192,6 @@ h3 {
 	}
 }
 .ic_telegram_white {
-	//background: transparent url('~assets/images/ic_star_border.svg') center center no-repeat;
 	background-image: url('~assets/images/telegram_white.svg');
 	width: 12px;
 	height: 12px;
@@ -325,6 +324,30 @@ h3 {
 	display: inline-block;
 }
 
+
+.ff_tooltip {
+	position: absolute;
+	z-index: 1;
+	background-color: $bg-main-color;
+	border: 1px solid $border-bold-color;
+	font-size: $second_size;
+	word-wrap: normal;
+	white-space: nowrap;
+	padding: 6px 12px;
+	box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
+	transition: top 0.2s ease;
+	&.tooltip-enter-active {
+		transition: all 0.1s ease;
+	}
+	&.tooltip-leave-active {
+		transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+	}
+	&.tooltip-enter, &.tooltip-leave-to {
+		transform: translateX(-10px);
+		opacity: 0
+	}
+}
+
 #showImgBgr {
 	top: 0;
 	left:0;
@@ -408,6 +431,32 @@ h3 {
 .page-enter, .page-leave-active, .page-leave {
 	opacity: 0.5
 }
+
+
+.button_class {
+	padding: 0 24px;
+	height: 41px;	
+	border: 1px solid $border-bold-color;
+	flex-shrink: 0;
+	flex-grow: 1;
+	background: none;
+	cursor: pointer;
+	font-size: $label-size;
+	display: flex;
+	justify-content:space-between;
+	font-weight: bold;
+	text-transform: uppercase;
+	&:focus{
+		outline: none;
+	}
+}
+
+._tme-helper {
+	display: none;
+}
+
+
+
 
 
 /************ INDEX PAGE STRUCTURE **************/
@@ -530,9 +579,6 @@ h3 {
 					}
 					.ff_center_panel.active_center {
 						display: flex;
-/*						.ff_scroll_wrap {
-							position: relative;
-						}*/
 					}
 				}
 
@@ -889,29 +935,9 @@ h3 {
 			}
 		}
 	}
-	.coin_tooltip {
-		position: absolute;
+	.ff_tooltip {
 		top: 0;
 		left: 110%;
-		z-index: 1;
-		background-color: $bg-main-color;
-		border: 1px solid $border-bold-color;
-		font-size: $second_size;
-		word-wrap: normal;
-		white-space: nowrap;
-		padding: 6px 12px;
-		box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
-		transition: top 0.2s ease;
-		&.tooltip-enter-active {
-			transition: all 0.1s ease;
-		}
-		&.tooltip-leave-active {
-			transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-		}
-		&.tooltip-enter, &.tooltip-leave-to {
-			transform: translateX(-10px);
-			opacity: 0
-		}
 		&:before {
 			content: '';
 			display: block;  
@@ -984,7 +1010,7 @@ h3 {
 				overflow: hidden;
 			}
 		}
-		.coin_tooltip {
+		.ff_tooltip {
 			display: none;
 		}
 		.coin_tools {
@@ -1349,9 +1375,22 @@ h3 {
 }
 
 /* footer block */
-.ff-footer {
+.ff_footer {
+	display: flex;
 	padding-left: 24px;
 	box-shadow: inset 0 1px 0 0 #BFBFBF;
+
+	.ff_copyright {
+		flex-grow: 0;
+	}
+	.ff_license {
+		flex-grow: 1;
+		text-align: center;
+	}
+	.ff_social {
+		flex-grow: 0;
+	}
+
 	span {
 		line-height: 48px;
 	}
@@ -1362,6 +1401,35 @@ h3 {
 		padding: 0 20px 0 0;
 		&:hover {
 			text-decoration: underline;
+		}
+	}
+}
+@media (max-width: 1040px) {
+	.ff_footer {
+		flex-direction: row;
+		.ff_copyright {
+			display: none;
+		}
+		.ff_license {
+			display: block;
+		}
+		.ff_social {
+			display: none;
+		}
+	}
+}
+@media (max-width: 769px) {
+	.ff_footer {
+		justify-content: center;
+		.ff_copyright {
+			display: none;
+		}
+		.ff_license {
+			display: none;
+		}
+		.ff_social {
+			align-self: center;
+			display: block;
 		}
 	}
 }
@@ -1453,26 +1521,11 @@ h3 {
 		flex-wrap: wrap;
 		justify-content:space-between;
 
-		.button_class {
-			padding: 0 24px;
-			height: 41px;	
-			border: 1px solid $border-bold-color;
-			flex-shrink: 0;
-			flex-grow: 1;
-			background: none;
-			cursor: pointer;
-			font-size: $label-size;
-			display: flex;
-			justify-content:space-between;
-			font-weight: bold;
-		}
-
 		.subscribe {
 			@extend .button_class;
 			border: none;
 			background-color: $up-value-color;
 			color: $bg-main-color;
-			text-transform: uppercase;
 			span {
 				width: 100%;
 				text-align: center;
@@ -1487,7 +1540,6 @@ h3 {
 
 		.watch {
 			@extend .button_class;
-			text-transform: uppercase;
 			display: flex;
 			padding: 0;
 			.button_icon {
@@ -1551,14 +1603,14 @@ h3 {
 
 	.sticky_block {
 		position: sticky;
-		top: -2px;
+		top: 0px;
 		background-color: $bg-coin-color;
 		margin: 0;
 		border-bottom: 1px solid $border-bold-color;
 		border-top: 1px solid $border-bold-color;
 
 		.sticky_inner {
-			height: 56px;
+			height: 54px;
 			margin-top: 0px;
 			margin-right: 72px;
 			display: flex;
@@ -1627,6 +1679,22 @@ h3 {
 				}
 			}
 		}
+	}
+
+	.ff_tooltip {
+		top: 65px;
+		left: 12px;
+		right: 12px;
+		text-align: center;
+		z-index: 999 !important;
+
+		&.vote_up_style {
+			color: darken($up-value-color, 3%);
+		}
+		&.vote_down_style {
+			color: darken($down-value-color, 3%);
+		}
+
 	}
 
 	.similar_list_wrap {
@@ -1766,6 +1834,15 @@ h3 {
 		}
 	}
 
+	.tt_banner_wrap {
+		display: block;
+		text-align: center;
+		img {
+			width: 75%;
+			margin-top: 36px;
+		}
+	}	
+
 	.tg_banner_wrap {
 		margin: 48px 0 0 0;
 		padding: 12px 0;
@@ -1841,7 +1918,14 @@ h3 {
 	}
 }
 @media (max-width: 769px) {
+	.ff_post_feed {
+		.ff_post{
+			padding-top: 0px;
+    		margin-top: -1px;
+		}
+	}
 	.ff_post {
+
 		.content_width {
 			width: auto;
 			margin: 24px 24px 0 24px;
@@ -1894,6 +1978,7 @@ h3 {
 		}
 		
 		.sticky_block {
+			top: -2px;
 			.sticky_inner {
 				height: 48px;
 				margin: 0 48px 0 0;
@@ -1901,6 +1986,10 @@ h3 {
 					padding: 0 12px;
 				}
 			}
+		}
+
+		.ff_tooltip {
+			display: none;
 		}
 
 		.tg_banner_wrap {
@@ -1967,6 +2056,64 @@ h3 {
 			font-size: $label-size;
 		}
 	}
+
+	.coin_head_block {
+		padding: 24px 24px 0;
+		display: flex;
+		.coin_title {
+			width: 50%;
+			.coin_favourite_hover {
+				cursor: pointer;
+				text-overflow: clip;
+				white-space: nowrap;
+				.button_icon {
+					width:20px;
+					height: 35px;
+					vertical-align: bottom;
+				}
+				h1 {
+					display: inline;
+					margin-left: 12px;
+					text-overflow: clip;
+				}
+				&:hover {
+					.button_icon {
+						&.ic_star {
+							background-image: url('~assets/images/ic_star_border_hover.svg');
+							&.active_star {
+								background-image: url('~assets/images/ic_star_hover.svg');
+							}
+						}
+					}
+				}
+			}
+			.subscribe {
+				@extend .button_class;
+				margin-top: 6px;
+				padding: 0 12px;
+				border: none;
+				background-color: $up-value-color;
+				color: $bg-main-color;
+				.subscribe_icon {
+					font-size: 24px;
+					text-align: center;
+					margin: 0 6px 0 0;
+					position: relative;
+    				top: 2px;
+    				font-weight: 100;
+				}
+				&:hover {
+					border: none;
+					background-color: lighten($up-value-color, 3%);
+					transition: background-color 0.2s ease-in-out;
+				}
+			}
+		}
+		.coin_price {
+			width: 50%;
+		}
+	}
+
 	.coin-value {
 		font-size: 32px;
 		color: $dark-primary-color;
@@ -2106,32 +2253,6 @@ h3 {
 		}
 	}
 
-	.coin_title {
-		cursor: pointer;
-		text-overflow: clip;
-		white-space: nowrap;
-		.button_icon {
-			width:20px;
-			height: 35px;
-			vertical-align: bottom;
-		}
-		h1 {
-			display: inline;
-			margin-left: 12px;
-			text-overflow: clip;
-		}
-		&:hover {
-			.button_icon {
-				&.ic_star {
-					background-image: url('~assets/images/ic_star_border_hover.svg');
-					&.active_star {
-						background-image: url('~assets/images/ic_star_hover.svg');
-					}
-				}
-			}
-		}
-	}
-
 	.calculator {
 		display: flex;
 		.calculator_item {
@@ -2201,13 +2322,24 @@ h3 {
 		}
 	}
 
-
 	.сhart_сontainer {
 		border: 1px solid $border-thin-color;
 	}
 }
 @media (max-width: 769px) { 
 	.ff_coin {
+		.coin_head_block {
+			flex-wrap: wrap;
+			.coin_title {
+				width:100%;
+				.subscribe {
+					display: none;
+				}
+			}
+			.coin_price {
+				width:100%;
+			}
+		}
 		.coin_mobile {
 /*			display: none;
 */		}

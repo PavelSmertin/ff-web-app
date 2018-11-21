@@ -13,6 +13,7 @@
 				</nuxt-link>
 
 				<nav>
+
 					<nuxt-link 
 						@click.native="sendEvent( 'Toolbar', 'click', 'курс биткоина' )" 
 						:to="{name: 'index'}" 
@@ -27,6 +28,13 @@
 						>
 						Купить биткоин
 					</nuxt-link>
+					<a href="https://welcome.ff.ru/?utm_source=ff&utm_medium=topmenu"
+						class="nav-link"
+						alt="о проекте"
+						>
+						О проекте
+					</a>
+
 					<a href="https://telegram.im/@FF_RUS?lang=ru" class="tg_banner_2" rel="nofollow noopener" target="_blank">
 						<span class="ic_telegram_white"></span>
 						<span class="text">
@@ -34,6 +42,7 @@
 							<small>10250 подписчиков</small>
 						</span>
 					</a>
+
 
 				</nav>
 
@@ -61,17 +70,16 @@
 
     	<nuxt/>
 
-		<footer class="ff-footer row justify-content-between" >
-			<div class="d-none d-md-block col-md-2 ff-label"><span>Copyright &copy; FF.ru</span></div>
+		<footer class="ff_footer" >
+			<div class="ff_copyright ff-label"><span>Copyright &copy; FF.ru</span></div>
 
-			<div class="d-none d-md-block col-md-8">
-				<nuxt-link  
-					@click.native="sendEvent( 'Footer', 'click', 'О компании' )" 
-					:to="{path: '/contacts'}" 
+			<div class="ff_license">
+				<a href="https://welcome.ff.ru/?utm_source=ff&utm_medium=btmmenu"
 					class="nav-link"
+					alt="о проекте"
 					>
-					О компании
-				</nuxt-link>
+					О проекте
+				</a>
 				<nuxt-link  
 					@click.native="sendEvent( 'Footer', 'click', 'Авторы' )" 
 					:to="{path: '/authors'}" 
@@ -102,7 +110,7 @@
 				</nuxt-link>
 			</div>
 
-			<div class="social col-12 col-md-2">
+			<div class="ff_social social">
 				<a @click.native="onSocialClick('vk')" rel="nofollow noopener" href="https://vk.com/cryptoff" class="social_link vk" alt="vk" target="_blank"></a>
 				<a @click.native="onSocialClick('tg')" rel="nofollow noopener" href="https://telegram.im/@FF_RUS?lang=ru" class="social_link tg" alt="tg" target="_blank"></a>
 				<a @click.native="onSocialClick('twitter')" rel="nofollow noopener" href="https://twitter.com/www_FF_ru" class="social_link tr" alt="twitter" target="_blank"></a>

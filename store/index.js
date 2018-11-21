@@ -17,7 +17,8 @@ const createStore = () => {
 			coinsSearch: null,
 			news: [],
 			topNews: [],
-			filters: {symbol: null, type: null}
+			filters: {symbol: null, type: null},
+			showTutorial: true,
 		},
 
 		mutations: {
@@ -38,6 +39,11 @@ const createStore = () => {
 				state.filters.symbol = symbol
 			},
 
+			SHOW_TUTORIAL: function (state) {
+				state.showTutorial = false
+			},
+
+			
 
 			SET_COINS: function (state, data) {
 
