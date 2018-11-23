@@ -1284,6 +1284,9 @@ h3 {
 	&.ff_right_feed_news {
 		.ff-news-row {
 			.ff-news-cell {
+				.top_post_background {
+					display: none;
+				}
 				&.top_post_item {
 					overflow: hidden;
 					min-height: 150px;
@@ -1292,6 +1295,7 @@ h3 {
 					color: $post-top-color;
 					text-shadow: 0px 0px 3px $dark-primary-color;
 					.top_post_background {
+						display: block;
 						background-repeat: no-repeat;
 						background-position: 50% 50%;
 						background-size: cover;
@@ -1353,6 +1357,9 @@ h3 {
 			width: 100%;
 	    	min-height: 150px;
 			.ff-news-row {
+				.top_post_background {
+					display: none;
+				}
 				&:first-child {
 					position: absolute;
 					top: 0;
@@ -1393,6 +1400,7 @@ h3 {
 						color: $post-top-color;
 						text-shadow: 0px 0px 3px $dark-primary-color;
 						.top_post_background {
+							display: block;
 							background-repeat: no-repeat;
 							background-position: 50% 50%;
 							background-size: cover;

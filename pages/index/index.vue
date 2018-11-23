@@ -86,8 +86,17 @@
 
     </div>
 
-    <div class="row no-gutters margin12 coin_mobile">
-      <h2>Биткойн калькулятор</h2>
+    <div v-if="popularNews.length" class="row no-gutters margin12 coin_mobile">
+      <h2 class="margin12">Популярное</h2>
+        <div class="ff-news ff_popular">
+          <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of popularNews" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
+            <post-item :post="newest" ></post-item>
+          </nuxt-link>
+        </div>
+    </div>
+
+    <div class="row no-gutters border_top margin24 coin_mobile">
+      <h2 class="margin12">Биткойн калькулятор</h2>
     </div>
     <div class="row no-gutters calculator margin6 coin_mobile">
       <div class="calculator_item">
@@ -108,17 +117,6 @@
           <img src="~/assets/images/baseline-arrow_forward-24px.svg" alt="arrow">
         </nuxt-link >
       </div>
-    </div>
-
-
-
-    <div v-if="popularNews.length" class="row no-gutters border_top margin24 coin_mobile">
-      <h2 class="margin12">Популярное</h2>
-        <div class="ff-news ff_popular">
-          <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of popularNews" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
-            <post-item :post="newest" ></post-item>
-          </nuxt-link>
-        </div>
     </div>
 
     <div class="row no-gutters border_top margin24 coin_mobile">
