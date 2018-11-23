@@ -138,7 +138,7 @@
 					<td><strong>431 358,18 ₽</strong></td>
 				</tr>
 				<tr>
-					<td><strong>BestChage</strong></td>
+					<td><strong>BestChange</strong></td>
 					<td>429 537,66 ₽</td>
 					<td>0.0006 BTC</td>
 					<td><strong>432 114,88 ₽</strong></td>
@@ -154,12 +154,6 @@
 					<td>432 460,00 ₽</td>
 					<td>5% + 15,57 RUB</td>
 					<td><strong>454 098,57 ₽</strong></td>
-				</tr>
-				<tr>
-					<td><strong>Payeer.com</strong></td>
-					<td>437 800,16 ₽</td>
-					<td>Payeer: 11 382,81 ₽ + комиссия</td>
-					<td><strong>463 553,13 ₽</strong></td>
 				</tr>
 				<tr>
 					<td><strong>Payeer.com</strong></td>

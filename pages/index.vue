@@ -82,7 +82,7 @@
           </div>
 
           <div class="scroll-container" ref="scroll_news">
-            <div v-if="$store.state.news.length" class="ff-news">
+            <div v-if="$store.state.news.length" class="ff-news ff_right_feed_news">
 
               <!-- ssr list -->
               <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
