@@ -313,9 +313,6 @@
         pairs = dataFormatter.deserialize(responsePairs.data)
         otherCoins = responseOtherCoins.data.data
         popularNews = dataFormatter.deserialize( responsePopularNews.data )
-
-        console.log( popularNews )
-
       } catch (e) {
         if( e.response && e.response.status == 404 ) {
           error ({ message: 'Такой монеты не существует', statusCode: 404 })
