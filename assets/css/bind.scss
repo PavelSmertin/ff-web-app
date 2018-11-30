@@ -2822,6 +2822,41 @@ h3 {
 	}
 }
 
+.ff_adv {
+	@extend .ff_page;
+
+	img {
+		width: 100%;
+		margin-top: 36px;
+	}
+
+	.ff_adv_tarif {
+		width: 100%;
+		border: 1px solid $border-bold-color;
+
+		th {
+			background-color: $border-thin-color
+		}
+		th, td {
+			border: 1px solid $border-bold-color;
+			vertical-align: text-top;
+			padding: 6px 12px;
+		}
+		tfoot {
+			font-weight: bold;
+		}
+		ul, li {
+			list-style: none;
+			margin: 0; 
+			padding: 0;
+		}
+		ul {
+			padding-bottom: 64px;
+		}
+	}
+}
+
+
 
 
 

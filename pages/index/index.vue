@@ -306,7 +306,7 @@
             app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=BTC`),
             app.$axios.get(`/api/exchanges/BTC/top?include=exchange&fields[portfolio-exchange]=name&fields[portfolio-exchange]=name&per-page=10`),
             app.$axios.get(`/api/coins/BTC/other?per-page=8`),
-            app.$axios.get(`/api/news/popular`),
+            app.$axios.get(`/api/news/popular?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images,is_top`),
         ])
 
         details = dataFormatter.deserialize(responseDetails.data)
@@ -503,6 +503,10 @@
           }
 
         }
+      },
+
+      onPostClick: function ( postId ) {
+        this.sendEvent( 'PopularNews', 'click', postId );
       },
     },
 

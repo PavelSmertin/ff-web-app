@@ -81,6 +81,13 @@
 					О проекте
 				</a>
 				<nuxt-link  
+					@click.native="sendEvent( 'Footer', 'click', 'Реклама на сайте' )" 
+					:to="{path: '/adv'}" 
+					class="nav-link"
+					>
+					Реклама на сайте
+				</nuxt-link>
+				<nuxt-link  
 					@click.native="sendEvent( 'Footer', 'click', 'Авторы' )" 
 					:to="{path: '/authors'}" 
 					class="nav-link"

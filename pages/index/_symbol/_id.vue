@@ -10,7 +10,7 @@
   import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
 
-  const api_news = '/api/news?per-page=1&include=relatednews,coins,similar,author,comments'
+  const api_news = '/api/news?per-page=1&include=relatednews,coins,similar,author,comments,is_top'
   const dataFormatter = new Jsona()
 
   export default {

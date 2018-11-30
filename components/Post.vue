@@ -65,20 +65,20 @@
    
     <div class="news-detail">
       <ul class="ff-label news_list_detail">
-        <li class="post_detail_coins">
+        <li v-if="post.coins && post.coins.length > 0" class="post_detail_coins">
           <span v-for="coin of post.coins" v-bind:key="coin.id" class="coin_tag">
             {{ coin.symbol }}
           </span>
         </li>
-        <li >
+        <li v-if="post.is_top !== true">
           <timeago :since="post.create_dt" class="time-ago"></timeago>    
           <meta itemprop="datePublished" v-bind:content="post.create_dt">
         </li>
         <li>{{ postType() }}</li>
 
-        <!-- li v-if="sourceDomain()" class="post_detail_source ff-label">
-          Источник: <span itemprop="isBasedOn" >{{ sourceDomain() }}</span>
-        </li -->
+        <li v-if="sourceDomain()" class="post_detail_source ff-label">
+          Источник: <a :href="post.source_url" itemprop="isBasedOn" rel="nofollow noopener" target="_blank">{{ sourceDomain() }}</a>
+        </li>
 
       </ul>
     </div>
