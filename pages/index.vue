@@ -218,8 +218,6 @@
 
 
       let newsObj = dataFormatter.deserialize( news.data )
-      console.log('news')
-      console.log(newsObj)
 
       store.commit( 'SET_NEWS', newsObj )
 
