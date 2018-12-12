@@ -1,6 +1,6 @@
 <template>
   <div class="ff-news-cell" v-bind:class="topPost">
-    <div v-if="isTopPost()" v-bind:style="{ backgroundImage: 'url(' + getImageSharing() + ')' }" class="top_post_background" ></div>
+    <div v-bind:style="{ backgroundImage: 'url(' + getImageSharing() + ')' }" class="top_post_background" ></div>
     <div class="post_fade_overlay" ></div>
 
     <div class="ff_news_item_title">
@@ -10,7 +10,7 @@
     </div>
     <div class="ff_news_item_details no-gutters">
       <ul class="news_list_detail">
-        <li><timeago :since="post.create_dt" class="time-ago"></timeago></li>
+        <li v-if="post.is_top !== true"><timeago :since="post.create_dt" class="time-ago"></timeago></li>
         <li class="post_type">{{ postType }}</li>
         <li><post-votes :positives="post.votes_positive" :negatives="post.votes_negative"></post-votes></li>
         <li class="post_source">{{ sourceDomain() }}</li>

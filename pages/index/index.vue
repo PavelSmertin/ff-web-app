@@ -86,8 +86,17 @@
 
     </div>
 
-    <div class="row no-gutters margin12 coin_mobile">
-      <h2>Биткойн калькулятор</h2>
+    <div v-if="popularNews.length" class="row no-gutters margin12 coin_mobile">
+      <h2 class="margin12">Популярное</h2>
+        <div class="ff-news ff_popular">
+          <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of popularNews" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
+            <post-item :post="newest" ></post-item>
+          </nuxt-link>
+        </div>
+    </div>
+
+    <div class="row no-gutters border_top margin24 coin_mobile">
+      <h2 class="margin12">Биткойн калькулятор</h2>
     </div>
     <div class="row no-gutters calculator margin6 coin_mobile">
       <div class="calculator_item">
@@ -239,6 +248,7 @@
   import Vue from 'vue'
   import axios from 'axios'
   import CoinsListOther from '~/components/CoinsListOther.vue'
+  import PostItem from '~/components/PostItem.vue'
 
   import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
@@ -290,17 +300,19 @@
       let details 
       let pairs
       let otherCoins
+      let popularNews
       try {
-        let [ response_details, response_pairs, responseOtherCoins ] = await Promise.all([
+        let [ responseDetails, responsePairs, responseOtherCoins, responsePopularNews ] = await Promise.all([
             app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=BTC`),
             app.$axios.get(`/api/exchanges/BTC/top?include=exchange&fields[portfolio-exchange]=name&fields[portfolio-exchange]=name&per-page=10`),
             app.$axios.get(`/api/coins/BTC/other?per-page=8`),
+            app.$axios.get(`/api/news/popular?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images,is_top`),
         ])
 
-        details = dataFormatter.deserialize(response_details.data)
-        pairs = dataFormatter.deserialize(response_pairs.data)
+        details = dataFormatter.deserialize(responseDetails.data)
+        pairs = dataFormatter.deserialize(responsePairs.data)
         otherCoins = responseOtherCoins.data.data
-
+        popularNews = dataFormatter.deserialize( responsePopularNews.data )
       } catch (e) {
         if( e.response && e.response.status == 404 ) {
           error ({ message: 'Такой монеты не существует', statusCode: 404 })
@@ -323,6 +335,7 @@
         headDescription,
         pairs,
         otherCoins,
+        popularNews,
         calculatorBTC: 1,
         calculatorUSD: attributes.price_usd,
         calculatorRUB: attributes.price_rub,
@@ -331,6 +344,7 @@
 
     components: {
       CoinsListOther,
+      PostItem,
     },
 
     mounted () {
@@ -475,6 +489,24 @@
           'up': coin.up,
           'down': !coin.up,
         }
+      },
+
+      linkToPost: function (post) {
+        if( post.slug ) {
+          return { name: 'slug-id', params: { id: post.id, slug: post.slug, newest:  post, }}
+        } else {
+          return { name: 'index-symbol-id', params: { 
+              symbol: this.$route.params.symbol ? this.$route.params.symbol : 'btc',
+              id: post.id, 
+              newest:  post,
+            }
+          }
+
+        }
+      },
+
+      onPostClick: function ( postId ) {
+        this.sendEvent( 'PopularNews', 'click', postId );
       },
     },
 

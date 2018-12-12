@@ -82,7 +82,7 @@
           </div>
 
           <div class="scroll-container" ref="scroll_news">
-            <div v-if="$store.state.news.length" class="ff-news">
+            <div v-if="$store.state.news.length" class="ff-news ff_right_feed_news">
 
               <!-- ssr list -->
               <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
@@ -149,7 +149,7 @@
     , 'LASTMARKET'      : 0x40000   // hex for binary 1000000000000000000, this is a special case and will only appear on CCCAGG messages
   };
 
-  const api_news = `/api/news?include=coins&fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images`
+  const api_news = `/api/news?include=coins&fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images,is_top`
   const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
   const api_coins_favorites =  `api/user/myself?include=favoritecoins,subscribedcoins`
 
@@ -215,6 +215,7 @@
       ]
 
       let [ news, coins ] = await Promise.all(requests)
+
 
       let newsObj = dataFormatter.deserialize( news.data )
 
