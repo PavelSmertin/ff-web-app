@@ -2251,8 +2251,11 @@ h3 {
 			}
 			.coin_btns {
 				display: flex;
+				justify-content: flex-start;
+
 				.subscribe {
 					@extend .button_class;
+					flex-grow: unset;
 					margin-top: 6px;
 					margin-right: 10px;
 					padding: 0 12px;
@@ -2275,14 +2278,14 @@ h3 {
 				}
 				.btn-by-coin {
 					@extend .subscribe;
+					flex-grow: inherit;
 					display: block;
 					margin-top: 6px;
 					font-size: 12px;
 					font-weight: bold;
 					text-transform: uppercase;
 					text-align: center;
-					flex-grow: 1;
-					width: 70px;
+					width: 113px;
 					background-color: $up-value-color;
 
 					line-height: 40px;
@@ -2930,6 +2933,11 @@ h3 {
 			background-color: transparent;
 			border: 0;
 			width:70px;
+		}
+		label {
+			margin: 0;
+			padding: 2px 0 0 15px;
+			color: $l-color;
 		}
 	}
     .button_flex {
