@@ -1,13 +1,13 @@
 export const coinsMixin = {
   methods: {
     formatPrice(value) {
-      if( value < 100) {
+      if( value >= 0.5 && value < 100) {
         return (value/1).toFixed(2)
       }
-      if( value < 1) {
+      if( value >= 0.1 && value < 0.5) {
         return (value/1).toFixed(3)
       }
-      if( value < 0.1) {
+      if( value >= 0.01 && value < 0.1) {
         return (value/1).toFixed(5)
       }
       if( value < 0.01) {

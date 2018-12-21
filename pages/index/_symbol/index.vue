@@ -167,7 +167,6 @@
         attributes, 
         headTitle, 
         headDescription, 
-        downSymbol: downSymbol( params.symbol ), 
         symbol: symbol,
         tsym: tsym,
         ticker:  `${symbol}/${tsym}`
@@ -287,11 +286,6 @@
   function upSymbol(value) {
     if(value) {
       return value.toUpperCase()
-    }
-  }
-  function downSymbol( value ) {
-    if(value) {
-      return value.toLowerCase()
     }
   }
 

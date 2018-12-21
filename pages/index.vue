@@ -234,7 +234,7 @@
           store.commit('SET_SUBSCRIBED_COINS', responseObj.subscribedcoins)
         }
       } catch (e) {
-        console.error(e.message)
+        console.log(e.message)
       }
     },
 
