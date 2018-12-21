@@ -338,7 +338,6 @@
         this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=rating`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
-              console.log(this.post)
           }).catch(e => {
             if (e.response && e.response.status == 401) {
               this.$router.push({ name: `account-signin` })
@@ -425,7 +424,6 @@
       },
 
       subscribe() {
-          console.log(this.postCoin());
         this.sendEvent( 'PostCoinSubscribe', 'subscribe', this.postCoin() );
 
         this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=${ this.postCoin() }`)
@@ -587,7 +585,6 @@
       },
 
       coinName: function(coin, variant) {
-          console.log(coin.cases);
         if(variant === 2) {
           if(coin.cases && coin.cases.ro) {
               return coin.cases.ro

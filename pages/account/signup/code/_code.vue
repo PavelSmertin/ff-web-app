@@ -20,28 +20,7 @@
       return { meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]}
     },
 
-    // fetch ({ app, store, params }) {
-
-    //   console.log("fetch ")
-    //   app.$auth.setToken('api', params.code)
-    //   app.$auth.setUser({})
-
-
-    //   // return axios.get('http://my-api/stars')
-    //   // .then((res) => {
-    //   //   store.commit('setStars', res.data)
-    //   // })
-    // },
-
     async asyncData({ app, params, redirect }) {
-
-      // console.log("asyncData ")
-
-      // app.$auth.setToken('api', 'djsnjn')
-      // app.$auth.setUser({})
-
-      // console.log(app.$auth.loggedIn)
-      // console.log(app.$auth.getToken('api'))
 
       const { data } = await app.$axios.get( `/api/auth/email-confirm`, { params: { code: params.code } } )
       if(data.email_confirmed) {

@@ -234,7 +234,7 @@
           store.commit('SET_SUBSCRIBED_COINS', responseObj.subscribedcoins)
         }
       } catch (e) {
-        console.log(e.message)
+        console.error(e.message)
       }
     },
 
@@ -446,11 +446,6 @@
         if( !data['PRICE'] ) {
           return
         }
-        // if(!data['OPEN24HOUR']) {
-        //   return;
-        // }
-        // var delta = ((data['PRICE'] - data['OPEN24HOUR']) / data['OPEN24HOUR'] * 100).toFixed(2);
-        // console.log(data['FROMSYMBOL'], data['PRICE'], delta)
 
         return { symbol: data['FROMSYMBOL'], price: data['PRICE'], volume24h: data['VOLUME24HOUR'] } //, delta: delta};
       },
@@ -621,7 +616,6 @@
 
     beforeDestroy() {
       this.$refs["scroll_news"].removeEventListener('scroll', this.handleScroll, false)
-      //console.log('scrolling Destroyed');
     },
 
   };

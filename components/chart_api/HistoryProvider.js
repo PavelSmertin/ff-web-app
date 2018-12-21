@@ -24,12 +24,10 @@ export default {
         return axios.get(`${api_root}${url}`, {params: qs})
             .then(data => {
 				if (data.Response && data.Response === 'Error') {
-					//console.log('CryptoCompare API error:',data.Message)
 					return []
 				}
 
 				if (data.data.Data.length) {
-					//console.log(`Actually returned: ${new Date(data.data.TimeFrom * 1000).toISOString()} - ${new Date(data.data.TimeTo * 1000).toISOString()}`)
 					var bars = data.data.Data.map(el => {
 						return {
 							time: el.time * 1000, //TradingView requires bar time in ms

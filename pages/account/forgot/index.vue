@@ -46,11 +46,10 @@
 
         return this.$axios.post(`/api/auth/request-password-reset`, 'PasswordResetRequestForm[email]=' + this.email)
           .then((response) => {
-            console.log("success")
             this.$router.push({ name: `account-forgot-follow` })
           })
           .catch(e => {
-            console.log(e)
+            console.error(e)
 
             this.busy = false
             this.errors = e.response.data.errors.map((el) => { return el.title})

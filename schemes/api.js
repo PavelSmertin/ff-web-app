@@ -4,13 +4,6 @@ export default class ApiScheme {
     this.name = options._name
 
     this.options = Object.assign({}, DEFAULTS, options)
-
-      // this.$auth.ctx.app.$axios.onRequest(config => {
-      //   if( !config.url.includes("https://api.ff.ru/") ) {
-      //     console.log(this.options.tokenName)
-      //     //this.$auth.ctx.app.$axios.setHeader(this.options.tokenName, '')
-      //   }
-      // })
   }
 
   _setToken (token) {
