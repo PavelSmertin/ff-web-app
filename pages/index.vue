@@ -113,7 +113,6 @@
   import VueTimeago from 'vue-timeago'
   import PostItem from '~/components/PostItem.vue'
   import CoinsList from '~/components/CoinsList.vue'
-  import NewsCoin from '~/components/NewsCoin.vue'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
   import Jsona from 'jsona'
@@ -244,7 +243,6 @@
       InfiniteLoading,
       PostItem,
       CoinsList,
-      NewsCoin,
     },
 
     beforeRouteEnter (to, from, next) {

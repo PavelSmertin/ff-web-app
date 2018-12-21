@@ -45,14 +45,14 @@
 
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">Капитализация</div>
-        <div class="coin-detail">{{ formatPrice(attributes.market_cap_usd, 0) }} USD</div>
-        <div class="coin-detail-info">{{ formatPrice(attributes.total_coin_supply, 0) }} {{attributes.symbol }}</div>
+        <div class="coin-detail">{{ formatPrice(attributes.market_cap_usd) }} USD</div>
+        <div class="coin-detail-info">{{ formatPrice(attributes.total_coin_supply) }} {{attributes.symbol }}</div>
       </div>
 
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">Объем торгов (24ч)</div>
-        <div class="coin-detail">{{ formatPrice(attributes.volume24h_usd, 0) }} USD</div>
-        <div class="coin-detail-info">{{ formatPrice(attributes.volume24h_btc, 0) }} {{ attributes.symbol }}</div>
+        <div class="coin-detail">{{ formatPrice(attributes.volume24h_usd) }} USD</div>
+        <div class="coin-detail-info">{{ formatPrice(attributes.volume24h_btc) }} {{ attributes.symbol }}</div>
       </div>
 
       <div class="coin_detail_unit col-6 col-md-2">
@@ -105,6 +105,7 @@
   import Vue from 'vue'
   import axios from 'axios'
   import { analMixin } from '~/components/mixins/analitics.js'
+  import { coinsMixin } from '~/components/mixins/coins.js'
   import { indacoinMixin } from '~/components/mixins/indacoin.js'
   import Jsona from 'jsona'
 
@@ -112,7 +113,7 @@
 
   export default {
 
-    mixins: [ analMixin, indacoinMixin ],
+    mixins: [ analMixin, indacoinMixin, coinsMixin ],
 
     head() {
       return {
@@ -191,10 +192,6 @@
       goto() {
         var element = this.$parent.$parent.$refs["scroll-container"];
         element.scrollTo(0, 0);
-      },
-      formatPrice(value, percision = 2) {
-        let val = (value/1).toFixed(percision)
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
       },
 
       getImageSharing() {
