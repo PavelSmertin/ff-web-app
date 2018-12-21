@@ -146,6 +146,8 @@ module.exports = {
       //   console.log(el.children);
       // })
     },
+
+    middleware: ['stats'],
   },
 
   modules: [

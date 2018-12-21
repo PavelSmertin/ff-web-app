@@ -8,10 +8,14 @@
           <h1>Курс {{ getBTCCase() }}</h1>
         </div>
 
-        <button class="subscribe" v-on:click="subscribe()">
-          <div v-if="inSubscribed()" ><span class="subscribe_icon">&minus;</span>Не отслеживать</div>
-          <div v-else><span class="subscribe_icon">&plus;</span> Отслеживать курс и прогноз по монете</div>
-        </button>
+        <div class="coin_btns">
+          <button class="subscribe" v-on:click="subscribe()">
+            <div v-if="inSubscribed()" ><span class="subscribe_icon">&minus;</span>Не отслеживать</div>
+            <div v-else><span class="subscribe_icon">&plus;</span> Отслеживать {{ attributes.symbol }}</div>
+          </button>
+          <nuxt-link v-if="isActiveCoin(attributes.symbol)" class="btn-by-coin" :to="coinBuyUrl( attributes.symbol )">Купить {{attributes.symbol}}</nuxt-link>
+        </div>
+
       </div>
 
       <div class="coin_price">
@@ -35,7 +39,6 @@
           <span class="coin-info">{{ attributes.price_btc }} BTC</span>&nbsp;
         </div>
       </div>
-
     </div>
 
     <div class="row no-gutters coin-details-block coin_mobile">
@@ -102,13 +105,14 @@
   import Vue from 'vue'
   import axios from 'axios'
   import { analMixin } from '~/components/mixins/analitics.js'
+  import { indacoinMixin } from '~/components/mixins/indacoin.js'
   import Jsona from 'jsona'
 
   const dataFormatter = new Jsona()
 
   export default {
 
-    mixins: [ analMixin ],
+    mixins: [ analMixin, indacoinMixin ],
 
     head() {
       return {
@@ -277,7 +281,7 @@
           'up': coin.up,
           'down': !coin.up,
         }
-      },
+      }
     },
 
   }

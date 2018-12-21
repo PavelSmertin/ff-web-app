@@ -22,6 +22,7 @@ $border-color: #e1e1e1;
 
 $link-color: #FF9900;
 $label-color: #666666;
+$error-color: red;
 
 $bg-coin-color: #F2F2F2;
 
@@ -453,6 +454,23 @@ h3 {
 
 ._tme-helper {
 	display: none;
+}
+
+.btn-by-coin {
+	background-color: $up-value-color;
+	color: #fff;
+	width: 100%;
+	display: block;
+	line-height: 32px;
+	text-align: center;
+	cursor: pointer;
+	font-size: 12px;
+	text-transform: uppercase;
+
+	&:hover {
+		color: #fff;
+		background-color: lighten($up-value-color, 3%);
+	}
 }
 
 
@@ -913,7 +931,7 @@ h3 {
 			color: $label-color;
 			text-align: right;
 		}
-		.i_cap, .i_volume, .i_sup {
+		.i_cap, .i_volume, .i_sup{
 			flex-basis: 200%;
 		}
 	}
@@ -1155,11 +1173,11 @@ h3 {
 			color: $up-value-color;
 			font-weight: bold;
 		}
+		.coin_details_item.btn {
+			padding: 10px;
+		}
 		.i_symbol {
 			color: $l-color;
-		}
-		.i_cap, .i_volume, .i_sup {
-			flex-basis: 200%;
 		}
 	}
 	.coin_header {
@@ -1173,7 +1191,7 @@ h3 {
 		.coin_details_head {
 			flex-grow: 1;
 			line-height: 36px;
-			flex-basis: 100%;
+			flex-basis: 200%;
 			overflow: hidden;
 
 		}
@@ -1587,6 +1605,30 @@ h3 {
 		.image_origin {
 			display: block;
 			width: 100%
+		}
+	}
+
+	.buy_coin {
+		width: 75%;
+		margin: 20px auto 0	;
+
+		.buy_coin_item {
+			margin-bottom: 10px;
+			display: flex;
+			border-bottom: 1px solid $border-thin-color;
+
+			.cost {
+				flex-grow: 1;
+				font-size: $second_size;
+			}
+			.btn {
+				flex-grow: 0;
+
+				.btn-by-coin {
+					padding: 0 20px;
+					width: 138px;
+				}
+			}
 		}
 	}
 
@@ -2207,35 +2249,71 @@ h3 {
 					}
 				}
 			}
-			.subscribe {
-				@extend .button_class;
-				margin-top: 6px;
-				padding: 0 12px;
-				border: none;
-				background-color: $up-value-color;
-				color: $bg-main-color;
-				.subscribe_icon {
-					font-size: 24px;
-					text-align: center;
-					margin: 0 6px 0 0;
-					position: relative;
-    				top: 2px;
-    				font-weight: 100;
-				}
-				&:hover {
+			.coin_btns {
+				display: flex;
+				.subscribe {
+					@extend .button_class;
+					margin-top: 6px;
+					margin-right: 10px;
+					padding: 0 12px;
 					border: none;
-					background-color: lighten($up-value-color, 3%);
-					transition: background-color 0.2s ease-in-out;
+					background-color: $label-color;
+					color: $bg-main-color;
+					.subscribe_icon {
+						font-size: 24px;
+						text-align: center;
+						margin: 0 6px 0 0;
+						position: relative;
+						top: 2px;
+						font-weight: 100;
+					}
+					&:hover {
+						border: none;
+						background-color: lighten($label-color, 3%);
+						transition: background-color 0.2s ease-in-out;
+					}
 				}
+				.btn-by-coin {
+					@extend .subscribe;
+					display: block;
+					margin-top: 6px;
+					font-size: 12px;
+					font-weight: bold;
+					text-transform: uppercase;
+					text-align: center;
+					flex-grow: 1;
+					width: 70px;
+					background-color: $up-value-color;
+
+					line-height: 40px;
+
+					&:hover {
+						background-color: lighten($up-value-color, 3%);
+					}
+				}
+			}
+			@media (max-width: 986px) {
+				.coin_btns {
+					flex-direction: column !important;
+				}
+
+			}
+
+			@media (max-width: 769px) {
+				.coin_btns {
+					display: none;
+				}
+
 			}
 		}
 		.coin_price {
-			width: 50%;
+			width: 45%;
+			margin-left: 5%;
 		}
 	}
 
 	.coin-value {
-		font-size: 32px;
+		font-size: 26px;
 		color: $dark-primary-color;
 		font-weight: 100;
 
@@ -2820,6 +2898,80 @@ h3 {
 			width: 0;
 		}
 	}
+}
+
+.ff_buy_coin {
+	@extend .ff_page;
+	padding-bottom: 50px;
+
+	.input-flex {
+		border: 1px solid $border-color;
+		line-height: 42px;
+		display: flex;
+		margin-bottom: 20px;
+
+		input {
+			border-width: 0 1px 0 0;
+			flex-grow: 1;
+			padding:3px 10px;
+			text-align: right;
+			outline: none;
+
+			&.wallet {
+				text-align: left;
+			}
+			&:placeholder-shown {
+				text-align: left;
+			}
+		}
+		select {
+			flex-grow: 0;
+			margin: 3px 10px;
+			background-color: transparent;
+			border: 0;
+			width:70px;
+		}
+	}
+    .button_flex {
+      display: flex;
+      justify-content: flex-end;
+
+      .button_link {
+        width: min-content;
+        text-align: center;
+      }
+    }
+	.content {
+		display: flex;
+		margin-bottom: 10px;
+
+		.error {
+			margin: 0 0 10px;
+			font-size: $label-size;
+			text-align: left;
+			color: $link-color;
+			min-height:50px;
+			line-height: 20px;
+		}
+	}
+}
+.buy_coin_footer {
+	border-top: 1px solid $border-color;
+
+	.ff_buy_coin {
+		display: flex;
+		flex-direction: row;
+
+		.right, .left {
+			font-size: $label-size;
+			width:50%;
+			line-height: 20px;
+		}
+		.left {
+			padding-right: 40px;
+		}
+	}
+
 }
 
 .ff_adv {

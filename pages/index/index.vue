@@ -8,10 +8,14 @@
           <h1>Курс {{ getBTCCase() }}</h1>
         </div>
 
-        <button class="subscribe" v-on:click="subscribe()">
-          <div v-if="inSubscribed()" ><span class="subscribe_icon">&minus;</span>Не отслеживать</div>
-          <div v-else><span class="subscribe_icon">&plus;</span> Отслеживать курс и прогноз по монете</div>
-        </button>
+        <div class="coin_btns">
+          <button class="subscribe" v-on:click="subscribe()">
+            <div v-if="inSubscribed()" ><span class="subscribe_icon">&minus;</span>Не отслеживать</div>
+            <div v-else><span class="subscribe_icon">&plus;</span> Отслеживать {{ attributes.symbol }}</div>
+          </button>
+          <nuxt-link v-if="isActiveCoin(attributes.symbol)" class="btn-by-coin" :to="coinBuyUrl( attributes.symbol )">Купить {{attributes.symbol}}</nuxt-link>
+        </div>
+
       </div>
 
       <div class="coin_price">
@@ -26,8 +30,6 @@
             </span>
           </transition>
           &nbsp;
-
-
           <span class="coin-unit">USD</span>&nbsp;
           <span class="coin-value positive" v-bind:class="{ negative: (attributes.percent_change24h < 0) }">
             {{attributes.percent_change24h}}%
@@ -252,13 +254,14 @@
 
   import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
+  import { indacoinMixin } from '~/components/mixins/indacoin.js'
 
 
   const dataFormatter = new Jsona()
 
   export default {
 
-    mixins: [ analMixin  ],
+    mixins: [ analMixin, indacoinMixin ],
 
     head() {
       return {
@@ -508,6 +511,11 @@
       onPostClick: function ( postId ) {
         this.sendEvent( 'PopularNews', 'click', postId );
       },
+
+      coinBuyUrl: function( symbol ) {
+        return '/buy-coin?from=USD&to=' + symbol
+      }
+
     },
 
     computed: {

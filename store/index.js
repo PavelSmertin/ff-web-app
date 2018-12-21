@@ -19,6 +19,10 @@ const createStore = () => {
 			topNews: [],
 			filters: {symbol: null, type: null},
 			showTutorial: true,
+			indacoin: {
+				coins: {},
+				updatedAt: null
+			}
 		},
 
 		mutations: {
@@ -170,6 +174,10 @@ const createStore = () => {
 
 				}
 			},
+			SET_INDACOIN_COINS: function (state, coins) {
+				state.indacoin.coins = coins
+        state.indacoin.updatedAt = Date.now()
+			}
 		},
 
 		actions: {

@@ -22,19 +22,19 @@
       <div class="coin_details_head">
         Цена(%)
       </div>
+      <div class="coin_details_head">&nbsp;</div>
     </div>
 
-    <nuxt-link 
+    <div
         @click.native="onCoinClick(coin.attributes.symbol)"
         v-for="coin of $store.state.coins" 
-        v-bind:key="coin.id" 
-        :to="coinPath(coin)" 
+        v-bind:key="coin.id"
         class="coin_row"
         v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, coin )"
       >
-      <div class="coin_details_item i_symbol" >
+      <nuxt-link class="coin_details_item i_symbol" :to="coinPath(coin)">
         {{ coin.attributes.symbol }}
-      </div>
+      </nuxt-link>
       <div class="coin_details_item i_cap">
         ${{ formatPrice(coin.attributes.market_cap_usd) }}
       </div>
@@ -65,7 +65,10 @@
       <div class="coin_details_item change" v-bind:class="{ negative: (coin.attributes.percent_change24h < 0) }">
         {{ coin.attributes.percent_change24h }}%
       </div>
-    </nuxt-link>
+      <div class="coin_details_item btn">
+        <nuxt-link v-if="isActiveCoin(coin.attributes.symbol)" :to="coinBuyUrl( coin.attributes.symbol )"  class="btn-by-coin">Купить</nuxt-link>
+      </div>
+    </div>
 
     <infinite-loading v-if="$store.state.coins.length" @infinite="infiniteHandler" spinner="spiral">
       <span slot="no-more">Вы достигли конца списка</span>
@@ -83,6 +86,7 @@
 
   import { analMixin } from '~/components/mixins/analitics.js'
   import { coinsMixin } from '~/components/mixins/coins.js'
+  import { indacoinMixin } from '~/components/mixins/indacoin.js'
 
 
   const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
@@ -94,7 +98,7 @@
       InfiniteLoading,
     },
 
-    mixins: [ coinsMixin, analMixin  ],
+    mixins: [ coinsMixin, analMixin, indacoinMixin ],
 
     data() {
       return {

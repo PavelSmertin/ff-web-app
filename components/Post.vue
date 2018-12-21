@@ -92,6 +92,15 @@
     </div>
     <meta v-else itemprop="image" :content="host + '/FF_cover968_b.png'" >
 
+    <div v-if="post.type == 'prognosis'" class="buy_coin">
+      <div v-if="isActiveCoin(coin.symbol)" v-for="coin of post.coins" v-bind:key="coin.id" class="buy_coin_item">
+        <div class="cost">Стоимость {{ getCase(coin, 2) }} на сегодня<br/><b>${{ coin.price_usd }}</b></div>
+        <div class="btn">
+          <nuxt-link :to='coinBuyUrl( coin.symbol )' class="btn-by-coin">Купить {{ coin.symbol }}</nuxt-link>
+        </div>
+      </div>
+    </div>
+
     <div itemprop="articleBody" v-html="post.body" class="description"></div>
 
     <div class="tools">
@@ -213,6 +222,7 @@
   import Vue from 'vue'
   import Jsona from 'jsona'
   import { analMixin } from '~/components/mixins/analitics.js'
+  import { indacoinMixin } from '~/components/mixins/indacoin.js'
 
   const dataFormatter = new Jsona()
 
@@ -223,7 +233,7 @@
 
   export default {
 
-    mixins: [ analMixin ],
+    mixins: [ analMixin, indacoinMixin ],
 
     props: {
       postProp: 0,
@@ -328,6 +338,7 @@
         this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=rating`)
           .then(({ data }) => {
             this.post = dataFormatter.deserialize( data )
+              console.log(this.post)
           }).catch(e => {
             if (e.response && e.response.status == 401) {
               this.$router.push({ name: `account-signin` })
@@ -414,6 +425,7 @@
       },
 
       subscribe() {
+          console.log(this.postCoin());
         this.sendEvent( 'PostCoinSubscribe', 'subscribe', this.postCoin() );
 
         this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=${ this.postCoin() }`)
@@ -570,6 +582,25 @@
         return ''
       },
 
+      getCase(coin) {
+          return getCase(coin, 2)
+      },
+
+      coinName: function(coin, variant) {
+          console.log(coin.cases);
+        if(variant === 2) {
+          if(coin.cases && coin.cases.ro) {
+              return coin.cases.ro
+          }
+        }
+
+        if(coin.cases && coin.cases.im) {
+          return coin.cases.im
+        }
+
+        return coin.coin_name
+      }
+
     }
   }
 
@@ -602,6 +633,20 @@
       return params.meta_title
     }
     return params.title
+  }
+
+  function getCase (params, variant) {
+      if(variant == 2) {
+          if(params.cases && params.cases.ro) {
+              return params.cases.ro
+          }
+      }
+
+      if(params.cases && params.cases.im) {
+          return params.cases.im
+      }
+
+      return params.coin_name
   }
 
 </script>

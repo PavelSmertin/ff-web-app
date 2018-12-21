@@ -21,8 +21,15 @@
 						>
 						Курс биткоина
 					</nuxt-link>
+					<nuxt-link
+						@click.native="sendEvent( 'Toolbar', 'click', 'магазин крипты' )"
+						:to="{path: '/coins'}"
+						class="nav-link"
+						>
+						Магазин крипты
+					</nuxt-link>
 					<nuxt-link 
-						@click.native="sendEvent( 'Toolbar', 'click', 'Купить биткоин' )" 
+						@click.native="sendEvent( 'Toolbar', 'click', 'купить биткоин' )"
 						:to="{path: '/wiki/1'}" 
 						class="nav-link"
 						>
