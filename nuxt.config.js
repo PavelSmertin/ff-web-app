@@ -31,11 +31,14 @@ module.exports = {
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:site', content: '@www_FF_ru' },
       { name: 'twitter:creator', content: '@www_FF_ru' },
+      { name: 'msvalidate.01', content: '4EA18548A13D86C097A4E205BE1CD244' },
     ],
+
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'alternate', type: 'application/rss+xml', title: "RSS", href: '/rss-export' }
     ],
+
     bodyAttrs: {
       class: 'ff'
     },
