@@ -23,7 +23,7 @@
         <label>Вы получаете</label>
         <input id="to_value" v-model.number="amountTo" type="number" readonly />
         <select v-model="to" @change="changeCoin" id="to_coin">
-          <option v-if="coin.isActive === true" v-for="(coin, symbol) in indacoinCoins" :key="symbol" :value="symbol">{{ symbol }}</option>
+          <option v-for="(coin) in indacoinCoins" :key="coin.attributes.symbol" :value="coin.attributes.symbol">{{ coin.attributes.symbol }}</option>
         </select>
       </div>
       <div class="input-flex">
@@ -54,7 +54,6 @@
 
 <script>
 
-  import Jsona from 'jsona';
   import CryptoValidator from 'cryptocurrency-address-validator'
 
   const partner_id = `ff`;

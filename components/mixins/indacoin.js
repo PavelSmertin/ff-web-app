@@ -6,11 +6,20 @@ export const indacoinMixin = {
     },
 
     isActiveCoin: function(symbol) {
+      let coin = this.getCoinBySymbol(symbol)
+      return coin !== null;
+    },
+
+    getCoinBySymbol: function(symbol) {
       let storeObj = this.$store.state.indacoin
-      if (storeObj.coins[symbol] !== undefined && storeObj.coins[symbol].isActive === true) {
-        return true;
-      }
-      return false;
+      let coin = null;
+      storeObj.coins.forEach(function(element) {
+        if (element.attributes.symbol === symbol) {
+          coin = element
+        }
+      })
+
+      return coin;
     }
 
   }
