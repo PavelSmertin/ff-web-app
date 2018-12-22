@@ -7,8 +7,9 @@ export default async function ({ app, store, redirect }) {
 
   try {
     indacoinCoins = await app.$axios.get(`/api/coin/indacoin-coins?per-page=500`)
+  } catch (e) {
     indacoinCoins = null
-    console.error('индакоин ерор')
+    console.error('indacoin error')
   }
 
   if( indacoinCoins == null) {
@@ -17,10 +18,10 @@ export default async function ({ app, store, redirect }) {
 
   const ordered = {};
 
-  Object.keys(indacoinCoins.data.result).sort().forEach(function(key) {
-    ordered[key] = indacoinCoins.data.result[key];
-  });
+  // Object.keys(indacoinCoins.data.result).sort().forEach(function(key) {
+  //   ordered[key] = indacoinCoins.data.result[key];
+  // });
 
-  store.commit('SET_INDACOIN_COINS', ordered)
+  //store.commit('SET_INDACOIN_COINS', ordered)
 
 }

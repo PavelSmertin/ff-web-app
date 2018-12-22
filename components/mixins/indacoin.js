@@ -13,11 +13,11 @@ export const indacoinMixin = {
     getCoinBySymbol: function(symbol) {
       let storeObj = this.$store.state.indacoin
       let coin = null;
-      storeObj.coins.forEach(function(element) {
-        if (element.attributes.symbol === symbol) {
-          coin = element
-        }
-      })
+      // storeObj.coins.forEach(function(element) {
+      //   if (element.attributes.symbol === symbol) {
+      //     coin = element
+      //   }
+      // })
 
       return coin;
     }
