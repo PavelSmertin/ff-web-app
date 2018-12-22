@@ -47,7 +47,7 @@
       const dataFormatter = new Jsona();
 
       try {
-        const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins,author,comments`)
+        const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins,similar,author,comments`)
         //const commentsData  = await app.$axios.get(`/api/news/${ params.id }/comments?include=user&per-page=10`)
 
         if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
