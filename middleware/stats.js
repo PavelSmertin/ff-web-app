@@ -5,10 +5,8 @@ export default async function ({ app, store, redirect }) {
 
   let indacoinCoins = null
 
-
   try {
-    indacoinCoins = await app.$axios.get(`https://indacoin.com/api/mobgetcurrenciesinfoi`)
-  } catch (e) {
+    indacoinCoins = await app.$axios.get(`/api/coin/indacoin-coins?per-page=500`)
     indacoinCoins = null
     console.error('индакоин ерор')
   }
