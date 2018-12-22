@@ -20,7 +20,7 @@ const createStore = () => {
 			filters: {symbol: null, type: null},
 			showTutorial: true,
 			indacoin: {
-				coins: {},
+				coins: [],
 				updatedAt: null
 			}
 		},

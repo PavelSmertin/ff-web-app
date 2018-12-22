@@ -16,12 +16,22 @@ export default async function ({ app, store, redirect }) {
     return
   }
 
-  const ordered = {};
+  // const arrayToObject = (array, keyField) =>
+  //  array.reduce((obj, item) => {
+  //    obj[item[keyField]] = item
+  //    return obj
+  //  }, {})
 
-  // Object.keys(indacoinCoins.data.result).sort().forEach(function(key) {
-  //   ordered[key] = indacoinCoins.data.result[key];
+
+  //const ordered = arrayToObject(indacoinCoins.data.data, "id")
+
+  // Object.keys(indacoinCoins.data.data).sort().forEach(function(key, element) {
+
+
+  //   ordered[element.id] = element;
   // });
 
-  //store.commit('SET_INDACOIN_COINS', ordered)
+  store.commit('SET_INDACOIN_COINS', indacoinCoins.data.data)
 
 }
+
