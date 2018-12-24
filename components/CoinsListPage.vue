@@ -25,16 +25,18 @@
       <div class="coin_details_head">&nbsp;</div>
     </div>
 
-    <div
-        @click.native="onCoinClick(coin.attributes.symbol)"
+
+    <nuxt-link
+        @click.native.self="onCoinClick(coin.attributes.symbol)"
         v-for="coin of $store.state.coins" 
         v-bind:key="coin.id"
+        :to="coinPath(coin)" 
         class="coin_row"
         v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, coin )"
       >
-      <nuxt-link class="coin_details_item i_symbol" :to="coinPath(coin)">
+      <div class="coin_details_item i_symbol">
         {{ coin.attributes.symbol }}
-      </nuxt-link>
+      </div>
       <div class="coin_details_item i_cap">
         ${{ formatPrice(coin.attributes.market_cap_usd) }}
       </div>
@@ -66,9 +68,15 @@
         {{ coin.attributes.percent_change24h }}%
       </div>
       <div class="coin_details_item btn">
-        <nuxt-link v-if="isActiveCoin(coin.attributes.symbol)" :to="coinBuyUrl( coin.attributes.symbol )"  class="btn-by-coin">Купить</nuxt-link>
+        <button
+          v-if="isActiveCoin(coin.attributes.symbol)"
+          v-on:click.stop.prevent="onBuyClick(coin.attributes.symbol)"
+          class="btn-by-coin"
+          >
+            Купить
+        </button>
       </div>
-    </div>
+    </nuxt-link>
 
     <infinite-loading v-if="$store.state.coins.length" @infinite="infiniteHandler" spinner="spiral">
       <span slot="no-more">Вы достигли конца списка</span>
@@ -110,6 +118,11 @@
     methods: {
       onCoinClick: function ( symbol ) {
         this.sendEvent( 'MarketCup', 'click', symbol );
+      },
+
+      onBuyClick: function ( symbol ) {
+        this.$router.push({ path: this.coinBuyUrl( symbol ) })
+        return false
       },
 
       isUp: function ( coin ) {

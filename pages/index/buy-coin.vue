@@ -12,7 +12,7 @@
       </div>
       <div class="input-flex">
         <label>Вы отдаёте</label>
-        <input id="from_value" v-model.number="amount" @keyup="changeAmount" type="number" />
+        <input id="from_value" v-model.number="amountFrom" @keyup="changeAmount" type="number" />
         <select v-model="from" @change="changeCoin" id="from_coin">
           <option value="RUB">RUB</option>
           <option value="USD">USD</option>
@@ -23,14 +23,16 @@
         <label>Вы получаете</label>
         <input id="to_value" v-model.number="amountTo" type="number" readonly />
         <select v-model="to" @change="changeCoin" id="to_coin">
-          <option v-for="(coin) in indacoinCoins" :key="coin.attributes.symbol" :value="coin.attributes.symbol">{{ coin.attributes.symbol }}</option>
+          <option v-for="(coin) in indacoinCoins" :key="coin.attributes.symbol" :value="coin.attributes.symbol">
+            {{ coin.attributes.symbol }}
+          </option>
         </select>
       </div>
       <div class="input-flex">
         <input class="wallet" v-model="address" type="text" placeholder="Адрес вашего криптокошелька"/>
       </div>
       <div class="button_flex">
-        <a class="button_link" :href="indacoinChangeUrl()" target="_blank">Обменять</a>
+        <a class="button_link" v-bind="buyButtonState" target="_blank">Обменять</a>
       </div>
     </div>
     <div class="buy_coin_footer">
@@ -56,9 +58,8 @@
 
   import CryptoValidator from 'cryptocurrency-address-validator'
 
-  const partner_id = `ff`;
-  const indacoin_api_url = `https://indacoin.com/api`
-  const indacoin_api_price = indacoin_api_url + `/GetCoinConvertAmount`
+  const PARTNER_ID = `ff`;
+  const INDACOIN_API_PRICE = `https://indacoin.com/api/GetCoinConvertAmount`
 
   export default {
 
@@ -88,36 +89,42 @@
     data() {
       return {
         indacoinCoins: this.$store.state.indacoin.coins,
-        from: 'USD',
-        to: 'BTC',
-        amount: null,
+
+        from: this.$route.query.from ? this.$route.query.from : 'USD',
+        to: this.$route.query.to ? this.$route.query.to : 'BTC',
+
+        amountFrom: null,
         amountTo: null,
+
         address: '',
         amountChangeTimer: null,
         error: ''
       }
     },
 
-    mounted() {
-      this.init()
+    // async asyncData ({ app, params, error }) {
+    //   return {
+    //     from: params.from,
+    //     to: params.to,
+    //   }
+    // },
+
+    computed: {
+
+      buyButtonState() {
+        if( this.isFormValide() ) {
+          return {
+            'href': `https://indacoin.com/gw/payment_form?partner=ff&cur_from=${this.from}&cur_to=${this.to}&amount=${this.amountFrom}&address=${this.address}`
+          }
+        }
+        return {
+          'class': 'indacoin_disabled',
+        }
+      }
     },
 
     methods: {
-      init: function () {
-        if (this.$route.query.from && this.$route.query.to) {
-          this.from = this.$route.query.from
-          this.to = this.$route.query.to
-          this.amount = document.getElementById('from_value').value
-          document.getElementById('from_coin').value = this.from
-          document.getElementById('to_coin').value = this.to
-        }
-        this.calc()
-      },
-
       changeCoin: function(e) {
-        if (this.amount === '') {
-          return
-        }
         this.calc()
       },
 
@@ -132,43 +139,47 @@
       },
 
       calc: function() {
-        if (this.amount === '') {
+        if( this.amountFrom === '' ) {
           this.amountTo = ''
-          return false
+          return
         }
 
-        this.$axios.get(indacoin_api_price + `/` + this.from + `/` + this.to + `/` + this.amount + `/` + partner_id)
+        this.$axios.get(`${INDACOIN_API_PRICE}/${this.from}/${this.to}/${this.amountFrom}/${PARTNER_ID}`)
           .then(({data}) => {
             this.amountTo = data
           }).catch(e => {
-          if (e.response) {
-          }
-        })
+            if (e.response) {
+            }
+          })
       },
 
-      indacoinChangeUrl: function() {
-        if ( (this.amount < 30 && this.from !== 'RUB') || (this.amount < 2000 && this.from === 'RUB') ) {
-          this.error = 'Введите сумму которую хотите потратить на ' + this.to + '. Минимальная сумма обмена 30 USD/EUR или 2000 RUB'
+      isFormValide: function() {
+
+        this.error = ''
+
+        const minAmountUSD = 30
+        const minAmountRUB = 2000
+
+        if ( (this.amount < minAmountUSD && this.from !== 'RUB') || (this.amount < minAmountRUB && this.from === 'RUB') ) {
+          this.error = `Введите сумму которую хотите потратить на ${this.to}. Минимальная сумма обмена ${minAmountUSD} USD/EUR или ${minAmountRUB} RUB`
           return false
         }
         if (this.address === '') {
-          this.error = 'Заполните адрес вашего криптокошелька'
+          this.error = `Заполните адрес вашего криптокошелька`
           return false
         }
 
-        let isValid = false
         try {
-          isValid = CryptoValidator.validate(this.address, this.to);
+          isValid = CryptoValidator.validate(this.address, this.to)
+          if ( CryptoValidator.validate(this.address, this.to) === false ) {
+            this.error = `Некорректный адрес криптокошелька`
+            return false
+          }
         } catch (e) {
-          isValid = true
+          //
         }
 
-        if ( false === isValid ) {
-          this.error = 'Некорректный адрес криптокошелька'
-          return false
-        }
-        this.error = ''
-        return 'https://indacoin.com/gw/payment_form?partner=ff&cur_from=' + this.from + '&cur_to=' + this.to + '&amount=' + this.amount + '&address=' + this.address// + '&user_id={UserID}'
+        return true
       }
     }
 

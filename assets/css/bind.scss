@@ -457,6 +457,8 @@ h3 {
 }
 
 .btn-by-coin {
+	border: none;
+	background: none;
 	background-color: $up-value-color;
 	color: #fff;
 	width: 100%;
@@ -2294,6 +2296,8 @@ h3 {
 					text-transform: uppercase;
 					text-align: center;
 					width: 113px;
+					border: none;
+					background: none;
 					background-color: $up-value-color;
 
 					line-height: 40px;
@@ -2948,15 +2952,20 @@ h3 {
 			color: $l-color;
 		}
 	}
-    .button_flex {
-      display: flex;
-      justify-content: flex-end;
+	.button_flex {
+		display: flex;
+		justify-content: flex-end;
 
-      .button_link {
-        width: min-content;
-        text-align: center;
-      }
-    }
+		.button_link {
+			width: min-content;
+			text-align: center;
+
+			&.indacoin_disabled {
+				background-color: $bg-main-color;
+				color: $border-bold-color;
+			}
+		}
+	}
 	.content {
 		display: flex;
 		margin-bottom: 10px;
