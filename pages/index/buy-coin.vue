@@ -102,15 +102,7 @@
       }
     },
 
-    // async asyncData ({ app, params, error }) {
-    //   return {
-    //     from: params.from,
-    //     to: params.to,
-    //   }
-    // },
-
     computed: {
-
       buyButtonState() {
         if( this.isFormValide() ) {
           return {
@@ -169,8 +161,7 @@
           return false
         }
 
-        try {
-          isValid = CryptoValidator.validate(this.address, this.to)
+        try { 
           if ( CryptoValidator.validate(this.address, this.to) === false ) {
             this.error = `Некорректный адрес криптокошелька`
             return false
