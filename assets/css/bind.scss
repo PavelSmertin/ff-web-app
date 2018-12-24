@@ -2924,6 +2924,7 @@ h3 {
 		line-height: 42px;
 		display: flex;
 		margin-bottom: 20px;
+		
 
 		input {
 			border-width: 0 1px 0 0;
@@ -2931,6 +2932,7 @@ h3 {
 			padding:3px 10px;
 			text-align: right;
 			outline: none;
+			width: 100px;
 
 			&.wallet {
 				text-align: left;
@@ -2952,6 +2954,24 @@ h3 {
 			color: $l-color;
 		}
 	}
+	@media (max-width: 420px) {
+		.input-flex {
+			position: relative;
+			margin-top: 30px;
+
+			label {
+				position: absolute;
+				font-size: 14px;
+				padding-left: 0;
+				line-height: 13px;
+				top: -23px;
+			}
+			input {
+
+			}
+		}
+	}
+	
 	.button_flex {
 		display: flex;
 		justify-content: flex-end;
