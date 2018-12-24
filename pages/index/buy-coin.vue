@@ -93,8 +93,8 @@
         from: this.$route.query.from ? this.$route.query.from : 'USD',
         to: this.$route.query.to ? this.$route.query.to : 'BTC',
 
-        amountFrom: null,
-        amountTo: null,
+        amountFrom: '',
+        amountTo: '',
 
         address: '',
         amountChangeTimer: null,
@@ -152,10 +152,11 @@
         const minAmountUSD = 30
         const minAmountRUB = 2000
 
-        if ( (this.amount < minAmountUSD && this.from !== 'RUB') || (this.amount < minAmountRUB && this.from === 'RUB') ) {
+        if ( (this.amountFrom < minAmountUSD && this.from !== 'RUB') || (this.amountFrom < minAmountRUB && this.from === 'RUB') ) {
           this.error = `Введите сумму которую хотите потратить на ${this.to}. Минимальная сумма обмена ${minAmountUSD} USD/EUR или ${minAmountRUB} RUB`
           return false
         }
+
         if (this.address === '') {
           this.error = `Заполните адрес вашего криптокошелька`
           return false
