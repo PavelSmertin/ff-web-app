@@ -122,6 +122,10 @@
 					>
 					Пользовательское соглашение
 				</nuxt-link>
+
+				<a href="/rss-export" alt="rss feed">
+					<img width="32" height="32" src="~/assets/images/ic_rss.png" alt="rss feed">
+				</a>
 			</div>
 
 			<div class="ff_social social">
