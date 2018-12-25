@@ -5,13 +5,13 @@ export const coinsMixin = {
         return (value/1).toFixed(2)
       }
       if( value >= 0.1 && value < 0.5) {
-        return (value/1).toFixed(3)
+        return +(value/1).toFixed(3)
       }
       if( value >= 0.01 && value < 0.1) {
-        return (value/1).toFixed(5)
+        return +(value/1).toFixed(5)
       }
       if( value < 0.01) {
-        return (value/1).toFixed(8)
+        return +(value/1).toFixed(8)
       }
       let val = (value/1).toFixed(0)
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
