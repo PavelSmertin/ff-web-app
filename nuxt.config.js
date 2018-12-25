@@ -35,8 +35,12 @@ module.exports = {
     ],
 
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'alternate', type: 'application/rss+xml', title: "RSS", href: '/rss-export' }
+      { rel: 'icon', type: 'image/png', href: '/favicon.png' },
+      { rel:'mask-icon', href: '/apple-touch-icon.svg' },
+      { rel:'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+
+      { rel: 'alternate', type: 'application/rss+xml', title: "RSS", href: '/rss-export' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700&amp;amp;subset=cyrillic' },
     ],
 
     bodyAttrs: {
@@ -46,9 +50,6 @@ module.exports = {
       prefix: 'og: http://ogp.me/ns# article: http://ogp.me/ns/article# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#',
       lang: 'ru',
     },
-    link: [
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700&amp;amp;subset=cyrillic' }
-    ]
   },
 
   /*
