@@ -13,7 +13,9 @@
             <div v-if="inSubscribed()" ><span class="subscribe_icon">&minus;</span>Не отслеживать</div>
             <div v-else><span class="subscribe_icon">&plus;</span> Отслеживать {{ attributes.symbol }}</div>
           </button>
-          <nuxt-link v-if="isActiveCoin(attributes.symbol)" class="btn-by-coin" :to="coinBuyUrl( attributes.symbol )">Купить {{attributes.symbol}}</nuxt-link>
+          <nuxt-link v-if="isActiveCoin(attributes.symbol)" class="btn-by-coin" :to="coinBuyUrl( attributes.symbol )">
+            Купить {{attributes.symbol}}
+          </nuxt-link>
         </div>
 
       </div>
@@ -42,204 +44,209 @@
 
     </div>
 
-    <div class="row no-gutters coin-details-block coin_mobile">
 
-        <div class="coin_detail_unit col-6 col-md-3">
-          <div class="ff-label">Капитализация</div>
-          <div class="coin-detail">{{ formatPrice(attributes.market_cap_usd) }} USD</div>
-          <div class="coin-detail-info">{{ formatPrice(attributes.total_coin_supply) }} {{attributes.symbol }}</div>
-        </div>
-
-        <div class="coin_detail_unit col-6 col-md-3">
-          <div class="ff-label">Объем торгов (24ч)</div>
-          <div class="coin-detail">{{ formatPrice(attributes.volume24h_usd) }} USD</div>
-          <div class="coin-detail-info">{{ formatPrice(attributes.volume24h_btc) }} {{ attributes.symbol }}</div>
-        </div>
-
-        <div class="coin_detail_unit col-6 col-md-2">
-          <div class="ff-label">Изменение (1ч)</div>
-          <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
-            {{ formatPrice(attributes.percent_change1h) }}%
-          </div>
-          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
-            {{ formatPrice(attributes.change1h_usd) }} USD
-          </div>
-        </div>
-
-        <div class="coin_detail_unit col-6 col-md-2">
-          <div class="ff-label">Изменение (24ч)</div>
-          <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
-            {{ formatPrice(attributes.percent_change24h) }}%
-          </div>
-          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
-            {{ formatPrice(attributes.change24h_usd) }} USD
-          </div>
-        </div>
-
-        <div class="coin_detail_unit col-6 col-md-2">
-          <div class="ff-label">Изменение (7д)</div>
-          <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
-            {{ formatPrice(attributes.percent_change7d) }}%
-          </div>
-          <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
-            {{ formatPrice(attributes.change7d_usd) }} USD
-          </div>
-        </div>
-
+    <div class="coin_tabs">
+      <a href="#" class="filters_tab">Главное</a>
+      <a href="#" class="filters_tab">Котировки</a>
     </div>
 
-    <div v-if="popularNews.length" class="row no-gutters margin12 coin_mobile">
-      <h2 class="margin12">Популярное</h2>
-        <div class="ff-news ff_popular">
-          <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of popularNews" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
-            <post-item :post="newest" ></post-item>
-          </nuxt-link>
-        </div>
-    </div>
-
-    <div class="row no-gutters border_top margin24 coin_mobile">
-      <h2 class="margin12">Биткойн калькулятор</h2>
-    </div>
-    <div class="row no-gutters calculator margin6 coin_mobile">
-      <div class="calculator_item">
-        <div class="label"><img src="~/assets/images/btc_icon_white.png" width="20" height="20" alt="btc_icon"><span class="label_currency">BTC</span></div>
-        <input type="text" name="btc" v-model="calculateBTC" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack" >
+    <div class="index_pane_1">
+      <div class="margin12 content_padding" v-if="popularNews.length">
+        <h2 class="margin12">Популярное</h2>
+          <div class="ff-news ff_popular">
+            <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of popularNews" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
+              <post-item :post="newest" ></post-item>
+            </nuxt-link>
+          </div>
       </div>
-      <div class="calculator_item">
-        <div class="label"><img src="~/assets/images/usd_icon.svg" alt="usd_icon"><span class="label_currency">USD</span></div>
-        <input type="text" name="usd" v-model="calculateUSD" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
-      </div>
-      <div class="calculator_item">
-        <div class="label"><img src="~/assets/images/rub_icon.svg" alt="rub_icon"><span class="label_currency">RUB</span></div>
-        <input type="text" name="rub" v-model="calculateRUB" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
-      </div>
-      <div class="calculator_item">
-        <nuxt-link @click.native="sendEvent('BuyBTC', 'click')" :to="{path: '/wiki/1'}">
-          <span class="apply">КУПИТЬ BTC</span>
-          <img src="~/assets/images/baseline-arrow_forward-24px.svg" alt="arrow">
-        </nuxt-link >
-      </div>
-    </div>
 
-    <div class="row no-gutters border_top margin24 coin_mobile">
-      <h2 class="margin12">График курса Bitcoin к Доллару</h2>
-    </div>
-    <div class="row no-gutters coin_mobile">
-      <no-ssr placeholder="Loading...">
-        <chart-trading-view :symbol="'BTC/USDT'"/>
-      </no-ssr>
-    </div>
+      <div class="border_top margin24 content_padding">
+        <h2 class="margin12">Доля Bitcoin в портфелях трейдеров</h2>
+      </div>
+      <div class="content_padding">
+        <no-ssr placeholder="Loading...">
+          <!--<chart-trading-view :symbol="'BTC/USDT'"/>-->
+          <ttGraph
+              :first="{color: '#8FCC14', gradient: 'GradientFirst', opacity: 1 }" 
+              :second="{color: '#000', gradient: 'GradientSecond', opacity: 0.2 }" 
+          />
 
-    <div class="row no-gutters border_top margin24 coin_mobile">
-      <h2 class="margin12">Курс BTC/USDT на биржах</h2>
-    </div>
+        </no-ssr>
+      </div>
 
-    <div class="row no-gutters margin6 pairs_row coin_mobile">
-      <div class="ff_pairs_index">
-        <div class="ff_pairs_header">
-          <div class="ff_pairs_head">
-            Биржа
-          </div>
-          <div class="ff_pairs_head i_price">
-            Курс
-          </div>
-          <div class="ff_pairs_head i_high">
-            Мин (24ч)
-          </div>
-          <div class="ff_pairs_head i_low">
-            Макс (24ч)
-          </div>
-          <div class="ff_pairs_head changes">
-            Изменения (24ч)
-          </div>
-          <div class="ff_pairs_head i_volume">
-            Объем (BTC)
-          </div>
+      <div class="border_top margin24 content_padding">
+        <h2 class="margin12">Биткойн калькулятор</h2>
+      </div>
+      <div class="calculator margin6 content_padding">
+        <div class="calculator_item">
+          <div class="label"><img src="~/assets/images/btc_icon_white.png" width="20" height="20" alt="btc_icon"><span class="label_currency">BTC</span></div>
+          <input type="text" name="btc" v-model="calculateBTC" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack" >
         </div>
-
-        <div class="ff_pair" v-for="pair of pairs" v-bind:key="pair.exchange_id" >
-
-          <div class="ff_pair_item">{{ pair.exchange.name }}</div>
-          <div class="ff_pair_item i_price">${{ formatPrice(pair.price) }}</div>
-          <div class="ff_pair_item i_low">${{ formatPrice(pair.low24hour) }}</div>
-          <div class="ff_pair_item i_high">${{ formatPrice(pair.high24hour) }}</div>
-          <div class="ff_pair_item changes positive" v-bind:class="{ negative: (pair.changepct24hour < 0) }">
-            {{ formatPrice(pair.changepct24hour) }}%
-          </div>
-          <div class="ff_pair_item i_volume">{{ formatPrice(pair.volume24hour) }}</div>
+        <div class="calculator_item">
+          <div class="label"><img src="~/assets/images/usd_icon.svg" alt="usd_icon"><span class="label_currency">USD</span></div>
+          <input type="text" name="usd" v-model="calculateUSD" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
+        </div>
+        <div class="calculator_item">
+          <div class="label"><img src="~/assets/images/rub_icon.svg" alt="rub_icon"><span class="label_currency">RUB</span></div>
+          <input type="text" name="rub" v-model="calculateRUB" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
+        </div>
+        <div class="calculator_item">
+          <nuxt-link @click.native="sendEvent('BuyBTC', 'click')" :to="{path: '/wiki/1'}">
+            <span class="apply">КУПИТЬ BTC</span>
+            <img src="~/assets/images/baseline-arrow_forward-24px.svg" alt="arrow">
+          </nuxt-link >
         </div>
       </div>
-    </div>
 
-    <div class="row no-gutters border_top margin24 coin_mobile">
-      <h3 class="margin12">Полезная информация</h3>
-    </div>
+      <div class="border_top margin24 content_padding">
+        <h3 class="margin12">Полезная информация</h3>
+      </div>
 
-    <div class="margin6 coin_mobile">
-      <div class="row no-gutters wiki_row">
-        <nuxt-link @click.native="onWikiClick(1)" class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/1' }">
+      <div class="margin6 wiki_block content_padding">
+        <nuxt-link @click.native="onWikiClick(1)" class="wiki_item" :to="{ path: '/wiki/1' }">
           <p class="wiki_title">Как купить биткоин?</p>
           <p class="wiki_description">Инструкция: как купить биткоин онлайн надежно с карты за рубли, доллары или через электронные кошельки QIWI, Webmoney</p>
         </nuxt-link>
-        <nuxt-link @click.native="onWikiClick(2)" class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/2' }">
+        <nuxt-link @click.native="onWikiClick(2)" class="wiki_item" :to="{ path: '/wiki/2' }">
           <p class="wiki_title">Где хранить биткоины?</p>
           <p class="wiki_description">Важно выбрать наиболее надежный и удобный способ хранения биткоина, для этого подойдут Bitcoin кошельки. Существует несколько типов кошельков, разберемся какой лучше</p>
         </nuxt-link>        
-        <nuxt-link @click.native="onWikiClick(3)" class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/3' }">
+        <nuxt-link @click.native="onWikiClick(3)" class="wiki_item" :to="{ path: '/wiki/3' }">
           <p class="wiki_title">Что такое блокчейн?</p>
           <p class="wiki_description">BlockChain (англ. Block – блок; Chain - цепь) - это база данных, которая ежедневно пополняется информацией о криптовалютных переводах между пользователями</p>
         </nuxt-link>
-      </div>
-
-      <div class="row no-gutters wiki_row">
-        <nuxt-link @click.native="onWikiClick(4)"  class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/4' }">
+        <nuxt-link @click.native="onWikiClick(4)"  class="wiki_item" :to="{ path: '/wiki/4' }">
           <p class="wiki_title">Как продать биткоин?</p>
           <p class="wiki_description">Продать или обналичить биткоины можно нескольким способами, например через биржи, обменники или с помощью карты</p>
         </nuxt-link>
-        <nuxt-link @click.native="onWikiClick(5)" class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/5' }">
+        <nuxt-link @click.native="onWikiClick(5)" class="wiki_item" :to="{ path: '/wiki/5' }">
           <p class="wiki_title">Биткоин в России</p>
           <p class="wiki_description">Биткоин в России использовать можно, отношение государства к криптовалюте на данный момент носит неопределенный характер</p>
         </nuxt-link>
-        <nuxt-link @click.native="onWikiClick(6)" class="col-12 col-md-4 wiki_item" :to="{ path: '/wiki/6' }">
+        <nuxt-link @click.native="onWikiClick(6)" class="wiki_item" :to="{ path: '/wiki/6' }">
           <p class="wiki_title">Что такое Биткоин?</p>
           <p class="wiki_description">Биткоин - первая криптовалюта, ставшая всемирно-известной в 2017 году. Основная суть биткоина состоит в децентрализации</p>
         </nuxt-link>
       </div>
-    </div>
 
-    <div class="row no-gutters border_top margin24 coin_mobile">
-      <h3 class="margin12 col-8">Лидеры криптовалют за 24 часа</h3>
-      <div class="margin12 col-4 align_right">
-          <nuxt-link class="h_link" :to="{ path: '/coins' }">Все монеты</nuxt-link>
+
+      <div class="border_top margin12 content_padding">
+        <section v-if="attributes.seo_text" class="ff_text_block " v-html="attributes.seo_text"></section>
       </div>
     </div>
 
-    <div class="coin_mobile">
+    <div class="index_pane_2" style="display: none;">
+      <div class="coin_details_block content_padding">
+
+          <div class="coin_detail_unit">
+            <div class="ff-label">Капитализация</div>
+            <div class="coin-detail">{{ formatPrice(attributes.market_cap_usd) }} USD</div>
+            <div class="coin-detail-info">{{ formatPrice(attributes.total_coin_supply) }} {{attributes.symbol }}</div>
+          </div>
+
+          <div class="coin_detail_unit">
+            <div class="ff-label">Объем торгов (24ч)</div>
+            <div class="coin-detail">{{ formatPrice(attributes.volume24h_usd) }} USD</div>
+            <div class="coin-detail-info">{{ formatPrice(attributes.volume24h_btc) }} {{ attributes.symbol }}</div>
+          </div>
+
+          <div class="coin_detail_unit">
+            <div class="ff-label">Изменение (1ч)</div>
+            <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
+              {{ formatPrice(attributes.percent_change1h) }}%
+            </div>
+            <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
+              {{ formatPrice(attributes.change1h_usd) }} USD
+            </div>
+          </div>
+
+          <div class="coin_detail_unit">
+            <div class="ff-label">Изменение (24ч)</div>
+            <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
+              {{ formatPrice(attributes.percent_change24h) }}%
+            </div>
+            <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
+              {{ formatPrice(attributes.change24h_usd) }} USD
+            </div>
+          </div>
+
+          <div class="coin_detail_unit">
+            <div class="ff-label">Изменение (7д)</div>
+            <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
+              {{ formatPrice(attributes.percent_change7d) }}%
+            </div>
+            <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
+              {{ formatPrice(attributes.change7d_usd) }} USD
+            </div>
+          </div>
+      </div>
+
+
+      <h2 class="margin12 content_padding">Курс BTC/USDT на биржах</h2>
+
+      <div class="margin6 pairs_row content_padding">
+        <div class="ff_pairs_index">
+          <div class="ff_pairs_header">
+            <div class="ff_pairs_head">
+              Биржа
+            </div>
+            <div class="ff_pairs_head i_price">
+              Курс
+            </div>
+            <div class="ff_pairs_head i_high">
+              Мин (24ч)
+            </div>
+            <div class="ff_pairs_head i_low">
+              Макс (24ч)
+            </div>
+            <div class="ff_pairs_head changes">
+              Изменения (24ч)
+            </div>
+            <div class="ff_pairs_head i_volume">
+              Объем (BTC)
+            </div>
+          </div>
+
+          <div class="ff_pair" v-for="pair of pairs" v-bind:key="pair.exchange_id" >
+            <div class="ff_pair_item">{{ pair.exchange.name }}</div>
+            <div class="ff_pair_item i_price">${{ formatPrice(pair.price) }}</div>
+            <div class="ff_pair_item i_low">${{ formatPrice(pair.low24hour) }}</div>
+            <div class="ff_pair_item i_high">${{ formatPrice(pair.high24hour) }}</div>
+            <div class="ff_pair_item changes positive" v-bind:class="{ negative: (pair.changepct24hour < 0) }">
+              {{ formatPrice(pair.changepct24hour) }}%
+            </div>
+            <div class="ff_pair_item i_volume">{{ formatPrice(pair.volume24hour) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border_top margin24">
+        <h3 class="margin12 content_padding">Лидеры криптовалют за 24 часа</h3>
+        <div class="margin12 align_right content_padding">
+            <nuxt-link class="h_link" :to="{ path: '/coins' }">Все монеты</nuxt-link>
+        </div>
+      </div>
       <coins-list-other :otherCoins="otherCoins" />
-    </div>
 
-    <div class="row no-gutters border_top margin24 coin_mobile">
-      <h3 class="margin12">Быстрая статистика Биткоина</h3>
-    </div>
-    <div class="row no-gutters margin6 coin_mobile">
-      <dl class="coin_stat">
-        <dt>Дата запуска</dt><dd>Январь 3, 2009</dd>
-        <dt>Позиция в рейтинге MarketCap</dt><dd>№1</dd>
-        <dt>ATH</dt><dd>$19 665.39</dd>
-        <dt>С момента достижения ATH</dt><dd>-70%</dd>
-        <dt>Дата ATH</dt><dd>16.12.2017</dd>
-        <dt>Доступный объем</dt><dd>17.1 миллионов</dd>
-        <dt>Общий объем</dt><dd>21.0 миллион</dd>
-        <dt>Официальный сайт</dt><dd>bitcoin.org</dd>
-        <dt>Форум</dt><dd>bitcointalk.org</dd>
-        <dt>Алгоритм хеширования</dt><dd>SHA-256</dd>
-        <dt>Скорость хеширования</dt><dd>577,744 PH/s</dd>
-        <dt>Время между блоками</dt><dd>10 минут</dd>
-      </dl>
-    </div>
-
-    <div class="row no-gutters border_top margin12 coin_mobile">
-      <section v-if="attributes.seo_text" class="row ff_text_block margin60" v-html="attributes.seo_text"></section>
+      <div class="border_top margin24 content_padding">
+        <h3 class="margin12">Быстрая статистика Биткоина</h3>
+      </div>
+      <div class="margin6 content_padding">
+        <dl class="coin_stat">
+          <dt>Дата запуска</dt><dd>Январь 3, 2009</dd>
+          <dt>Позиция в рейтинге MarketCap</dt><dd>№1</dd>
+          <dt>ATH</dt><dd>$19 665.39</dd>
+          <dt>С момента достижения ATH</dt><dd>-70%</dd>
+          <dt>Дата ATH</dt><dd>16.12.2017</dd>
+          <dt>Доступный объем</dt><dd>17.1 миллионов</dd>
+          <dt>Общий объем</dt><dd>21.0 миллион</dd>
+          <dt>Официальный сайт</dt><dd>bitcoin.org</dd>
+          <dt>Форум</dt><dd>bitcointalk.org</dd>
+          <dt>Алгоритм хеширования</dt><dd>SHA-256</dd>
+          <dt>Скорость хеширования</dt><dd>577,744 PH/s</dd>
+          <dt>Время между блоками</dt><dd>10 минут</dd>
+        </dl>
+      </div>
     </div>
 
   </section>
@@ -252,11 +259,14 @@
   import CoinsListOther from '~/components/CoinsListOther.vue'
   import PostItem from '~/components/PostItem.vue'
 
+  import ttGraph from '~/components/ttGraph.vue'
   import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
   import { coinsMixin } from '~/components/mixins/coins.js'
   import { indacoinMixin } from '~/components/mixins/indacoin.js'
 
+  const REQUEST_COIN = `/api/portfolios/free-coin/`
+  const REQUEST_GRAPH = `/api/portfolios/coin-graph/`
 
   const dataFormatter = new Jsona()
 
@@ -299,7 +309,35 @@
       }
     },
 
-    async asyncData ({ app, params, error }) {
+    async asyncData ({ app, params, error, isDev }) {
+
+      let coin = null
+      let symbol = 'BTC'
+
+      try {
+        let data = await app.$axios.get( requestCoin(symbol, {}) )
+        coin = dataFormatter.deserialize( data.data )
+
+        if( coin == undefined ) {
+          coin = {
+                coin_name: '',
+                symbol: symbol,
+                coin_price: null,
+                price_percent_change: null,
+                part: null,
+                amount_total: null,
+                amount_total_usdt: null,
+                part_change: null,
+              }
+        }
+
+        console.log( coin )
+
+      } catch (e) {
+        if( isDev ) {
+          console.error(e)
+        }
+      }
 
       let details 
       let pairs
@@ -307,15 +345,15 @@
       let popularNews
       try {
         let [ responseDetails, responsePairs, responseOtherCoins, responsePopularNews ] = await Promise.all([
-            app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=BTC`),
-            app.$axios.get(`/api/exchanges/BTC/top?include=exchange&fields[portfolio-exchange]=name&fields[portfolio-exchange]=name&per-page=10`),
-            app.$axios.get(`/api/coins/BTC/other?per-page=8`),
-            app.$axios.get(`/api/news/popular?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images,is_top`),
+          app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=BTC`),
+          app.$axios.get(`/api/exchanges/BTC/top?include=exchange&fields[portfolio-exchange]=name&fields[portfolio-exchange]=name&per-page=10`),
+          app.$axios.get(`/api/coins/BTC/other?per-page=8`),
+          app.$axios.get(`/api/news/popular?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images,is_top`),
         ])
 
-        details = dataFormatter.deserialize(responseDetails.data)
-        pairs = dataFormatter.deserialize(responsePairs.data)
-        otherCoins = responseOtherCoins.data.data
+        details     = dataFormatter.deserialize(responseDetails.data)
+        pairs       = dataFormatter.deserialize(responsePairs.data)
+        otherCoins  = responseOtherCoins.data.data
         popularNews = dataFormatter.deserialize( responsePopularNews.data )
       } catch (e) {
         if( e.response && e.response.status == 404 ) {
@@ -349,12 +387,17 @@
     components: {
       CoinsListOther,
       PostItem,
+      ttGraph,
     },
 
     mounted () {
       this.goto()
       this.watchSocketCoin()
       this.sendPulsePushScript()
+
+      if( this.$store.state.graphs['BTC'] == undefined ) {
+        this.retrieveGraph()
+      }
     },
 
     methods: {
@@ -510,8 +553,58 @@
 
       coinBuyUrl: function( symbol ) {
         return '/buy-coin?from=USD&to=' + symbol
-      }
+      },
 
+      async retrieveCoin () {
+        try {
+          const data = await this.$axios.get(requestCoin( 'BTC', {} ))
+          let coinName = this.coin.coin_name
+          let coinPrice = this.coin.coin_price
+          let coinPriceChange = this.coin.price_percent_change
+          this.coin = dataFormatter.deserialize( data.data )
+          if( this.coin == undefined ) {
+            this.coin = {
+                  coin_name: coinName,
+                  symbol: 'BTC', 
+                  coin_price: coinPrice,
+                  price_percent_change: coinPriceChange,
+                  part: null, 
+                  amount_total: null, 
+                  amount_total_usdt: null, 
+                  part_change: null,
+                }
+          }
+        } catch( e ) {
+          // if( e.response && e.response.status == 403 ) {
+          //   this.$toast.show(this.$t('account.permission_denied'), {
+          //     duration: null,
+          //     action : {
+          //       text : 'Ok',
+          //       onClick : (e, toastObject) => {
+          //         toastObject.goAway(0)
+          //       }
+          //     },
+          //   })
+          // }
+
+          if( process.env.NODE_ENV == 'development'  ) {
+            console.error(e)
+          }
+        }
+      },
+
+      async retrieveGraph () {
+        var nodes = []
+
+        try {
+          const data = await this.$axios.get(requestGraph( 'BTC', {} ))
+          this.$store.commit( 'SET_GRAPH', {symbol: 'BTC', data: data.data['BTC']} )
+        } catch( e ) {
+          if( process.env.NODE_ENV == 'development' ) {
+            console.error(e)
+          }
+        }
+      },
     },
 
     computed: {
@@ -557,6 +650,21 @@
 
   }
 
+  function requestCoin( symbol, filters ) {
+    let filterQuery = 
+          ( filters.cap ? '?cap=' + filters.cap : '' ) + 
+          ( filters.period ? '&period=' + filters.period : '' ) +
+          ( filters.profit ? '&profit=' + filters.profit : '' ) 
+    return REQUEST_COIN + symbol +  filterQuery
+  }
+
+  function requestGraph( symbol, filters ) {
+    let filterQuery = 
+          ( filters.cap ? '?cap=' + filters.cap : '' ) + 
+          ( filters.period ? '&period=' + filters.period : '' ) +
+          ( filters.profit ? '&profit=' + filters.profit : '' )
+    return REQUEST_GRAPH + symbol +  filterQuery
+  }
 
   function upSymbol(value) {
     if(value) {

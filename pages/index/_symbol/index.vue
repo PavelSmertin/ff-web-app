@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div class="row no-gutters coin-details-block coin_mobile">
+    <div class="row no-gutters coin_details_block coin_mobile">
 
       <div class="coin_detail_unit col-6 col-md-3">
         <div class="ff-label">Капитализация</div>
@@ -91,7 +91,9 @@
     </div>
     <div class="row no-gutters coin_mobile">
       <no-ssr placeholder="Loading...">
-        <chart-trading-view :symbol="ticker"/>
+<!--         <chart-trading-view :symbol="ticker"/>
+ -->        
+        <ttGraph />
       </no-ssr>
     </div>
 
@@ -107,11 +109,20 @@
   import { analMixin } from '~/components/mixins/analitics.js'
   import { coinsMixin } from '~/components/mixins/coins.js'
   import { indacoinMixin } from '~/components/mixins/indacoin.js'
+  import ttGraph from '~/components/ttGraph.vue'
   import Jsona from 'jsona'
+
+  const REQUEST_COIN = `/api/portfolios/free-coin/`
+  const REQUEST_GRAPH = `/api/portfolios/coin-graph/` //BTC?interval=1D`
+
 
   const dataFormatter = new Jsona()
 
   export default {
+
+    components: {
+      ttGraph,
+    },
 
     mixins: [ analMixin, indacoinMixin, coinsMixin ],
 
@@ -139,11 +150,37 @@
       }
     },
 
-    async asyncData ({ app, params, error }) {
+    async asyncData ({ app, params, error, isDev }) {
+      let coin = null
+      let symbol = upSymbol( params.symbol )
+
+      try {
+        let data = await app.$axios.get( requestCoin(symbol, {}) )
+        coin = dataFormatter.deserialize( data.data )
+
+        if( coin == undefined ) {
+          coin = {
+                coin_name: '',
+                symbol: symbol,
+                coin_price: null,
+                price_percent_change: null,
+                part: null,
+                amount_total: null,
+                amount_total_usdt: null,
+                part_change: null,
+              }
+        }
+
+      } catch (e) {
+        if( isDev ) {
+          console.error(e)
+        }
+      }
+
 
       let details
       try {
-        details = await app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${upSymbol(params.symbol)}`)
+        details = await app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${symbol}`)
       } catch (e) {
         if( e.response && e.response.status == 404 ) {
           error ({ message: 'Такой монеты не существует', statusCode: 404 })
@@ -160,7 +197,7 @@
       let headTitle         = getTitle(attributes)
       let headDescription   = getDescription(attributes)
 
-      let symbol = upSymbol( params.symbol )
+
       let tsym = symbol == 'USDT' ? 'USD' : 'USDT'
 
       return { 
@@ -173,10 +210,13 @@
       }
     },
 
-
     mounted () {
       this.goto()
       this.watchSocketCoin()
+
+      // if( this.$store.state.graphs[this.symbol] == undefined ) {
+      //   this.retrieveGraph()
+      // }
     },
 
     computed: {
@@ -277,11 +317,79 @@
           'up': coin.up,
           'down': !coin.up,
         }
-      }
+      },
+
+      async retrieveCoin () {
+        try {
+          const data = await this.$axios.get(requestCoin( this.symbol, {} ))
+          let coinName = this.coin.coin_name
+          let coinPrice = this.coin.coin_price
+          let coinPriceChange = this.coin.price_percent_change
+          this.coin = dataFormatter.deserialize( data.data )
+          if( this.coin == undefined ) {
+            this.coin = {
+                  coin_name: coinName,
+                  symbol: this.symbol, 
+                  coin_price: coinPrice,
+                  price_percent_change: coinPriceChange,
+                  part: null, 
+                  amount_total: null, 
+                  amount_total_usdt: null, 
+                  part_change: null,
+                }
+          }
+        } catch( e ) {
+          // if( e.response && e.response.status == 403 ) {
+          //   this.$toast.show(this.$t('account.permission_denied'), {
+          //     duration: null,
+          //     action : {
+          //       text : 'Ok',
+          //       onClick : (e, toastObject) => {
+          //         toastObject.goAway(0)
+          //       }
+          //     },
+          //   })
+          // }
+
+          if( process.env.NODE_ENV == 'development'  ) {
+            console.error(e)
+          }
+        }
+      },
+
+      async retrieveGraph () {
+        var nodes = []
+
+        try {
+          const data = await this.$axios.get(requestGraph( this.symbol, {} ))
+          this.$store.commit( 'SET_GRAPH', {symbol: this.symbol, data: data.data[this.symbol]} )
+        } catch( e ) {
+          if( process.env.NODE_ENV == 'development' ) {
+            console.error(e)
+          }
+        }
+      },
+
     },
 
   }
 
+
+  function requestCoin( symbol, filters ) {
+    let filterQuery = 
+          ( filters.cap ? '?cap=' + filters.cap : '' ) + 
+          ( filters.period ? '&period=' + filters.period : '' ) +
+          ( filters.profit ? '&profit=' + filters.profit : '' ) 
+    return REQUEST_COIN + symbol +  filterQuery
+  }
+
+  function requestGraph( symbol, filters ) {
+    let filterQuery = 
+          ( filters.cap ? '?cap=' + filters.cap : '' ) + 
+          ( filters.period ? '&period=' + filters.period : '' ) +
+          ( filters.profit ? '&profit=' + filters.profit : '' )
+    return REQUEST_GRAPH + symbol +  filterQuery
+  }
 
   function upSymbol(value) {
     if(value) {

@@ -22,7 +22,8 @@ const createStore = () => {
 			indacoin: {
 				coins: [],
 				updatedAt: null
-			}
+			},
+			graphs: {},
 		},
 
 		mutations: {
@@ -176,8 +177,17 @@ const createStore = () => {
 			},
 			SET_INDACOIN_COINS: function (state, coins) {
 				state.indacoin.coins = coins
-        state.indacoin.updatedAt = Date.now()
-			}
+        		state.indacoin.updatedAt = Date.now()
+			},
+
+			SET_GRAPH: function (state, graph) {
+				if( Object.keys(state.graphs).length <= 0 ) {
+					state.graphs = {}
+				}
+				// reassign for watchers
+				state.graphs = Object.assign({}, state.graphs)
+				state.graphs[graph.symbol] = graph.data
+			},
 		},
 
 		actions: {

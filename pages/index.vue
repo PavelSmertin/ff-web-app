@@ -15,7 +15,7 @@
         </li>
       </ul>
 
-      <div class="row ff_content no-gutters">
+      <div class="row ff_content no-gutters" id="ff_content">
 
         <transition name="fade" v-on:before-enter="beforeEnter" v-on:before-leave="beforeLeave" v-on:after-leave="afterLeave">
           <div v-if="$route.name != 'index-coins'" class="ff-left-panel" v-bind:class="colLeft">

@@ -110,6 +110,9 @@ h3 {
 .border_top {
 	border-top: 1px solid $border-bold-color;
 }
+.content_padding {
+	padding: 0 24px;
+}
 .ff-label {
 	color: $label-color;
 	font-size: $label-size;
@@ -140,12 +143,18 @@ h3 {
 }
 
 .ff_text_block {
-	margin: 0; 
+	margin: 32px auto 0;
+	width: 83%;
 }
-@media (min-width: 768px) {
+@media (max-width: 769px) {
 	.ff_text_block {
-		margin: 0 auto;
-		width: 83%;
+		margin: 0;
+		width: unset;
+	}
+}
+@media (min-width: 1920px) {
+	.ff_text_block {
+		width: 60%;
 	}
 }
 
@@ -1376,7 +1385,6 @@ h3 {
 	&.ff_popular {
 		padding-bottom: 0;
 	}
-
 }
 @media (min-width: 768px) {
 	.ff-news {
@@ -1412,11 +1420,6 @@ h3 {
 									line-height: 24px;
 								}
 							}
-
-							.ff_news_item_details {
-								margin-top: 46px;
-							}
-
 						}
 					}
 
@@ -2225,16 +2228,16 @@ h3 {
 	background-color: $bg-main-color;
 	padding-top: 1px;
 
+
+
 	.coin_page_row {
 		margin: 0 24px;
 	}
-	.row {
-		padding: 0 24px;
 
-		.h_link {
-			font-size: $label-size;
-		}
+	.h_link {
+		font-size: $label-size;
 	}
+
 
 	.coin_head_block {
 		padding: 24px 24px 0;
@@ -2334,6 +2337,12 @@ h3 {
 		}
 	}
 
+	.coin_tabs { 
+		@extend .news_filters_block;
+		border-top: 1px solid $border-thin-color;
+		margin-top: 24px;
+	}
+
 	.coin-value {
 		font-size: 26px;
 		color: $dark-primary-color;
@@ -2373,11 +2382,17 @@ h3 {
 		color: $dark-primary-color;
 		font-size: $coin-info-size;
 	}
-	.coin-details-block {
+	.coin_details_block {
 		margin-top: 24px;
 		padding: 12px 24px 16px 24px;
 		border-top: 1px solid $border-bold-color;
 		border-bottom: 1px solid $border-bold-color;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		.coin_detail_unit {
+			flex-grow: 1;
+		}
 	}
 	.coin-detail{
 		color: $dark-primary-color;
@@ -2396,8 +2411,11 @@ h3 {
 		font-size: 12px;
 	}
 
-	.wiki_row {
+	.wiki_block {
+		display: flex;
+		flex-wrap: wrap;
 		.wiki_item {
+			width: 33.3%;
 			padding: 16px;
 			p {
 				margin: 0;
@@ -2412,10 +2430,10 @@ h3 {
 				@extend .ff-label;
 				margin-top: 12px;
 			}
-		}
-		.wiki_item:hover {
-			box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
-			background-color: $bg-main-color;
+			&:hover {
+				box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
+				background-color: $bg-main-color;
+			}
 		}
 	}
 
@@ -2545,6 +2563,10 @@ h3 {
 	.сhart_сontainer {
 		border: 1px solid $border-thin-color;
 	}
+
+	.tt_graph_component {
+		width: 100%;
+	}
 }
 @media (max-width: 769px) { 
 	.ff_coin {
@@ -2560,13 +2582,17 @@ h3 {
 				width:100%;
 			}
 		}
-		.coin_detail_unit {
-			margin: 10px 0;
-			.coin-detail {
-				font-size: 12px;
-			}
-			.coin-detail-info {
-				font-size: 12px;
+		.coin_details_block {
+			flex-wrap: wrap;
+			.coin_detail_unit {
+				width: 50%;
+				margin: 10px 0;
+				.coin-detail {
+					font-size: 12px;
+				}
+				.coin-detail-info {
+					font-size: 12px;
+				}
 			}
 		}
 		.coin-value {
@@ -2575,6 +2601,13 @@ h3 {
 		.coin-unit {
 			color: $dark-primary-color;
 			font-size:14px;
+		}
+
+		.wiki_block {
+			.wiki_item {
+				padding: 16px 0;
+				width: 100%;
+			}
 		}
 
 		.ff_pairs_index {
