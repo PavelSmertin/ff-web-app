@@ -60,6 +60,8 @@
 
   const PARTNER_ID = `ff`;
   const INDACOIN_API_PRICE = `https://indacoin.com/api/GetCoinConvertAmount`
+  const INDACOIN_API_APPLY = `https://indacoin.com/gw/payment_form`
+
 
   export default {
 
@@ -106,7 +108,7 @@
       buyButtonState() {
         if( this.isFormValide() ) {
           return {
-            'href': `https://indacoin.com/gw/payment_form?partner=ff&cur_from=${this.from}&cur_to=${this.to}&amount=${this.amountFrom}&address=${this.address}`
+            'href': `${INDACOIN_API_APPLY}?partner=${PARTNER_ID}&cur_from=${this.from}&cur_to=${this.to}&amount=${this.amountFrom}&address=${this.address}`
           }
         }
         return {
@@ -135,8 +137,10 @@
           this.amountTo = ''
           return
         }
-
-        this.$axios.get(`${INDACOIN_API_PRICE}/${this.from}/${this.to}/${this.amountFrom}/${PARTNER_ID}`)
+        this.$axios.get(
+          `${INDACOIN_API_PRICE}/${this.from}/${this.to}/${this.amountFrom}/${PARTNER_ID}`,
+          {'headers': false} 
+        )
           .then(({data}) => {
             this.amountTo = data
           }).catch(e => {
