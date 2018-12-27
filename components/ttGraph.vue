@@ -1,7 +1,7 @@
 
 <template>
 
-	<svg class="tt_graph_component">
+	<svg class="tt_graph_component" ref="graphWrap">
 		
 		<defs>
 			<linearGradient id="GradientFirst" x1="0" x2="0" y1="0" y2="5">
@@ -34,11 +34,11 @@
 		<svg v-if="(interactive || mainCoin) && points && points.length > 0" v-bind="bindLegend()">
 			<circle v-bind="bindFirstLegendMarker()" vector-effect="non-scaling-stroke"/>
 			<text v-bind="bindFirstLegendLabel()" class="tooltip_label">
-				{{ first.label }}
+				Доля
 			</text>
 			<circle v-bind="bindSecondLegendMarker()" vector-effect="non-scaling-stroke"  />
 			<text v-bind="bindSecondLegendLabel()" class="tooltip_label">
-				{{ second.label }}
+				Цена
 			</text>
 		</svg>
 
@@ -138,22 +138,14 @@
 		mounted() {
 			this.isDevice = document.getElementById('ff_content').offsetWidth < 769
 
-			if ( this.$parent.$refs.graphWrap ) {
-				let offset = this.$parent.$refs.graphWrap.getBoundingClientRect()
+			if ( this.$refs.graphWrap ) {
+				let offset = this.$refs.graphWrap.getBoundingClientRect()
 				this.graphWidth = offset.width
 				this.graphHeight = offset.height
 			}
 
 			if( this.getGraph() ) {
 				this.init()
-			}
-
-			if( this.first.label == undefined ) {
-				this.first.label = `Доля`
-			}
-
-			if( this.second.label == undefined ) {
-				this.second.label = `Цена`
 			}
 
 			window.addEventListener('resize', this.handleResize)
@@ -364,7 +356,7 @@
 			mouseover({ offsetX, offsetY }) {
 
 				const scales = this.getScales()
-				const svg = this.$refs.graph
+				const svg = this.$refs.graphWrap
 
 				if( svg == undefined ) {
 					return

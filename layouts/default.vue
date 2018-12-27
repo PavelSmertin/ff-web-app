@@ -17,26 +17,26 @@
 					<nuxt-link 
 						@click.native="sendEvent( 'Toolbar', 'click', 'курс биткоина' )" 
 						:to="{name: 'index'}" 
-						class="nav-link"
+						class="nav_link"
 						>
 						Курс биткоина
 					</nuxt-link>
 					<nuxt-link
 						@click.native="sendEvent( 'Toolbar', 'click', 'магазин крипты' )"
 						:to="{path: '/coins'}"
-						class="nav-link"
+						class="nav_link"
 						>
 						Магазин крипты
 					</nuxt-link>
 					<nuxt-link 
 						@click.native="sendEvent( 'Toolbar', 'click', 'купить биткоин' )"
 						:to="{path: '/wiki/1'}" 
-						class="nav-link"
+						class="nav_link"
 						>
 						Купить биткоин
 					</nuxt-link>
 					<a href="https://welcome.ff.ru/?utm_source=ff&utm_medium=topmenu"
-						class="nav-link"
+						class="nav_link"
 						alt="о проекте"
 						>
 						О проекте
@@ -82,7 +82,7 @@
 
 			<div class="ff_license">
 				<a href="https://welcome.ff.ru/?utm_source=ff&utm_medium=btmmenu"
-					class="nav-link"
+					class="nav_link"
 					alt="о проекте"
 					>
 					О проекте
@@ -90,41 +90,41 @@
 				<nuxt-link  
 					@click.native="sendEvent( 'Footer', 'click', 'Реклама на сайте' )" 
 					:to="{path: '/adv'}" 
-					class="nav-link"
+					class="nav_link"
 					>
 					Реклама на сайте
 				</nuxt-link>
 				<nuxt-link  
 					@click.native="sendEvent( 'Footer', 'click', 'Авторы' )" 
 					:to="{path: '/authors'}" 
-					class="nav-link"
+					class="nav_link"
 					>
 					Авторы
 				</nuxt-link>
 				<nuxt-link  
 					@click.native="sendEvent( 'Footer', 'click', 'Политика конфиденциальности' )" 
 					:to="{path: '/privacy-policy'}" 
-					class="nav-link"
+					class="nav_link"
 					>
 					Политика конфиденциальности
 				</nuxt-link>
 				<nuxt-link  
 					@click.native="sendEvent( 'Footer', 'click', 'Отказ от ответственности' )" 
 					:to="{path: '/disclaimer'}" 
-					class="nav-link"
+					class="nav_link"
 					>
 					Отказ от ответственности
 				</nuxt-link>
 				<nuxt-link  
 					@click.native="sendEvent( 'Footer', 'click', 'Пользовательское соглашение' )" 
 					:to="{path: '/terms'}" 
-					class="nav-link"
+					class="nav_link"
 					>
 					Пользовательское соглашение
 				</nuxt-link>
 
-				<a href="/rss-export" alt="rss feed">
-					<svg class="icon_rss" width="16" height="16" viewBox="0 0 402.041 402.04">
+				<a href="/rss-export" alt="rss feed" class="nav_link">
+					<svg class="icon_rss" width="13" height="13" viewBox="0 0 402.041 402.04">
 						<path d="M54.816,292.382c-15.229,0-28.169,5.331-38.831,15.988C5.33,319.026,0,331.969,0,347.197
 							c0,15.232,5.325,28.172,15.985,38.828c10.662,10.657,23.606,15.988,38.831,15.988c15.227,0,28.168-5.331,38.828-15.988
 							c10.656-10.656,15.986-23.596,15.986-38.828c0-15.229-5.33-28.171-15.986-38.827C82.987,297.713,70.046,292.382,54.816,292.382z"

@@ -82,15 +82,15 @@
           </div>
 
           <div class="scroll-container" ref="scroll_news">
-            <div v-if="$store.state.news.length" class="ff-news ff_right_feed_news">
+            <div v-if="$store.state.news.length" class="ff_news ff_right_feed_news">
 
               <!-- ssr list -->
-              <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
+              <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff_news_row">
                 <post-item :post="newest" ></post-item>
               </nuxt-link>
 
               <!-- client list -->
-              <nuxt-link @click.native="onPostClick(item.id)" v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff-news-row">
+              <nuxt-link @click.native="onPostClick(item.id)" v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff_news_row">
                 <post-item :post="item"></post-item>
               </nuxt-link>
 

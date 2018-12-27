@@ -46,208 +46,232 @@
 
 
     <div class="coin_tabs">
-      <a href="#" class="filters_tab">Главное</a>
-      <a href="#" class="filters_tab">Котировки</a>
+      <a 
+        href="#" 
+        class="filters_tab" 
+        v-on:click.stop.prevent="switchIndexTab('index_main')"
+        v-bind:class="indexPaneMain">
+          Главное
+      </a>
+      <a 
+        href="#" 
+        class="filters_tab" 
+        v-on:click.stop.prevent="switchIndexTab('index_stat')"
+        v-bind:class="indexPaneStat">
+          Котировки
+      </a>
     </div>
 
-    <div class="index_pane_1">
-      <div class="margin12 content_padding" v-if="popularNews.length">
-        <h2 class="margin12">Популярное</h2>
-          <div class="ff-news ff_popular">
-            <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of popularNews" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff-news-row">
-              <post-item :post="newest" ></post-item>
-            </nuxt-link>
-          </div>
-      </div>
-
-      <div class="border_top margin24 content_padding">
-        <h2 class="margin12">Доля Bitcoin в портфелях трейдеров</h2>
-      </div>
-      <div class="content_padding">
-        <no-ssr placeholder="Loading...">
-          <!--<chart-trading-view :symbol="'BTC/USDT'"/>-->
-          <ttGraph
-              :first="{color: '#8FCC14', gradient: 'GradientFirst', opacity: 1 }" 
-              :second="{color: '#000', gradient: 'GradientSecond', opacity: 0.2 }" 
-          />
-
-        </no-ssr>
-      </div>
-
-      <div class="border_top margin24 content_padding">
-        <h2 class="margin12">Биткойн калькулятор</h2>
-      </div>
-      <div class="calculator margin6 content_padding">
-        <div class="calculator_item">
-          <div class="label"><img src="~/assets/images/btc_icon_white.png" width="20" height="20" alt="btc_icon"><span class="label_currency">BTC</span></div>
-          <input type="text" name="btc" v-model="calculateBTC" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack" >
+    <transition name="pane">
+      <div class="index_pane" v-if="activeIndexTab=='index_main'">
+        <div class="margin12 content_padding" v-if="popularNews.length">
+          <h2 class="margin12">Популярное</h2>
+            <div class="ff_news ff_popular">
+              <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of popularNews" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff_news_row">
+                <post-item :post="newest" ></post-item>
+              </nuxt-link>
+            </div>
         </div>
-        <div class="calculator_item">
-          <div class="label"><img src="~/assets/images/usd_icon.svg" alt="usd_icon"><span class="label_currency">USD</span></div>
-          <input type="text" name="usd" v-model="calculateUSD" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
+
+        <div class="border_top margin24 content_padding">
+          <h2 class="margin12">Доля Bitcoin в портфелях трейдеров</h2>
         </div>
-        <div class="calculator_item">
-          <div class="label"><img src="~/assets/images/rub_icon.svg" alt="rub_icon"><span class="label_currency">RUB</span></div>
-          <input type="text" name="rub" v-model="calculateRUB" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
+        <ttGraph
+            :first="{color: '#8FCC14', gradient: 'GradientFirst', opacity: 1 }" 
+            :second="{color: '#000', gradient: 'GradientSecond', opacity: 0.2 }"
+            :interactive="true" 
+        />
+
+        <div class="border_top content_padding">
+          <h2 class="margin12">Биткойн калькулятор</h2>
         </div>
-        <div class="calculator_item">
-          <nuxt-link @click.native="sendEvent('BuyBTC', 'click')" :to="{path: '/wiki/1'}">
-            <span class="apply">КУПИТЬ BTC</span>
-            <img src="~/assets/images/baseline-arrow_forward-24px.svg" alt="arrow">
-          </nuxt-link >
-        </div>
-      </div>
-
-      <div class="border_top margin24 content_padding">
-        <h3 class="margin12">Полезная информация</h3>
-      </div>
-
-      <div class="margin6 wiki_block content_padding">
-        <nuxt-link @click.native="onWikiClick(1)" class="wiki_item" :to="{ path: '/wiki/1' }">
-          <p class="wiki_title">Как купить биткоин?</p>
-          <p class="wiki_description">Инструкция: как купить биткоин онлайн надежно с карты за рубли, доллары или через электронные кошельки QIWI, Webmoney</p>
-        </nuxt-link>
-        <nuxt-link @click.native="onWikiClick(2)" class="wiki_item" :to="{ path: '/wiki/2' }">
-          <p class="wiki_title">Где хранить биткоины?</p>
-          <p class="wiki_description">Важно выбрать наиболее надежный и удобный способ хранения биткоина, для этого подойдут Bitcoin кошельки. Существует несколько типов кошельков, разберемся какой лучше</p>
-        </nuxt-link>        
-        <nuxt-link @click.native="onWikiClick(3)" class="wiki_item" :to="{ path: '/wiki/3' }">
-          <p class="wiki_title">Что такое блокчейн?</p>
-          <p class="wiki_description">BlockChain (англ. Block – блок; Chain - цепь) - это база данных, которая ежедневно пополняется информацией о криптовалютных переводах между пользователями</p>
-        </nuxt-link>
-        <nuxt-link @click.native="onWikiClick(4)"  class="wiki_item" :to="{ path: '/wiki/4' }">
-          <p class="wiki_title">Как продать биткоин?</p>
-          <p class="wiki_description">Продать или обналичить биткоины можно нескольким способами, например через биржи, обменники или с помощью карты</p>
-        </nuxt-link>
-        <nuxt-link @click.native="onWikiClick(5)" class="wiki_item" :to="{ path: '/wiki/5' }">
-          <p class="wiki_title">Биткоин в России</p>
-          <p class="wiki_description">Биткоин в России использовать можно, отношение государства к криптовалюте на данный момент носит неопределенный характер</p>
-        </nuxt-link>
-        <nuxt-link @click.native="onWikiClick(6)" class="wiki_item" :to="{ path: '/wiki/6' }">
-          <p class="wiki_title">Что такое Биткоин?</p>
-          <p class="wiki_description">Биткоин - первая криптовалюта, ставшая всемирно-известной в 2017 году. Основная суть биткоина состоит в децентрализации</p>
-        </nuxt-link>
-      </div>
-
-
-      <div class="border_top margin12 content_padding">
-        <section v-if="attributes.seo_text" class="ff_text_block " v-html="attributes.seo_text"></section>
-      </div>
-    </div>
-
-    <div class="index_pane_2" style="display: none;">
-      <div class="coin_details_block content_padding">
-
-          <div class="coin_detail_unit">
-            <div class="ff-label">Капитализация</div>
-            <div class="coin-detail">{{ formatPrice(attributes.market_cap_usd) }} USD</div>
-            <div class="coin-detail-info">{{ formatPrice(attributes.total_coin_supply) }} {{attributes.symbol }}</div>
+        <div class="calculator margin6 content_padding">
+          <div class="calculator_item">
+            <div class="label"><img src="~/assets/images/btc_icon_white.png" width="20" height="20" alt="btc_icon"><span class="label_currency">BTC</span></div>
+            <input type="text" name="btc" v-model="calculateBTC" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack" >
           </div>
-
-          <div class="coin_detail_unit">
-            <div class="ff-label">Объем торгов (24ч)</div>
-            <div class="coin-detail">{{ formatPrice(attributes.volume24h_usd) }} USD</div>
-            <div class="coin-detail-info">{{ formatPrice(attributes.volume24h_btc) }} {{ attributes.symbol }}</div>
+          <div class="calculator_item">
+            <div class="label"><img src="~/assets/images/usd_icon.svg" alt="usd_icon"><span class="label_currency">USD</span></div>
+            <input type="text" name="usd" v-model="calculateUSD" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
           </div>
-
-          <div class="coin_detail_unit">
-            <div class="ff-label">Изменение (1ч)</div>
-            <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
-              {{ formatPrice(attributes.percent_change1h) }}%
-            </div>
-            <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
-              {{ formatPrice(attributes.change1h_usd) }} USD
-            </div>
+          <div class="calculator_item">
+            <div class="label"><img src="~/assets/images/rub_icon.svg" alt="rub_icon"><span class="label_currency">RUB</span></div>
+            <input type="text" name="rub" v-model="calculateRUB" autocomplete="off"  v-on:keypress="isNumber" @focus="$event.target.select()" @mouseup="calcSafaryHack">
           </div>
-
-          <div class="coin_detail_unit">
-            <div class="ff-label">Изменение (24ч)</div>
-            <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
-              {{ formatPrice(attributes.percent_change24h) }}%
-            </div>
-            <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
-              {{ formatPrice(attributes.change24h_usd) }} USD
-            </div>
-          </div>
-
-          <div class="coin_detail_unit">
-            <div class="ff-label">Изменение (7д)</div>
-            <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
-              {{ formatPrice(attributes.percent_change7d) }}%
-            </div>
-            <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
-              {{ formatPrice(attributes.change7d_usd) }} USD
-            </div>
-          </div>
-      </div>
-
-
-      <h2 class="margin12 content_padding">Курс BTC/USDT на биржах</h2>
-
-      <div class="margin6 pairs_row content_padding">
-        <div class="ff_pairs_index">
-          <div class="ff_pairs_header">
-            <div class="ff_pairs_head">
-              Биржа
-            </div>
-            <div class="ff_pairs_head i_price">
-              Курс
-            </div>
-            <div class="ff_pairs_head i_high">
-              Мин (24ч)
-            </div>
-            <div class="ff_pairs_head i_low">
-              Макс (24ч)
-            </div>
-            <div class="ff_pairs_head changes">
-              Изменения (24ч)
-            </div>
-            <div class="ff_pairs_head i_volume">
-              Объем (BTC)
-            </div>
-          </div>
-
-          <div class="ff_pair" v-for="pair of pairs" v-bind:key="pair.exchange_id" >
-            <div class="ff_pair_item">{{ pair.exchange.name }}</div>
-            <div class="ff_pair_item i_price">${{ formatPrice(pair.price) }}</div>
-            <div class="ff_pair_item i_low">${{ formatPrice(pair.low24hour) }}</div>
-            <div class="ff_pair_item i_high">${{ formatPrice(pair.high24hour) }}</div>
-            <div class="ff_pair_item changes positive" v-bind:class="{ negative: (pair.changepct24hour < 0) }">
-              {{ formatPrice(pair.changepct24hour) }}%
-            </div>
-            <div class="ff_pair_item i_volume">{{ formatPrice(pair.volume24hour) }}</div>
+          <div class="calculator_item">
+            <nuxt-link @click.native="sendEvent('BuyBTC', 'click')" :to="{path: '/wiki/1'}">
+              <span class="apply">КУПИТЬ BTC</span>
+              <img src="~/assets/images/baseline-arrow_forward-24px.svg" alt="arrow">
+            </nuxt-link >
           </div>
         </div>
-      </div>
 
-      <div class="border_top margin24">
-        <h3 class="margin12 content_padding">Лидеры криптовалют за 24 часа</h3>
-        <div class="margin12 align_right content_padding">
-            <nuxt-link class="h_link" :to="{ path: '/coins' }">Все монеты</nuxt-link>
+        <div class="border_top margin24 content_padding">
+          <h3 class="margin12">Полезная информация</h3>
+        </div>
+
+        <div class="margin6 wiki_block content_padding">
+          <nuxt-link @click.native="onWikiClick(1)" class="wiki_item" :to="{ path: '/wiki/1' }">
+            <p class="wiki_title">Как купить биткоин?</p>
+            <p class="wiki_description">Инструкция: как купить биткоин онлайн надежно с карты за рубли, доллары или через электронные кошельки QIWI, Webmoney</p>
+          </nuxt-link>
+          <nuxt-link @click.native="onWikiClick(2)" class="wiki_item" :to="{ path: '/wiki/2' }">
+            <p class="wiki_title">Где хранить биткоины?</p>
+            <p class="wiki_description">Важно выбрать наиболее надежный и удобный способ хранения биткоина, для этого подойдут Bitcoin кошельки. Существует несколько типов кошельков, разберемся какой лучше</p>
+          </nuxt-link>        
+          <nuxt-link @click.native="onWikiClick(3)" class="wiki_item" :to="{ path: '/wiki/3' }">
+            <p class="wiki_title">Что такое блокчейн?</p>
+            <p class="wiki_description">BlockChain (англ. Block – блок; Chain - цепь) - это база данных, которая ежедневно пополняется информацией о криптовалютных переводах между пользователями</p>
+          </nuxt-link>
+          <nuxt-link @click.native="onWikiClick(4)"  class="wiki_item" :to="{ path: '/wiki/4' }">
+            <p class="wiki_title">Как продать биткоин?</p>
+            <p class="wiki_description">Продать или обналичить биткоины можно нескольким способами, например через биржи, обменники или с помощью карты</p>
+          </nuxt-link>
+          <nuxt-link @click.native="onWikiClick(5)" class="wiki_item" :to="{ path: '/wiki/5' }">
+            <p class="wiki_title">Биткоин в России</p>
+            <p class="wiki_description">Биткоин в России использовать можно, отношение государства к криптовалюте на данный момент носит неопределенный характер</p>
+          </nuxt-link>
+          <nuxt-link @click.native="onWikiClick(6)" class="wiki_item" :to="{ path: '/wiki/6' }">
+            <p class="wiki_title">Что такое Биткоин?</p>
+            <p class="wiki_description">Биткоин - первая криптовалюта, ставшая всемирно-известной в 2017 году. Основная суть биткоина состоит в децентрализации</p>
+          </nuxt-link>
+        </div>
+
+
+        <div class="index_text_wrap">
+          <section 
+            v-if="attributes.seo_text" 
+            class="ff_text_block" 
+            v-html="attributes.seo_text" 
+            v-bind:class="indexSeoText"
+            >
+          </section>
+          <button 
+            class="button_class seo_text_toggle" 
+            v-on:click.stop.prevent="toggleSeoText()" 
+            v-bind:class="indexSeoText" 
+            v-html="toggleSeoAction"
+            >
+          </button>
         </div>
       </div>
-      <coins-list-other :otherCoins="otherCoins" />
+    </transition>
 
-      <div class="border_top margin24 content_padding">
-        <h3 class="margin12">Быстрая статистика Биткоина</h3>
+    <transition name="pane">
+      <div class="index_pane" v-if="activeIndexTab=='index_stat'">
+        <div class="coin_details_block content_padding">
+
+            <div class="coin_detail_unit">
+              <div class="ff-label">Капитализация</div>
+              <div class="coin-detail">{{ formatPrice(attributes.market_cap_usd) }} USD</div>
+              <div class="coin-detail-info">{{ formatPrice(attributes.total_coin_supply) }} {{attributes.symbol }}</div>
+            </div>
+
+            <div class="coin_detail_unit">
+              <div class="ff-label">Объем торгов (24ч)</div>
+              <div class="coin-detail">{{ formatPrice(attributes.volume24h_usd) }} USD</div>
+              <div class="coin-detail-info">{{ formatPrice(attributes.volume24h_btc) }} {{ attributes.symbol }}</div>
+            </div>
+
+            <div class="coin_detail_unit">
+              <div class="ff-label">Изменение (1ч)</div>
+              <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
+                {{ formatPrice(attributes.percent_change1h) }}%
+              </div>
+              <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
+                {{ formatPrice(attributes.change1h_usd) }} USD
+              </div>
+            </div>
+
+            <div class="coin_detail_unit">
+              <div class="ff-label">Изменение (24ч)</div>
+              <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
+                {{ formatPrice(attributes.percent_change24h) }}%
+              </div>
+              <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
+                {{ formatPrice(attributes.change24h_usd) }} USD
+              </div>
+            </div>
+
+            <div class="coin_detail_unit">
+              <div class="ff-label">Изменение (7д)</div>
+              <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
+                {{ formatPrice(attributes.percent_change7d) }}%
+              </div>
+              <div class="coin-detail-info positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
+                {{ formatPrice(attributes.change7d_usd) }} USD
+              </div>
+            </div>
+        </div>
+
+
+        <h2 class="margin12 content_padding">Курс BTC/USDT на биржах</h2>
+
+        <div class="margin6 pairs_row content_padding">
+          <div class="ff_pairs_index">
+            <div class="ff_pairs_header">
+              <div class="ff_pairs_head">
+                Биржа
+              </div>
+              <div class="ff_pairs_head i_price">
+                Курс
+              </div>
+              <div class="ff_pairs_head i_high">
+                Мин (24ч)
+              </div>
+              <div class="ff_pairs_head i_low">
+                Макс (24ч)
+              </div>
+              <div class="ff_pairs_head changes">
+                Изменения (24ч)
+              </div>
+              <div class="ff_pairs_head i_volume">
+                Объем (BTC)
+              </div>
+            </div>
+
+            <div class="ff_pair" v-for="pair of pairs" v-bind:key="pair.exchange_id" >
+              <div class="ff_pair_item">{{ pair.exchange.name }}</div>
+              <div class="ff_pair_item i_price">${{ formatPrice(pair.price) }}</div>
+              <div class="ff_pair_item i_low">${{ formatPrice(pair.low24hour) }}</div>
+              <div class="ff_pair_item i_high">${{ formatPrice(pair.high24hour) }}</div>
+              <div class="ff_pair_item changes positive" v-bind:class="{ negative: (pair.changepct24hour < 0) }">
+                {{ formatPrice(pair.changepct24hour) }}%
+              </div>
+              <div class="ff_pair_item i_volume">{{ formatPrice(pair.volume24hour) }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="border_top margin24">
+          <h3 class="margin12 content_padding">Лидеры криптовалют за 24 часа</h3>
+          <div class="margin12 align_right content_padding">
+              <nuxt-link class="h_link" :to="{ path: '/coins' }">Все монеты</nuxt-link>
+          </div>
+        </div>
+        <coins-list-other :otherCoins="otherCoins" />
+
+        <div class="border_top margin24 content_padding">
+          <h3 class="margin12">Быстрая статистика Биткоина</h3>
+        </div>
+        <div class="margin6 content_padding">
+          <dl class="coin_stat">
+            <dt>Дата запуска</dt><dd>Январь 3, 2009</dd>
+            <dt>Позиция в рейтинге MarketCap</dt><dd>№1</dd>
+            <dt>ATH</dt><dd>$19 665.39</dd>
+            <dt>С момента достижения ATH</dt><dd>-70%</dd>
+            <dt>Дата ATH</dt><dd>16.12.2017</dd>
+            <dt>Доступный объем</dt><dd>17.1 миллионов</dd>
+            <dt>Общий объем</dt><dd>21.0 миллион</dd>
+            <dt>Официальный сайт</dt><dd>bitcoin.org</dd>
+            <dt>Форум</dt><dd>bitcointalk.org</dd>
+            <dt>Алгоритм хеширования</dt><dd>SHA-256</dd>
+            <dt>Скорость хеширования</dt><dd>577,744 PH/s</dd>
+            <dt>Время между блоками</dt><dd>10 минут</dd>
+          </dl>
+        </div>
       </div>
-      <div class="margin6 content_padding">
-        <dl class="coin_stat">
-          <dt>Дата запуска</dt><dd>Январь 3, 2009</dd>
-          <dt>Позиция в рейтинге MarketCap</dt><dd>№1</dd>
-          <dt>ATH</dt><dd>$19 665.39</dd>
-          <dt>С момента достижения ATH</dt><dd>-70%</dd>
-          <dt>Дата ATH</dt><dd>16.12.2017</dd>
-          <dt>Доступный объем</dt><dd>17.1 миллионов</dd>
-          <dt>Общий объем</dt><dd>21.0 миллион</dd>
-          <dt>Официальный сайт</dt><dd>bitcoin.org</dd>
-          <dt>Форум</dt><dd>bitcointalk.org</dd>
-          <dt>Алгоритм хеширования</dt><dd>SHA-256</dd>
-          <dt>Скорость хеширования</dt><dd>577,744 PH/s</dd>
-          <dt>Время между блоками</dt><dd>10 минут</dd>
-        </dl>
-      </div>
-    </div>
+    </transition>
 
   </section>
 </template>
@@ -301,11 +325,8 @@
 
     data() {
       return {
-        enabled: true,
-        series: {
-          type: 'area',
-          zIndex: 50
-        }
+        activeIndexTab: 'index_main',
+        seoTextCollapsed: true,
       }
     },
 
@@ -330,9 +351,6 @@
                 part_change: null,
               }
         }
-
-        console.log( coin )
-
       } catch (e) {
         if( isDev ) {
           console.error(e)
@@ -575,18 +593,6 @@
                 }
           }
         } catch( e ) {
-          // if( e.response && e.response.status == 403 ) {
-          //   this.$toast.show(this.$t('account.permission_denied'), {
-          //     duration: null,
-          //     action : {
-          //       text : 'Ok',
-          //       onClick : (e, toastObject) => {
-          //         toastObject.goAway(0)
-          //       }
-          //     },
-          //   })
-          // }
-
           if( process.env.NODE_ENV == 'development'  ) {
             console.error(e)
           }
@@ -605,6 +611,21 @@
           }
         }
       },
+
+      switchIndexTab ( activeTab ) {
+        this.activeIndexTab = activeTab
+        return {
+          'class' : 'active_index_pane'
+        }
+      },
+      switchIndexStats () {
+        return {
+          'class' : 'active_index_pane'
+        }      
+      },
+      toggleSeoText () {
+        this.seoTextCollapsed = !this.seoTextCollapsed
+       },
     },
 
     computed: {
@@ -644,6 +665,25 @@
       activeFavourite: function () {
         return {
           'active_star': this.inFavourites()
+        }
+      },
+      indexSeoText: function () {
+        return {
+          'ff_text_collapased' : this.seoTextCollapsed,
+          'ff_text_expanded' : !this.seoTextCollapsed,
+        }      
+      },
+      toggleSeoAction: function () {
+          return this.seoTextCollapsed ? 'Развернуть <span>&#9660;</span>' : 'Свернуть <span>&#9650;</span>'
+      },
+      indexPaneMain: function () {
+        return {
+          'active_index_pane' : this.activeIndexTab == 'index_main'
+        }
+      },
+      indexPaneStat: function () {
+        return {
+          'active_index_pane' : this.activeIndexTab == 'index_stat'
         }
       },
     }

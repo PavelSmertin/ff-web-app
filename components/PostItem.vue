@@ -1,5 +1,5 @@
 <template>
-  <div class="ff-news-cell" v-bind:class="topPost">
+  <div class="ff_news_cell" v-bind:class="topPost">
     <div v-bind:style="{ backgroundImage: 'url(' + getImageSharing() + ')' }" class="top_post_background" ></div>
     <div class="post_fade_overlay" ></div>
 
