@@ -71,7 +71,7 @@
         <button
           v-if="isActiveCoin(coin.attributes.symbol)"
           v-on:click.stop.prevent="onBuyClick(coin.attributes.symbol)"
-          class="btn-by-coin"
+          class="button_buy_coin"
           >
             Купить
         </button>

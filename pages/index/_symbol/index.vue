@@ -13,9 +13,10 @@
             <div v-if="inSubscribed()" ><span class="subscribe_icon">&minus;</span>Не отслеживать</div>
             <div v-else><span class="subscribe_icon">&plus;</span> Отслеживать {{ attributes.symbol }}</div>
           </button>
-          <nuxt-link v-if="isActiveCoin(attributes.symbol)" class="btn-by-coin" :to="coinBuyUrl( attributes.symbol )">Купить {{attributes.symbol}}</nuxt-link>
+          <nuxt-link v-if="isActiveCoin(attributes.symbol)" class="button_buy_coin" :to="coinBuyUrl( attributes.symbol )">
+            Купить {{attributes.symbol}}
+          </nuxt-link>
         </div>
-
       </div>
 
       <div class="coin_price">
@@ -41,21 +42,21 @@
       </div>
     </div>
 
-    <div class="row no-gutters coin_details_block coin_mobile">
+    <div class="coin_details_block content_padding">
 
-      <div class="coin_detail_unit col-6 col-md-3">
+      <div class="coin_detail_unit">
         <div class="ff-label">Капитализация</div>
         <div class="coin-detail">{{ formatPrice(attributes.market_cap_usd) }} USD</div>
         <div class="coin-detail-info">{{ formatPrice(attributes.total_coin_supply) }} {{attributes.symbol }}</div>
       </div>
 
-      <div class="coin_detail_unit col-6 col-md-3">
+      <div class="coin_detail_unit">
         <div class="ff-label">Объем торгов (24ч)</div>
         <div class="coin-detail">{{ formatPrice(attributes.volume24h_usd) }} USD</div>
         <div class="coin-detail-info">{{ formatPrice(attributes.volume24h_btc) }} {{ attributes.symbol }}</div>
       </div>
 
-      <div class="coin_detail_unit col-6 col-md-2">
+      <div class="coin_detail_unit">
         <div class="ff-label">Изменение (1ч)</div>
         <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change1h_usd < 0) }">
           {{ formatPrice(attributes.percent_change1h) }}%
@@ -65,7 +66,7 @@
         </div>
       </div>
 
-      <div class="coin_detail_unit col-6 col-md-2">
+      <div class="coin_detail_unit">
         <div class="ff-label">Изменение (24ч)</div>
         <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change24h_usd < 0) }">
           {{ formatPrice(attributes.percent_change24h) }}%
@@ -75,7 +76,7 @@
         </div>
       </div>
 
-      <div class="coin_detail_unit col-6 col-md-2">
+      <div class="coin_detail_unit">
         <div class="ff-label">Изменение (7д)</div>
         <div class="coin-detail positive" v-bind:class="{ negative: (attributes.change7d_usd < 0) }">
           {{ formatPrice(attributes.percent_change7d) }}%
@@ -86,19 +87,25 @@
       </div>
     </div>
 
-    <div class="row no-gutters margin12 coin_mobile">
-      <h2>График курса {{ attributes.coin_name }}</h2>
-    </div>
-    <div class="row no-gutters coin_mobile">
-      <no-ssr placeholder="Loading...">
-<!--         <chart-trading-view :symbol="ticker"/>
- -->        
-        <ttGraph />
-      </no-ssr>
+
+    <div class="tt_graph_wrap">
+      <div class="tt_graph_head content_padding">
+         <h2>Доля {{ symbol }} в портфелях трейдеров</h2>
+        <a href="https://tt.ff.ru" target="_blank" class="button_tt_link">Перейти на tt</a>
+      </div>
+      <ttGraph
+        class="border_top tt_graph"
+        :symbol="symbol"
+        :first="{color: '#8FCC14', gradient: 'GradientFirst', opacity: 1 }" 
+        :second="{color: '#000', gradient: 'GradientSecond', opacity: 0.2 }"
+        :interactive="true" 
+      />
     </div>
 
+    <div class="border_top"></div>
+    <section v-if="attributes.seo_text" class="ff_text_block margin60" v-html="attributes.seo_text">
+    </section>
 
-    <section v-if="attributes.seo_text" class="row ff_text_block margin60 coin_mobile" v-html="attributes.seo_text"></section>
   </section>
 </template>
 
@@ -151,34 +158,11 @@
     },
 
     async asyncData ({ app, params, error, isDev }) {
+
       let coin = null
       let symbol = upSymbol( params.symbol )
-
-      try {
-        let data = await app.$axios.get( requestCoin(symbol, {}) )
-        coin = dataFormatter.deserialize( data.data )
-
-        if( coin == undefined ) {
-          coin = {
-                coin_name: '',
-                symbol: symbol,
-                coin_price: null,
-                price_percent_change: null,
-                part: null,
-                amount_total: null,
-                amount_total_usdt: null,
-                part_change: null,
-              }
-        }
-
-      } catch (e) {
-        if( isDev ) {
-          console.error(e)
-        }
-      }
-
-
       let details
+
       try {
         details = await app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${symbol}`)
       } catch (e) {
@@ -214,9 +198,9 @@
       this.goto()
       this.watchSocketCoin()
 
-      // if( this.$store.state.graphs[this.symbol] == undefined ) {
-      //   this.retrieveGraph()
-      // }
+      if( this.$store.state.graphs[this.symbol] == undefined ) {
+        this.retrieveGraph()
+      }
     },
 
     computed: {
@@ -328,29 +312,17 @@
           this.coin = dataFormatter.deserialize( data.data )
           if( this.coin == undefined ) {
             this.coin = {
-                  coin_name: coinName,
-                  symbol: this.symbol, 
-                  coin_price: coinPrice,
-                  price_percent_change: coinPriceChange,
-                  part: null, 
-                  amount_total: null, 
-                  amount_total_usdt: null, 
-                  part_change: null,
-                }
+                coin_name: coinName,
+                symbol: this.symbol, 
+                coin_price: coinPrice,
+                price_percent_change: coinPriceChange,
+                part: null, 
+                amount_total: null, 
+                amount_total_usdt: null, 
+                part_change: null,
+              }
           }
         } catch( e ) {
-          // if( e.response && e.response.status == 403 ) {
-          //   this.$toast.show(this.$t('account.permission_denied'), {
-          //     duration: null,
-          //     action : {
-          //       text : 'Ok',
-          //       onClick : (e, toastObject) => {
-          //         toastObject.goAway(0)
-          //       }
-          //     },
-          //   })
-          // }
-
           if( process.env.NODE_ENV == 'development'  ) {
             console.error(e)
           }
@@ -369,7 +341,6 @@
           }
         }
       },
-
     },
 
   }
@@ -402,7 +373,6 @@
       return params.meta_title
     }
     return `Курс ${params.coin_name} на сегодня к доллару/рублю. График курса ${getCase(params, 2)}`
-
   }
 
   function getDescription (params) {

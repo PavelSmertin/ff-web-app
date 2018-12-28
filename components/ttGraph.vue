@@ -2,7 +2,6 @@
 <template>
 
 	<svg class="tt_graph_component" ref="graphWrap">
-		
 		<defs>
 			<linearGradient id="GradientFirst" x1="0" x2="0" y1="0" y2="5">
 				<stop offset="0%" stop-color="#8FCC14"/>
@@ -16,8 +15,8 @@
 
 		<svg ref="graph" :viewBox="viewBox" preserveAspectRatio="none" @mousemove="mouseover" @mouseleave="mouseleave">
 			<rect :width="graphWidth" :height="graphHeight" fill-opacity="0" stroke-opacity="0" />
-			<svg y="10%">
-				<g transform="scale(1, 0.85)">
+			<svg y="30%">
+				<g transform="scale(1, 0.65)">
 					<path v-bind="bindSecondLine()" class="linePrice" ref="linePrice" vector-effect="non-scaling-stroke" />
 					<path v-bind="bindSecondArea()" class="areaPrice" vector-effect="non-scaling-stroke" />
 					<path v-bind="bindFirstLine()" class="linePart" ref="linePart" vector-effect="non-scaling-stroke" />
@@ -42,31 +41,29 @@
 			</text>
 		</svg>
 
-
-		<svg v-if="mainCoin && points && points.length > 0" :id="symbol + '_tooltip'" viewBox="0 0 200 100" v-bind="tooltip">
+		<svg v-if="showTooltip" :id="symbol + '_tooltip'" viewBox="0 0 200 100" v-bind="tooltip()">
 			<g>
-				<rect class="tooltip" width="203" y="-3" x=-2 height="105" fill="#f2f2f2" />
-				<rect class="tooltip" x="0" y="40" width="99" height="60" fill="#fff" />
-				<rect class="tooltip" x="103" y="40" width="96" height="60" fill="#fff" />
+				<rect width="203" y="-3" x=0 height="57" fill="#D9D9D9" />
+				<rect x="2" y="20" width="98" height="32" fill="#fff" />
+				<rect x="101" y="20" width="97" height="32" fill="#fff" />
 
-				<text class="tooltip_date" x="12" y="26" fill="#000">
-					{{ formatDateTime( posPoint.date ) }}
+				<text class="tooltip_date" x="12" y="14" fill="#000">
+					{{ formatDateTime( verticalLinePosition.date ) }}
 				</text>
-				<text class="tooltip_label" x="12" y="60" fill="#000">
+				<text class="tooltip_label" x="12" y="32" fill="#000">
 					Доля
 				</text>
-				<text class="tooltip_value" x="12" y="85" fill="#000">
-					{{ formatPercent( posPoint.firstValue )  }}%
+				<text class="tooltip_value" x="12" y="48" fill="#000">
+					{{ formatPercent( verticalLinePosition.part )  }}%
 				</text>
-				<text class="tooltip_label" x="113" y="60" fill="#000">
+				<text class="tooltip_label" x="113" y="32" fill="#000">
 					Цена
 				</text>
-				<text class="tooltip_value" x="113" y="85" fill="#000">
-					${{ formatPrice( posPoint.secondValue ) }}
+				<text class="tooltip_value" x="113" y="48" fill="#000">
+					${{ formatPrice( verticalLinePosition.price ) }}
 				</text>
 			</g>
 		</svg>
-
 	</svg>
 
 </template>
@@ -76,7 +73,6 @@
   	import { coinsMixin } from '~/components/mixins/coins.js'
 
 	let bisectDate = d3.bisector(function(d) { return d.date; }).right
-
 
 	const tooltipWidth = 201
 	const tooltipHeight = 104
@@ -110,7 +106,7 @@
 			},
 			primaryColor: {
 				type: String,
-				default: '#fff'
+				default: '#ccc'
 			},
 			scaledRelative: {
 				type: Boolean,
@@ -132,6 +128,7 @@
 				graphHeight: 300,
 				lastPoint: {x: 0, y: 0},
 				posPoint: {x: 0, y: 0},
+				showTooltip: false,
 			}
 		},
 
@@ -155,7 +152,6 @@
 		destroyed() {
 			window.removeEventListener('resize', this.handleResize)
 		},
-
 
 		computed: {
 			viewBox() {
@@ -186,24 +182,6 @@
 				return `translate(0, ${ secondScale })`
 			},
 
-			tooltip() {
-				let pt = this.$refs.graph.createSVGPoint()
-				pt.x = this.posPoint.x
-				pt.y = this.posPoint.y
-				const svgPoint = pt.matrixTransform(this.$refs.graph.getCTM())
-
-				let yAverage = svgPoint.y + tooltipHeight > this.graphHeight ? svgPoint.y - tooltipHeight : svgPoint.y
-
-				return { 
-					'x': svgPoint.x - tooltipWidth - 4,
-					'y': yAverage,
-					'width': tooltipWidth,
-					'height': tooltipHeight,
-					'fill': '#f2f2f2',
-				}
-
-			},
-
 		},
 
 		methods: {
@@ -212,7 +190,6 @@
 			},
 
 			init() {
-
 				this.initPoints()
 				this.initLines()
 
@@ -310,9 +287,7 @@
 				}
 			},
 			initLines() {
-
 				let scales = this.getScales()
-
 				const pathFirst = d3.line()
 										.curve(d3.curveStepAfter)
 										.x(d => scales.date(d.date))
@@ -352,7 +327,6 @@
 					}
 				}
 			},
-
 			mouseover({ offsetX, offsetY }) {
 
 				const scales = this.getScales()
@@ -365,13 +339,21 @@
 				let pt = svg.createSVGPoint()
 				pt.x = offsetX
 				pt.y = offsetY
-				const svgPoint = pt.matrixTransform(svg.getScreenCTM().inverse())
+				const svgPoint = pt.matrixTransform(svg.getCTM().inverse())
 
 				let markerSecondPosition = this.findYatX(svgPoint.x, this.$refs.linePrice) // svg reper
-				let markerFirstPosition 	= this.findYatX(svgPoint.x, this.$refs.linePart) // svg reper
+				let markerFirstPosition = this.findYatX(svgPoint.x, this.$refs.linePart) // svg reper
 
-				this.markerSecondPosition = this.convertCoords(markerSecondPosition.x, markerSecondPosition.y, this.$refs.linePrice.getScreenCTM())
-				this.markerFirstPosition 	= this.convertCoords(markerFirstPosition.x, markerFirstPosition.y, this.$refs.linePart.getScreenCTM())
+				this.markerSecondPosition = this.convertCoords(
+						markerSecondPosition.x, 
+						markerSecondPosition.y, 
+						this.$refs.linePrice.getScreenCTM()
+					)
+				this.markerFirstPosition = this.convertCoords(
+						markerFirstPosition.x, 
+						markerFirstPosition.y, 
+						this.$refs.linePart.getScreenCTM()
+					)
 
 				if (this.points && this.points.length > 0) {
 
@@ -392,12 +374,50 @@
 						offsetX: this.markerFirstPosition.x,
 						offsetY: (this.markerFirstPosition.y + this.markerSecondPosition.y) / 2,
 					}
-
+					this.showTooltip = true
 					this.$emit('testtest', this.verticalLinePosition )
 				}
 			},
 			mouseleave() {
+				this.showTooltip = false
 				this.$emit( 'hide-tooltip' )
+			},
+
+			tooltipPosition() {
+				let height = this.$refs.graphWrap.getBoundingClientRect().height
+				let offsetY = height - this.verticalLinePosition.offsetY - tooltipHeight + 40
+
+				return {
+					x: this.verticalLinePosition.offsetX - tooltipWidth > 0 ?  - tooltipWidth - 20 : 20,
+					y: offsetY > 0 ?  -60 : -60 + offsetY,
+				}
+			},
+
+			tooltip() {
+
+				if( !this.$refs.graph ) {
+					return {
+						'width': tooltipWidth,
+						'height': tooltipHeight,
+						'fill': '#f2f2f2',
+					}
+				}
+				let pt = this.$refs.graph.createSVGPoint()
+				pt.x = this.posPoint.x
+				pt.y = this.posPoint.y
+				const svgPoint = pt.matrixTransform(this.$refs.graph.getCTM())
+
+				let yAverage = svgPoint.y + tooltipHeight > this.graphHeight ? svgPoint.y - tooltipHeight : svgPoint.y
+
+
+				return { 
+					'x': this.verticalLinePosition.offsetX ? this.verticalLinePosition.offsetX + this.tooltipPosition().x : 0,
+					'y': 80,
+					'width': tooltipWidth,
+					'height': tooltipHeight,
+					'fill': '#f2f2f2',
+				}
+
 			},
 
 			bindFirstLine() {

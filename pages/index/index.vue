@@ -10,10 +10,10 @@
 
         <div class="coin_btns">
           <button class="subscribe" v-on:click="subscribe()">
-            <div v-if="inSubscribed()" ><span class="subscribe_icon">&minus;</span>Не отслеживать</div>
+            <div v-if="inSubscribed()"><span class="subscribe_icon">&minus;</span>Не отслеживать</div>
             <div v-else><span class="subscribe_icon">&plus;</span> Отслеживать {{ attributes.symbol }}</div>
           </button>
-          <nuxt-link v-if="isActiveCoin(attributes.symbol)" class="btn-by-coin" :to="coinBuyUrl( attributes.symbol )">
+          <nuxt-link v-if="isActiveCoin(attributes.symbol)" class="button_buy_coin" :to="coinBuyUrl( attributes.symbol )">
             Купить {{attributes.symbol}}
           </nuxt-link>
         </div>
@@ -73,14 +73,19 @@
             </div>
         </div>
 
-        <div class="border_top margin24 content_padding">
-          <h2 class="margin12">Доля Bitcoin в портфелях трейдеров</h2>
+        <div class="tt_graph_wrap">
+          <div class="tt_graph_head content_padding">
+            <h2>Доля Bitcoin в портфелях трейдеров</h2>
+            <a href="https://tt.ff.ru" target="_blank" class="button_tt_link">Перейти на tt</a>
+          </div>
+          <ttGraph
+              class="border_top tt_graph"
+              :first="{color: '#8FCC14', gradient: 'GradientFirst', opacity: 1 }" 
+              :second="{color: '#000', gradient: 'GradientSecond', opacity: 0.2 }"
+              :interactive="true"
+              :mainCoin="true"
+          />
         </div>
-        <ttGraph
-            :first="{color: '#8FCC14', gradient: 'GradientFirst', opacity: 1 }" 
-            :second="{color: '#000', gradient: 'GradientSecond', opacity: 0.2 }"
-            :interactive="true" 
-        />
 
         <div class="border_top content_padding">
           <h2 class="margin12">Биткойн калькулятор</h2>
@@ -136,7 +141,6 @@
             <p class="wiki_description">Биткоин - первая криптовалюта, ставшая всемирно-известной в 2017 году. Основная суть биткоина состоит в децентрализации</p>
           </nuxt-link>
         </div>
-
 
         <div class="index_text_wrap">
           <section 
@@ -204,8 +208,7 @@
             </div>
         </div>
 
-
-        <h2 class="margin12 content_padding">Курс BTC/USDT на биржах</h2>
+        <h2 class="border_top padding12 content_padding">Курс BTC/USDT на биржах</h2>
 
         <div class="margin6 pairs_row content_padding">
           <div class="ff_pairs_index">
@@ -325,6 +328,7 @@
 
     data() {
       return {
+        showTooltip: false,
         activeIndexTab: 'index_main',
         seoTextCollapsed: true,
       }
@@ -332,31 +336,7 @@
 
     async asyncData ({ app, params, error, isDev }) {
 
-      let coin = null
       let symbol = 'BTC'
-
-      try {
-        let data = await app.$axios.get( requestCoin(symbol, {}) )
-        coin = dataFormatter.deserialize( data.data )
-
-        if( coin == undefined ) {
-          coin = {
-                coin_name: '',
-                symbol: symbol,
-                coin_price: null,
-                price_percent_change: null,
-                part: null,
-                amount_total: null,
-                amount_total_usdt: null,
-                part_change: null,
-              }
-        }
-      } catch (e) {
-        if( isDev ) {
-          console.error(e)
-        }
-      }
-
       let details 
       let pairs
       let otherCoins

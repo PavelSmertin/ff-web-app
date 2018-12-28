@@ -96,7 +96,7 @@
       <div v-if="isActiveCoin(coin.symbol)" v-for="coin of post.coins" v-bind:key="coin.id" class="buy_coin_item">
         <div class="cost">Стоимость {{ getCase(coin, 2) }} на сегодня<br/><b>${{ coin.price_usd }}</b></div>
         <div class="btn">
-          <nuxt-link :to='coinBuyUrl( coin.symbol )' class="btn-by-coin">Купить {{ coin.symbol }}</nuxt-link>
+          <nuxt-link :to='coinBuyUrl( coin.symbol )' class="button_buy_coin">Купить {{ coin.symbol }}</nuxt-link>
         </div>
       </div>
     </div>
