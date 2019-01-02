@@ -88,12 +88,21 @@
     </div>
 
 
-    <div class="tt_graph_wrap">
-      <div class="tt_graph_head content_padding">
+    <div class="tt_graph_wrap" v-bind:class="tradingViewClass">
+      <div class="tt_graph_head content_padding" v-if="$store.state.graphs[symbol] !== undefined">
          <h2>Доля {{ symbol }} в портфелях трейдеров</h2>
         <a href="https://tt.ff.ru" target="_blank" class="button_tt_link">Перейти на tt</a>
       </div>
+
+
+      <no-ssr v-if="$store.state.graphs[symbol] == undefined" placeholder="Loading...">
+        <chart-trading-view 
+          :symbol="ticker"
+        />
+      </no-ssr>
+
       <ttGraph
+        v-else
         class="border_top tt_graph"
         :symbol="symbol"
         :first="{color: '#8FCC14', gradient: 'GradientFirst', opacity: 1 }" 
@@ -209,6 +218,11 @@
           'active_star': this.inFavourites()
         }
       },
+      tradingViewClass: function () {
+        return {
+          'trading_view_adapt': this.$store.state.graphs[this.symbol] == undefined
+        }
+      }
     },
 
     methods: {

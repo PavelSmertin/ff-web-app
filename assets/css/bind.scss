@@ -2283,7 +2283,7 @@ h3 {
 				white-space: nowrap;
 				.button_icon {
 					width:20px;
-					height: 23px;
+					height: 27px;
 					vertical-align: top;
 				}
 				h1 {
@@ -2635,6 +2635,10 @@ h3 {
 			width: 100%;
 			height: 300px;
 			display: block;
+		}
+		&.trading_view_adapt {
+			width: 83%;
+			margin: 24px auto;
 		}
 	}
 
