@@ -37,7 +37,7 @@
             {{attributes.percent_change24h}}%
           </span>
         </div>
-        <div>
+        <div class="coin_info_wrap">
           <span class="coin-info">{{ formatPrice(attributes.price_rub) }} RUB</span>&nbsp;
         </div>
       </div>

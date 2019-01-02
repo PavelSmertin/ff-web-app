@@ -36,7 +36,7 @@
             {{ attributes.percent_change24h }}%
           </span>
         </div>
-        <div>
+        <div class="coin_info_wrap">
           <span class="coin-info">{{ attributes.price_btc }} BTC</span>&nbsp;
         </div>
       </div>
