@@ -48,8 +48,6 @@ const createStore = () => {
 				state.showTutorial = false
 			},
 
-			
-
 			SET_COINS: function (state, data) {
 
 				data.data.forEach( coin => coin.attributes.start = { 

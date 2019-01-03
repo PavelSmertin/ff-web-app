@@ -208,13 +208,12 @@
         store.commit('SET_FILTER_SYMBOL', 'BTC')
       }
 
-      let requests =  [
+      let requests = [
         app.$axios.get( apiNewsPrepare(store.state.filters) ),
         app.$axios.get( api_coins ),
       ]
 
       let [ news, coins ] = await Promise.all(requests)
-
 
       let newsObj = dataFormatter.deserialize( news.data )
 
@@ -280,7 +279,7 @@
       this.$refs["scroll_news"].addEventListener('scroll', this.handleScroll, false);
 
       setInterval(function(obj){
-          obj.checkNewNews()
+          obj.retriveLatestNews()
       }, 120000, this)
 
       this.tutorial()
@@ -336,42 +335,34 @@
             this.meta = data.meta
             let newsObj = dataFormatter.deserialize( data )
 
-            this.list = this.list.concat( newsObj )
+            // Добавляем подгруженные новости в клиентский список с проверкой на дубли
+            this.list = this.list.concat( 
+              newsObj
+                .filter( item => this.list.find( el => el.id == item.id ) === undefined ) // client подгруженные новости
+                .filter( item => this.$store.state.news.find( el => el.id == item.id ) === undefined ) // ssr новости
+            )
             $state.loaded()
           } else {
             $state.complete()
           }
         })
       },
-      checkNewNews() {
-        this.$axios.get(apiNewsPrepare(this.$store.state.filters), {
+      retriveLatestNews() {
+        this.$axios.get(apiNewsPrepare( this.$store.state.filters ), {
           params: {
             page: 1,
           },
         }).then(({ data }) => {
-
           let newsObj = dataFormatter.deserialize( data )
-          let newNews = [];
-          let newNewsId = [];
-          let stop = false;
 
-          newsObj.forEach(function(news, index){
-            if (news.id == this.firstNews.id) {
-              this.stop = true
-            }
-            if (!this.stop) {
-              this.newNews.push(news)
-              this.newNewsId.push(news.id)
-            }
-          }, {
-            firstNews: this.$store.state.news[0],
-            newNews: newNews,
-            newNewsId: newNewsId,
-            stop: stop,
-          })
-          this.$store.state.news = newNews.concat(this.$store.state.news)
-          this.$store.state.topNews = newNewsId.concat(this.$store.state.topNews).slice(0,2)
-          this.$store.commit( 'SET_TOP_NEWS', this.$store.state.topNews )
+          // фильтруем дубли в подгруженных
+          let latest = newsObj
+              .filter( item => this.list.find( el => el.id == item.id ) === undefined ) // client подгруженные новости
+              .filter( item => this.$store.state.news.find( el => el.id == item.id ) === undefined ) // ssr новости
+
+          // Добавляем подгруженные новости в ssr список
+          this.$store.commit( 'SET_NEWS', latest.concat(this.$store.state.news) )
+          this.$store.commit( 'SET_TOP_NEWS', this.$store.state.news.slice(0, 2).map( item => item.id ) )
         })
       },
       filterByType(value) {
@@ -571,7 +562,6 @@
         this.$store.commit( 'SET_CURRENT_SOCKET_COINS', newValue.slice() )
         this.$socket.emit( 'SubAdd', { subs: add.map( coin => `5~CCCAGG~${coin}~USDT` ) })
         this.$socket.emit( 'SubRemove', { subs: remove.map( coin => `5~CCCAGG~${coin}~USDT` ) })
-
       }, 1000 )
     },
 
