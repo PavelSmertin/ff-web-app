@@ -151,7 +151,7 @@ h3 {
 }
 @media (max-width: 769px) {
 	.ff_text_block {
-		margin: 0;
+		margin: 32px 0 0;
 		width: unset;
 	}
 }
@@ -2611,6 +2611,7 @@ h3 {
 			top: 24px;
 			position: absolute;
 			width: 100%;
+			align-items: baseline;
 			.button_tt_link {
 				@extend .button_class;
 				border: none;

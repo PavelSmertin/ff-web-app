@@ -76,7 +76,7 @@
         <div class="tt_graph_wrap">
           <div class="tt_graph_head content_padding">
             <h2>Доля Bitcoin в портфелях трейдеров</h2>
-            <a href="https://tt.ff.ru" target="_blank" class="button_tt_link">Перейти на tt</a>
+            <a href="https://tt.ff.ru" target="_blank" class="button_tt_link">Узнать больше</a>
           </div>
           <ttGraph
               class="border_top tt_graph"
