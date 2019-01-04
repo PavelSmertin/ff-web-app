@@ -615,9 +615,10 @@
           return this.calculatorBTC
         },
         set: function( value ) {
+          value = value.toString().replace(",", ".")
           this.calculatorBTC = value
-          this.calculatorUSD = value ? this.formatCalculator( value * this.attributes.price_usd, 2) : ''
-          this.calculatorRUB = value ? this.formatCalculator( value * this.attributes.price_rub, 2) : ''
+          this.calculatorUSD = value ? this.formatCalculator( value * this.attributes.price_usd, 2 ) : ''
+          this.calculatorRUB = value ? this.formatCalculator( value * this.attributes.price_rub, 2 ) : ''
         }
       },
 
@@ -626,6 +627,7 @@
           return this.calculatorUSD
         },
         set: function( value ) {
+          value = value.toString().replace(",", ".")
           this.calculatorBTC = value ? this.formatCalculator( value / this.attributes.price_usd, 6 ) : ''
           this.calculatorUSD = value
           this.calculatorRUB = value ? this.formatCalculator( this.attributes.price_rub * value / this.attributes.price_usd, 2 ) : ''
@@ -637,8 +639,9 @@
           return this.calculatorRUB
         },
         set: function( value ) {
+          value = value.toString().replace(",", ".")
           this.calculatorBTC = value ? this.formatCalculator( value / this.attributes.price_rub, 6 ) : ''
-          this.calculatorUSD = value ? this.formatCalculator( this.attributes.price_usd * value / this.attributes.price_rub, 2) : ''
+          this.calculatorUSD = value ? this.formatCalculator( this.attributes.price_usd * value / this.attributes.price_rub, 2 ) : ''
           this.calculatorRUB = value
         }
       },

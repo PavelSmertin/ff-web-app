@@ -64,7 +64,7 @@ module.exports = {
 
     vendor: ['intersection-observer'],
     // extractCSS: true,
-    // analyze: true,
+    //analyze: true,
     /*
     ** Run ESLint on save
     */
