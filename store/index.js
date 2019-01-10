@@ -24,6 +24,10 @@ const createStore = () => {
 				updatedAt: null
 			},
 			graphs: {},
+			graphFilters: {cap: 'all', period: '1d', profit: 'all'},
+			filterLoading: false,
+
+
 		},
 
 		mutations: {
@@ -185,6 +189,15 @@ const createStore = () => {
 				// reassign for watchers
 				state.graphs = Object.assign({}, state.graphs)
 				state.graphs[graph.symbol] = graph.data
+			},
+			SET_GRAPH_FILTER: function (state, filter) {
+				if( filter.value != state.graphFilters[filter.type] ) {
+					state.filterLoading = true
+				}
+				state.graphFilters[filter.type] = filter.value
+			},
+			TERMINATE_GRAPH_FILTER_LOADING: function (state ) {
+				state.filterLoading = false
 			},
 		},
 
