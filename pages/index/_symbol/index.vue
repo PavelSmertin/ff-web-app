@@ -87,13 +87,16 @@
       </div>
     </div>
 
+    <div class="tt_graph_wrap margin24" v-bind:class="tradingViewClass">
 
-    <div class="tt_graph_wrap" v-bind:class="tradingViewClass">
+      <div class="filters" v-if="$store.state.graphs[symbol] !== undefined">
+        <ttFilters :label="'период'" :options="intervalOptions" :selectedProp="$store.state.graphFilters.period"  v-on:updateOption="filter($event, 'period')" />
+      </div>
+
       <div class="tt_graph_head content_padding" v-if="$store.state.graphs[symbol] !== undefined">
          <h2>Доля {{ symbol }} в портфелях трейдеров</h2>
         <a href="https://tt.ff.ru" target="_blank" class="button_tt_link">Узнать больше</a>
       </div>
-
 
       <no-ssr v-if="$store.state.graphs[symbol] == undefined" placeholder="Loading...">
         <chart-trading-view 
@@ -109,6 +112,9 @@
         :second="{color: '#000', gradient: 'GradientSecond', opacity: 0.2 }"
         :interactive="true" 
       />
+
+      <div v-if="$store.state.graphs[symbol] !== undefined && $store.state.filterLoading" class="loading"></div>
+
     </div>
 
     <div class="border_top"></div>
@@ -126,6 +132,9 @@
   import { coinsMixin } from '~/components/mixins/coins.js'
   import { indacoinMixin } from '~/components/mixins/indacoin.js'
   import ttGraph from '~/components/ttGraph.vue'
+  import ttFilters from '~/components/ttFilters.vue'
+
+  import _ from 'lodash'
   import Jsona from 'jsona'
 
   const REQUEST_COIN = `/api/portfolios/free-coin/`
@@ -138,6 +147,7 @@
 
     components: {
       ttGraph,
+      ttFilters,
     },
 
     mixins: [ analMixin, indacoinMixin, coinsMixin ],
@@ -161,6 +171,17 @@
           { hid: 'og:description', property: 'og:description', content: this.headDescription },
           { hid: 'twitter:title', name: 'twitter:title', content: `Курс ${this.attributes.full_name} на сегодня -  FF.ru` },
           { hid: 'twitter:description', name: 'twitter:description', content: this.headDescription },
+        ],
+
+      }
+    },
+
+    data() {
+      return {
+        intervalOptions: [
+          { name: 'Сутки', value: '1d' },
+          { name: 'Неделя', value: '1w' },
+          { name: 'Месяц', value: '1m' },
         ],
 
       }
@@ -347,13 +368,28 @@
         var nodes = []
 
         try {
-          const data = await this.$axios.get(requestGraph( this.symbol, {} ))
+          const data = await this.$axios.get(requestGraph( this.symbol, this.$store.state.graphFilters ))
           this.$store.commit( 'SET_GRAPH', {symbol: this.symbol, data: data.data[this.symbol]} )
         } catch( e ) {
           if( process.env.NODE_ENV == 'development' ) {
             console.error(e)
           }
         }
+      },
+      
+      filter ( filter, type ) {
+        this.$store.commit( 'SET_GRAPH_FILTER', { type: type, value: filter.value } )
+      },
+
+    },
+
+    watch: {
+      '$store.state.graphFilters': {
+        handler: _.debounce( async function ( newValue ) {
+          await this.retrieveGraph()
+          this.$store.commit( 'TERMINATE_GRAPH_FILTER_LOADING' )
+        }, 100 ),
+        deep: true
       },
     },
 
