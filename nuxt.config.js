@@ -170,6 +170,7 @@ module.exports = {
         track: 'PageView',
         pixelId: '252822442112684',
     }],
+    ['@nuxtjs/pwa', { meta: false, oneSignal: false }],
   ],
 
 
@@ -224,6 +225,15 @@ module.exports = {
         }
       }
     }
+  },
+
+  workbox: {
+   // Workbox options
+  },
+
+  manifest: {
+    name: 'FF.ru',
+    lang: 'ru'
   },
 
   resolve: {
