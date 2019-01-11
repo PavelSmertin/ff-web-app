@@ -32,6 +32,7 @@ module.exports = {
       { name: 'twitter:site', content: '@www_FF_ru' },
       { name: 'twitter:creator', content: '@www_FF_ru' },
       { name: 'msvalidate.01', content: '4EA18548A13D86C097A4E205BE1CD244' },
+      { name: 'theme-color', content: '#000000' },
     ],
 
     link: [
@@ -41,6 +42,7 @@ module.exports = {
 
       { rel: 'alternate', type: 'application/rss+xml', title: "RSS", href: '/rss-export' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700&amp;amp;subset=cyrillic' },
+
     ],
 
     bodyAttrs: {
@@ -233,7 +235,7 @@ module.exports = {
 
   manifest: {
     name: 'FF.ru',
-    lang: 'ru'
+    lang: 'ru',
   },
 
   resolve: {
