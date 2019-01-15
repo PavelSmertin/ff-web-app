@@ -1,13 +1,15 @@
 <template> 
-  <main class="row ff_index no-gutters">
-    <div class="col ff_wrap">
-      <ul class="row ff_mobile_tabs" v-if="$route.name != 'index-coins'">
+  <main class="ff_index">
+    <div class="ff_wrap">
+      <ul class="ff_mobile_tabs" v-if="$route.name != 'index-coins'">
         <li class="tab_item">
           <nuxt-link :to="{name: 'index-coins'}">
             &#9776; Крипта
           </nuxt-link>
         </li>
-        <span class="caret_right"></span>
+        <li class="tab_item">
+          <span class="caret_right"></span>
+        </li>
         <li class="tab_item">
           <span class="ff_mobile_tabs_active"> 
             {{ upFilterSymbol() }}
@@ -15,10 +17,10 @@
         </li>
       </ul>
 
-      <div class="row ff_content no-gutters" id="ff_content">
+      <div class="ff_content" id="ff_content">
 
         <transition name="fade" v-on:before-enter="beforeEnter" v-on:before-leave="beforeLeave" v-on:after-leave="afterLeave">
-          <div v-if="$route.name != 'index-coins'" class="ff-left-panel" v-bind:class="colLeft">
+          <div v-if="$route.name != 'index-coins'" class="ff_left_panel" v-bind:class="colLeft">
             <div class="scroll-container" id="ff_coin_index_scroll">
               <coins-list />
             </div>
@@ -72,7 +74,7 @@
           </button>
         </div>
 
-        <aside class="ff-right-panel col-md-4" ref="right_pane" v-bind:class="colRight">
+        <aside class="ff_right_panel" ref="right_pane" v-bind:class="colRight">
 
           <div class="news_filters_block">
             <a href="#" v-on:click.stop.prevent="filterByType()" class="filters_tab" v-bind:class="activeType()">Все</a>
@@ -568,23 +570,19 @@
     computed: {
       colLeft: function () {
         return {
-          'col-md-1': this.$route.name != 'index-coins',
+          'collapse_left_panel': this.isMarketCup,
         }
       },
       colCenter: function () {
         return {
-          'col-md-8': this.isMarketCup,
-          'col-md-7': !this.isMarketCup,
+          'expand_center_panel': this.isMarketCup,
           'fade_for_redirect': this.fadeForRedirect,
-          'col-12': true,
-          'active_center': true,
         }
       },
 
       colRight: function () {
         return {
-          'col-12': this.$route.name == 'index' || this.$route.name == 'index-symbol',
-          'active_right': (this.$route.name == 'index' || this.$route.name == 'index-symbol') && !this.coinExpand
+          'active_mobile_right': (this.$route.name == 'index' || this.$route.name == 'index-symbol') && !this.coinExpand
         }
       },
 

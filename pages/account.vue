@@ -1,5 +1,5 @@
 <template>
-  <div class="row ff_account no-gutters scroll-container" ref="scroll_container_account">
+  <div class="ff_account scroll-container" ref="scroll_container_account">
     <div>
 
       <div class="form_pane">

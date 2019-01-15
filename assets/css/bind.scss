@@ -39,7 +39,31 @@ $bg-article-element: #fafafa;
 
 
 
+/************ RESET ************/
+input, textarea, select, button, meter, progress {
+	-webkit-writing-mode: horizontal-tb !important;
+}
+button, input, optgroup, select, textarea {
+	margin: 0;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+img {
+    vertical-align: middle;
+}
+fieldset {
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+*, :after, :before {
+	box-sizing: border-box;
+}
+
 /************ COMMONS ************/
+
 body {
 	font: 100% $font-stack;
 	color: $primary-color;
@@ -49,9 +73,9 @@ body {
 
 a {
 	color: $dark-primary-color;
+	text-decoration: none;
 }
 a:hover {
-	text-decoration: none;
 	color: $link-color;
 }
 h1 {
@@ -503,15 +527,20 @@ h3 {
 
 
 /************ INDEX PAGE STRUCTURE **************/
-.container-fluid {
+.ff_container_fluid {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
 	overflow-x: hidden;
 	.ff_index {
+		position: relative;
 		flex: 1 0 auto;
+		display: flex;
+		flex-wrap: wrap;
 		.ff_wrap {
+			position: relative;
 			display: flex;
+			flex-wrap: wrap;
 			flex-direction: column;
 			flex: 1 0 auto;
 			.ff_mobile_tabs {
@@ -524,20 +553,34 @@ h3 {
 			}
 			.ff_content {
 				position: relative;
+				display: flex;
+				flex-wrap: wrap;
 				flex: 1 0 auto;
-				.ff-left-panel {
+				.ff_left_panel {
 					display: flex;
 					flex-direction: column;
 					background-color: $bg-main-color;
+					flex: 0 0 8%;
+					max-width: 8%;
+					&.collapse_left_panel {
+						display: none;
+					}
 				}
-				.ff-right-panel {
+				.ff_right_panel {
 					display: flex;
 					flex-direction: column;
 					border-left: 1px solid $border-bold-color;
+					flex: 0 0 30%;
+					max-width: 30%;
 				}
 				.ff_center_panel {
 					display: flex;
 					flex-direction: column;
+					flex: 0 0 62%;
+					max-width: 62%;
+					position: relative;
+					width: 100%;
+					min-height: 1px;
 					.ff_close {
 						display: block;
 					}
@@ -556,46 +599,53 @@ h3 {
 					&.fade_for_redirect {
 						opacity: 0;
 					}
+					&.expand_center_panel {
+						flex: 0 0 70%;
+						max-width: 70%;
+					}
 				}
 			}
 		}
 	}
 }
 @media (max-width: 769px) {
-	.container-fluid {
+	.ff_container_fluid {
 		.ff_index {
 			.ff_wrap {
 				.ff_mobile_tabs{
 					display: block;
 				}
 				.ff_content {
-
 					justify-items: stretch;
     				align-items: stretch;
 
-					.ff-right-panel.active_right {
-						display: flex;
-
-						position: absolute;
-    					bottom: 0;
-    					top: 100px;
-    					background-color: $bg-main-color;
-    					border-top: 1px solid $border-bold-color;
-    					margin-top: -1px;
-					}
-					.ff-right-panel {
+					.ff_right_panel {
 						display: none;
 						border: none;
+						flex: 0 0 100%;
+    					max-width: 100%;
+    					&.active_mobile_right {
+							display: flex;
+							position: absolute;
+							bottom: 0;
+							top: 100px;
+							background-color: $bg-main-color;
+							border-top: 1px solid $border-bold-color;
+							margin-top: -1px;
+						}
 					}
-					.ff-left-panel {
+					.ff_left_panel {
 						display: none;
 					}
-					.ff-left-panel.active_left {
+					.ff_left_panel.active_left {
 						display: flex;
 					}
 					.ff_center_panel {
-						display: none;
+						display: flex;
 						border: none;
+						flex: 0 0 100%;
+    					max-width: 100%;
+
 						.ff_close_mobile {
 							display: block;
 							padding: 0;
@@ -620,9 +670,6 @@ h3 {
 							}
 						}
 					}
-					.ff_center_panel.active_center {
-						display: flex;
-					}
 				}
 
 			}
@@ -639,7 +686,7 @@ h3 {
 
 /************ INDEX BLOCKS ************/
 
-.ff-left-panel {
+.ff_left_panel {
 	&.fade-enter-active {
 		transition: all 0.1s ease;
 	}
@@ -707,7 +754,7 @@ h3 {
 	}
 }
 
-.ff-toolbar {
+.ff_toolbar {
 	background: $bg-toolbar-color;
 	padding: 0 24px 0 24px !important;
 
@@ -784,7 +831,7 @@ h3 {
 	}
 }
 @media (max-width: 769px) {
-	.ff-toolbar {
+	.ff_toolbar {
 		nav {
 			flex-grow: 2;
 			padding-right: 20px;
@@ -3135,7 +3182,7 @@ h3 {
 	@extend .ff_page;
 	padding-bottom: 50px;
 
-	.input-flex {
+	.input_flex {
 		border: 1px solid $border-color;
 		line-height: 42px;
 		display: flex;
@@ -3171,7 +3218,7 @@ h3 {
 		}
 	}
 	@media (max-width: 420px) {
-		.input-flex {
+		.input_flex {
 			position: relative;
 			margin-top: 30px;
 
@@ -3202,9 +3249,13 @@ h3 {
 			}
 		}
 	}
-	.content {
+	.indacoin_row {
 		display: flex;
 		margin-bottom: 10px;
+		img {
+			margin-right: 1rem;
+			margin-top: 0.25rem;
+		}
 
 		.error {
 			margin: 0 0 10px;

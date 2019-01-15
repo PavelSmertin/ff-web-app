@@ -87,7 +87,7 @@ module.exports = {
   // },
 
   css: [
-    '@/assets/css/bootstrap.min.css',
+    'normalize.css',
     '@/assets/css/bind.scss',
   ],
   plugins: [
@@ -163,10 +163,8 @@ module.exports = {
       // accurateTrackBounce:true,
       }
     ],
-    '@nuxtjs/feed',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
-    //['@nuxtjs/moment', { locales: ['ru'], plugin: false }],
     ['@nuxtjs/proxy', { pathRewrite: { '^/api' : '/v1', '^/images' : '/' } }],
     ['nuxt-facebook-pixel-module', {
         track: 'PageView',

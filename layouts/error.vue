@@ -1,5 +1,5 @@
 <template>
-	<div class="container-fluid p-0">
+	<div class="ff_container_fluid">
 		<div class="error">
 			<img class="love_img" src="~/assets/images/love.svg" alt="thnx">
 

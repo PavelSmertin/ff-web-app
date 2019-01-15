@@ -1,16 +1,16 @@
 <template>
   <div class="ff_buy_coin_root">
     <div class="ff_buy_coin">
-      <h1 class="margin40 mb-4">Покупайте криптовалюту моментально</h1>
-      <div class="content">
-        <p class="mr-4 mt-1"><img src="~assets/images/indacoin.png" /></p>
+      <h1 class="margin40">Покупайте криптовалюту моментально</h1>
+      <div class="indacoin_row">
+        <img src="~assets/images/indacoin.png" />
         <p>Indacoin — это простой и безопасный способ купить биткоины, а также более 100 других криптовалют при помощи Visa & Mastercard</p>
       </div>
-      <div class="content">
-        <p class="mr-3 mt-1"><img width="100" src="~assets/images/visa_mc.png" /></p>
+      <div class="indacoin_row">
+        <img width="100" height="30" src="~assets/images/visa_mc.png" />
         <p class="error">{{ error }}</p>
       </div>
-      <div class="input-flex">
+      <div class="input_flex">
         <label>Вы отдаёте</label>
         <input id="from_value" v-model.number="amountFrom" @keyup="changeAmount" type="number" />
         <select v-model="from" @change="changeCoin" id="from_coin">
@@ -19,7 +19,7 @@
           <option value="EUR">EUR</option>
         </select>
       </div>
-      <div class="input-flex">
+      <div class="input_flex">
         <label>Вы получаете</label>
         <input id="to_value" v-model.number="amountTo" type="number" readonly />
         <select v-model="to" @change="changeCoin" id="to_coin">
@@ -28,7 +28,7 @@
           </option>
         </select>
       </div>
-      <div class="input-flex">
+      <div class="input_flex">
         <input class="wallet" v-model="address" type="text" placeholder="Адрес вашего криптокошелька"/>
       </div>
       <div class="button_flex">

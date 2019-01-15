@@ -1,9 +1,7 @@
 <template>
-	<div class="container-fluid p-0">
-
-
-		<header class="row no-gutters">
-			<div class="ff-toolbar col">
+	<div class="ff_container_fluid">
+		<header>
+			<div class="ff_toolbar">
 				<nuxt-link 
 					@click.native="sendEvent( 'Toolbar', 'click', 'home' )" 
 					:to="{name: 'index'}" 
@@ -13,7 +11,6 @@
 				</nuxt-link>
 
 				<nav>
-
 					<nuxt-link 
 						@click.native="sendEvent( 'Toolbar', 'click', 'курс биткоина' )" 
 						:to="{name: 'index'}" 
@@ -49,8 +46,6 @@
 							<small>10250 подписчиков</small>
 						</span>
 					</a>
-
-
 				</nav>
 
 				<button 
