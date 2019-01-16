@@ -8,19 +8,19 @@
         </li>
       </ul>
       <div class="row_field">
-        <label class="ff-label">Email</label>
+        <label class="ff_label">Email</label>
         <input type="email" name="email" v-model="email" placeholder="Ваш e-mail">
       </div>
       <div class="row_field">
-        <label class="ff-label">Ваше имя</label>
+        <label class="ff_label">Ваше имя</label>
         <input type="email" name="user_name" v-model="name" placeholder="Ваше имя">
       </div>
       <div class="row_field">
-        <label class="ff-label">Пароль</label>
+        <label class="ff_label">Пароль</label>
         <input type="password" v-model="password" name="password">
       </div>
       <div class="row_field">
-        <label class="ff-label">Повторите пароль</label>
+        <label class="ff_label">Повторите пароль</label>
         <input type="password" v-model="repassword" name="repassword">
       </div>
 
@@ -29,7 +29,7 @@
         <div v-else class="loading-spiral"></div>
       </div>
 
-      <p class="ff-label instruction">
+      <p class="ff_label instruction">
         Если вы уже зарегистрированы в системе FF.ru, то используя свой логин и пароль пройдите <nuxt-link :to="{name: 'account-signin'}">авторизацию</nuxt-link>.
       </p>
     </fieldset>

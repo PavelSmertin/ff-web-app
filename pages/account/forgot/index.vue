@@ -8,7 +8,7 @@
         </li>
       </ul>
       <div class="row_field">
-        <label class="ff-label">Email</label>
+        <label class="ff_label">Email</label>
         <input type="email" name="email" v-model="email" placeholder="Ваш e-mail">
       </div>
 
@@ -17,7 +17,7 @@
         <div v-else class="loading-spiral"></div>
       </div>
 
-      <p class="ff-label instruction">
+      <p class="ff_label instruction">
         Если вы еще не зарегистрированы в системе FF.ru, то воспользуйтесь <nuxt-link :to="{name: 'account-signup'}">регистрацией</nuxt-link>.
       </p>
     </fieldset>

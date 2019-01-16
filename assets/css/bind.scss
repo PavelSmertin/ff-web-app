@@ -140,7 +140,7 @@ h3 {
 .content_padding {
 	padding: 0 24px;
 }
-.ff-label {
+.ff_label {
 	color: $label-color;
 	font-size: $label-size;
 	line-height: 1.5em
@@ -277,7 +277,7 @@ h3 {
 }
 
 .news_list_detail {
-	@extend .ff-label;
+	@extend .ff_label;
 	list-style: none;
 	margin: 8px 0 0 0;
 	padding: 0;
@@ -546,9 +546,8 @@ h3 {
 			.ff_mobile_tabs {
 				display:none;
 				flex-grow: 0;
-
 				.ff_mobile_tabs_active {
-					color: $link-color;
+					font-weight: bold;
 				}
 			}
 			.ff_content {
@@ -868,7 +867,6 @@ h3 {
 		margin: 0;
 		display: inline-block;
 		padding-left: 6px;
-		padding-right: 6px;
 		&:first-child {
 			padding-left: 24px;
 		}
@@ -1334,7 +1332,6 @@ h3 {
 		.news_list_detail {
 			.coin_tag {
 				@extend .coin_tag;
-				background-color: $border-bold-color;
 				margin: 0 0 0 12px;
 			}
 		}
@@ -1570,6 +1567,7 @@ h3 {
 
 		&.active_type {
 			color: $link-color;
+			text-shadow: 1px 1px 0px $label-color;
 		}
 		&:first-child {
 			border-left: none;
@@ -1618,7 +1616,7 @@ h3 {
 		line-height: 48px;
 	}
 	.nav_link {
-		@extend .ff-label;
+		@extend .ff_label;
 		color: #666;
     	font-size: 12px;
 		display: flex;
@@ -2424,13 +2422,14 @@ h3 {
 		margin-top: 24px;
 	}
 
-	.coin-value {
+	.coin_value {
 		font-size: 26px;
 		color: $dark-primary-color;
 		font-weight: 100;
-
 		transition: all 0.9s ease;
-
+		&.positive, &.negative {
+			text-shadow: 1px 1px 3px $primary-color;
+		}
 		&.up {
 			&.slide-fade-enter-active {
 				transition: all 0.1s ease;
@@ -2455,11 +2454,11 @@ h3 {
 			}
 		}
 	}
-	.coin-unit {
+	.coin_unit {
 		color: $dark-primary-color;
 		line-height:28px;
 	}
-	.coin-info {
+	.coin_info {
 		color: $dark-primary-color;
 		font-size: $coin-info-size;
 		line-height: $coin-info-size + 2px;
@@ -2478,7 +2477,7 @@ h3 {
 			flex-grow: 1;
 		}
 	}
-	.coin-detail{
+	.coin_detail{
 		color: $dark-primary-color;
 		font-weight: bold;
 		font-size: $coin-info-size;
@@ -2488,13 +2487,12 @@ h3 {
 			color: $dark-primary-color;
 		}
 	}
-	.coin-detail-info{
+	.coin_detail_info{
 		font-size: $coin-info-size;
 		line-height: $coin-info-size;
 		margin-top: 4px;
 		font-size: 12px;
 	}
-
 	.wiki_block {
 		display: flex;
 		flex-wrap: wrap;
@@ -2511,7 +2509,7 @@ h3 {
 				font-weight: bold;
 			}
 			.wiki_description {
-				@extend .ff-label;
+				@extend .ff_label;
 				margin-top: 12px;
 			}
 			&:hover {
@@ -2520,7 +2518,6 @@ h3 {
 			}
 		}
 	}
-
 	.ff_pairs_index {
 		border: 1px solid $border-bold-color;
 		width: 100%;
@@ -2555,11 +2552,10 @@ h3 {
 			background-color: $bg-coin-color;
 		}
 	}
-
 	.coin_stat {
 		width: 100%;
 		dt, dd {
-			@extend .ff-label;
+			@extend .ff_label;
 			display: inline-block;
 			width: 50%;
 			border-top: 1px solid $border-bold-color;
@@ -2574,7 +2570,6 @@ h3 {
 			font-weight: bold;
 		}
 	}
-
 	.calculator {
 		display: flex;
 		.calculator_item {
@@ -2585,6 +2580,7 @@ h3 {
 			border-bottom: 1px solid $border-bold-color;
 
 			.label {
+				display: block;
 				font-size: $label-size;
 				text-transform: uppercase;
 				font-weight: bold;
@@ -2643,11 +2639,9 @@ h3 {
 			border-right: 1px solid $border-bold-color;
 		}
 	}
-
 	.сhart_сontainer {
 		border: 1px solid $border-thin-color;
 	}
-
 	.tt_graph_wrap {
 		position: relative;
 		.tt_graph_head {
@@ -2698,12 +2692,9 @@ h3 {
 			opacity: 0.6;
 		}
 	}
-
-
 	.index_pane {
 		padding-bottom: 48px;
 	}
-
 	.filters {
 		display: flex;
 		align-items: baseline;
@@ -2746,7 +2737,6 @@ h3 {
 			}
 		}
 	}
-
 	.filters_tab {
 		background-color: $bg-coin-color;
 		&.active_index_pane {
@@ -2757,7 +2747,6 @@ h3 {
 			}
 		}
 	}
-
 	.index_text_wrap {
 		border-top: 1px solid $border-bold-color;
 		margin-top: 12px;
@@ -2812,18 +2801,18 @@ h3 {
 			.coin_detail_unit {
 				width: 50%;
 				margin: 10px 0;
-				.coin-detail {
+				.coin_detail {
 					font-size: 12px;
 				}
-				.coin-detail-info {
+				.coin_detail_info {
 					font-size: 12px;
 				}
 			}
 		}
-		.coin-value {
+		.coin_value {
 			font-size: 24px;
 		}
-		.coin-unit {
+		.coin_unit {
 			color: $dark-primary-color;
 			font-size:14px;
 		}

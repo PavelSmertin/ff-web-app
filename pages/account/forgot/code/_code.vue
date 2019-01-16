@@ -14,11 +14,11 @@
       </ul>
 
       <div class="row_field">
-        <label class="ff-label">Новый пароль</label>
+        <label class="ff_label">Новый пароль</label>
         <input type="password" v-model="password" name="password">
       </div>
       <div class="row_field">
-        <label class="ff-label">Повторите пароль</label>
+        <label class="ff_label">Повторите пароль</label>
         <input type="password" v-model="repassword" name="repassword">
       </div>
 
@@ -27,7 +27,7 @@
           <div v-else class="loading-spiral"></div>
         </div>
 
-      <p class="ff-label instruction">
+      <p class="ff_label instruction">
         Мы очень трепетно относимся к нашим пользователям, и поэтому вся ваша контактная информация строго конфиденциальна.
       </p>
 

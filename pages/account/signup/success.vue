@@ -17,7 +17,7 @@
       <button v-on:click="resend" class="row_link">Выслать код повторно</button>
     </div>
 
-    <p class="ff-label instruction">
+    <p class="ff_label instruction">
       Мы очень трепетно относимся к нашим пользователям, и поэтому вся ваша контактная информация строго конфиденциальна.
     </p>
   </div>

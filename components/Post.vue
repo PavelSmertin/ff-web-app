@@ -64,7 +64,7 @@
 
    
     <div class="news-detail">
-      <ul class="ff-label news_list_detail">
+      <ul class="ff_label news_list_detail">
         <li v-if="post.coins && post.coins.length > 0" class="post_detail_coins">
           <span v-for="coin of post.coins" v-bind:key="coin.id" class="coin_tag">
             {{ coin.symbol }}
@@ -76,7 +76,7 @@
         </li>
         <li>{{ postType() }}</li>
 
-        <li v-if="sourceDomain()" class="post_detail_source ff-label">
+        <li v-if="sourceDomain()" class="post_detail_source ff_label">
           Источник: <a :href="post.source_url" itemprop="isBasedOn" rel="nofollow noopener" target="_blank">{{ sourceDomain() }}</a>
         </li>
 
@@ -179,7 +179,7 @@
       </div>
     </div>
 
-    <a class="tt_banner_wrap" href="https://tt.ff.ru" alt="trader trends">
+    <a class="tt_banner_wrap" href="https://tt.ff.ru" rel="noopener" alt="trader trends">
       <img src="/tt_banner.png" class="tt_banner" alt="tt_banner" >
     </a>
 

@@ -16,7 +16,7 @@ module.exports = {
     title: 'Рыночная капитализация криптовалют - FF.ru',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=2.0' },
       { 
         hid: 'description', 
         name: 'description', 

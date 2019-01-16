@@ -39,7 +39,7 @@
             </svg>
           </button>
 
-          <button v-if="coinExpand" v-on:click="onClosePane()" class="ff_close_mobile" v-bind:class="coinExpandButton">
+          <button v-if="coinExpand" v-on:click="onClosePane()" class="ff_close_mobile" v-bind:class="coinExpandButton" name="ff_close_mobile">
             <svg id="ic_expand_collapse" viewBox="0 0 24 24" class="svgDemoGraphic">
               <g id="chevron" transform="translate(12,10)">
                 <g id="leftBar" transform="rotate(-45)">

@@ -73,7 +73,7 @@
     	<nuxt/>
 
 		<footer class="ff_footer" >
-			<div class="ff_copyright ff-label"><span>Copyright &copy; FF.ru</span></div>
+			<div class="ff_copyright ff_label"><span>Copyright &copy; FF.ru</span></div>
 
 			<div class="ff_license">
 				<a href="https://welcome.ff.ru/?utm_source=ff&utm_medium=btmmenu"
@@ -141,10 +141,10 @@
 			</div>
 
 			<div class="ff_social social">
-				<a @click.native="onSocialClick('vk')" rel="nofollow noopener" href="https://vk.com/cryptoff" class="social_link vk" alt="vk" target="_blank"></a>
-				<a @click.native="onSocialClick('tg')" rel="nofollow noopener" href="https://telegram.im/@FF_RUS?lang=ru" class="social_link tg" alt="tg" target="_blank"></a>
+				<a @click.native="onSocialClick('vk')" rel="nofollow noopener" href="https://vk.com/cryptoff" class="social_link vk" alt="vkontakte" target="_blank"></a>
+				<a @click.native="onSocialClick('tg')" rel="nofollow noopener" href="https://telegram.im/@FF_RUS?lang=ru" class="social_link tg" alt="telegram" target="_blank"></a>
 				<a @click.native="onSocialClick('twitter')" rel="nofollow noopener" href="https://twitter.com/www_FF_ru" class="social_link tr" alt="twitter" target="_blank"></a>
-				<a @click.native="onSocialClick('fb')" rel="nofollow noopener" href="https://fb.com/crypto.ff.ru/" class="social_link fb" alt="fb" target="_blank"></a>
+				<a @click.native="onSocialClick('fb')" rel="nofollow noopener" href="https://fb.com/crypto.ff.ru/" class="social_link fb" alt="facebook" target="_blank"></a>
 			</div>
 		</footer>
 

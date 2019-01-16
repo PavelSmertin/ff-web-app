@@ -8,11 +8,11 @@
         </li>
       </ul>
       <div class="row_field">
-        <label class="ff-label">Email</label>
+        <label class="ff_label">Email</label>
         <input type="email" name="email" v-model="email" placeholder="Ваш e-mail">
       </div>
       <div class="row_field">
-        <label class="ff-label">Пароль</label>
+        <label class="ff_label">Пароль</label>
         <input type="password" name="password" v-model="password">
       </div>
 
@@ -22,7 +22,7 @@
         <nuxt-link :to="{name: 'account-forgot'}" class="row_link">Забыл пароль</nuxt-link>
       </div>
 
-      <p class="ff-label instruction">
+      <p class="ff_label instruction">
         Если вы еще не зарегистрированы в системе FF.ru, то воспользуйтесь <nuxt-link :to="{name: 'account-signup'}">регистрацией</nuxt-link>.
       </p>
     </fieldset>

@@ -13,7 +13,7 @@
       <nuxt-link :to="{name: 'account-signin'}" class="button_link">Войти</nuxt-link>
     </div>
 
-    <p class="ff-label instruction">
+    <p class="ff_label instruction">
       Мы очень трепетно относимся к нашим пользователям, и поэтому вся ваша контактная информация строго конфиденциальна.
     </p>
     

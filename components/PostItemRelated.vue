@@ -1,6 +1,6 @@
 <template>
   <div class='related_news'>
-    <div class='ff-label'>Статья по теме:</div>
+    <div class='ff_label'>Статья по теме:</div>
     <a @click.native="onRelatedClick( newest.id )" :href="linkToPost(newest)" class="ff_news_row">
       <post-item :post="newest" ></post-item>
     </a>
