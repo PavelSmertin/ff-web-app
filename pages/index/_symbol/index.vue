@@ -183,7 +183,6 @@
           { name: 'Неделя', value: '1w' },
           { name: 'Месяц', value: '1m' },
         ],
-
       }
     },
 
@@ -198,9 +197,11 @@
       } catch (e) {
         if( e.response && e.response.status == 404 ) {
           error ({ message: 'Такой монеты не существует', statusCode: 404 })
-          return
+        } else {
+          error ({ message: e.response.status, statusCode: 404 })
         }
-      }
+        return
+      } 
 
       if(!details.data.data || details.data.data.length == 0) {
         error ({ message: 'Такой монеты не существует', statusCode: 404 })
