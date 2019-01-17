@@ -53,29 +53,12 @@ const createStore = () => {
 			},
 
 			SET_COINS: function (state, data) {
-
 				data.data.forEach( coin => coin.attributes.start = { 
 					price_usd: coin.attributes.price_usd / (1 + coin.attributes.percent_change24h/100),
 					volume24h: coin.attributes.price_usd > 0 ? coin.attributes.volume24h_usd / coin.attributes.price_usd : coin.attributes.volume24h_usd
 				})
 
-				if( !(state.favoriteCoins && state.favoriteCoins.length > 0) ) {
-					state.coins = data.data
-					return
-				}
-				
-				let favCoins = data.data.filter( 
-						coin => state.favoriteCoins.find( 
-							favorite => favorite.id == coin.id  ) != undefined 
-						)
-
-				let otherCoins = data.data.filter( 
-						coin => state.favoriteCoins.find( 
-							favorite => favorite.id == coin.id  ) == undefined 
-						)
-				
-				state.coins = favCoins.concat(otherCoins)
-
+				state.coins = data.data
 				state.coinsMeta = data.meta
 			},
 
@@ -129,26 +112,6 @@ const createStore = () => {
 						state.pageSocketCoin.change7d_usd = up.price - state.pageSocketCoin.start.change7d_usd
 					}
 				}
-			},
-			SET_FAVORITE_COINS: function (state, favoriteCoins) { 
-				
-				state.favoriteCoins = favoriteCoins
-
-				if( favoriteCoins == undefined || favoriteCoins.length == 0)  {
-					return
-				}
-
-				let favCoins = state.coins.filter( 
-						coin => state.favoriteCoins.find( 
-							favorite => favorite.id == coin.id  ) != undefined 
-						)
-
-				let otherCoins = state.coins.filter( 
-						coin => state.favoriteCoins.find( 
-							favorite => favorite.id == coin.id  ) == undefined 
-						)
-				
-				state.coins = favCoins.concat(otherCoins)
 			},
 			SET_SUBSCRIBED_COINS: function (state, subscribedCoins) {
 				state.subscribedCoins = subscribedCoins

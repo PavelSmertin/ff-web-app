@@ -78,18 +78,21 @@ a {
 a:hover {
 	color: $link-color;
 }
+h1, h2, h3, h4, h5, h6 {
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: $dark-primary-color;
+}
 h1 {
 	font-size: 32px;
-	color: $dark-primary-color;
 }
 h2 {
 	font-size: 24px;
-	color: $dark-primary-color;
 }
 h3 {
 	font-size: 18px;
 	line-height: 20px;
-	color: $dark-primary-color;
 }
 
 @media (max-width: 769px) { 
@@ -1822,17 +1825,10 @@ h3 {
 			}
 		}
 
-		.tools_left {
-			width: 0;
-			display: flex;
-			flex-grow: 1;
-		}
-
 		.tools_right {
 			width: 0;
 			display: flex;
 			flex-grow: 1;
-			margin-left: 12px;
 		}
 
 		.post_author {
@@ -2211,13 +2207,8 @@ h3 {
 			.tools_left {
 				flex-grow: 1;
 			}
-			.tools_left {
-				width: 100%;
-			}
 			.tools_right {
-				margin-top: 24px;
 				width: 100%;
-				margin-left: 0;
 			}
 			.social {
 				text-align: center;
@@ -2322,31 +2313,12 @@ h3 {
 		display: flex;
 		.coin_title {
 			width: 50%;
-			.coin_favourite_hover {
-				cursor: pointer;
+			h1 {
+				display: inline;
+				line-height: 25px;
+				text-overflow: clip;
 				text-overflow: clip;
 				white-space: nowrap;
-				.button_icon {
-					width:20px;
-					height: 27px;
-					vertical-align: top;
-				}
-				h1 {
-					display: inline;
-					line-height: 25px;
-					margin-left: 12px;
-					text-overflow: clip;
-				}
-				&:hover {
-					.button_icon {
-						&.ic_star {
-							background-image: url('~assets/images/ic_star_border_hover.svg');
-							&.active_star {
-								background-image: url('~assets/images/ic_star_hover.svg');
-							}
-						}
-					}
-				}
 			}
 			.coin_btns {
 				display: flex;
@@ -2361,14 +2333,6 @@ h3 {
 					border: none;
 					background-color: $label-color;
 					color: $bg-main-color;
-					.subscribe_icon {
-						font-size: 24px;
-						text-align: center;
-						margin: 0 6px 0 0;
-						position: relative;
-						top: 2px;
-						font-weight: 100;
-					}
 					&:hover {
 						border: none;
 						background-color: lighten($label-color, 3%);

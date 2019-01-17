@@ -152,7 +152,6 @@
 
   const api_news = `/api/news?include=coins&fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images,is_top`
   const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
-  const api_coins_favorites =  `api/user/myself?include=favoritecoins,subscribedcoins`
 
   export default {
 
@@ -227,16 +226,6 @@
       }
       store.commit( 'SET_COINS', coins.data )
 
-      try {
-        if( app.$auth.loggedIn ) {
-          let favoriteCoins = await app.$axios.get(api_coins_favorites)
-          let responseObj = dataFormatter.deserialize( favoriteCoins.data )
-          store.commit('SET_FAVORITE_COINS', responseObj.favoritecoins)
-          store.commit('SET_SUBSCRIBED_COINS', responseObj.subscribedcoins)
-        }
-      } catch (e) {
-        console.log(e.message)
-      }
     },
 
     components: {

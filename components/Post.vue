@@ -153,11 +153,6 @@
 
 
     <div v-if="postCoin()" class="tools">
-      <div class="tools_left">
-        <button class="watch" v-on:click="watch()">
-          <span class="button_icon ic_star" v-bind:class="activeFavourite"></span><span class="button_body">Отслеживать {{ postCoin() }}</span>
-        </button>
-      </div>
       <div class="tools_right">
         <button class="subscribe" v-on:click="subscribe()">
           <span v-if="inSubscribed()" >Отписаться от {{ postCoin() }}</span>
@@ -270,11 +265,6 @@
     },
 
     computed: {
-      activeFavourite: function () {
-        return {
-          'active_star': this.inFavourites()
-        }
-      },
       stripSocialDesription: function() {
         var str = this.post.body
         if ((str === null) || (str === ''))
@@ -409,20 +399,6 @@
         return false
       },
 
-      watch() {
-        this.sendEvent( 'PostCoinWatch', 'watch', this.postCoin() );
-
-        this.$axios.post(`/api/coin/favorite?include=favoritecoins`, `symbol=${ this.postCoin() }`)
-          .then(({ data }) => {
-            let response = dataFormatter.deserialize( data )
-            this.$store.commit('SET_FAVORITE_COINS', response.favoritecoins)
-          }).catch(e => {
-            if (e.response && e.response.status == 401) {
-              this.$router.push({ name: `account-signin` })
-            }
-          })
-      },
-
       subscribe() {
         this.sendEvent( 'PostCoinSubscribe', 'subscribe', this.postCoin() );
 
@@ -484,10 +460,6 @@
           return this.post.coins[0].symbol
         } 
         return null
-      },
-
-      inFavourites() {
-        return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( coin =>  coin.symbol == this.postCoin() )
       },
 
       inSubscribed() {

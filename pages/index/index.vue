@@ -3,15 +3,12 @@
       
     <div class="coin_head_block">
       <div class="coin_title">
-        <div class="coin_favourite_hover" v-on:click="watch()">
-          <span class="button_icon ic_star" v-bind:class="activeFavourite"></span>
-          <h1>Курс {{ getBTCCase() }}</h1>
-        </div>
+        <h1>Курс {{ getBTCCase() }}</h1>
 
         <div class="coin_btns">
           <button class="subscribe" v-on:click="subscribe()">
-            <div v-if="inSubscribed()"><span class="subscribe_icon">&minus;</span>Не отслеживать</div>
-            <div v-else><span class="subscribe_icon">&plus;</span> Отслеживать {{ attributes.symbol }}</div>
+            <div v-if="inSubscribed()">Отписаться</div>
+            <div v-else>Подписаться</div>
           </button>
           <nuxt-link v-if="isActiveCoin(attributes.symbol)" class="button_buy_coin" :to="coinBuyUrl( attributes.symbol )">
             Купить {{attributes.symbol}}
@@ -458,21 +455,6 @@
       onWikiClick: function ( wikiPage ) {
         this.sendEvent( 'BTCWiki', 'click', wikiPage );
       },
-      watch() {
-        this.sendEvent( 'CoinWatch', 'watch', 'BTC' );
-        this.$axios.post(`/api/coin/favorite?include=favoritecoins`, `symbol=BTC`)
-          .then(({ data }) => {
-            let response = dataFormatter.deserialize( data )
-            this.$store.commit('SET_FAVORITE_COINS', response.favoritecoins)
-          }).catch(e => {
-            if (e.response && e.response.status == 401) {
-              this.$router.push({ name: `account-signin` })
-            }
-          })
-      },
-      inFavourites() {
-        return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( coin =>  coin.symbol == 'BTC' )
-      },
       subscribe() {
         this.sendEvent( 'CoinSubscribe', 'subscribe', this.symbol );
         this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=BTC`)
@@ -667,11 +649,6 @@
           this.calculatorBTC = value ? this.formatCalculator( value / this.attributes.price_rub, 6 ) : ''
           this.calculatorUSD = value ? this.formatCalculator( this.attributes.price_usd * value / this.attributes.price_rub, 2 ) : ''
           this.calculatorRUB = value
-        }
-      },
-      activeFavourite: function () {
-        return {
-          'active_star': this.inFavourites()
         }
       },
       indexSeoText: function () {

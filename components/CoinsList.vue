@@ -49,7 +49,6 @@
         v-observe-visibility="( isVisible, entry ) => visibilityChanged( isVisible, entry, coin )">
         <div class="coin_details_item i_symbol" >
           {{ coin.attributes.symbol }} 
-          <span class="button_icon ic_star" v-bind:class="activeFavourite( coin.attributes.symbol )"></span>
         </div>
         <transition name="slide-fade" mode="out-in">
           <div 
@@ -119,17 +118,11 @@
           this.tooltip = name
         }
       },
+      
       mouseLeave() {
         this.showTooltip = false
       },
-      activeFavourite: function ( coin ) {
-        return {
-          'active_star': this.inFavourites( coin )
-        }
-      },
-      inFavourites( coin ) {
-        return this.$store.state.favoriteCoins && this.$store.state.favoriteCoins.find( favorite =>  favorite.symbol == coin )
-      },
+
       onCoinClick: function ( symbol ) {
         this.sendEvent( 'CoinsPanel', 'click', symbol );
       },
