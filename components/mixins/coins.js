@@ -35,6 +35,7 @@ export const coinsMixin = {
     downSymbol(value) {
       return value.toLowerCase()
     },
+    
     coinPath(coin) {
       if (coin.attributes.symbol == 'BTC') {
         return {name: 'index'}

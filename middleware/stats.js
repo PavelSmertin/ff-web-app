@@ -1,4 +1,4 @@
-export default async function ({ app, store, redirect }) {
+export default async function ({ app, store }) {
   
   if( store.state.indacoin.updatedAt ) {
     return

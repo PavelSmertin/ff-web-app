@@ -27,7 +27,8 @@ const createStore = () => {
 			graphFilters: {cap: 'all', period: '1d', profit: 'all'},
 			filterLoading: false,
 
-
+			indexDetails: {},
+			indexPopular: {},
 		},
 
 		mutations: {
@@ -161,6 +162,13 @@ const createStore = () => {
 			},
 			TERMINATE_GRAPH_FILTER_LOADING: function (state ) {
 				state.filterLoading = false
+			},
+
+			SET_INDEX_DETAILS: function (state, details ) {
+				state.indexDetails = details
+			},
+			SET_INDEX_POPULAR: function (state, popular ) {
+				state.indexPopular = popular
 			},
 		},
 

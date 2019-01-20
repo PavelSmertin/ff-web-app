@@ -1564,8 +1564,10 @@ h3 {
 		font-size: $label-size;
 		font-weight: bold;
 
-		&:hover {
-			box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
+		&:not(.nuxt-link-exact-active) {
+			&:hover {
+				box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
+			}
 		}
 
 		&.active_type {
@@ -2703,7 +2705,7 @@ h3 {
 	}
 	.filters_tab {
 		background-color: $bg-coin-color;
-		&.active_index_pane {
+		&.nuxt-link-exact-active {
 			background-color: $bg-main-color;
 			color: darken($link-color, 7%);
 			&:hover {

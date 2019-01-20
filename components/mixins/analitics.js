@@ -5,11 +5,11 @@ export const analMixin = {
         return
       }
       ga('send', 'event', {
-		eventCategory: category,
-		eventAction: action,
-		eventLabel: value,
-		transport: 'beacon'
-	  });
+        eventCategory: category,
+        eventAction: action,
+        eventLabel: value,
+        transport: 'beacon'
+      });
     },
   }
 }

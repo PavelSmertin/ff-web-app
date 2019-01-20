@@ -1,12 +1,9 @@
 <template>
   <div class="ff_news_cell" v-bind:class="topPost">
-    <div v-bind:style="topPostStyle" class="top_post_background" ></div>
-    <div class="post_fade_overlay" ></div>
-
-    <div class="ff_news_item_title">
-      <div class="ff_nc_title">
-          <span v-if="isTopPost()">&#128293;&nbsp;</span>{{ post.title }}
-      </div>
+    <div v-bind:style="topPostStyle" class="top_post_background"></div>
+    <div class="post_fade_overlay"></div>
+    <div class="ff_news_item_title ff_nc_title">
+      <span v-if="isTopPost()">&#128293;&nbsp;</span>{{ post.title }}
     </div>
     <div class="ff_news_item_details no-gutters">
       <ul class="news_list_detail">
@@ -34,6 +31,7 @@
 
     props: {
       post: 0,
+      isFirst: false,
     },
 
     methods: {
@@ -64,7 +62,7 @@
 
       isTopPost() {
         if (this.$store) {
-          return this.$store.state.topNews.indexOf( this.post.id ) >= 0
+          return this.$store.state.topNews.indexOf( this.post.id ) >= 0 || this.isFirst
         }
         return false
       },

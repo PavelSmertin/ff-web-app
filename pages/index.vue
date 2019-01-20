@@ -150,8 +150,10 @@
     , 'LASTMARKET'      : 0x40000   // hex for binary 1000000000000000000, this is a special case and will only appear on CCCAGG messages
   };
 
-  const api_news = `/api/news?include=coins&fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images,is_top`
-  const api_coins = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
+  const api_news          = `/api/news?include=coins&fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images,is_top`
+  const api_coins         = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
+  const api_index_details = `/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=BTC`
+  const api_index_popular = `/api/news/popular?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images,is_top`
 
   export default {
 
@@ -209,12 +211,16 @@
         store.commit('SET_FILTER_SYMBOL', 'BTC')
       }
 
+
+
       let requests = [
         app.$axios.get( apiNewsPrepare(store.state.filters) ),
         app.$axios.get( api_coins ),
+        app.$axios.get( api_index_details ),
+        app.$axios.get( api_index_popular ),
       ]
 
-      let [ news, coins ] = await Promise.all(requests)
+      let [ news, coins, indexDetails, indexPopular ] = await Promise.all( requests )
 
       let newsObj = dataFormatter.deserialize( news.data )
 
@@ -225,6 +231,13 @@
         store.commit( 'SET_TOP_NEWS', tops )
       }
       store.commit( 'SET_COINS', coins.data )
+
+      let details = dataFormatter.deserialize(indexDetails.data)
+      store.commit( 'SET_INDEX_DETAILS', details[0] )
+
+      let popular = dataFormatter.deserialize(indexPopular.data)
+      store.commit( 'SET_INDEX_POPULAR', popular )
+
 
     },
 
@@ -544,7 +557,7 @@
 
         // Удалим из сокета монеты, которые не видно, исключая монету со страницы монеты
         let remove  =  this.$store.state.currentSocketCoins.filter( 
-          coin => -1 === newValue.indexOf( coin ) &&  this.$store.state.pageSocketCoin.symbol !=  coin
+          coin => -1 === newValue.indexOf( coin ) &&  this.$store.state.pageSocketCoin.symbol != coin
         )
         let add =  newValue.filter( 
           coin => -1 === this.$store.state.currentSocketCoins.indexOf( coin ) 
