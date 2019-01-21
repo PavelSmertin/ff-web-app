@@ -38,7 +38,7 @@ export const coinsMixin = {
     
     coinPath(coin) {
       if (coin.attributes.symbol == 'BTC') {
-        return {name: 'index'}
+        return {name: 'index-index'}
       }
       return {path: `/${this.downSymbol(coin.attributes.symbol)}`}
     },

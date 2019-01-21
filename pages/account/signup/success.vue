@@ -10,7 +10,7 @@
     </p>
 
     <div class="row_field row_tools row_center">
-      <nuxt-link :to="{name: 'index'}" class="button_link">Назад на главную</nuxt-link>
+      <nuxt-link :to="{path: '/'}" class="button_link">Назад на главную</nuxt-link>
     </div>
 
     <div class="row_field row_tools row_center">

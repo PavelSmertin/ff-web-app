@@ -38,7 +38,7 @@
     },
 
     mounted () {
-      this.$router.push({ name: `index` })    
+      this.$router.push({ path: `/` })    
     },
 
   }

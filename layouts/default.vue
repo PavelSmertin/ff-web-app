@@ -4,7 +4,7 @@
 			<div class="ff_toolbar">
 				<nuxt-link 
 					@click.native="sendEvent( 'Toolbar', 'click', 'home' )" 
-					:to="{name: 'index'}" 
+					:to="{name: 'index-index'}" 
 					class="logo-link"
 					>
 					<img src="/logo.svg" alt="ff" class="normal-logo">
@@ -13,7 +13,7 @@
 				<nav>
 					<nuxt-link 
 						@click.native="sendEvent( 'Toolbar', 'click', 'курс биткоина' )" 
-						:to="{name: 'index'}" 
+						:to="{name: 'index-index'}" 
 						class="nav_link"
 						>
 						Курс биткоина

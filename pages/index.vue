@@ -188,7 +188,7 @@
         meta: {current_page: 1},
         list: [],
         selectedType: 'all',
-        back: { name: 'index' },
+        back: { name: 'index-index' },
         activeTab: null,
         isFiltering: null,
         fadeForRedirect: false,
@@ -208,7 +208,7 @@
       if( params.symbol ) {
         store.commit('SET_FILTER_SYMBOL', params.symbol)
       }
-      if( route.name == 'index' ) {
+      if( route.name == 'index-index' || route.name == 'index-index-btc-indices' ) {
         store.commit('SET_FILTER_SYMBOL', 'BTC')
       }
 
@@ -268,7 +268,7 @@
     },
 
     mounted () {
-      if( this.$route.name == "index" ) {
+      if( this.$route.name == "index-index" || route.name == 'index-index-btc-indices' ) {
         this.filterBySymbol('BTC')
       }
 
@@ -292,7 +292,7 @@
 
     methods: {
       applyBackStack(to, from) {
-        if(to.name == "index" || to.name == "index-symbol") {
+        if(to.name == "index-index" || to.name == "index-index-btc-indices" || to.name == "index-symbol") {
           this.back = { name: 'index-coins' } 
           return
         }
@@ -302,8 +302,13 @@
           return
         }
 
-        if(from.name == "index") {
-          this.back = { name: 'index' }
+        if(from.name == "index-index") {
+          this.back = { name: 'index-index' }
+          return
+        }
+
+        if(from.name == "index-index-btc-indices") {
+          this.back = { name: 'index-index-btc-indices' }
           return
         }
 
@@ -524,7 +529,7 @@
 
     watch:{
       '$route':  function () {
-        if( this.$route.name == "index" ) {
+        if( this.$route.name == "index-index" || this.$route.name == "index-index-btc-indices" ) {
           this.filterBySymbol('BTC')
         }
 
@@ -568,7 +573,11 @@
 
       colRight: function () {
         return {
-          'active_mobile_right': (this.$route.name == 'index' || this.$route.name == 'index-symbol') && !this.coinExpand
+          'active_mobile_right': (
+              this.$route.name == 'index-index' 
+              || this.$route.name == 'index-index-btc-indices' 
+              || this.$route.name == 'index-symbol')
+              && !this.coinExpand
         }
       },
 
@@ -576,7 +585,10 @@
         return {
           'expand': !this.coinExpand,
           'collapse': this.coinExpand,
-          'hidden': !(this.$route.name == 'index' || this.$route.name == 'index-symbol'),
+          'hidden': !(this.$route.name == 'index-index' 
+                        || this.$route.name == 'index-index-btc-indices'  
+                        || this.$route.name == 'index-symbol'
+                      ),
         }
       },
 
