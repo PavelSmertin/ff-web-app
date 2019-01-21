@@ -97,7 +97,6 @@ module.exports = {
     { src: '~/plugins/social.js' },
     { src: '~/plugins/vue-observe-visibility.js', ssr: false  },
     { src: '~/plugins/chart-trading-view.js', ssr: false  },
-    // { src: '~/plugins/mailsform.js', ssr: false },
   ],
 
   env: {
@@ -149,8 +148,6 @@ module.exports = {
       //   console.log(el.children);
       // })
     },
-
-    middleware: ['stats'],
   },
 
   modules: [
