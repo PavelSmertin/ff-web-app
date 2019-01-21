@@ -3,7 +3,7 @@
 
     <div class="coin_head_block">
       <div class="coin_title">
-        <h1>Курс {{ getBTCCase() }}</h1>
+        <h1>Курс {{ getCase() }}</h1>
 
         <div class="coin_btns">
           <button class="subscribe" v-on:click="subscribe()">
@@ -122,8 +122,6 @@
 
 
 <script>
-  import Vue from 'vue'
-  import axios from 'axios'
   import { analMixin } from '~/components/mixins/analitics.js'
   import { coinsMixin } from '~/components/mixins/coins.js'
   import { indacoinMixin } from '~/components/mixins/indacoin.js'
@@ -133,9 +131,7 @@
   import _ from 'lodash'
   import Jsona from 'jsona'
 
-  const REQUEST_COIN = `/api/portfolios/free-coin/`
-  const REQUEST_GRAPH = `/api/portfolios/coin-graph/` //BTC?interval=1D`
-
+  const REQUEST_GRAPH = `/api/portfolios/coin-graph/`
 
   const dataFormatter = new Jsona()
 
@@ -184,40 +180,27 @@
 
     async asyncData ({ app, params, error, isDev }) {
 
-      let coin = null
+      let attributes = {}
+      let headDescription
       let symbol = upSymbol( params.symbol )
-      let details
+      let tsym = symbol == 'USDT' ? 'USD' : 'USDT'
+      let ticker = `${symbol}/${tsym}`
 
       try {
-        details = await app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${symbol}`)
-      } catch (e) {
-        if( e.response && e.response.status == 404 ) {
-          error ({ message: 'Такой монеты не существует', statusCode: 404 })
-        } else {
-          error ({ message: e.response.status, statusCode: 404 })
+        let details = await app.$axios.get(`/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=${symbol}`)
+        if( details.data.data && details.data.data.length > 0 ) {
+          attributes = details.data.data[0].attributes
+          headDescription = getDescription(attributes)
         }
-        return
+      } catch (e) {
       } 
-
-      if(!details.data.data || details.data.data.length == 0) {
-        error ({ message: 'Такой монеты не существует', statusCode: 404 })
-        return
-      }
-
-      const { attributes }  = details.data.data[0] 
-      let headTitle         = getTitle(attributes)
-      let headDescription   = getDescription(attributes)
-
-
-      let tsym = symbol == 'USDT' ? 'USD' : 'USDT'
 
       return { 
         attributes, 
-        headTitle, 
         headDescription, 
         symbol: symbol,
-        tsym: tsym,
-        ticker:  `${symbol}/${tsym}`
+        tsym:   tsym,
+        ticker: ticker,
       }
     },
 
@@ -243,20 +226,11 @@
         var element = this.$parent.$parent.$refs["scroll-container"];
         element.scrollTo(0, 0);
       },
-
       getImageSharing() {
         return '/FF_cover968_b.png'
       },
-
-      getBTCCase() {
-        return this.symbol == 'BTC' ? getCase(this.attributes, 2) : this.attributes.coin_name
-      },
-      getCase(value) {
-        return getCase(this.attributes, 2)
-      },
-      callback() {
-        return function() {
-        }
+      getCase() {
+        return this.symbol == 'BTC' ? getCase(this.attributes) : this.attributes.coin_name
       },
       subscribe() {
         this.sendEvent( 'CoinSubscribe', 'subscribe', this.symbol );
@@ -273,7 +247,6 @@
       inSubscribed() {
         return this.$store.state.subscribedCoins && this.$store.state.subscribedCoins.find( coin =>  coin.symbol == this.symbol )
       },
-
       price() {
         let coin = this.$store.state.coins.find( coin => coin.attributes.symbol == this.symbol )
         if( coin ) {
@@ -287,7 +260,6 @@
         }
         return this.formatPrice( this.attributes.price_usd )
       },
-
       title() {
         if( process.server ) {
           return getTitle( this.attributes )
@@ -295,11 +267,9 @@
           return `${this.price()}$ ${this.dinamic()}${this.attributes.percent_change24h}% — Курс ${this.symbol} на сегодня к доллару/рублю. График курса ${this.symbol}`
         }
       },
-
       dinamic() {
         return this.attributes.percent_change24h > 0 ? '▲' : '▼'
       },
-
       watchSocketCoin() {
         if( this.$store.state.pageSocketCoin ) {
           this.$socket.emit( 'SubRemove', {subs: [`5~CCCAGG~${this.$store.state.pageSocketCoin.symbol}~${this.tsym}`]} )
@@ -307,40 +277,12 @@
         this.$store.commit( 'SET_PAGE_SOCKET_COIN', this.attributes )
         this.$socket.emit( 'SubAdd', { subs: [`5~CCCAGG~${this.symbol}~${this.tsym}`] })
       },
-
       isUp: function ( coin ) {
         return {
           'up': coin.up,
           'down': !coin.up,
         }
       },
-
-      async retrieveCoin () {
-        try {
-          const data = await this.$axios.get(requestCoin( this.symbol, {} ))
-          let coinName = this.coin.coin_name
-          let coinPrice = this.coin.coin_price
-          let coinPriceChange = this.coin.price_percent_change
-          this.coin = dataFormatter.deserialize( data.data )
-          if( this.coin == undefined ) {
-            this.coin = {
-                coin_name: coinName,
-                symbol: this.symbol, 
-                coin_price: coinPrice,
-                price_percent_change: coinPriceChange,
-                part: null, 
-                amount_total: null, 
-                amount_total_usdt: null, 
-                part_change: null,
-              }
-          }
-        } catch( e ) {
-          if( process.env.NODE_ENV == 'development'  ) {
-            console.error(e)
-          }
-        }
-      },
-
       async retrieveGraph () {
         var nodes = []
 
@@ -353,7 +295,6 @@
           }
         }
       },
-      
       filter ( filter, type ) {
         this.$store.commit( 'SET_GRAPH_FILTER', { type: type, value: filter.value } )
       },
@@ -369,16 +310,6 @@
         deep: true
       },
     },
-
-  }
-
-
-  function requestCoin( symbol, filters ) {
-    let filterQuery = 
-          ( filters.cap ? '?cap=' + filters.cap : '' ) + 
-          ( filters.period ? '&period=' + filters.period : '' ) +
-          ( filters.profit ? '&profit=' + filters.profit : '' ) 
-    return REQUEST_COIN + symbol +  filterQuery
   }
 
   function requestGraph( symbol, filters ) {
@@ -399,27 +330,23 @@
     if( params.meta_title ) {
       return params.meta_title
     }
-    return `Курс ${params.coin_name} на сегодня к доллару/рублю. График курса ${getCase(params, 2)}`
+    return `Курс ${params.coin_name} на сегодня к доллару/рублю. График курса ${getCase(params)}`
   }
 
   function getDescription (params) {
     if( params.meta_description ) {
       return params.meta_description
     }
-    return `Курс ${params.full_name} онлайн на графике к доллару. Актуальные новости и прогноз цены ${getCase(params, 2)} на сегодня, неделю, месяц`
+    return `Курс ${params.full_name} онлайн на графике к доллару. Актуальные новости и прогноз цены ${getCase(params)} на сегодня, неделю, месяц`
   }
 
-  function getCase (params, variant) {
-    if(variant == 2) {
-      if(params.cases && params.cases.ro) {
-        return params.cases.ro
-      }
+  function getCase (params) {
+    if(params.cases && params.cases.ro) {
+      return params.cases.ro
     }
-
     if(params.cases && params.cases.im) {
       return params.cases.im
     }
-
     return params.coin_name
   }
 

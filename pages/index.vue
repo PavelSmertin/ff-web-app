@@ -268,7 +268,7 @@
     },
 
     mounted () {
-      if( this.$route.name == "index-index" || route.name == 'index-index-btc-indices' ) {
+      if( this.$route.name == "index-index" || this.$route.name == 'index-index-btc-indices' ) {
         this.filterBySymbol('BTC')
       }
 

@@ -148,10 +148,6 @@
         pairs       = dataFormatter.deserialize(responsePairs.data)
         otherCoins  = responseOtherCoins.data.data
       } catch (e) {
-        if( e.response && e.response.status == 404 ) {
-          error ({ message: 'Информация отсутсвует', statusCode: 404 })
-          return
-        }
       }
 
       return {

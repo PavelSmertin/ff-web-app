@@ -3069,8 +3069,19 @@ h3 {
 .error {
 	margin: 40px auto;
 	text-align: center;
+	$error-size: 100px;
 	.class404{
-		font-size: 100px;
+		font-size: $error-size;
+		line-height: $error-size;
+		height: $error-size;
+		margin-top: 48px;
+		color: #000;
+	}
+	$error-size: 48px;
+	.class504{
+		font-size: $error-size;
+		line-height: $error-size;
+		height: $error-size;
 		margin-top: 48px;
 		color: #000;
 	}

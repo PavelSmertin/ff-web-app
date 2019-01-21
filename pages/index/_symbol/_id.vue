@@ -48,7 +48,6 @@
 
       try {
         const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins,similar,author,comments`)
-        //const commentsData  = await app.$axios.get(`/api/news/${ params.id }/comments?include=user&per-page=10`)
 
         if( redirectToSlug(data.data.attributes.slug, params.slug) ) {
           redirect(301, { path: `/${+params.id}/${data.data.attributes.slug}` })
@@ -61,15 +60,10 @@
             body:       data.data.attributes.body,
             attributes: data.data.attributes,
             news:       [ dataFormatter.deserialize( data ) ],
-            //comments:   dataFormatter.deserialize( commentsData.data ),
-            //commentsCount: commentsData.data.meta.total_count
           }
 
         }
       } catch (e) {
-        if( e.response && e.response.status == 404 ) {
-          error({ message: 'Newest not found', statusCode: 404 })
-        }
       }
     },
 

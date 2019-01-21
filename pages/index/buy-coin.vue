@@ -138,14 +138,10 @@
           return
         }
         this.$axios.get(
-          `${INDACOIN_API_PRICE}/${this.from}/${this.to}/${this.amountFrom}/${PARTNER_ID}`,
-          {'headers': false} 
-        )
-          .then(({data}) => {
+            `${INDACOIN_API_PRICE}/${this.from}/${this.to}/${this.amountFrom}/${PARTNER_ID}`,
+            {'headers': false} 
+          ).then(({data}) => {
             this.amountTo = data
-          }).catch(e => {
-            if (e.response) {
-            }
           })
       },
 
