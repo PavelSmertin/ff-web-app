@@ -154,6 +154,7 @@
   const api_coins         = `/api/coin/index?fields[portfolio-coins]=symbol,full_name,price_usd,percent_change24h,market_cap_usd,volume24h_usd,available_supply`
   const api_index_details = `/api/coin/full-list?per-page=2000&filters[portfolio-coins][symbol]=BTC`
   const api_index_popular = `/api/news/popular?fields[news-translated]=id,title,votes_positive,votes_negative,create_dt,type,slug,source_url,images,is_top`
+  const api_indacoin      = `/api/coin/indacoin-coins?per-page=500`
 
   export default {
 
@@ -211,16 +212,15 @@
         store.commit('SET_FILTER_SYMBOL', 'BTC')
       }
 
-
-
       let requests = [
         app.$axios.get( apiNewsPrepare(store.state.filters) ),
         app.$axios.get( api_coins ),
         app.$axios.get( api_index_details ),
         app.$axios.get( api_index_popular ),
+        app.$axios.get( api_indacoin ),
       ]
 
-      let [ news, coins, indexDetails, indexPopular ] = await Promise.all( requests )
+      let [ news, coins, indexDetails, indexPopular, indaCoins ] = await Promise.all( requests )
 
       let newsObj = dataFormatter.deserialize( news.data )
 
@@ -230,6 +230,7 @@
         let tops = newsObj.slice(0, 2).map( post => post.id )
         store.commit( 'SET_TOP_NEWS', tops )
       }
+
       store.commit( 'SET_COINS', coins.data )
 
       let details = dataFormatter.deserialize(indexDetails.data)
@@ -238,6 +239,7 @@
       let popular = dataFormatter.deserialize(indexPopular.data)
       store.commit( 'SET_INDEX_POPULAR', popular )
 
+      store.commit('SET_INDACOIN_COINS', indaCoins.data.data)
 
     },
 

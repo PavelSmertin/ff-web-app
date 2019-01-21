@@ -9,7 +9,7 @@
             <div v-if="inSubscribed()">Отписаться</div>
             <div v-else>Подписаться</div>
           </button>
-          <nuxt-link v-if="isActiveCoin(symbol)" class="button_buy_coin" :to="coinBuyUrl( symbol )">
+          <nuxt-link class="button_buy_coin" :to="coinBuyUrl( symbol )">
             Купить {{ symbol }}
           </nuxt-link>
         </div>
