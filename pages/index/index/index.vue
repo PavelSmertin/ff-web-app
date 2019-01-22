@@ -111,15 +111,12 @@
   import ttGraph from '~/components/ttGraph.vue'
   import ttFilters from '~/components/ttFilters.vue'
 
-  import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
   import { coinsMixin } from '~/components/mixins/coins.js'
 
   import _ from 'lodash'
 
   const REQUEST_GRAPH = `/api/portfolios/coin-graph/`
-
-  const dataFormatter = new Jsona()
 
   export default {
 

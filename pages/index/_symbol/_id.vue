@@ -7,11 +7,9 @@
 
 <script>
   import Post from '~/components/Post.vue'
-  import Jsona from 'jsona';
   import { analMixin } from '~/components/mixins/analitics.js'
 
   const api_news = '/api/news?per-page=1&include=relatednews,coins,similar,author,comments,is_top'
-  const dataFormatter = new Jsona()
 
   export default {
 
@@ -44,8 +42,6 @@
     },
 
     async asyncData({ app, req, params, error, redirect, route, store }) {
-      const dataFormatter = new Jsona();
-
       try {
         const { data } = await app.$axios.get(`/api/news/view/${+params.id}?include=relatednews,coins,similar,author,comments`)
 
@@ -59,7 +55,7 @@
             seoTitle:   getTitle(data.data.attributes),
             body:       data.data.attributes.body,
             attributes: data.data.attributes,
-            news:       [ dataFormatter.deserialize( data ) ],
+            news:       [ app.$dataFormatter.deserialize( data ) ],
           }
 
         }
@@ -195,7 +191,7 @@
         }).then(({ data }) => {
           if (this.meta.current_page < data.meta.page_count) {
             this.meta = data.meta
-            let news = dataFormatter.deserialize( data )
+            let news = this.$dataFormatter.deserialize( data )
             this.concatNews( news )
             this.isLoading = false
             this.stateChanger.loaded()

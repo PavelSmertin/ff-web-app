@@ -64,7 +64,7 @@ module.exports = {
   */
   build: {
 
-    vendor: ['intersection-observer'],
+    vendor: ['intersection-observer', 'jsona'],
     // extractCSS: true,
     //analyze: true,
     /*
@@ -98,6 +98,7 @@ module.exports = {
     { src: '~/plugins/vue-observe-visibility.js', ssr: false  },
     { src: '~/plugins/chart-trading-view.js', ssr: false  },
     '~/plugins/axios',
+    '~/plugins/data-formatter',
   ],
 
   env: {

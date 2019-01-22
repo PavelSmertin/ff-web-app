@@ -129,11 +129,8 @@
   import ttFilters from '~/components/ttFilters.vue'
 
   import _ from 'lodash'
-  import Jsona from 'jsona'
 
   const REQUEST_GRAPH = `/api/portfolios/coin-graph/`
-
-  const dataFormatter = new Jsona()
 
   export default {
 
@@ -236,7 +233,7 @@
         this.sendEvent( 'CoinSubscribe', 'subscribe', this.symbol );
         this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=${ this.symbol}`)
           .then(({ data }) => {
-            let response = dataFormatter.deserialize( data )
+            let response = this.$dataFormatter.deserialize( data )
             this.$store.commit('SET_SUBSCRIBED_COINS', response.subscribedcoins)
           }).catch(e => {
             if (e.response && e.response.status == 401) {

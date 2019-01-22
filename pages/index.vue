@@ -117,11 +117,8 @@
   import CoinsList from '~/components/CoinsList.vue'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
-  import Jsona from 'jsona'
   import { analMixin } from '~/components/mixins/analitics.js'
   import _ from 'lodash'
-
-  const dataFormatter = new Jsona()
 
   const CURRENTFIELDS = {
       'TYPE'            : 0x0       // hex for binary 0, it is a special case of fields that are always there
@@ -222,7 +219,7 @@
 
       let [ news, coins, indexDetails, indexPopular, indaCoins ] = await Promise.all( requests )
 
-      let newsObj = dataFormatter.deserialize( news.data )
+      let newsObj = app.$dataFormatter.deserialize( news.data )
 
       store.commit( 'SET_NEWS', newsObj )
 
@@ -233,10 +230,10 @@
 
       store.commit( 'SET_COINS', coins.data )
 
-      let details = dataFormatter.deserialize(indexDetails.data)
+      let details = app.$dataFormatter.deserialize(indexDetails.data)
       store.commit( 'SET_INDEX_DETAILS', details[0] )
 
-      let popular = dataFormatter.deserialize(indexPopular.data)
+      let popular = app.$dataFormatter.deserialize(indexPopular.data)
       store.commit( 'SET_INDEX_POPULAR', popular )
 
       store.commit('SET_INDACOIN_COINS', indaCoins.data.data)
@@ -326,7 +323,7 @@
         }).then(({ data }) => {
           if (this.meta.current_page < data.meta.page_count) {
             this.meta = data.meta
-            let newsObj = dataFormatter.deserialize( data )
+            let newsObj = this.$dataFormatter.deserialize( data )
 
             // Добавляем подгруженные новости в клиентский список с проверкой на дубли
             this.list = this.list.concat( 
@@ -346,7 +343,7 @@
             page: 1,
           },
         }).then(({ data }) => {
-          let newsObj = dataFormatter.deserialize( data )
+          let newsObj = this.$dataFormatter.deserialize( data )
 
           // фильтруем дубли в подгруженных
           let latest = newsObj
@@ -382,7 +379,7 @@
         let data = this.$axios.get(apiNewsPrepare(this.$store.state.filters))
           .then(({ data }) => {
 
-            let newsObj = dataFormatter.deserialize( data )
+            let newsObj = this.$dataFormatter.deserialize( data )
             this.$store.commit('SET_NEWS', newsObj)
             this.list = []
             this.meta = {current_page: 1}

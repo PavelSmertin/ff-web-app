@@ -215,11 +215,8 @@
   import PostSimilar from '~/components/PostSimilar.vue'
   import Comment from '~/components/Comment.vue'
   import Vue from 'vue'
-  import Jsona from 'jsona'
   import { analMixin } from '~/components/mixins/analitics.js'
   import { indacoinMixin } from '~/components/mixins/indacoin.js'
-
-  const dataFormatter = new Jsona()
 
   const TOOLTIP_UP_TYPE = 'tooltip_up_type'
   const TOOLTIP_DOWN_TYPE = 'tooltip_down_type'
@@ -327,7 +324,7 @@
         }
         this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=rating`)
           .then(({ data }) => {
-            this.post = dataFormatter.deserialize( data )
+            this.post = this.$dataFormatter.deserialize( data )
           }).catch(e => {
             if (e.response && e.response.status == 401) {
               this.$router.push({ name: `account-signin` })
@@ -343,7 +340,7 @@
         }
         this.$axios.post(`/api/news/${ this.post.id }/vote?include=relatednews,coins,similar,author`, `is_positive=${is_positive}&type=like`)
           .then(({ data }) => {
-            this.post = dataFormatter.deserialize( data )
+            this.post = this.$dataFormatter.deserialize( data )
           }).catch(e => {
             if (e.response && e.response.status == 401) {
               this.$router.push({ name: `account-signin` })
@@ -404,7 +401,7 @@
 
         this.$axios.post(`/api/coin/subscribe?include=subscribedcoins`, `symbol=${ this.postCoin() }`)
           .then(({ data }) => {
-            let response = dataFormatter.deserialize( data )
+            let response = this.$dataFormatter.deserialize( data )
             this.$store.commit('SET_SUBSCRIBED_COINS', response.subscribedcoins)
           }).catch(e => {
             if (e.response && e.response.status == 401) {
@@ -470,7 +467,7 @@
         this.commentsSendProcess = true
         this.$axios.post( `/api/news/${this.post.id}/add-comment?include=user`, `parent_id=0&comment=${this.commentText}`)
             .then( ({ data }) => {
-              let commentObj = dataFormatter.deserialize( data )
+              let commentObj = this.$dataFormatter.deserialize( data )
               this.newComments.push(commentObj)
               this.commentsSendProcess = false
               this.commentText = ''

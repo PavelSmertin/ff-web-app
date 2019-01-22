@@ -115,15 +115,10 @@
 
 <script>
   import CoinsListOther from '~/components/CoinsListOther.vue'
-
-  import Jsona from 'jsona';
   import { coinsMixin } from '~/components/mixins/coins.js'
-
-  const dataFormatter = new Jsona()
 
   const REQUEST_PAIRS 		= `/api/exchanges/BTC/top?include=exchange&fields[portfolio-exchange]=name&fields[portfolio-exchange]=name&per-page=10`
   const REQUEST_OTHER_COINS = `/api/coins/BTC/other?per-page=8`
-
 
   export default {
 
@@ -145,7 +140,7 @@
           app.$axios.get(REQUEST_PAIRS),
           app.$axios.get(REQUEST_OTHER_COINS),
         ])
-        pairs       = dataFormatter.deserialize(responsePairs.data)
+        pairs       = app.$dataFormatter.deserialize(responsePairs.data)
         otherCoins  = responseOtherCoins.data.data
       } catch (e) {
       }
