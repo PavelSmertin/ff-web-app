@@ -116,7 +116,7 @@
   import PostItem from '~/components/PostItem.vue'
   import CoinsList from '~/components/CoinsList.vue'
   import Vue from 'vue'
-  import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
+  import InfiniteLoading from 'vue-infinite-loading'
   import { analMixin } from '~/components/mixins/analitics.js'
   import _ from 'lodash'
 

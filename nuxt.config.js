@@ -3,11 +3,12 @@ let urls = require( './urls_default.js' )
 try { 
   urls = require( './urls.js' ) 
 }
-catch( e ) { 
+catch( e ) {
+  
 }
 
 
-module.exports = {
+export default {
 
   /*
   ** Headers of the page
@@ -62,34 +63,31 @@ module.exports = {
   /*
   ** Build configuration
   */
-  build: {
+  // build: {
 
-    vendor: ['intersection-observer', 'jsona'],
-    // extractCSS: true,
-    //analyze: true,
-    /*
-    ** Run ESLint on save
-    */
-    extend (config, { isDev, isClient }) {
-      if (isDev && isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
-    }
-  },
-
-  // render: {
-  //   gzip: true,
+  //   vendor: ['intersection-observer', 'jsona'],
+  //   // extractCSS: true,
+  //   //analyze: true,
+  //   /*
+  //   ** Run ESLint on save
+  //   */
+  //   extend (config, { isDev, isClient }) {
+  //     if (isDev && isClient) {
+  //       config.module.rules.push({
+  //         enforce: 'pre',
+  //         test: /\.(js|vue)$/,
+  //         loader: 'eslint-loader',
+  //         exclude: /(node_modules)/
+  //       })
+  //     }
+  //   }
   // },
 
   css: [
     'normalize.css',
     '@/assets/css/bind.scss',
   ],
+
   plugins: [
     // ssr: false to only include it on client-side
     { src: '~/plugins/ga.js', ssr: false },
@@ -171,7 +169,6 @@ module.exports = {
     }],
     ['@nuxtjs/pwa', { meta: false, oneSignal: false }],
   ],
-
 
   axios: {
     baseUrl: urls.host,

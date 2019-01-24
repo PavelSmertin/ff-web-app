@@ -81,7 +81,7 @@
 
 <script>
 
-  import InfiniteLoading from 'vue-infinite-loading/src/components/InfiniteLoading.vue'
+  import InfiniteLoading from 'vue-infinite-loading'
   import _ from 'lodash'
 
   import { coinsMixin } from '~/components/mixins/coins.js'
