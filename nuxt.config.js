@@ -33,6 +33,7 @@ module.exports = {
       { name: 'twitter:creator', content: '@www_FF_ru' },
       { name: 'msvalidate.01', content: '4EA18548A13D86C097A4E205BE1CD244' },
       { name: 'theme-color', content: '#000000' },
+      { name: 'p:domain_verify', content: 'e80fe22e6bd2174d64b4d81bdb4b97f3' },
     ],
 
     link: [
