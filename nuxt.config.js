@@ -167,28 +167,12 @@ export default {
         track: 'PageView',
         pixelId: '252822442112684',
     }],
-    ['@nuxtjs/pwa', { meta: false, oneSignal: false }],
+    ['@nuxtjs/pwa', { meta: false, oneSignal: false, manifest: false, icon: false }],
   ],
 
   axios: {
     baseUrl: urls.host,
     browserBaseURL: urls.host,
-    // proxy: true,
-    // proxyHeaders: true,
-    // credentials: false,
-    // debug: true,
-    // // proxyHeaders: false,
-    // headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    // // headers: {'Access-Control-Allow-Origin': '*'},
-
-    // // config.headers['Content-Type'] = 'application/json';
-
-    // requestInterceptor: (config, { store }) => {
-    //   console.log('requestInterceptor')
-    //   console.log(config)
-    //   config.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
-    //   return config
-    // },
   },
 
   proxy: {

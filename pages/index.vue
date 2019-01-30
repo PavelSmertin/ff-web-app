@@ -96,10 +96,12 @@
                 <post-item :post="item"></post-item>
               </nuxt-link>
 
-              <infinite-loading @infinite="infiniteHandler" spinner="spiral">
-                <span slot="no-more">Вы достигли конца списка</span>
-                <span slot="no-results">Вы достигли конца списка</span>
-              </infinite-loading>
+              <no-ssr>
+                <infinite-loading @infinite="infiniteHandler" spinner="spiral">
+                  <span slot="no-more">Вы достигли конца списка</span>
+                  <span slot="no-results">Вы достигли конца списка</span>
+                </infinite-loading>
+              </no-ssr>
 
             </div>
           </div>

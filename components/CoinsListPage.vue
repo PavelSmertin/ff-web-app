@@ -78,10 +78,12 @@
       </div>
     </nuxt-link>
 
-    <infinite-loading v-if="$store.state.coins.length" @infinite="infiniteHandler" spinner="spiral">
-      <span slot="no-more">Вы достигли конца списка</span>
-      <span slot="no-results">Вы достигли конца списка</span>
-    </infinite-loading>
+    <no-ssr>
+      <infinite-loading v-if="$store.state.coins.length" @infinite="infiniteHandler" spinner="spiral">
+        <span slot="no-more">Вы достигли конца списка</span>
+        <span slot="no-results">Вы достигли конца списка</span>
+      </infinite-loading>
+    </no-ssr>
 
     <div class="fading" v-bind:class="{ filtered: isFiltering }"></div>
 
