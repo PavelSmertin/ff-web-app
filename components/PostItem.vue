@@ -1,7 +1,7 @@
 <template>
   <div class="ff_news_cell" v-bind:class="topPost">
-    <div v-bind:style="topPostStyle" class="top_post_background"></div>
-    <div class="post_fade_overlay"></div>
+    <div v-if="isTopPost()" v-bind:style="topPostStyle" class="top_post_background"></div>
+    <div v-if="isTopPost()" class="post_fade_overlay"></div>
     <div class="ff_news_item_title ff_nc_title">
       <span v-if="isTopPost()">&#128293;&nbsp;</span>{{ post.title }}
     </div>
@@ -75,10 +75,8 @@
         }
       },
       topPostStyle: function () {
-        if(this.isTopPost()) {
-          return {
-            backgroundImage: 'url(' + this.getImageSharing() + ')',
-          }
+        return {
+          backgroundImage: 'url(' + this.getImageSharing() + ')',
         }
       },
 

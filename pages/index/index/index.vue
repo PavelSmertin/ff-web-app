@@ -5,7 +5,7 @@
       <h2 class="margin12">Популярное</h2>
         <div class="ff_news ff_popular">
           <nuxt-link @click.native="onPostClick(newest.id)" v-for="(newest, index) in $store.state.indexPopular" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff_news_row">
-            <post-item :post="newest" :isFirst="{ true : index === 0 }" ></post-item>
+            <post-item :post="newest" :isFirst="index === 0" ></post-item>
           </nuxt-link>
         </div>
     </div>
@@ -195,7 +195,7 @@
           }
         }
       },
-      filter ( filter, type ) {
+      filter( filter, type ) {
         this.$store.commit( 'SET_GRAPH_FILTER', { type: type, value: filter.value } )
       },
       toggleSeoText () {
