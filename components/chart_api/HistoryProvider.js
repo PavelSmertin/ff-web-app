@@ -21,13 +21,13 @@ export default {
 					// aggregate: 1//resolution 
 				}
 
-        return axios.get(`${api_root}${url}`, {params: qs})
+        return axios.get( `${api_root}${url}`, {params: qs} )
             .then(data => {
 				if (data.Response && data.Response === 'Error') {
 					return []
 				}
 
-				if (data.data.Data.length) {
+				if( data.data.Data.length ) {
 					var bars = data.data.Data.map(el => {
 						return {
 							time: el.time * 1000, //TradingView requires bar time in ms

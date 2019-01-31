@@ -84,31 +84,26 @@
       </div>
     </div>
 
-    <div class="tt_graph_wrap margin24" v-bind:class="tradingViewClass">
+    <div class="tt_graph_wrap margin24">
 
-      <div class="filters" v-if="$store.state.graphs[symbol] !== undefined">
+      <div class="filters" v-if="$store.state.graphs[symbol] !== undefined || $store.state.graphsCryptoCompare[symbol] !== undefined">
         <ttFilters :label="'период'" :options="intervalOptions" :selectedProp="$store.state.graphFilters.period"  v-on:updateOption="filter($event, 'period')" />
       </div>
 
-      <div class="tt_graph_head content_padding" v-if="$store.state.graphs[symbol] !== undefined">
+      <div class="tt_graph_head content_padding" v-if="$store.state.graphs[symbol] !== undefined || $store.state.graphsCryptoCompare[symbol] !== undefined">
          <h2>Доля {{ symbol }} в портфелях трейдеров</h2>
         <a href="https://tt.ff.ru" rel="noopener" target="_blank" class="button_tt_link">Узнать больше</a>
       </div>
 
-      <no-ssr v-if="$store.state.graphs[symbol] == undefined" placeholder="Loading...">
-        <chart-trading-view 
-          :symbol="ticker"
+      <no-ssr>
+        <ttGraph
+          class="border_top tt_graph"
+          :symbol="symbol"
+          :first="{color: '#8FCC14', gradient: 'GradientFirst', opacity: 1 }" 
+          :second="{color: '#000', gradient: 'GradientSecond', opacity: 0.2 }"
+          :interactive="true" 
         />
       </no-ssr>
-
-      <ttGraph
-        v-else
-        class="border_top tt_graph"
-        :symbol="symbol"
-        :first="{color: '#8FCC14', gradient: 'GradientFirst', opacity: 1 }" 
-        :second="{color: '#000', gradient: 'GradientSecond', opacity: 0.2 }"
-        :interactive="true" 
-      />
 
       <div v-if="$store.state.graphs[symbol] !== undefined && $store.state.filterLoading" class="loading"></div>
     </div>
@@ -131,6 +126,7 @@
   import _ from 'lodash'
 
   const REQUEST_GRAPH = `/api/portfolios/coin-graph/`
+  const REQUEST_CRYPTO_COMPARE = `https://min-api.cryptocompare.com`
 
   export default {
 
@@ -205,16 +201,9 @@
       this.goto()
       this.watchSocketCoin()
 
-      if( this.$store.state.graphs[this.symbol] == undefined ) {
+      // Если кэш пустой запросить данные с tt
+      if( this.$store.state.graphs[this.symbol] == undefined && this.$store.state.graphsCryptoCompare[this.symbol] == undefined) {
         this.retrieveGraph()
-      }
-    },
-
-    computed: {
-      tradingViewClass: function () {
-        return {
-          'trading_view_adapt': this.$store.state.graphs[this.symbol] == undefined
-        }
       }
     },
 
@@ -281,17 +270,68 @@
         }
       },
       async retrieveGraph () {
-        var nodes = []
-
         try {
           const data = await this.$axios.get(requestGraph( this.symbol, this.$store.state.graphFilters ))
-          this.$store.commit( 'SET_GRAPH', {symbol: this.symbol, data: data.data[this.symbol]} )
+          if( data.data && data.data[this.symbol]) {
+            this.$store.commit( 'SET_GRAPH', {symbol: this.symbol, data: data.data[this.symbol]} )
+          } else {
+            // запросить данные с cryptocompare
+            this.retrieveCryptoCompare()
+          }
         } catch( e ) {
           if( process.env.NODE_ENV == 'development' ) {
             console.error(e)
           }
         }
       },
+
+      async retrieveCryptoCompare() {
+        const splitSymbol = this.ticker.split('/')
+
+        let resolutionUrl = '/data/histominute'
+        let limit = 1440
+
+        if( this.$store.state.graphFilters.period === '1w' ) {
+          resolutionUrl = '/data/histohour'
+          limit = 168
+        }
+
+        if( this.$store.state.graphFilters.period === '1y' ){
+          resolutionUrl = '/data/histoday'
+          limit = 365
+        }
+
+        const qs = {
+            e: 'CCCAGG',
+            fsym: splitSymbol[0],
+            tsym: splitSymbol[1],
+            limit: limit,
+            // aggregate: 1//resolution 
+          }
+
+        try {
+          const data = await this.$axios.get(`${REQUEST_CRYPTO_COMPARE}${resolutionUrl}`, {params: qs})
+          if( data.Response && data.Response === 'Error' ) {
+            return
+          }
+          if( data.data.Data.length ) {
+            let lineData = data.data.Data.map( el => {
+              return {
+                created_at: el.time * 1000,
+                price_usdt: el.close,
+                part:       0,
+              }
+            })
+            this.$store.commit( 'SET_GRAPH_CRYPTOCOMPARE', {symbol: this.symbol, data: lineData} )
+          }
+        } catch( e ) {
+          if( process.env.NODE_ENV == 'development' ) {
+            console.error(e)
+          }
+        }
+       
+      },
+
       filter ( filter, type ) {
         this.$store.commit( 'SET_GRAPH_FILTER', { type: type, value: filter.value } )
       },
@@ -301,7 +341,11 @@
     watch: {
       '$store.state.graphFilters': {
         handler: _.debounce( async function ( newValue ) {
-          await this.retrieveGraph()
+          if( this.$store.state.graphs[this.symbol] == undefined && this.$store.state.graphsCryptoCompare[this.symbol] != undefined) {
+            await this.retrieveCryptoCompare()
+          } else {
+            await this.retrieveGraph()
+          }
           this.$store.commit( 'TERMINATE_GRAPH_FILTER_LOADING' )
         }, 100 ),
         deep: true

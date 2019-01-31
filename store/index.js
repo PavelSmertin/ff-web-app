@@ -24,6 +24,7 @@ const createStore = () => {
 				updatedAt: null
 			},
 			graphs: {},
+			graphsCryptoCompare: {},
 			graphFilters: {cap: 'all', period: '1d', profit: 'all'},
 			filterLoading: false,
 
@@ -147,12 +148,27 @@ const createStore = () => {
 			},
 
 			SET_GRAPH: function (state, graph) {
+				if( graph == undefined ) {
+					return
+				}
 				if( Object.keys(state.graphs).length <= 0 ) {
 					state.graphs = {}
 				}
 				// reassign for watchers
 				state.graphs = Object.assign({}, state.graphs)
 				state.graphs[graph.symbol] = graph.data
+			},
+
+			SET_GRAPH_CRYPTOCOMPARE: function (state, graph) {
+				if( graph == undefined ) {
+					return
+				}
+				if( Object.keys(state.graphsCryptoCompare).length <= 0 ) {
+					state.graphsCryptoCompare = {}
+				}
+				// reassign for watchers
+				state.graphsCryptoCompare = Object.assign({}, state.graphsCryptoCompare)
+				state.graphsCryptoCompare[graph.symbol] = graph.data
 			},
 			SET_GRAPH_FILTER: function (state, filter) {
 				if( filter.value != state.graphFilters[filter.type] ) {

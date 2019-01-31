@@ -26,7 +26,7 @@
 			<g v-if="interactive">
 				<line v-bind="bindVerticalLine()" class="selector" vector-effect="non-scaling-stroke" />
 				<circle v-bind="bindMarkerSecond()" class="selector_point" />
-				<circle v-bind="bindMarkerFirst()" class="selector_point" />
+				<circle v-if="this.$store.state.graphsCryptoCompare[this.symbol] == undefined"  v-bind="bindMarkerFirst()" class="selector_point" />
 			</g>
 		</svg>
 
@@ -288,25 +288,32 @@
 			},
 			initLines() {
 				let scales = this.getScales()
-				const pathFirst = d3.line()
-										.curve(d3.curveStepAfter)
-										.x(d => scales.date(d.date))
-										.y(d => scales.first(d.part))
 
-				const areaFirst = d3.area()
-										.curve(d3.curveStepAfter)
-										.x(d => scales.date(d.date))
-										.y0(d => this.graphHeight * HEIGHT_COEF )
-										.y1(d => scales.first(d.part))
+				// Доли не рисуем, если данные с криптокомпаер
+      			if( this.$store.state.graphs[this.symbol] != undefined) {
+					const pathFirst = d3.line()
+											.curve(d3.curveStepBefore)
+											.x(d => scales.date(d.date))
+											.y(d => scales.first(d.part))
 
-				this.linePart = pathFirst(this.points)
-				this.areaPart = areaFirst(this.points)
+					const areaFirst = d3.area()
+											.curve(d3.curveStepBefore)
+											.x(d => scales.date(d.date))
+											.y0(d => this.graphHeight * HEIGHT_COEF )
+											.y1(d => scales.first(d.part))
 
-				const pathSecond = pathFirst
+					this.linePart = pathFirst(this.points)
+					this.areaPart = areaFirst(this.points)
+				}
+
+
+				const pathSecond = d3.line()
 										.curve(d3.curveBasis)
+										.x(d => scales.date(d.date))
 										.y(d => scales.second(d.price))
-				const areaSecond = areaFirst
+				const areaSecond = d3.area()
 										.curve(d3.curveBasis)
+										.x(d => scales.date(d.date))
 										.y0(d => this.graphHeight * HEIGHT_COEF )
 										.y1(d => scales.second(d.price))
 
@@ -371,7 +378,7 @@
 						date: closestPoint.date, 
 						price: closestPoint.price,
 						part: closestPoint.part,
-						offsetX: this.markerFirstPosition.x,
+						offsetX: this.markerSecondPosition.x,
 						offsetY: (this.markerFirstPosition.y + this.markerSecondPosition.y) / 2,
 					}
 					this.showTooltip = true
@@ -386,7 +393,6 @@
 			tooltipPosition() {
 				let height = this.$refs.graphWrap.getBoundingClientRect().height
 				let offsetY = height - this.verticalLinePosition.offsetY - tooltipHeight + 40
-
 				return {
 					x: this.verticalLinePosition.offsetX - tooltipWidth > 0 ?  - tooltipWidth - 20 : 20,
 					y: offsetY > 0 ?  -60 : -60 + offsetY,
@@ -408,7 +414,6 @@
 				const svgPoint = pt.matrixTransform(this.$refs.graph.getCTM())
 
 				let yAverage = svgPoint.y + tooltipHeight > this.graphHeight ? svgPoint.y - tooltipHeight : svgPoint.y
-
 
 				return { 
 					'x': this.verticalLinePosition.offsetX ? this.verticalLinePosition.offsetX + this.tooltipPosition().x : 0,
@@ -556,7 +561,12 @@
 				}
 			},
 			getGraph() {
-				return this.$store.state.graphs[ this.symbol ]
+				if( this.$store.state.graphs[this.symbol] != undefined ) {
+					return this.$store.state.graphs[ this.symbol ]
+				}
+				if( this.$store.state.graphsCryptoCompare[this.symbol] != undefined) {
+					return this.$store.state.graphsCryptoCompare[ this.symbol ]
+				} 
 			},
 		},
 
@@ -564,6 +574,14 @@
 			'$store.state.graphs': {
 				handler: function ( newValue ) {
 					this.init()
+				},
+				deep: true,
+			},
+			'$store.state.graphsCryptoCompare': {
+				handler: function ( newValue ) {
+					if( this.$store.state.graphs[this.symbol] == undefined) {
+						this.init()
+					}
 				},
 				deep: true,
 			},
