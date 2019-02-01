@@ -188,7 +188,6 @@
           <p>Инсайдерские новости.  Обучающие материалы. Прогнозы курсов криптовалют</p>
         </div>
         <a 
-          v-observe-visibility="( isVisible, entry ) => visibilityTGBanner( isVisible, entry )" 
           @click.native="onSocialClick('tg')" 
           href="https://telegram.im/@FF_RUS?lang=ru" 
           class="subscribe tg" 
@@ -252,7 +251,6 @@
         showTooltip: false,
         tooltipText: null,
         tooltipType: null,
-        showTutorial: true,
       }
     },
 
@@ -430,13 +428,6 @@
             ga('send', 'pageview')
           }
         } 
-      },
-
-      visibilityTGBanner( isVisible, entry ) {
-        if( isVisible && this.$store.state.showTutorial) {
-          _t.push({start:'Walkthrough FF site'})
-          this.$store.commit('SHOW_TUTORIAL')
-        }
       },
 
       initRelationNews() {

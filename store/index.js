@@ -18,7 +18,6 @@ const createStore = () => {
 			news: [],
 			topNews: [],
 			filters: {symbol: null, type: null},
-			showTutorial: true,
 			indacoin: {
 				coins: [],
 				updatedAt: null
@@ -48,10 +47,6 @@ const createStore = () => {
 			},
 			SET_FILTER_SYMBOL: function (state, symbol) {
 				state.filters.symbol = symbol
-			},
-
-			SHOW_TUTORIAL: function (state) {
-				state.showTutorial = false
 			},
 
 			SET_COINS: function (state, data) {
