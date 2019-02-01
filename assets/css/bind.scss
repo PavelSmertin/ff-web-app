@@ -545,7 +545,7 @@ h3 {
 			display: flex;
 			flex-wrap: wrap;
 			flex-direction: column;
-			flex: 1 0 auto;
+			flex: 1 1 auto;
 			.ff_mobile_tabs {
 				display:none;
 				flex-grow: 0;
@@ -670,6 +670,11 @@ h3 {
 							&.hidden {
 								display: none;
 							}
+						}
+
+						&.expand_center_panel {
+							flex: 0 0 100%;
+							max-width: 100%;
 						}
 					}
 				}
@@ -1572,7 +1577,6 @@ h3 {
 
 		&.active_type {
 			color: $link-color;
-			text-shadow: 1px 1px 0px $label-color;
 		}
 		&:first-child {
 			border-left: none;
@@ -1632,21 +1636,8 @@ h3 {
 		}
 	}
 }
-@media (max-width: 1040px) {
-	.ff_footer {
-		flex-direction: row;
-		.ff_copyright {
-			display: none;
-		}
-		.ff_license {
-			display: block;
-		}
-		.ff_social {
-			display: none;
-		}
-	}
-}
-@media (max-width: 769px) {
+
+@media (max-width: 1176px) {
 	.ff_footer {
 		justify-content: center;
 		.ff_copyright {
@@ -2393,9 +2384,6 @@ h3 {
 		color: $dark-primary-color;
 		font-weight: 100;
 		transition: all 0.9s ease;
-		&.positive, &.negative {
-			text-shadow: 1px 1px 3px $primary-color;
-		}
 		&.up {
 			&.slide-fade-enter-active {
 				transition: all 0.1s ease;
@@ -2752,6 +2740,7 @@ h3 {
 	.ff_coin {
 		.coin_head_block {
 			flex-wrap: wrap;
+			padding-top: 12px;
 			.coin_title {
 				width:100%;
 				.subscribe {
@@ -2760,6 +2749,7 @@ h3 {
 			}
 			.coin_price {
 				width:100%;
+				margin-left: 0;
 			}
 		}
 		.coin_details_block {

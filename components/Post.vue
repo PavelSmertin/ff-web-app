@@ -467,7 +467,7 @@
             .catch(function (error) {
               this.showMessage("Не удалось добавить комментарий")
               this.commentsSendProcess = false
-            });
+            })
       },
 
       onSocialClick: function ( network ) {
