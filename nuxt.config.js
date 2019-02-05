@@ -92,6 +92,7 @@ export default {
     { src: '~/plugins/vue-socket.js', ssr: false },
     { src: '~/plugins/social.js' },
     { src: '~/plugins/vue-observe-visibility.js', ssr: false  },
+    { src: '~/plugins/intersection-observer.js', ssr: false  }, // for safary browser
     '~/plugins/axios',
     '~/plugins/data-formatter',
   ],
