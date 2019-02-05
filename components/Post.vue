@@ -101,7 +101,7 @@
       </div>
     </div>
 
-    <div itemprop="articleBody" v-html="post.body" class="description"></div>
+    <div itemprop="articleBody" v-html="post.body" v-twitter-widgets class="description"></div>
 
     <div class="tools">
       <!-- Автор статьи -->
