@@ -42,8 +42,6 @@ export default {
       { rel:'icon', type: 'image/svg+xml', href: '/favicon.svg' },
 
       { rel: 'alternate', type: 'application/rss+xml', title: "RSS", href: '/rss-export' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700&amp;amp;subset=cyrillic' },
-
     ],
 
     bodyAttrs: {
@@ -163,10 +161,11 @@ export default {
     '@nuxtjs/auth',
     ['@nuxtjs/proxy', { pathRewrite: { '^/api' : '/v1', '^/images' : '/' } }],
     ['nuxt-facebook-pixel-module', {
-        track: 'PageView',
-        pixelId: '252822442112684',
+      track: 'PageView',
+      pixelId: '252822442112684',
     }],
     ['@nuxtjs/pwa', { meta: false, oneSignal: false, manifest: false, icon: false }],
+    'nuxt-webfontloader',
   ],
 
   axios: {
@@ -213,6 +212,12 @@ export default {
   manifest: {
     name: 'FF.ru',
     lang: 'ru',
+  },
+
+  webfontloader: {
+    google: {
+      families: ['IBM+Plex+Sans:400,500,700'] //Loads Lato font with weights 400 and 700
+    }
   },
 
   resolve: {
