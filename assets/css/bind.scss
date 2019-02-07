@@ -3276,6 +3276,111 @@ h3 {
 	}
 }
 
+.ff_traders {
+
+	.ff_traders_description {
+		@extend .ff_page;
+		padding-bottom: 24px;
+		padding-top: 24px;
+	}
+
+	.ff_traders_list {
+		margin: 0;
+		padding: 0;
+
+		.ff_trader_item {
+			display: flex;
+			flex-direction: row;
+			border-top: 1px solid $border-bold-color;
+
+			.trader_name {
+				margin: 0;
+				overflow: hidden;
+			}
+
+			.ff_trader_dt {
+				width: 20%;
+				margin: 0;
+				padding: 12px 12px;
+				vertical-align: top;
+			}
+			.ff_trader_dd {
+				width: 80%;
+				padding-bottom: 12px;
+				&.trader_price {
+					display: flex;
+					flex-direction: column;
+					font-size: $label-size;
+					font-weight: bold;
+					span {
+						margin-right: 24px;
+					}
+					
+				}
+			}
+
+
+			.trader_about {
+				max-height: 100px;
+				overflow: hidden;
+				margin-top: 12px;
+				padding-right: 24px;
+			}
+			.trader_ratings_block {
+				width: 100%;
+				border-spacing: 0;
+				border-collapse: collapse;
+				margin-top: -1px;
+				td {
+					vertical-align: top;
+					border: 1px solid $border-bold-color;
+					padding: 6px;
+					width: 20%;
+
+				}
+
+				.trader_ratings_row {
+					td {
+						background-color: $bg-coin-color;
+						text-align: center;
+					}
+					.trader_value {
+						font-size: $primary-size;
+						font-weight: bold;
+						text-transform: uppercase;
+					}
+					.vue-star-rating {
+						margin: 0 auto;
+					}
+				}
+
+				.trader_stats_row {
+					.trader_value {
+						font-size: $label-size;
+						font-weight: bold;
+						text-transform: uppercase;
+					}
+				}
+			}
+
+
+			&.trader_price_block {
+				.ff_trader_dd {
+					padding: 12px 24px 12px 0px;
+				}
+			}
+
+			&.trader_promo_block {
+				.ff_trader_dd {
+					padding: 12px 24px 12px 0px;
+					font-weight: bold;
+				}
+			}
+
+		}
+	}
+}
+
 
 
 
