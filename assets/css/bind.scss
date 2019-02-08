@@ -526,6 +526,39 @@ h3 {
 }
 
 
+/* Сворачивание текста */
+.collapsed_text_wrap {
+	.seo_text_toggle {
+		width: 100%;
+		display: block;
+		border: none;
+		background: none; 
+		position: relative;
+		top: -21px;
+		text-align: center;
+		padding-top: 26px;
+		height: 24px;
+		background-image: linear-gradient(transparent, $bg-main-color, $bg-main-color);
+		&.ff_text_expanded {
+			background-image: none;
+		}
+		span {
+			font-size: 10px;
+		}
+		&:hover {
+			color: $link-color;
+		}
+	}
+	.collapsed_text {
+		overflow: hidden;
+		&.ff_text_collapased {
+			max-height: 76px;
+		}
+		&.ff_text_expanded {
+			height: unset;
+		}
+	}
+}
 
 
 
@@ -719,6 +752,7 @@ h3 {
 		cursor: pointer;
 		padding: 0 24px;
 		height: 56px;
+		z-index: 2;
 		&:focus {
 			outline: none;
 		}
@@ -1844,6 +1878,7 @@ h3 {
 		margin: 0;
 		border-bottom: 1px solid $border-bold-color;
 		border-top: 1px solid $border-bold-color;
+		z-index: 1;
 
 		.sticky_inner {
 			height: 54px;
@@ -2701,37 +2736,19 @@ h3 {
 			}
 		}
 	}
-	.index_text_wrap {
+
+	.index_text_block {
 		border-top: 1px solid $border-bold-color;
 		margin-top: 12px;
 		padding: 0 24px;
 		.seo_text_toggle {
-			width: 100%;
-			display: block;
-			border: none;
-			background: none; 
-			position: relative;
 			top: -48px;
-			text-align: center;
 			padding-top: 64px;
-			background-image: linear-gradient(transparent, $bg-main-color, $bg-main-color);
-			&.ff_text_expanded {
-				background-image: none;
-			}
-			span {
-				font-size: 10px;
-			}
-			&:hover {
-				color: $link-color;
-			}
+			height: 41px;
 		}
-		.ff_text_block {
-			overflow: hidden;
+		.collapsed_text {
 			&.ff_text_collapased {
-				height: 230px;
-			}
-			&.ff_text_expanded {
-				height: unset;
+				max-height: 230px;
 			}
 		}
 	}
@@ -3278,10 +3295,13 @@ h3 {
 
 .ff_traders {
 
+	h1 {
+		margin: 0;
+		padding: 12px 12px 0px 12px;
+	}
+
 	.ff_traders_description {
-		@extend .ff_page;
-		padding-bottom: 24px;
-		padding-top: 24px;
+		padding: 12px;
 	}
 
 	.ff_traders_list {
@@ -3318,12 +3338,7 @@ h3 {
 					
 				}
 			}
-
-
 			.trader_about {
-				max-height: 100px;
-				overflow: hidden;
-				margin-top: 12px;
 				padding-right: 24px;
 			}
 			.trader_ratings_block {
@@ -3377,6 +3392,50 @@ h3 {
 				}
 			}
 
+		}
+	}
+}
+@media (max-width: 769px) {
+	.ff_traders {
+		.ff_traders_list {
+			.ff_trader_item {
+				flex-wrap: wrap;
+				.ff_trader_dt {
+					width: 100%;
+				}
+				.ff_trader_dd {
+					width: 100%;
+				}
+				.trader_about {
+					padding: 12px;
+				}
+
+				.trader_ratings_block {
+					td {
+						.vue-star-rating {
+							display: none;
+						}
+					}
+				}
+
+				&.trader_price_block {
+					.ff_trader_dt {
+						padding: 12px 12px 0 12px;
+					}
+					.ff_trader_dd {
+						padding: 0 12px 12px 12px;
+					}
+				}
+
+				&.trader_promo_block {
+					.ff_trader_dt {
+						padding: 12px 12px 0 12px;
+					}
+					.ff_trader_dd {
+						padding: 0 12px 12px 12px;
+					}
+				}
+			}
 		}
 	}
 }

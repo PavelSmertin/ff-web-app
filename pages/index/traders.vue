@@ -1,12 +1,15 @@
 <template>
   <div class="ff_traders">
+    <h1>
+      Рейтинг криптовалютных сигналов
+    </h1>
     <div class="ff_traders_description">
       Раздел для начинающих и профессиональных криптоинвесторов, где вы можете найти анализ топ-криптотрейдеров-консультантов. Откройте для себя лучшие криптовалютные сигналы на 2019 год. Мы проверяем криптовалютные каналы Telegram и показываем вам графики криптовалютных сигналов для получения достоверных результатов.
     </div>
 
     <ul class="ff_traders_list">
       <template v-for="trader of services">
-        <li class="ff_trader_item">
+        <li class="ff_trader_item margin40" :ref="'coolpased_text_'+trader.id">
           <div class="ff_trader_dt">
             <img v-if="trader.logo" class="trader_ava" src="trader.logo" alt="ff" >
             <h4 class="trader_name">
@@ -72,6 +75,7 @@
                     </div>
                     <no-ssr>
                       <star-rating 
+                        class="star_rating"
                         :read-only="true" 
                         :rating="3.5" 
                         :increment="0.1" 
@@ -159,7 +163,7 @@
                       Страна
                     </div>
                     <div class="trader_value">
-                      {{ trader.country }}
+                      
                     </div>
                   </td>
 
@@ -168,7 +172,7 @@
                       Сигналы
                     </div>
                     <div class="trader_value">
-                      {{ trader.is_tech_analyze }}
+                      
                     </div>
                   </td>
 
@@ -178,7 +182,7 @@
                     </div>
                     <div class="trader_value">
                       <span class="ff_trader_prices_item" v-for="lang of trader.lang">
-                        {{ lang }}
+                        
                       </span>
                     </div>
                   </td>
@@ -186,8 +190,23 @@
 
               </tbody>
             </table>
-            <div class="trader_about" v-html="trader.description">
+
+            <div v-if="trader.description && trader.description.length > 0" class="collapsed_text_wrap">
+              <section 
+                class="trader_about collapsed_text" 
+                v-html="trader.description"
+                v-bind:class="indexSeoText(trader.id)"
+                >
+              </section>
+              <button 
+                class="button_class seo_text_toggle" 
+                v-on:click.stop.prevent="toggleSeoText(trader.id)" 
+                v-bind:class="indexSeoText(trader.id)" 
+                v-html="toggleSeoAction(trader.id)"
+                >
+              </button>
             </div>
+
           </div>
         </li>
         <li class="ff_trader_item trader_price_block">
@@ -208,6 +227,9 @@
             {{ trader.promocode }}
           </div>
         </li>
+
+<!--         <li class="ff_trader_item trader_action_tools"></li>
+ -->
       </template>
     </ul>
 
@@ -243,7 +265,7 @@
 
     data() {
       return {
-
+        expandedRows: [],
       }
     },
 
@@ -267,7 +289,32 @@
     },
 
     methods: {
-
+      goto( element ) {
+        let topPos = element.offsetTop;
+        let scrollParent = this.getScrollParent()
+        scrollParent.scrollTo(0, topPos)
+      },
+      getScrollParent() {
+        return this.$parent.$refs["scroll-container"]
+      },
+      indexSeoText(id) {
+        return {
+          'ff_text_collapased' : !this.expandedRows.includes(id),
+          'ff_text_expanded' : this.expandedRows.includes(id),
+        }      
+      },
+      toggleSeoAction(id) {
+          return !this.expandedRows.includes(id) ? 'Развернуть <span>&#9660;</span>' : 'Свернуть <span>&#9650;</span>'
+      },
+      toggleSeoText(id) {
+        const index = this.expandedRows.indexOf(id);
+        if( index > -1 ) {
+          this.expandedRows.splice(index, 1)
+          this.goto( this.$refs['coolpased_text_' + id][0] )
+        } else {
+          this.expandedRows.push(id)
+        }
+      },
     }
 
   }

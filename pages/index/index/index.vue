@@ -85,10 +85,10 @@
       </nuxt-link>
     </div>
 
-    <div class="index_text_wrap">
+    <div class="collapsed_text_wrap index_text_block">
       <section 
         v-if="$store.state.indexDetails.seo_text" 
-        class="ff_text_block" 
+        class="ff_text_block collapsed_text" 
         v-html="$store.state.indexDetails.seo_text" 
         v-bind:class="indexSeoText"
         >
