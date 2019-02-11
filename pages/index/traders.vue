@@ -163,7 +163,7 @@
                       Страна
                     </div>
                     <div class="trader_value">
-                      
+                      {{ getFlag(trader.country) }}
                     </div>
                   </td>
 
@@ -182,7 +182,7 @@
                     </div>
                     <div class="trader_value">
                       <span class="ff_trader_prices_item" v-for="lang of trader.lang">
-                        
+                        {{ getFlag(lang) }}
                       </span>
                     </div>
                   </td>
@@ -229,17 +229,17 @@
         </li>
 
         <li class="ff_trader_item trader_action_tools">
-          <a v-if="trader.contact_link" :href="trader.contact_link" class="subscribe" rel="nofollow noopener">
+          <a v-if="trader.contact_link" :href="trader.contact_link" class="subscribe" rel="nofollow noopener" target="_blank">
             <span class="button_icon"><span class="trader_tg"></span></span>
             <span class="button_body">Admin</span>
           </a>
 
-          <a v-if="trader.site_url" :href="trader.site_url" class="subscribe" rel="nofollow noopener">
+          <a v-if="trader.site_url" :href="trader.site_url" class="subscribe" rel="nofollow noopener" target="_blank">
             <span class="button_icon"><span class="trader_site"></span></span>
             <span class="button_body">Site</span>
           </a>
 
-          <a v-if="trader.tg_url" :href="trader.tg_url" class="subscribe" rel="nofollow noopener">
+          <a v-if="trader.tg_url" :href="trader.tg_url" class="subscribe" rel="nofollow noopener" target="_blank">
             <span class="button_icon"><span class="trader_tg"></span></span>
             <span class="button_body">Telegram</span>
           </a>
@@ -256,6 +256,7 @@
 <script>
 
   import StarRating from 'vue-star-rating'
+  import Emoji from '~/assets/js/emoji.json'
 
   const API_SIGNALS_SERVICES = `/api/signals-services?include=comments,historypoints`
 
@@ -281,6 +282,7 @@
     data() {
       return {
         expandedRows: [],
+        flags: Emoji,
       }
     },
 
@@ -290,8 +292,6 @@
       try {
         let servicesResponse = await app.$axios.get(API_SIGNALS_SERVICES)
         services = app.$dataFormatter.deserialize(servicesResponse.data)
-
-        console.log(services)
       } catch (e) {
       }
 
@@ -302,6 +302,7 @@
     },
 
     computed: {
+
 
     },
 
@@ -332,6 +333,10 @@
           this.expandedRows.push(id)
         }
       },
+      getFlag( litera ) {
+        let flag = this.flags.find(el => el.aliases.includes(litera))
+        return flag ? flag.emoji : this.flags[0].emoji
+      }
     }
 
   }
