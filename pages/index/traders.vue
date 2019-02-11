@@ -9,7 +9,7 @@
 
     <ul class="ff_traders_list">
       <template v-for="trader of services">
-        <li class="ff_trader_item margin40" :ref="'coolpased_text_'+trader.id">
+        <li class="ff_trader_item margin60" :ref="'coolpased_text_'+trader.id">
           <div class="ff_trader_dt">
             <img v-if="trader.logo" class="trader_ava" src="trader.logo" alt="ff" >
             <h4 class="trader_name">
@@ -228,8 +228,23 @@
           </div>
         </li>
 
-<!--         <li class="ff_trader_item trader_action_tools"></li>
- -->
+        <li class="ff_trader_item trader_action_tools">
+          <a v-if="trader.contact_link" :href="trader.contact_link" class="subscribe" rel="nofollow noopener">
+            <span class="button_icon"><span class="trader_tg"></span></span>
+            <span class="button_body">Admin</span>
+          </a>
+
+          <a v-if="trader.site_url" :href="trader.site_url" class="subscribe" rel="nofollow noopener">
+            <span class="button_icon"><span class="trader_site"></span></span>
+            <span class="button_body">Site</span>
+          </a>
+
+          <a v-if="trader.tg_url" :href="trader.tg_url" class="subscribe" rel="nofollow noopener">
+            <span class="button_icon"><span class="trader_tg"></span></span>
+            <span class="button_body">Telegram</span>
+          </a>
+        </li>
+
       </template>
     </ul>
 
@@ -275,6 +290,8 @@
       try {
         let servicesResponse = await app.$axios.get(API_SIGNALS_SERVICES)
         services = app.$dataFormatter.deserialize(servicesResponse.data)
+
+        console.log(services)
       } catch (e) {
       }
 
@@ -304,7 +321,7 @@
         }      
       },
       toggleSeoAction(id) {
-          return !this.expandedRows.includes(id) ? 'Развернуть <span>&#9660;</span>' : 'Свернуть <span>&#9650;</span>'
+        return !this.expandedRows.includes(id) ? 'Развернуть <span>&#9660;</span>' : 'Свернуть <span>&#9650;</span>'
       },
       toggleSeoText(id) {
         const index = this.expandedRows.indexOf(id);
