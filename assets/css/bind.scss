@@ -3315,16 +3315,16 @@ h3 {
 			flex-direction: row;
 			border-top: 1px solid $border-bold-color;
 
-			.trader_name {
-				margin: 0;
-				overflow: hidden;
-			}
-
 			.ff_trader_dt {
 				width: 20%;
 				margin: 0;
 				padding: 12px 12px;
 				vertical-align: top;
+				.trader_ava {
+					width: 100%;
+					display: block;
+				}
+
 			}
 			.ff_trader_dd {
 				width: 80%;
@@ -3376,6 +3376,10 @@ h3 {
 						font-size: $label-size;
 						font-weight: bold;
 						text-transform: uppercase;
+
+						.ff_trader_flag {
+							font-size: 24px;
+						}
 					}
 				}
 			}

@@ -11,10 +11,7 @@
       <template v-for="trader of services">
         <li class="ff_trader_item margin60" :ref="'coolpased_text_'+trader.id">
           <div class="ff_trader_dt">
-            <img v-if="trader.logo" class="trader_ava" src="trader.logo" alt="ff" >
-            <h4 class="trader_name">
-              {{ trader.name }}
-            </h4>
+            <img v-if="trader.logo" class="trader_ava" :src="'/images/uploads/signal-services/logo/' + trader.logo" :alt="trader.name" >
           </div>
           <div class="ff_trader_dd">
             <table class="trader_ratings_block">
@@ -24,13 +21,16 @@
                     <div class="ff_label">
                       Рейтинг
                     </div>
-                    <div class="trader_value">
-                      3.5
+                    <div v-if="trader.rating_common" class="trader_value">
+                      {{ trader.rating_common }}
                     </div>
-                    <no-ssr>
+                    <div v-else>
+                      -
+                    </div>
+                    <no-ssr v-if="trader.rating_common">
                       <star-rating 
                         :read-only="true" 
-                        :rating="3.5" 
+                        :rating="trader.rating_common" 
                         :increment="0.1" 
                         :show-rating="false" 
                         :star-size="20"
@@ -47,13 +47,16 @@
                     <div class="ff_label">
                       Доходность
                     </div>
-                    <div class="trader_value">
-                      3.5
+                    <div v-if="trader.rating_profit" class="trader_value">
+                      {{ trader.rating_profit }}
                     </div>
-                    <no-ssr>
+                    <div v-else>
+                      -
+                    </div>
+                    <no-ssr v-if="trader.rating_profit">
                       <star-rating 
                         :read-only="true" 
-                        :rating="3.5" 
+                        :rating="trader.rating_profit" 
                         :increment="0.1" 
                         :show-rating="false" 
                         :star-size="20"
@@ -70,14 +73,17 @@
                     <div class="ff_label">
                       Точность
                     </div>
-                    <div class="trader_value">
-                      3.5
+                    <div v-if="trader.rating_accuracy" class="trader_value">
+                      {{ trader.rating_accuracy }}
                     </div>
-                    <no-ssr>
+                    <div v-else>
+                      -
+                    </div>
+                    <no-ssr v-if="trader.rating_accuracy">
                       <star-rating 
                         class="star_rating"
                         :read-only="true" 
-                        :rating="3.5" 
+                        :rating="trader.rating_accuracy" 
                         :increment="0.1" 
                         :show-rating="false" 
                         :star-size="20"
@@ -94,13 +100,16 @@
                     <div class="ff_label">
                       Цена
                     </div>
-                    <div class="trader_value">
-                      3.5
+                    <div v-if="trader.rating_price" class="trader_value">
+                      {{ trader.rating_price }}
                     </div>
-                    <no-ssr>
+                    <div v-else>
+                      -
+                    </div>
+                    <no-ssr v-if="trader.rating_price">
                       <star-rating 
                         :read-only="true" 
-                        :rating="3.5" 
+                        :rating="trader.rating_price" 
                         :increment="0.1" 
                         :show-rating="false" 
                         :star-size="20"
@@ -117,13 +126,16 @@
                     <div class="ff_label">
                       Поддержка
                     </div>
-                    <div class="trader_value">
-                      3.5
+                    <div v-if="trader.rating_support" class="trader_value">
+                      {{ trader.rating_support }}
                     </div>
-                    <no-ssr>
+                    <div v-else>
+                      -
+                    </div>
+                    <no-ssr v-if="trader.rating_support">
                       <star-rating 
                         :read-only="true" 
-                        :rating="3.5" 
+                        :rating="trader.rating_support" 
                         :increment="0.1" 
                         :show-rating="false" 
                         :star-size="20"
@@ -143,7 +155,7 @@
                       Сроки сделок
                     </div>
                     <div class="trader_value">
-                      <span class="ff_trader_prices_item" v-for="period of trader.periods_deals" >
+                      <span v-for="period of trader.periods_deals" >
                         {{ period }}
                       </span>
                     </div>
@@ -163,7 +175,7 @@
                       Страна
                     </div>
                     <div class="trader_value">
-                      {{ getFlag(trader.country) }}
+                      <span class="ff_trader_flag">{{ getFlag(trader.country) }}</span>
                     </div>
                   </td>
 
@@ -181,7 +193,7 @@
                       Языки
                     </div>
                     <div class="trader_value">
-                      <span class="ff_trader_prices_item" v-for="lang of trader.lang">
+                      <span class="ff_trader_flag" v-for="lang of trader.lang">
                         {{ getFlag(lang) }}
                       </span>
                     </div>
@@ -214,7 +226,7 @@
             Цены
           </div>
           <div class="ff_trader_dd trader_price">
-            <span class="ff_trader_prices_item" v-for="price of trader.prices">
+            <span v-for="price of trader.prices">
               {{ price }}
             </span>
           </div>
@@ -292,6 +304,7 @@
       try {
         let servicesResponse = await app.$axios.get(API_SIGNALS_SERVICES)
         services = app.$dataFormatter.deserialize(servicesResponse.data)
+        console.log(services)
       } catch (e) {
       }
 
