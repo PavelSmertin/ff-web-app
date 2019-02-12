@@ -3477,6 +3477,11 @@ h3 {
 							display: none;
 						}
 					}
+					.trader_ratings_row, .trader_stats_row {
+						.ff_label {
+							font-size: 10px;
+						}
+					}
 				}
 
 				&.trader_price_block {
