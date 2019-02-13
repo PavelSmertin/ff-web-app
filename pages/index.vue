@@ -86,13 +86,36 @@
           <div class="scroll-container" ref="scroll_news">
             <div v-if="$store.state.news.length" class="ff_news ff_right_feed_news">
 
+
               <!-- ssr list -->
-              <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of $store.state.news" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff_news_row">
+              <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of $store.state.topNewsObj" :to="linkToPost(newest)" class="ff_news_row">
+                <post-item-top :post="newest" ></post-item-top>
+              </nuxt-link>
+
+              <!-- ssr list -->
+              <div class="ff_news_row ff_news_banner">
+                <nuxt-link :to="coinBuyUrl( 'BTC' )"
+                  @click.native="sendEvent( 'NewsBanner', 'click', 'Баннер в правой колонке' )" 
+                  >
+                  <img src="/banner_300x250.png" alt="banner">
+                </nuxt-link>
+                <nuxt-link  
+                  @click.native="sendEvent( 'NewsBanner', 'click', 'Реклама на сайте' )" 
+                  :to="{path: '/adv'}" 
+                  class="ff_label"
+                  >
+                  Реклама на сайте
+                </nuxt-link>
+              </div>
+
+
+              <!-- ssr list -->
+              <nuxt-link @click.native="onPostClick(newest.id)" v-for="newest of $store.state.news" :to="linkToPost(newest)" class="ff_news_row">
                 <post-item :post="newest" ></post-item>
               </nuxt-link>
 
               <!-- client list -->
-              <nuxt-link @click.native="onPostClick(item.id)" v-for="(item, key) in list" v-bind:key="key" :to="linkToPost(item)" class="ff_news_row">
+              <nuxt-link @click.native="onPostClick(item.id)" v-for="(item, key) in list" :to="linkToPost(item)" class="ff_news_row">
                 <post-item :post="item"></post-item>
               </nuxt-link>
 
@@ -116,10 +139,12 @@
 <script>
   import VueTimeago from 'vue-timeago'
   import PostItem from '~/components/PostItem.vue'
+  import PostItemTop from '~/components/PostItemTop.vue'
   import CoinsList from '~/components/CoinsList.vue'
   import Vue from 'vue'
   import InfiniteLoading from 'vue-infinite-loading'
   import { analMixin } from '~/components/mixins/analitics.js'
+  import { indacoinMixin } from '~/components/mixins/indacoin.js'
   import _ from 'lodash'
 
   const CURRENTFIELDS = {
@@ -157,7 +182,7 @@
 
   export default {
 
-    mixins: [ analMixin ],
+    mixins: [ analMixin, indacoinMixin ],
 
     head() {
       return {
@@ -230,6 +255,12 @@
         store.commit( 'SET_TOP_NEWS', tops )
       }
 
+      if( newsObj && newsObj.length > 0 ) {
+        let topsObj = newsObj.slice(0, 2)
+        store.commit( 'SET_TOP_NEWS_OBJ', topsObj )
+      }
+
+
       store.commit( 'SET_COINS', coins.data )
 
       let details = app.$dataFormatter.deserialize(indexDetails.data)
@@ -246,6 +277,7 @@
       VueTimeago,
       InfiniteLoading,
       PostItem,
+      PostItemTop,
       CoinsList,
     },
 

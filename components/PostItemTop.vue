@@ -1,7 +1,9 @@
 <template>
-  <div v-if="!isTopPost()" class="ff_news_cell">
+  <div class="ff_news_cell top_post_item">
+    <div v-bind:style="topPostStyle" class="top_post_background"></div>
+    <div class="post_fade_overlay"></div>
     <div class="ff_news_item_title ff_nc_title">
-      {{ post.title }}
+      <span>&#128293;&nbsp;</span>{{ post.title }}
     </div>
     <div class="ff_news_item_details no-gutters">
       <ul class="news_list_detail">
@@ -20,7 +22,7 @@
   import CoinTags from '~/components/CoinTags.vue'
 
   export default {
-    name: 'post-item',
+    name: 'post-item-top',
 
     components: {
       PostVotes,
@@ -58,15 +60,14 @@
         return '/FF_cover968_b.png'
       },
 
-      isTopPost() {
-        if (this.$store) {
-          return this.$store.state.topNews.indexOf( this.post.id ) >= 0
-        }
-        return false
-      },
     },
 
     computed: {
+      topPostStyle: function () {
+        return {
+          backgroundImage: 'url(' + this.getImageSharing() + ')',
+        }
+      },
 
       postType: function () {
         if( this.post.type == 'news' ) {

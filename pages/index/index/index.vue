@@ -5,7 +5,8 @@
       <h2 class="margin12">Популярное</h2>
         <div class="ff_news ff_popular">
           <nuxt-link @click.native="onPostClick(newest.id)" v-for="(newest, index) in $store.state.indexPopular" v-bind:key="newest.id" :to="linkToPost(newest)" class="ff_news_row">
-            <post-item :post="newest" :isFirst="index === 0" ></post-item>
+            <post-item-top v-if="index === 0" :post="newest" ></post-item-top>
+            <post-item v-else :post="newest" ></post-item>
           </nuxt-link>
         </div>
     </div>
@@ -108,6 +109,7 @@
 
 <script>
   import PostItem from '~/components/PostItem.vue'
+  import PostItemTop from '~/components/PostItemTop.vue'
   import ttGraph from '~/components/ttGraph.vue'
   import ttFilters from '~/components/ttFilters.vue'
 
@@ -139,6 +141,7 @@
 
     components: {
       PostItem,
+      PostItemTop,
       ttGraph,
       ttFilters,
     },

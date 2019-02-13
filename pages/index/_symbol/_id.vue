@@ -1,5 +1,12 @@
 <template>
   <div class="ff_post_feed">
+    <nuxt-link 
+      class="ff_post_banner" :to="coinBuyUrl( 'BTC' )"
+      @click.native="sendEvent( 'NewsBanner', 'click', 'Баннер вверху' )" 
+      >
+      <img src="/banner_728x90.png" alt="banner">
+    </nuxt-link>
+
     <post v-for="post of news" v-on:post-visible="seoTitle = $event" v-bind:key="post.id" :postProp="post" :comments="post.comments" :commentsCount="post.comments ? post.comments.length : 0" ></post>
     <div ref="infinite_loading_container"></div>
   </div>
@@ -8,12 +15,13 @@
 <script>
   import Post from '~/components/Post.vue'
   import { analMixin } from '~/components/mixins/analitics.js'
+  import { indacoinMixin } from '~/components/mixins/indacoin.js'
 
   const api_news = '/api/news?per-page=1&include=relatednews,coins,similar,author,comments,is_top'
 
   export default {
 
-    mixins: [ analMixin ],
+    mixins: [ analMixin, indacoinMixin ],
 
     validate({ params }) {
       return !isNaN(+params.id)

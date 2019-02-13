@@ -17,6 +17,7 @@ const createStore = () => {
 			coinsSearch: null,
 			news: [],
 			topNews: [],
+			topNewsObj: [],
 			filters: {symbol: null, type: null},
 			indacoin: {
 				coins: [],
@@ -41,6 +42,9 @@ const createStore = () => {
 			},
 			SET_TOP_NEWS: function (state, topNews) {
 				state.topNews = topNews
+			},
+			SET_TOP_NEWS_OBJ: function (state, topNews) {
+				state.topNewsObj = topNews
 			},
 			SET_FILTER_TYPE: function (state, type) {
 				state.filters.type = type
