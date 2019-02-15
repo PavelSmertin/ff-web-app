@@ -42,128 +42,122 @@
         </div>
 
         <div class="ff_trader_item_row trader_ratings_block">
-          <table>
-            <tbody>
-              <tr class="trader_ratings_row">
-                <td>
-                  <div class="ff_label">
-                    Рейтинг
-                  </div>
-                  <div class="pie-wrapper progress-95 style-2">
-                    <span class="label">{{ trader.rating_common ? trader.rating_common : '-' }}</span>
-                    <div class="pie">
-                      <div class="left-side half-circle"></div>
-                      <div class="right-side half-circle"></div>
-                    </div>
-                    <div class="shadow"></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="ff_label">
-                    Доходность
-                  </div>
-                  <div class="pie-wrapper progress-95 style-2">
-                    <span class="label">{{ trader.rating_profit ? trader.rating_profit : '-' }}</span>
-                    <div class="pie">
-                      <div class="left-side half-circle"></div>
-                      <div class="right-side half-circle"></div>
-                    </div>
-                    <div class="shadow"></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="ff_label">
-                    Точность
-                  </div>
-                  <div class="pie-wrapper progress-95 style-2">
-                    <span class="label">{{ trader.rating_accuracy ? trader.rating_accuracy : '-' }}</span>
-                    <div class="pie">
-                      <div class="left-side half-circle"></div>
-                      <div class="right-side half-circle"></div>
-                    </div>
-                    <div class="shadow"></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="ff_label">
-                    Цена
-                  </div>
-                  <div class="pie-wrapper progress-95 style-2">
-                    <span class="label">{{ trader.rating_price ? trader.rating_price : '-' }}</span>
-                    <div class="pie">
-                      <div class="left-side half-circle"></div>
-                      <div class="right-side half-circle"></div>
-                    </div>
-                    <div class="shadow"></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="ff_label">
-                    Поддержка
-                  </div>
-                  <div class="pie-wrapper progress-95 style-2">
-                    <span class="label">{{ trader.rating_support ? trader.rating_support : '-' }}</span>
-                    <div class="pie">
-                      <div class="left-side half-circle"></div>
-                      <div class="right-side half-circle"></div>
-                    </div>
-                    <div class="shadow"></div>
-                  </div>
-                </td>
-              </tr>
-              <tr class="trader_stats_row">
-                <td>
-                  <div class="ff_label">
-                    Сроки сделок
-                  </div>
-                  <div class="trader_value">
-                    <span v-for="period of trader.periods_deals" >
-                      {{ period }}
-                    </span>
-                  </div>
-                </td>
+          <div class="stats_item">
+            <div class="ff_label">
+              Рейтинг
+            </div>
+            <div class="pie-wrapper" :class="progress(trader.rating_common)">
+              <span class="label">{{ trader.rating_common ? trader.rating_common : '-' }}</span>
+              <div class="pie">
+                <div class="left-side half-circle"></div>
+                <div class="right-side half-circle"></div>
+              </div>
+              <div class="shadow"></div>
+            </div>
+          </div>
+          <div class="stats_item">
+            <div class="ff_label">
+              Доходность
+            </div>
+            <div class="pie-wrapper" :class="progress(trader.rating_profit)">
+              <span class="label">{{ trader.rating_profit ? trader.rating_profit : '-' }}</span>
+              <div class="pie">
+                <div class="left-side half-circle"></div>
+                <div class="right-side half-circle"></div>
+              </div>
+              <div class="shadow"></div>
+            </div>
+          </div>
+          <div class="stats_item">
+            <div class="ff_label">
+              Точность
+            </div>
+            <div class="pie-wrapper" :class="progress(trader.rating_accuracy)">
+              <span class="label">{{ trader.rating_accuracy ? trader.rating_accuracy : '-' }}</span>
+              <div class="pie">
+                <div class="left-side half-circle"></div>
+                <div class="right-side half-circle"></div>
+              </div>
+              <div class="shadow"></div>
+            </div>
+          </div>
+          <div class="stats_item">
+            <div class="ff_label">
+              Цена
+            </div>
+            <div class="pie-wrapper" :class="progress(trader.rating_price)">
+              <span class="label">{{ trader.rating_price ? trader.rating_price : '-' }}</span>
+              <div class="pie">
+                <div class="left-side half-circle"></div>
+                <div class="right-side half-circle"></div>
+              </div>
+              <div class="shadow"></div>
+            </div>
+          </div>
+          <div class="stats_item">
+            <div class="ff_label">
+              Поддержка
+            </div>
+            <div class="pie-wrapper" :class="progress(trader.rating_support)">
+              <span class="label">{{ trader.rating_support ? trader.rating_support : '-' }}</span>
+              <div class="pie">
+                <div class="left-side half-circle"></div>
+                <div class="right-side half-circle"></div>
+              </div>
+              <div class="shadow"></div>
+            </div>
+          </div>
+        </div>
 
-                <td>
-                  <div class="ff_label">
-                    Команда
-                  </div>
-                  <div class="trader_value">
-                    {{ trader.team }}
-                  </div>
-                </td>
+        <div class="ff_trader_item_row trader_stats_block">
+          <div class="stats_item">
+            <div class="ff_label">
+              Сроки сделок
+            </div>
+            <div class="trader_value">
+              <span v-for="period of trader.periods_deals" >
+                {{ period }}
+              </span>
+            </div>
+          </div>
 
-                <td>
-                  <div class="ff_label">
-                    Страна
-                  </div>
-                  <div class="trader_value">
-                    <span class="ff_trader_flag">{{ getFlag(trader.country) }}</span>
-                  </div>
-                </td>
+          <div class="stats_item">
+            <div class="ff_label">
+              Команда
+            </div>
+            <div class="trader_value">
+              {{ trader.team }}
+            </div>
+          </div>
 
-                <td>
-                  <div class="ff_label">
-                    Сигналы
-                  </div>
-                  <div class="trader_value">
-                    
-                  </div>
-                </td>
+          <div class="stats_item">
+            <div class="ff_label">
+              Страна
+            </div>
+            <div class="trader_value">
+              <span class="ff_trader_flag">{{ getFlag(trader.country) }}</span>
+            </div>
+          </div>
 
-                <td>
-                  <div class="ff_label">
-                    Языки
-                  </div>
-                  <div class="trader_value">
-                    <span class="ff_trader_flag" v-for="lang of trader.lang">
-                      {{ getFlag(lang) }}
-                    </span>
-                  </div>
-                </td>
-              </tr>
+          <div class="stats_item">
+            <div class="ff_label">
+              Сигналы
+            </div>
+            <div class="trader_value">
+              
+            </div>
+          </div>
 
-            </tbody>
-          </table>
+          <div class="stats_item">
+            <div class="ff_label">
+              Языки
+            </div>
+            <div class="trader_value">
+              <span class="ff_trader_flag" v-for="lang of trader.lang">
+                {{ getFlag(lang) }}
+              </span>
+            </div>
+          </div>
         </div>
 
         <div v-if="trader.prices" class="ff_trader_item_row trader_price_block">
@@ -198,7 +192,6 @@
             <span class="trader_tg"></span>Telegram
           </a>
         </div>
-
       </li>
     </ul>
 
@@ -290,6 +283,10 @@
       linkToTrader: function (trader) {
         return { path: '/traders/'+trader.id }
       },
+      progress( value ) {
+        return 'progress_' + Math.round(value * 20/300) * 5
+      },
+
     }
 
   }

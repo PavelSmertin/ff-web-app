@@ -3375,45 +3375,46 @@ h3 {
 					}
 				}
 				&.trader_ratings_block {
-					margin-right: -2px;
+					display: flex;
+					flex-direction: row;
+					margin-right: -1px;
 					margin-left: -1px;
-					table {
-						width: 100%;
-						border-spacing: 0;
-						border-collapse: collapse;
-						margin-top: -1px;
+					flex-wrap: wrap;
 
-						td {
-							vertical-align: top;
-							padding: 16px;
-							width: 20%;
-						}
-
-						.trader_ratings_row {
-							td {
-								text-align: center;
-								border: 1px solid $border-bold-color;
-							}
-							.trader_value {
-								font-size: $primary-size;
-								font-weight: bold;
-								text-transform: uppercase;
-							}
-							.vue-star-rating {
-								margin: 0 auto;
-							}
-						}
-
-						.trader_stats_row {
-							.trader_value {
-								font-size: $label-size;
-								font-weight: bold;
-								text-transform: uppercase;
-								.ff_trader_flag {
-									font-size: 24px;
-									line-height: 28px;
-								}
-							}
+					.stats_item {
+						flex-grow: 1;
+						flex-shrink: 0;
+						vertical-align: top;
+						padding: 16px;
+						width: 20%;
+						text-align: center;
+						border: 1px solid $border-bold-color;
+					}
+					.trader_value {
+						font-size: $primary-size;
+						font-weight: bold;
+						text-transform: uppercase;
+					}
+				}
+				&.trader_stats_block {
+					display: flex;
+					flex-direction: row;
+					margin-right: -1px;
+					margin-left: -1px;
+					flex-wrap: wrap;
+					.stats_item {
+						flex-grow: 1;
+						flex-shrink: 0;
+						width: 20%;
+						padding: 16px;
+					}
+					.trader_value {
+						font-size: $label-size;
+						font-weight: bold;
+						text-transform: uppercase;
+						.ff_trader_flag {
+							font-size: 24px;
+							line-height: 28px;
 						}
 					}
 				}
@@ -3422,7 +3423,7 @@ h3 {
 					flex-direction: column;
 					background-color: $bg-coin-color;
 					border-top: 1px solid $border-bold-color;
-					padding: 16px;
+					padding: 16px 8px 8px 8px;
 					.price_title {
 						text-align: center;
 						font-size: 12px;
@@ -3433,17 +3434,14 @@ h3 {
 					.trader_price {
 						display: flex;
 						flex-direction: row;
-						margin-top: 16px; 
+						margin-top: 8px; 
 						.price_card {
-							margin-left: 16px;
+							margin: 8px;
 							flex-grow: 1;
 							text-align: center;
 							background-color: $bg-main-color;
 							border-radius: 5px;
 							padding: 12px 0;
-							&:first-child {
-								margin-left: 0;
-							}
 							.price_value {
 								font-size: 24px;
 								line-height: 32px;
@@ -3499,35 +3497,71 @@ h3 {
 }
 @media (max-width: 769px) {
 	.ff_traders {
+
+		.ff_trader_head {
+			flex-direction: column;
+			.ff_trader_title {
+				flex-shrink: 0;
+				padding: 0;
+			}
+			.ff_traders_description {
+				margin-top: 12px;
+				flex-shrink: 0;
+			}
+		}
+
 		.ff_traders_list {
 			.ff_trader_item {
+				box-shadow: none;
+				margin: 32px 0 0 0;
 				.ff_trader_item_row {
 					flex-wrap: wrap;
 					.ff_trader_dt {
 						width: 100%;
+						padding: 24px;
 					}
 					.ff_trader_dd {
 						width: 100%;
+						padding: 24px;
+						.trader_about {
+							padding: 0;
+						}
 					}
-					.trader_about {
-						padding: 12px;
+					.ff_label {
+						font-size: 10px;
 					}
 
 					&.trader_ratings_block {
-						table {
-							td {
-								.vue-star-rating {
-									display: none;
-								}
-							}
-							.trader_ratings_row, .trader_stats_row {
-								.ff_label {
-									font-size: 10px;
-								}
-							}
+						.stats_item {
+							width: 50%;
+						}
+					}
+					&.trader_stats_block {
+						.stats_item {
+							width: 50%;
 						}
 					}
 
+					&.trader_price_block {
+						.trader_price {
+							flex-wrap: wrap;
+						}
+					}
+					&.trader_action_tools {
+						border-top: none;
+						margin-right: -1px;
+						.ff_trader_promo {
+							flex-grow: 1;
+							width: 100%;
+							padding: 16px 16px;
+						}
+						.subscribe {
+							flex-grow: 1;
+							border: 1px solid $border-bold-color;
+							padding: 16px 0;
+							margin-left: -1px;
+						}
+					}
 				}
 			}
 		}
@@ -3617,8 +3651,39 @@ $label-font-size-redo: $default-size;
     border-radius: 50%;
   }
 
-  &.progress-95 {
-    @include draw-progress(95, $link-color);
+  &.progress_0 {
+    @include draw-progress(0, $link-color);
+  }
+
+  &.progress_10 {
+    @include draw-progress(10, $link-color);
+  }
+  &.progress_20 {
+    @include draw-progress(20, $link-color);
+  }
+  &.progress_30 {
+    @include draw-progress(30, $link-color);
+  }
+  &.progress_40 {
+    @include draw-progress(40, $link-color);
+  }
+  &.progress_50 {
+    @include draw-progress(50, $link-color);
+  }
+  &.progress_60 {
+    @include draw-progress(60, $link-color);
+  }
+  &.progress_70 {
+    @include draw-progress(70, $link-color);
+  }
+  &.progress_80 {
+    @include draw-progress(80, $link-color);
+  }
+  &.progress_90 {
+    @include draw-progress(90, $link-color);
+  }
+  &.progress_100 {
+    @include draw-progress(100, $link-color);
   }
 }
 

@@ -45,7 +45,7 @@
                   <div class="ff_label">
                     Рейтинг
                   </div>
-                  <div class="pie-wrapper progress-95 style-2">
+                  <div class="pie-wrapper" :class="progress(trader.rating_common)">
                     <span class="label">{{ trader.rating_common ? trader.rating_common : '-' }}</span>
                     <div class="pie">
                       <div class="left-side half-circle"></div>
@@ -58,7 +58,7 @@
                   <div class="ff_label">
                     Доходность
                   </div>
-                  <div class="pie-wrapper progress-95 style-2">
+                  <div class="pie-wrapper" :class="progress(trader.rating_profit)">
                     <span class="label">{{ trader.rating_profit ? trader.rating_profit : '-' }}</span>
                     <div class="pie">
                       <div class="left-side half-circle"></div>
@@ -71,7 +71,7 @@
                   <div class="ff_label">
                     Точность
                   </div>
-                  <div class="pie-wrapper progress-95 style-2">
+                  <div class="pie-wrapper" :class="progress(trader.rating_accuracy)">
                     <span class="label">{{ trader.rating_accuracy ? trader.rating_accuracy : '-' }}</span>
                     <div class="pie">
                       <div class="left-side half-circle"></div>
@@ -84,7 +84,7 @@
                   <div class="ff_label">
                     Цена
                   </div>
-                  <div class="pie-wrapper progress-95 style-2">
+                  <div class="pie-wrapper" :class="progress(trader.rating_price)">
                     <span class="label">{{ trader.rating_price ? trader.rating_price : '-' }}</span>
                     <div class="pie">
                       <div class="left-side half-circle"></div>
@@ -97,7 +97,7 @@
                   <div class="ff_label">
                     Поддержка
                   </div>
-                  <div class="pie-wrapper progress-95 style-2">
+                  <div class="pie-wrapper" :class="progress(trader.rating_support)">
                     <span class="label">{{ trader.rating_support ? trader.rating_support : '-' }}</span>
                     <div class="pie">
                       <div class="left-side half-circle"></div>
@@ -282,7 +282,10 @@
       getFlag( litera ) {
         let flag = this.flags.find(el => el.aliases.includes(litera))
         return flag ? flag.emoji : this.flags[0].emoji
-      }
+      },
+      progress( value ) {
+        return 'progress_' + Math.round(value * 20/300) * 5
+      },
     }
 
   }
