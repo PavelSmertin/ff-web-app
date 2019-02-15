@@ -14,15 +14,11 @@
 
         <div class="ff_trader_item_row" :ref="'coolpased_text_'+trader.id">
           <div class="ff_trader_dt">
-            <nuxt-link :to="linkToTrader(trader)">
-              <img v-if="trader.logo" class="trader_ava" :src="'/images/uploads/signal-services/logo/' + trader.logo" :alt="trader.name" >
-            </nuxt-link>
+            <img v-if="trader.logo" class="trader_ava" :src="'/images/uploads/signal-services/logo/' + trader.logo" :alt="trader.name" >
           </div>
 
           <div class="ff_trader_dd">
-            <nuxt-link :to="linkToTrader(trader)">
-              <h2>{{ trader.name }}</h2>
-            </nuxt-link>
+            <h2>{{ trader.name }}</h2>
             <div v-if="trader.description && trader.description.length > 0" class="collapsed_text_wrap">
               <section 
                 class="trader_about collapsed_text" 
@@ -286,10 +282,7 @@
       getFlag( litera ) {
         let flag = this.flags.find(el => el.aliases.includes(litera))
         return flag ? flag.emoji : this.flags[0].emoji
-      },
-      linkToTrader: function (trader) {
-        return { path: '/traders/'+trader.id }
-      },
+      }
     }
 
   }
