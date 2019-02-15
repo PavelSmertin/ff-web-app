@@ -3411,6 +3411,7 @@ h3 {
 								text-transform: uppercase;
 								.ff_trader_flag {
 									font-size: 24px;
+									line-height: 28px;
 								}
 							}
 						}
@@ -3439,7 +3440,7 @@ h3 {
 							text-align: center;
 							background-color: $bg-main-color;
 							border-radius: 5px;
-							padding: 12px;
+							padding: 12px 0;
 							&:first-child {
 								margin-left: 0;
 							}

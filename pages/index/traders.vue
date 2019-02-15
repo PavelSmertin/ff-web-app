@@ -162,7 +162,7 @@
           </table>
         </div>
 
-        <div class="ff_trader_item_row trader_price_block">
+        <div v-if="trader.prices" class="ff_trader_item_row trader_price_block">
           <div class="price_title">
             Цены
           </div>
