@@ -1,165 +1,133 @@
 <template>
-  <div class="ff_traders">
-    <div class="ff_trader_head">
-      <h1 class="ff_trader_title">
-        Рейтинг криптовалютных сигналов
-      </h1>
-      <div class="ff_traders_description">
-        Раздел для начинающих и профессиональных криптоинвесторов, где вы можете найти анализ топ-криптотрейдеров-консультантов. Откройте для себя лучшие криптовалютные сигналы на 2019 год. Мы проверяем криптовалютные каналы Telegram и показываем вам графики криптовалютных сигналов для получения достоверных результатов.
-      </div>
-    </div>
+  <div class="ff_trader_page">
 
-    <ul class="ff_traders_list">
-      <li class="ff_trader_item" v-for="trader of services">
 
-        <div class="ff_trader_item_row" :ref="'coolpased_text_'+trader.id">
-          <div class="ff_trader_dt">
-            <img v-if="trader.logo" class="trader_ava" :src="'/images/uploads/signal-services/logo/' + trader.logo" :alt="trader.name" >
+      <template class="ff_trader_item" v-for="trader of services">
+
+        <div class="ff_trader_head">
+          <img v-if="trader.logo" class="trader_ava" :src="'/images/uploads/signal-services/logo/' + trader.logo" :alt="trader.name" >
+          <h1 class="ff_trader_title">
+            {{ trader.name }}
+          </h1>
+        </div>
+
+        <div class="ff_trader_item_row trader_ratings_block">
+          <div class="stats_item">
+            <div class="ff_label">
+              Рейтинг
+            </div>
+            <div class="pie-wrapper" :class="progress(trader.rating_common)">
+              <span class="label">{{ trader.rating_common ? trader.rating_common : '-' }}</span>
+              <div class="pie">
+                <div class="left-side half-circle"></div>
+                <div class="right-side half-circle"></div>
+              </div>
+              <div class="shadow"></div>
+            </div>
           </div>
-
-          <div class="ff_trader_dd">
-            <h2>{{ trader.name }}</h2>
-            <div v-if="trader.description && trader.description.length > 0" class="collapsed_text_wrap">
-              <section 
-                class="trader_about collapsed_text" 
-                v-html="trader.description"
-                v-bind:class="indexSeoText(trader.id)"
-                >
-              </section>
-              <button 
-                class="button_class seo_text_toggle" 
-                v-on:click.stop.prevent="toggleSeoText(trader.id)" 
-                v-bind:class="indexSeoText(trader.id)" 
-                v-html="toggleSeoAction(trader.id)"
-                >
-              </button>
+          <div class="stats_item">
+            <div class="ff_label">
+              Доходность
+            </div>
+            <div class="pie-wrapper" :class="progress(trader.rating_profit)">
+              <span class="label">{{ trader.rating_profit ? trader.rating_profit : '-' }}</span>
+              <div class="pie">
+                <div class="left-side half-circle"></div>
+                <div class="right-side half-circle"></div>
+              </div>
+              <div class="shadow"></div>
+            </div>
+          </div>
+          <div class="stats_item">
+            <div class="ff_label">
+              Точность
+            </div>
+            <div class="pie-wrapper" :class="progress(trader.rating_accuracy)">
+              <span class="label">{{ trader.rating_accuracy ? trader.rating_accuracy : '-' }}</span>
+              <div class="pie">
+                <div class="left-side half-circle"></div>
+                <div class="right-side half-circle"></div>
+              </div>
+              <div class="shadow"></div>
+            </div>
+          </div>
+          <div class="stats_item">
+            <div class="ff_label">
+              Цена
+            </div>
+            <div class="pie-wrapper" :class="progress(trader.rating_price)">
+              <span class="label">{{ trader.rating_price ? trader.rating_price : '-' }}</span>
+              <div class="pie">
+                <div class="left-side half-circle"></div>
+                <div class="right-side half-circle"></div>
+              </div>
+              <div class="shadow"></div>
+            </div>
+          </div>
+          <div class="stats_item">
+            <div class="ff_label">
+              Поддержка
+            </div>
+            <div class="pie-wrapper" :class="progress(trader.rating_support)">
+              <span class="label">{{ trader.rating_support ? trader.rating_support : '-' }}</span>
+              <div class="pie">
+                <div class="left-side half-circle"></div>
+                <div class="right-side half-circle"></div>
+              </div>
+              <div class="shadow"></div>
             </div>
           </div>
         </div>
 
-        <div class="ff_trader_item_row trader_ratings_block">
-          <table>
-            <tbody>
-              <tr class="trader_ratings_row">
-                <td>
-                  <div class="ff_label">
-                    Рейтинг
-                  </div>
-                  <div class="pie-wrapper" :class="progress(trader.rating_common)">
-                    <span class="label">{{ trader.rating_common ? trader.rating_common : '-' }}</span>
-                    <div class="pie">
-                      <div class="left-side half-circle"></div>
-                      <div class="right-side half-circle"></div>
-                    </div>
-                    <div class="shadow"></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="ff_label">
-                    Доходность
-                  </div>
-                  <div class="pie-wrapper" :class="progress(trader.rating_profit)">
-                    <span class="label">{{ trader.rating_profit ? trader.rating_profit : '-' }}</span>
-                    <div class="pie">
-                      <div class="left-side half-circle"></div>
-                      <div class="right-side half-circle"></div>
-                    </div>
-                    <div class="shadow"></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="ff_label">
-                    Точность
-                  </div>
-                  <div class="pie-wrapper" :class="progress(trader.rating_accuracy)">
-                    <span class="label">{{ trader.rating_accuracy ? trader.rating_accuracy : '-' }}</span>
-                    <div class="pie">
-                      <div class="left-side half-circle"></div>
-                      <div class="right-side half-circle"></div>
-                    </div>
-                    <div class="shadow"></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="ff_label">
-                    Цена
-                  </div>
-                  <div class="pie-wrapper" :class="progress(trader.rating_price)">
-                    <span class="label">{{ trader.rating_price ? trader.rating_price : '-' }}</span>
-                    <div class="pie">
-                      <div class="left-side half-circle"></div>
-                      <div class="right-side half-circle"></div>
-                    </div>
-                    <div class="shadow"></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="ff_label">
-                    Поддержка
-                  </div>
-                  <div class="pie-wrapper" :class="progress(trader.rating_support)">
-                    <span class="label">{{ trader.rating_support ? trader.rating_support : '-' }}</span>
-                    <div class="pie">
-                      <div class="left-side half-circle"></div>
-                      <div class="right-side half-circle"></div>
-                    </div>
-                    <div class="shadow"></div>
-                  </div>
-                </td>
-              </tr>
-              <tr class="trader_stats_row">
-                <td>
-                  <div class="ff_label">
-                    Сроки сделок
-                  </div>
-                  <div class="trader_value">
-                    <span v-for="period of trader.periods_deals" >
-                      {{ period }}
-                    </span>
-                  </div>
-                </td>
+        <div class="ff_trader_item_row trader_stats_block">
+          <div class="stats_item">
+            <div class="ff_label">
+              Сроки сделок
+            </div>
+            <div class="trader_value">
+              <span v-for="period of trader.periods_deals" >
+                {{ period }}
+              </span>
+            </div>
+          </div>
 
-                <td>
-                  <div class="ff_label">
-                    Команда
-                  </div>
-                  <div class="trader_value">
-                    {{ trader.team }}
-                  </div>
-                </td>
+          <div class="stats_item">
+            <div class="ff_label">
+              Команда
+            </div>
+            <div class="trader_value">
+              {{ trader.team }}
+            </div>
+          </div>
 
-                <td>
-                  <div class="ff_label">
-                    Страна
-                  </div>
-                  <div class="trader_value">
-                    <span class="ff_trader_flag">{{ getFlag(trader.country) }}</span>
-                  </div>
-                </td>
+          <div class="stats_item">
+            <div class="ff_label">
+              Страна
+            </div>
+            <div class="trader_value">
+              <span class="ff_trader_flag">{{ getFlag(trader.country) }}</span>
+            </div>
+          </div>
 
-                <td>
-                  <div class="ff_label">
-                    Сигналы
-                  </div>
-                  <div class="trader_value">
-                    
-                  </div>
-                </td>
+          <div class="stats_item">
+            <div class="ff_label">
+              Сигналы
+            </div>
+            <div class="trader_value">
+              
+            </div>
+          </div>
 
-                <td>
-                  <div class="ff_label">
-                    Языки
-                  </div>
-                  <div class="trader_value">
-                    <span class="ff_trader_flag" v-for="lang of trader.lang">
-                      {{ getFlag(lang) }}
-                    </span>
-                  </div>
-                </td>
-              </tr>
-
-            </tbody>
-          </table>
+          <div class="stats_item">
+            <div class="ff_label">
+              Языки
+            </div>
+            <div class="trader_value">
+              <span class="ff_trader_flag" v-for="lang of trader.lang">
+                {{ getFlag(lang) }}
+              </span>
+            </div>
+          </div>
         </div>
 
         <div v-if="trader.prices" class="ff_trader_item_row trader_price_block">
@@ -195,9 +163,54 @@
           </a>
         </div>
 
-      </li>
-    </ul>
+        <div class="comments_wrap">
+          <div class="comments">
+            <h2 class="comments_head">Отзывы</h2>
+            <comment v-for="comment of trader.comments" v-bind:key="comment.id" :comment="comment"></comment>
+            <comment v-for="newComment of newComments" v-bind:key="newComment.id" :comment="newComment"></comment>
+          </div>
 
+          <div class="ff_form">
+            <h2>Оставить отзыв</h2>
+            <p class="ff_label">Поделитесь своим опытом, если вы пользовались сигналами этой команды</p>
+            <form>
+              <div class="checkbox_row">
+                <div class="checkbox_container">
+                  <input type="radio" id="positive" value="positive" v-model="picked">
+                  <label class="checkmark positive" for="positive">Положительный</label>
+                </div>
+                <div class="checkbox_container">
+                  <input type="radio" id="negative" value="negative" v-model="picked">
+                  <label class="checkmark negative" for="negative">Отрицательный</label>
+                </div>
+              </div>
+
+              <textarea name="comment" v-model="commentText" v-on:keyup.enter="sendComment()"></textarea>
+
+              <button class="subscribe" type="button" v-on:click="sendComment()" :disabled="commentsButtonDisabled" >
+                Оставить отзыв
+              </button> 
+            </form>
+          </div>
+        </div>
+
+        <div v-if="trader.description && trader.description.length > 0" class="trader_description collapsed_text_wrap" :ref="'coolpased_text_'+trader.id">
+          <section 
+            class="trader_about collapsed_text" 
+            v-html="trader.description"
+            v-bind:class="indexSeoText(trader.id)"
+            >
+          </section>
+          <button 
+            class="button_class seo_text_toggle" 
+            v-on:click.stop.prevent="toggleSeoText(trader.id)" 
+            v-bind:class="indexSeoText(trader.id)" 
+            v-html="toggleSeoAction(trader.id)"
+            >
+          </button>
+        </div>
+
+      </template>
 
   </div>
 </template>
@@ -206,8 +219,7 @@
 <script>
 
   import Emoji from '~/assets/js/emoji.json'
-
-  const API_SIGNALS_SERVICES = `/api/signals-services?include=comments,historypoints`
+  import Comment from '~/components/Comment.vue'
 
   export default {
 
@@ -228,16 +240,23 @@
       return {
         expandedRows: [],
         flags: Emoji,
+        commentText: '',
+        commentsSendProcess: false,
+        newComments: [],
+        picked: 'positive',
+
       }
     },
 
-    async asyncData ({ app }) {
-      let services
+    components: {
+      Comment,
+    },
 
+    async asyncData ({ app, params }) {
+      let services
       try {
-        let servicesResponse = await app.$axios.get(API_SIGNALS_SERVICES)
+        let servicesResponse = await app.$axios.get(getUrl(params.trader))
         services = app.$dataFormatter.deserialize(servicesResponse.data)
-        console.log(services)
       } catch (e) {
       }
 
@@ -248,7 +267,9 @@
     },
 
     computed: {
-
+      commentsButtonDisabled: function () {
+        return this.commentText.length < 1 || this.commentsSendProcess === true;
+      },
 
     },
 
@@ -286,8 +307,28 @@
       progress( value ) {
         return 'progress_' + Math.round(value * 20/300) * 5
       },
+
+      sendComment() {
+        this.commentsSendProcess = true
+        let self  = this
+        this.$axios.post( `/api/signals-services/${this.services[0].id}/comment-add`, `SignalComments[comment]=${this.commentText}&SignalComments[type]=positive`)
+            .then( ({ data }) => {
+              let commentObj = self.$dataFormatter.deserialize( data )
+              self.newComments.push(commentObj)
+              self.commentsSendProcess = false
+              self.commentText = ''
+            })
+            .catch(function (error) {
+              self.commentsSendProcess = false
+            })
+      },
+
     }
 
+  }
+
+  function getUrl( id ) {
+    return `/api/signals-services/${id}?include=comments,historypoints,user`
   }
 
 </script>

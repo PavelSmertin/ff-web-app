@@ -724,6 +724,93 @@ h3 {
     -webkit-overflow-scrolling:touch;
 }
 
+.comments {
+	@extend .content_width;
+
+	.comment_item {
+		border-top: 1px solid $border-bold-color;
+
+		.comment_head {
+			display: flex;
+
+			.comment_head_author {
+				font-size: $primary-size;
+				line-height: 20px;
+				font-weight: bold;
+				padding:14px 14px 14px 0;
+			}
+
+			.comment_head_time {
+				flex-grow: 1;
+				text-align: right;
+				padding: 16px 20px 0 0;
+				font-size: $label-size;
+			}
+		}
+
+		.comment_body {
+			.comment_body_text {
+				font-size: $second_size;
+				line-height: 20px;
+			}
+		}
+	}
+
+	.comments_head {
+		font-size: $module-title;
+		line-height: 24px;
+		padding-bottom: 10px;
+	}
+
+	.comment_footer {
+		display: flex;
+
+		input[type=text] {
+			padding: 10.5px 12.5px;
+			font-size: $second_size;
+			color: #000;
+			line-height: 20px;
+			flex-grow: 1;
+			border: 2px solid $border-color;
+			border-right: 0;
+		}
+
+		input[type=button] {
+			text-align: center;
+			background-color: #fff;
+			font-size: 12px;
+			font-weight: bold;
+			line-height: 16px;
+			text-transform: uppercase;
+			border: 2px solid $border-color;
+			padding: 12.5px;
+			cursor: pointer;
+			width: 96px;
+			flex-grow: 0;
+			transition: 0.2s;
+		}
+
+		input:focus {
+			outline:none;
+		}
+
+		input[type=button]:hover {
+			border-color: $link-color;
+			color: $link-color;
+		}
+
+		input[type=button]:active {
+			background-color: #FFEAD1;
+		}
+
+		input[type=button]:disabled {
+			color: grey;
+			border-color: $border-color;
+			cursor: default;
+		}
+	}
+}
+
 /************ INDEX BLOCKS ************/
 
 .ff_left_panel {
@@ -2044,93 +2131,6 @@ h3 {
 		}
 	}
 
-	.comments {
-		@extend .content_width;
-
-		.comment_item {
-			border-top: 1px solid $border-bold-color;
-
-			.comment_head {
-				display: flex;
-
-				.comment_head_author {
-					font-size: $primary-size;
-					line-height: 20px;
-					font-weight: bold;
-					padding:14px 14px 14px 0;
-				}
-
-				.comment_head_time {
-					flex-grow: 1;
-					text-align: right;
-					padding: 16px 20px 0 0;
-					font-size: $label-size;
-				}
-			}
-
-			.comment_body {
-				.comment_body_text {
-					font-size: $second_size;
-					line-height: 20px;
-				}
-			}
-		}
-
-		.comments_head {
-			font-size: $module-title;
-			line-height: 24px;
-			padding-bottom: 10px;
-		}
-
-		.comment_footer {
-			display: flex;
-
-			input[type=text] {
-				padding: 10.5px 12.5px;
-				font-size: $second_size;
-				color: #000;
-				line-height: 20px;
-				flex-grow: 1;
-				border: 2px solid $border-color;
-				border-right: 0;
-			}
-
-			input[type=button] {
-				text-align: center;
-				background-color: #fff;
-				font-size: 12px;
-				font-weight: bold;
-				line-height: 16px;
-				text-transform: uppercase;
-				border: 2px solid $border-color;
-				padding: 12.5px;
-				cursor: pointer;
-				width: 96px;
-				flex-grow: 0;
-				transition: 0.2s;
-			}
-
-			input:focus {
-				outline:none;
-			}
-
-			input[type=button]:hover {
-				border-color: $link-color;
-				color: $link-color;
-			}
-
-			input[type=button]:active {
-				background-color: #FFEAD1;
-			}
-
-			input[type=button]:disabled {
-				color: grey;
-				border-color: $border-color;
-				cursor: default;
-			}
-		}
-	}
-
 	.tt_banner_wrap {
 		display: block;
 		text-align: center;
@@ -3347,149 +3347,149 @@ h3 {
 		.ff_trader_item {
 			box-shadow: 0 2px 8px 0 rgba(0,0,0,0.30);
 			margin: 32px 24px 24px 24px;
-			.ff_trader_item_row {
+		}
+	}
+	.ff_trader_item_row {
+		display: flex;
+		flex-direction: row;
+
+		.ff_trader_dt {
+			width: 20%;
+			margin: 0;
+			padding: 16px;
+			vertical-align: top;
+			.trader_ava {
+				width: 100%;
+				display: block;
+			}
+		}
+		.ff_trader_dd {
+			width: 80%;
+			padding: 16px 16px 16px 0;
+
+			h2 {
+				margin: 0;
+			}
+
+			.trader_about {
+				@extend .ff_label;
+				padding-right: 24px;
+			}
+		}
+		&.trader_ratings_block {
+			display: flex;
+			flex-direction: row;
+			margin-right: -1px;
+			margin-left: -1px;
+			flex-wrap: wrap;
+
+			.stats_item {
+				flex-grow: 1;
+				flex-shrink: 0;
+				vertical-align: top;
+				padding: 16px;
+				width: 20%;
+				text-align: center;
+				border: 1px solid $border-bold-color;
+			}
+			.trader_value {
+				font-size: $primary-size;
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+		}
+		&.trader_stats_block {
+			display: flex;
+			flex-direction: row;
+			margin-right: -1px;
+			margin-left: -1px;
+			flex-wrap: wrap;
+			.stats_item {
+				flex-grow: 1;
+				flex-shrink: 0;
+				width: 20%;
+				padding: 16px;
+			}
+			.trader_value {
+				font-size: $label-size;
+				font-weight: bold;
+				text-transform: uppercase;
+				.ff_trader_flag {
+					font-size: 24px;
+					line-height: 28px;
+				}
+			}
+		}
+
+		&.trader_price_block {
+			flex-direction: column;
+			background-color: $bg-coin-color;
+			border-top: 1px solid $border-bold-color;
+			padding: 16px 8px 8px 8px;
+			.price_title {
+				text-align: center;
+				font-size: 12px;
+				text-transform: uppercase;
+				font-weight: bold;
+			}
+
+			.trader_price {
 				display: flex;
 				flex-direction: row;
-
-				.ff_trader_dt {
-					width: 20%;
-					margin: 0;
-					padding: 16px;
-					vertical-align: top;
-					.trader_ava {
-						width: 100%;
-						display: block;
+				margin-top: 8px; 
+				.price_card {
+					margin: 8px;
+					flex-grow: 1;
+					text-align: center;
+					background-color: $bg-main-color;
+					border-radius: 5px;
+					padding: 12px 0;
+					.price_value {
+						font-size: 24px;
+						line-height: 32px;
+						color: $link-color;
 					}
 				}
-				.ff_trader_dd {
-					width: 80%;
-					padding: 16px 16px 16px 0;
+			}
+		}
 
-					h2 {
-						margin: 0;
-					}
-
-					.trader_about {
-						@extend .ff_label;
-						padding-right: 24px;
-					}
-				}
-				&.trader_ratings_block {
-					display: flex;
-					flex-direction: row;
-					margin-right: -1px;
-					margin-left: -1px;
-					flex-wrap: wrap;
-
-					.stats_item {
-						flex-grow: 1;
-						flex-shrink: 0;
-						vertical-align: top;
-						padding: 16px;
-						width: 20%;
-						text-align: center;
-						border: 1px solid $border-bold-color;
-					}
-					.trader_value {
-						font-size: $primary-size;
-						font-weight: bold;
-						text-transform: uppercase;
-					}
-				}
-				&.trader_stats_block {
-					display: flex;
-					flex-direction: row;
-					margin-right: -1px;
-					margin-left: -1px;
-					flex-wrap: wrap;
-					.stats_item {
-						flex-grow: 1;
-						flex-shrink: 0;
-						width: 20%;
-						padding: 16px;
-					}
-					.trader_value {
-						font-size: $label-size;
-						font-weight: bold;
-						text-transform: uppercase;
-						.ff_trader_flag {
-							font-size: 24px;
-							line-height: 28px;
-						}
-					}
+		&.trader_action_tools {
+			border-top: 1px solid $border-bold-color;
+			align-content: stretch;
+			.ff_trader_promo {
+				flex-grow: 4;
+				display: flex;
+				align-items: center;
+				padding: 24px 16px;
+				.ff_bold {
+					font-weight: bold;
+					margin-left: 12px;
 				}
 
-				&.trader_price_block {
-					flex-direction: column;
-					background-color: $bg-coin-color;
-					border-top: 1px solid $border-bold-color;
-					padding: 16px 8px 8px 8px;
-					.price_title {
-						text-align: center;
-						font-size: 12px;
-						text-transform: uppercase;
-						font-weight: bold;
-					}
+			}
+			.subscribe {
+				@extend .button_class;
+				height: auto;
+				display: flex;
+				padding: 0;
+				border: none;
+				border-left: 1px solid $border-bold-color;
+				align-items: center;
+				justify-content: center;
 
-					.trader_price {
-						display: flex;
-						flex-direction: row;
-						margin-top: 8px; 
-						.price_card {
-							margin: 8px;
-							flex-grow: 1;
-							text-align: center;
-							background-color: $bg-main-color;
-							border-radius: 5px;
-							padding: 12px 0;
-							.price_value {
-								font-size: 24px;
-								line-height: 32px;
-								color: $link-color;
-							}
-						}
-					}
+				.trader_tg, .trader_site {
+					background-image: url('~assets/images/telegram_hover.svg');
+					width: 16px;
+					height: 16px;
+					margin-right: 16px;
+				}
+				.trader_site {
+					background-image: url('~assets/images/ic_internet.svg');
 				}
 
-				&.trader_action_tools {
-					border-top: 1px solid $border-bold-color;
-					align-content: stretch;
-					.ff_trader_promo {
-						flex-grow: 4;
-						display: flex;
-						align-items: center;
-						padding: 24px 16px;
-						.ff_bold {
-							font-weight: bold;
-							margin-left: 12px;
-						}
-
-					}
-					.subscribe {
-						@extend .button_class;
-						height: auto;
-						display: flex;
-						padding: 0;
-						border: none;
-						border-left: 1px solid $border-bold-color;
-						align-items: center;
-						justify-content: center;
-
-						.trader_tg, .trader_site {
-							background-image: url('~assets/images/telegram_hover.svg');
-							width: 16px;
-							height: 16px;
-							margin-right: 16px;
-						}
-						.trader_site {
-							background-image: url('~assets/images/ic_internet.svg');
-						}
-
-						&:hover {
-							background-color: lighten($dark-primary-color, 100%);
-							transition: background-color 0.2s ease-in-out;
-						}
-					}
+				&:hover {
+					background-color: lighten($dark-primary-color, 100%);
+					transition: background-color 0.2s ease-in-out;
 				}
 			}
 		}
@@ -3514,60 +3514,188 @@ h3 {
 			.ff_trader_item {
 				box-shadow: none;
 				margin: 32px 0 0 0;
-				.ff_trader_item_row {
+			}
+		}
+
+		.ff_trader_item_row {
+			flex-wrap: wrap;
+			.ff_trader_dt {
+				width: 100%;
+				padding: 24px;
+			}
+			.ff_trader_dd {
+				width: 100%;
+				padding: 24px;
+				.trader_about {
+					padding: 0;
+				}
+			}
+			.ff_label {
+				font-size: 10px;
+			}
+
+			&.trader_ratings_block {
+				.stats_item {
+					width: 50%;
+				}
+			}
+			&.trader_stats_block {
+				.stats_item {
+					width: 50%;
+				}
+			}
+
+			&.trader_price_block {
+				.trader_price {
 					flex-wrap: wrap;
-					.ff_trader_dt {
-						width: 100%;
-						padding: 24px;
-					}
-					.ff_trader_dd {
-						width: 100%;
-						padding: 24px;
-						.trader_about {
-							padding: 0;
-						}
-					}
-					.ff_label {
-						font-size: 10px;
-					}
-
-					&.trader_ratings_block {
-						.stats_item {
-							width: 50%;
-						}
-					}
-					&.trader_stats_block {
-						.stats_item {
-							width: 50%;
-						}
-					}
-
-					&.trader_price_block {
-						.trader_price {
-							flex-wrap: wrap;
-						}
-					}
-					&.trader_action_tools {
-						border-top: none;
-						margin-right: -1px;
-						.ff_trader_promo {
-							flex-grow: 1;
-							width: 100%;
-							padding: 16px 16px;
-						}
-						.subscribe {
-							flex-grow: 1;
-							border: 1px solid $border-bold-color;
-							padding: 16px 0;
-							margin-left: -1px;
-						}
-					}
+				}
+			}
+			&.trader_action_tools {
+				border-top: none;
+				margin-right: -1px;
+				.ff_trader_promo {
+					flex-grow: 1;
+					width: 100%;
+					padding: 16px 16px;
+				}
+				.subscribe {
+					flex-grow: 1;
+					border: 1px solid $border-bold-color;
+					padding: 16px 0;
+					margin-left: -1px;
 				}
 			}
 		}
+
 	}
 }
 
+.ff_trader_page {
+	@extend .ff_traders;
+	.ff_trader_head {
+		padding: 24px;
+		.trader_ava {
+			margin-right: 24px;
+		}
+	}
+
+	.comments_wrap {
+		background-color: $bg-coin-color;
+		padding-bottom: 12px;
+	}
+	.comments {
+		border-top: 1px solid $border-bold-color;
+		.comments_head {
+			font-size: 24px;
+			font-weight: normal;
+			margin: 24px 24px 0 24px;
+			padding: 0;
+			line-height: 32px;
+		}
+		.comment_item {
+			border: 1px solid $border-thin-color;
+			margin: 12px 24px;
+			background-color: $bg-main-color;
+			.comment_body {
+				padding: 0 12px;
+			}
+		}
+	}
+
+	.ff_form {
+
+		box-shadow: 0 2px 8px 0 rgba(0,0,0,0.30);
+		margin: 32px 24px 24px 24px;
+		background-color: $bg-main-color;
+		padding: 24px 0;
+
+		form {
+			margin: 0 auto;
+    		width: 75%;
+			display: flex;
+			flex-direction: column;
+		}
+
+		h2 {
+			margin: 0;
+			text-align: center;
+		}
+		p {
+			text-align: center;
+			margin: 6px 0 24px 0;
+		}
+
+		.checkbox_row {
+			display: flex;
+
+			.checkbox_container {
+				position: relative;
+				flex-grow: 1;
+				border: 1px solid $border-thin-color;
+				input {
+					position: absolute;
+					opacity: 0;
+					cursor: pointer;
+					height: 0;
+					width: 0;
+				}
+				.checkmark {
+					display: inline-block;
+					width: 100%;
+					text-align: center;
+					padding: 8px 0;
+					font-size: 12px;
+					text-transform: uppercase;
+					font-weight: 500 !important;
+					cursor: pointer;
+				}
+			}
+			
+
+			.checkbox_container:hover input ~ .checkmark {
+				background-color: lighten($border-thin-color, 3%);
+			}
+
+
+			.checkbox_container:hover input:checked ~ .checkmark {
+				background-color: lighten($border-thin-color, 3%);
+			}
+
+			.checkbox_container input:checked ~ .checkmark {
+				background-color: $border-thin-color;
+			}
+		}
+
+		textarea {
+			border: 1px solid $border-thin-color;
+			margin-top: -1px;
+			padding: 12px;
+			outline: none;
+			-moz-appearance: none;
+			min-height: 150px;
+		}
+
+		.subscribe {
+			@extend .button_class;
+			border: none;
+			background-color: $up-value-color;
+			color: $bg-main-color;
+			display: block;
+			margin-top: 16px;
+			&:hover {
+				background-color: lighten($up-value-color, 3%);
+				transition: background-color 0.2s ease-in-out;
+			}
+		}
+	}
+
+	.trader_description {
+		margin: 32px 24px 24px 24px;
+		.trader_about {
+			@extend .ff_page;
+		}
+	}
+}
 
 
 
