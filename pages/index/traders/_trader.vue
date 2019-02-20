@@ -5,7 +5,9 @@
       <template class="ff_trader_item" v-for="trader of services">
 
         <div class="ff_trader_head">
-          <img v-if="trader.logo" class="trader_ava" :src="'/images/uploads/signal-services/logo/' + trader.logo" :alt="trader.name" >
+          <div class="ff_trader_img_holder">
+            <img v-if="trader.logo" class="trader_ava" :src="'/images/uploads/signal-services/logo/' + trader.logo" :alt="trader.name" >
+          </div>
           <h1 class="ff_trader_title">
             {{ trader.name }}
           </h1>
@@ -225,12 +227,12 @@
 
     head() {
       return {
-        title: 'Лучшие криптовалютные сигналы в Телеграм',
+        title: `Рейтинг сигналов, отзывы о ${this.name}`,
         meta: [
           { 
             hid: 'description', 
             name: 'description', 
-            content: 'Сравните и выберите лучшие сигналы для Bitmex на Bitcoin и Альткоины. Анализ и отслеживание производительности.',
+            content: `Доходность торговых сигналов от ${this.name}, цена, промокод, подписка`,
           },
         ],
       }
@@ -254,14 +256,19 @@
 
     async asyncData ({ app, params }) {
       let services
+      let name
       try {
         let servicesResponse = await app.$axios.get(getUrl(params.trader))
         services = app.$dataFormatter.deserialize(servicesResponse.data)
+        if( services && services.length > 0 ) {
+          name = services[0].name
+        }
       } catch (e) {
       }
 
       return {
         services,
+        name
       }
 
     },
