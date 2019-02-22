@@ -238,6 +238,25 @@ h3 {
 	height: 12px;
 	display: inline-flex;
 }
+.trader_tg, .trader_site, .trader_comments {
+	background-image: url('~assets/images/telegram_hover.svg');
+	width: 16px;
+	height: 16px;
+	margin-right: 16px;
+}
+.trader_site {
+	background-image: url('~assets/images/ic_internet.svg');
+}
+.trader_comments {
+	background-image: url('~assets/images/ic_comments.svg');
+	width: 16px;
+	height: 16px;
+}
+.trader_alert {
+	width: 36px;
+	height: 36px;
+	background-image: url('~assets/images/ic_alert.svg');
+}
 
 .button_link {
 	display: block;
@@ -258,6 +277,12 @@ h3 {
 	background-color: $bg-main-color;
 	color: $bg-toolbar-color;
 	transition: background-color 0.2s ease-in-out;
+}
+.light_link {
+	color: darken($link-color, 5%);
+	&:hover {
+		color: lighten($link-color, 5%);
+	}
 }
 
 .align_right {
@@ -809,6 +834,67 @@ h3 {
 			cursor: default;
 		}
 	}
+}
+
+
+.tt_graph_wrap {
+	position: relative;
+	.tt_graph_head {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		top: 54px;
+		position: absolute;
+		width: 100%;
+		align-items: baseline;
+		.button_tt_link {
+			@extend .button_class;
+			border: none;
+			background-color: $up-value-color;
+			color: $bg-main-color;
+			text-align: center;
+			line-height: 41px;
+			display: inline-block;
+			flex-grow: 0;
+			&:hover {
+				border: none;
+				background-color: lighten($up-value-color, 3%);
+				transition: background-color 0.2s ease-in-out;
+			}
+		}
+		h2 {
+			margin: 0;
+		}
+	}
+
+	.tt_graph_component {
+		width: 100%;
+		height: 300px;
+		display: block;
+
+	}
+	&.trading_view_adapt {
+		width: 83%;
+		margin: 24px auto;
+	}
+	.loading {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: $bg-main-color;
+		opacity: 0.6;
+	}
+}
+.tt_graph_empty {
+	border-top: 1px solid $border-thin-color;
+	border-bottom: 1px solid $border-thin-color;
+	color: $down-value-color;
+	height: 64px;
+	display: flex;
+	align-items: center;
+    justify-content: center;
 }
 
 /************ INDEX BLOCKS ************/
@@ -2330,7 +2416,6 @@ h3 {
 	}
 }
 
-
 .chart-page {
 	background: $bg-main-color !important; 
 	border: 1px solid $border-thin-color !important;
@@ -2660,56 +2745,6 @@ h3 {
 	.сhart_сontainer {
 		border: 1px solid $border-thin-color;
 	}
-	.tt_graph_wrap {
-		position: relative;
-		.tt_graph_head {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			top: 54px;
-			position: absolute;
-			width: 100%;
-			align-items: baseline;
-			.button_tt_link {
-				@extend .button_class;
-				border: none;
-				background-color: $up-value-color;
-				color: $bg-main-color;
-				text-align: center;
-				line-height: 41px;
-				display: inline-block;
-				flex-grow: 0;
-				&:hover {
-					border: none;
-					background-color: lighten($up-value-color, 3%);
-					transition: background-color 0.2s ease-in-out;
-				}
-			}
-			h2 {
-				margin: 0;
-			}
-		}
-
-		.tt_graph_component {
-			width: 100%;
-			height: 300px;
-			display: block;
-
-		}
-		&.trading_view_adapt {
-			width: 83%;
-			margin: 24px auto;
-		}
-		.loading {
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			background-color: $bg-main-color;
-			opacity: 0.6;
-		}
-	}
 	.index_pane {
 		padding-bottom: 48px;
 	}
@@ -2765,7 +2800,6 @@ h3 {
 			}
 		}
 	}
-
 	.index_text_block {
 		border-top: 1px solid $border-bold-color;
 		margin-top: 12px;
@@ -3369,6 +3403,10 @@ h3 {
 
 			h2 {
 				margin: 0;
+				&:hover {
+					color: $link-color;
+					transition: color 0.1s ease-in-out;
+				}
 			}
 
 			.trader_about {
@@ -3420,7 +3458,6 @@ h3 {
 				}
 			}
 		}
-
 		&.trader_price_block {
 			flex-direction: column;
 			background-color: $bg-coin-color;
@@ -3440,6 +3477,7 @@ h3 {
 				.price_card {
 					margin: 8px;
 					flex-grow: 1;
+					width: 0;
 					text-align: center;
 					background-color: $bg-main-color;
 					border-radius: 5px;
@@ -3452,21 +3490,24 @@ h3 {
 				}
 			}
 		}
-
+		&.ff_trader_promo {
+			border-top: 1px solid $border-bold-color;
+			background-color: $bg-coin-color;
+			height: 48px;
+			display: flex;
+			align-items: center;
+			padding: 24px 16px;
+			.ff_label {
+				position: absolute;
+			}
+			.ff_bold {
+				font-weight: bold;
+				margin: 0 auto;
+			}
+		}
 		&.trader_action_tools {
 			border-top: 1px solid $border-bold-color;
 			align-content: stretch;
-			.ff_trader_promo {
-				flex-grow: 4;
-				display: flex;
-				align-items: center;
-				padding: 24px 16px;
-				.ff_bold {
-					font-weight: bold;
-					margin-left: 12px;
-				}
-
-			}
 			.subscribe {
 				@extend .button_class;
 				height: auto;
@@ -3476,16 +3517,7 @@ h3 {
 				border-left: 1px solid $border-bold-color;
 				align-items: center;
 				justify-content: center;
-
-				.trader_tg, .trader_site {
-					background-image: url('~assets/images/telegram_hover.svg');
-					width: 16px;
-					height: 16px;
-					margin-right: 16px;
-				}
-				.trader_site {
-					background-image: url('~assets/images/ic_internet.svg');
-				}
+				height: 64px;
 
 				&:hover {
 					background-color: lighten($dark-primary-color, 100%);
@@ -3550,14 +3582,13 @@ h3 {
 					flex-wrap: wrap;
 				}
 			}
+			&.ff_trader_promo {
+				width: 100%;
+				padding: 16px 16px;
+			}
 			&.trader_action_tools {
 				border-top: none;
 				margin-right: -1px;
-				.ff_trader_promo {
-					flex-grow: 1;
-					width: 100%;
-					padding: 16px 16px;
-				}
 				.subscribe {
 					flex-grow: 1;
 					border: 1px solid $border-bold-color;
@@ -3696,6 +3727,7 @@ h3 {
 			color: $bg-main-color;
 			display: block;
 			margin-top: 16px;
+
 			&:hover {
 				background-color: lighten($up-value-color, 3%);
 				transition: background-color 0.2s ease-in-out;

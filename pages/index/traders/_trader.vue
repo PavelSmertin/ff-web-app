@@ -1,7 +1,6 @@
 <template>
   <div class="ff_trader_page">
 
-
       <template class="ff_trader_item" v-for="trader of services">
 
         <div class="ff_trader_head">
@@ -13,72 +12,20 @@
           </h1>
         </div>
 
-        <div class="ff_trader_item_row trader_ratings_block">
-          <div class="stats_item">
-            <div class="ff_label">
-              Рейтинг
-            </div>
-            <div class="pie-wrapper" :class="progress(trader.rating_common)">
-              <span class="label">{{ trader.rating_common ? trader.rating_common : '-' }}</span>
-              <div class="pie">
-                <div class="left-side half-circle"></div>
-                <div class="right-side half-circle"></div>
-              </div>
-              <div class="shadow"></div>
-            </div>
-          </div>
-          <div class="stats_item">
-            <div class="ff_label">
-              Доходность
-            </div>
-            <div class="pie-wrapper" :class="progress(trader.rating_profit)">
-              <span class="label">{{ trader.rating_profit ? trader.rating_profit : '-' }}</span>
-              <div class="pie">
-                <div class="left-side half-circle"></div>
-                <div class="right-side half-circle"></div>
-              </div>
-              <div class="shadow"></div>
-            </div>
-          </div>
-          <div class="stats_item">
-            <div class="ff_label">
-              Точность
-            </div>
-            <div class="pie-wrapper" :class="progress(trader.rating_accuracy)">
-              <span class="label">{{ trader.rating_accuracy ? trader.rating_accuracy : '-' }}</span>
-              <div class="pie">
-                <div class="left-side half-circle"></div>
-                <div class="right-side half-circle"></div>
-              </div>
-              <div class="shadow"></div>
-            </div>
-          </div>
-          <div class="stats_item">
-            <div class="ff_label">
-              Цена
-            </div>
-            <div class="pie-wrapper" :class="progress(trader.rating_price)">
-              <span class="label">{{ trader.rating_price ? trader.rating_price : '-' }}</span>
-              <div class="pie">
-                <div class="left-side half-circle"></div>
-                <div class="right-side half-circle"></div>
-              </div>
-              <div class="shadow"></div>
-            </div>
-          </div>
-          <div class="stats_item">
-            <div class="ff_label">
-              Поддержка
-            </div>
-            <div class="pie-wrapper" :class="progress(trader.rating_support)">
-              <span class="label">{{ trader.rating_support ? trader.rating_support : '-' }}</span>
-              <div class="pie">
-                <div class="left-side half-circle"></div>
-                <div class="right-side half-circle"></div>
-              </div>
-              <div class="shadow"></div>
-            </div>
-          </div>
+        <div v-if="trader.historypoints" class="tt_graph_wrap margin24">
+          <no-ssr>
+            <ttGraph
+              class="border_top tt_graph"
+              :dataPoints="trader.historypoints"
+              :first="{color: '#8FCC14', gradient: 'GradientFirst', opacity: 1 }" 
+              :second="{color: '#000', gradient: 'GradientSecond', opacity: 0.2 }"
+              :interactive="true" 
+            />
+          </no-ssr>
+        </div>
+
+        <div v-else class="tt_graph_empty margin24">
+          Подтвержденные данные торгов не предоставлены
         </div>
 
         <div class="ff_trader_item_row trader_stats_block">
@@ -132,28 +79,30 @@
           </div>
         </div>
 
-        <div v-if="trader.prices" class="ff_trader_item_row trader_price_block">
-          <div class="price_title">
-            Цены
-          </div>
-          <div class="trader_price">
-            <div v-for="price of trader.prices" class="price_card">
-              <div class="price_value">0,09 BTC</div>
-              <div class="price_label">3 месяца</div>
+        <div v-if="trader.prices">
+          <div v-for="group of trader.prices.groupPlans" class="ff_trader_item_row trader_price_block">
+            <div class="price_title">
+              {{ group.name == 'default' ? 'Цены' : group.name }}
+            </div>
+            <div class="trader_price">
+              <div v-for="plan of group.plans" class="price_card">
+                <div class="price_value">{{ plan.amount }}</div>
+                <div class="price_label">{{ plan.name }}</div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="ff_trader_item_row trader_action_tools">
-          <div class="ff_trader_promo">
-            <span class="ff_label">
-              Промокод
-            </span>
-            <span class="ff_bold">
-              {{ trader.promocode ? trader.promocode : '-'}}
-            </span>
-          </div>
+        <div class="ff_trader_item_row ff_trader_promo">
+          <span class="ff_label">
+            Промокод
+          </span>
+          <span class="ff_bold">
+            {{ trader.promocode ? trader.promocode : '&mdash;'}}
+          </span>
+        </div>
 
+        <div class="ff_trader_item_row trader_action_tools">
           <a v-if="trader.contact_link" :href="trader.contact_link" class="subscribe" rel="nofollow noopener" target="_blank">
             <span class="trader_tg"></span>Admin
           </a>
@@ -222,6 +171,7 @@
 
   import Emoji from '~/assets/js/emoji.json'
   import Comment from '~/components/Comment.vue'
+  import ttGraph from '~/components/ttGraph.vue'
 
   export default {
 
@@ -252,6 +202,7 @@
 
     components: {
       Comment,
+      ttGraph,
     },
 
     async asyncData ({ app, params }) {
@@ -260,8 +211,10 @@
       try {
         let servicesResponse = await app.$axios.get(getUrl(params.trader))
         services = app.$dataFormatter.deserialize(servicesResponse.data)
+
         if( services && services.length > 0 ) {
           name = services[0].name
+          console.log(services[0])
         }
       } catch (e) {
       }

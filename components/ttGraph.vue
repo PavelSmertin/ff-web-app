@@ -111,6 +111,10 @@
 			scaledRelative: {
 				type: Boolean,
 				default: false
+			},
+			dataPoints: {
+				type: Array,
+				default: () => [],
 			}
 		},
 
@@ -561,12 +565,18 @@
 				}
 			},
 			getGraph() {
+				console.log(this.dataPoints)
+				if( this.dataPoints.length > 0 ) {
+					return this.dataPoints
+				}
 				if( this.$store.state.graphs[this.symbol] != undefined ) {
 					return this.$store.state.graphs[ this.symbol ]
 				}
 				if( this.$store.state.graphsCryptoCompare[this.symbol] != undefined) {
 					return this.$store.state.graphsCryptoCompare[ this.symbol ]
-				} 
+				}
+
+
 			},
 		},
 
