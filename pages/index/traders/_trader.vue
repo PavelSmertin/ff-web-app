@@ -25,7 +25,7 @@
         </div>
 
         <div v-else class="tt_graph_empty margin24">
-          Подтвержденные данные торгов не предоставлены
+          <span class="trader_alert"></span>Подтвержденные данные торгов не предоставлены
         </div>
 
         <div class="ff_trader_item_row trader_stats_block">
@@ -145,20 +145,12 @@
           </div>
         </div>
 
-        <div v-if="trader.description && trader.description.length > 0" class="trader_description collapsed_text_wrap" :ref="'coolpased_text_'+trader.id">
+        <div v-if="trader.description && trader.description.length > 0" class="trader_description">
           <section 
             class="trader_about collapsed_text" 
             v-html="trader.description"
-            v-bind:class="indexSeoText(trader.id)"
             >
           </section>
-          <button 
-            class="button_class seo_text_toggle" 
-            v-on:click.stop.prevent="toggleSeoText(trader.id)" 
-            v-bind:class="indexSeoText(trader.id)" 
-            v-html="toggleSeoAction(trader.id)"
-            >
-          </button>
         </div>
 
       </template>
@@ -190,7 +182,6 @@
 
     data() {
       return {
-        expandedRows: [],
         flags: Emoji,
         commentText: '',
         commentsSendProcess: false,
@@ -242,24 +233,6 @@
       getScrollParent() {
         return this.$parent.$refs["scroll-container"]
       },
-      indexSeoText(id) {
-        return {
-          'ff_text_collapased' : !this.expandedRows.includes(id),
-          'ff_text_expanded' : this.expandedRows.includes(id),
-        }      
-      },
-      toggleSeoAction(id) {
-        return !this.expandedRows.includes(id) ? 'Развернуть <span>&#9660;</span>' : 'Свернуть <span>&#9650;</span>'
-      },
-      toggleSeoText(id) {
-        const index = this.expandedRows.indexOf(id);
-        if( index > -1 ) {
-          this.expandedRows.splice(index, 1)
-          this.goto( this.$refs['coolpased_text_' + id][0] )
-        } else {
-          this.expandedRows.push(id)
-        }
-      },
       getFlag( litera ) {
         let flag = this.flags.find(el => el.aliases.includes(litera))
         return flag ? flag.emoji : this.flags[0].emoji
@@ -271,7 +244,7 @@
       sendComment() {
         this.commentsSendProcess = true
         let self  = this
-        this.$axios.post( `/api/signals-services/${this.services[0].id}/comment-add`, `SignalComments[comment]=${this.commentText}&SignalComments[type]=positive`)
+        this.$axios.post( `/api/signals-services/${this.services[0].id}/comment-add`, `SignalComments[comment]=${this.commentText}&SignalComments[type]=${this.picked}`)
             .then( ({ data }) => {
               let commentObj = self.$dataFormatter.deserialize( data )
               self.newComments.push(commentObj)

@@ -23,20 +23,12 @@
             <nuxt-link :to="linkToTrader(trader)">
               <h2>{{ trader.name }}</h2>
             </nuxt-link>
-            <div v-if="trader.short_descr && trader.short_descr.length > 0" class="collapsed_text_wrap">
+            <div v-if="trader.short_descr && trader.short_descr.length > 0">
               <section 
                 class="trader_about collapsed_text" 
-                v-bind:class="indexSeoText(trader.id)"
                 >
                 {{ trader.short_descr }}
               </section>
-              <button 
-                class="button_class seo_text_toggle" 
-                v-on:click.stop.prevent="toggleSeoText(trader.id)" 
-                v-bind:class="indexSeoText(trader.id)" 
-                v-html="toggleSeoAction(trader.id)"
-                >
-              </button>
             </div>
           </div>
         </div>
@@ -217,24 +209,6 @@
       getScrollParent() {
         return this.$parent.$refs["scroll-container"]
       },
-      indexSeoText(id) {
-        return {
-          'ff_text_collapased' : !this.expandedRows.includes(id),
-          'ff_text_expanded' : this.expandedRows.includes(id),
-        }      
-      },
-      toggleSeoAction(id) {
-        return !this.expandedRows.includes(id) ? 'Развернуть <span>&#9660;</span>' : 'Свернуть <span>&#9650;</span>'
-      },
-      toggleSeoText(id) {
-        const index = this.expandedRows.indexOf(id);
-        if( index > -1 ) {
-          this.expandedRows.splice(index, 1)
-          this.goto( this.$refs['coolpased_text_' + id][0] )
-        } else {
-          this.expandedRows.push(id)
-        }
-      },
       getFlag( litera ) {
         let flag = this.flags.find(el => el.aliases.includes(litera))
         return flag ? flag.emoji : this.flags[0].emoji
@@ -247,7 +221,6 @@
       },
 
     }
-
   }
 
 </script>

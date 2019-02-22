@@ -86,21 +86,13 @@
       </nuxt-link>
     </div>
 
-    <div class="collapsed_text_wrap index_text_block">
+    <div class="index_text_block">
       <section 
         v-if="$store.state.indexDetails.seo_text" 
-        class="ff_text_block collapsed_text" 
+        class="ff_text_block" 
         v-html="$store.state.indexDetails.seo_text" 
-        v-bind:class="indexSeoText"
         >
       </section>
-      <button 
-        class="button_class seo_text_toggle" 
-        v-on:click.stop.prevent="toggleSeoText()" 
-        v-bind:class="indexSeoText" 
-        v-html="toggleSeoAction"
-        >
-      </button>
     </div>
 
   </div>
@@ -201,9 +193,6 @@
       filter( filter, type ) {
         this.$store.commit( 'SET_GRAPH_FILTER', { type: type, value: filter.value } )
       },
-      toggleSeoText () {
-        this.seoTextCollapsed = !this.seoTextCollapsed
-      },
     },
 
     computed: {
@@ -239,15 +228,6 @@
           this.calculatorUSD = value ? this.formatCalculator( this.$store.state.indexDetails.price_usd * value / this.$store.state.indexDetails.price_rub, 2 ) : ''
           this.calculatorRUB = value
         }
-      },
-      indexSeoText: function () {
-        return {
-          'ff_text_collapased' : this.seoTextCollapsed,
-          'ff_text_expanded' : !this.seoTextCollapsed,
-        }      
-      },
-      toggleSeoAction: function () {
-          return this.seoTextCollapsed ? 'Развернуть <span>&#9660;</span>' : 'Свернуть <span>&#9650;</span>'
       },
     },
 
