@@ -205,7 +205,6 @@
 
         if( services && services.length > 0 ) {
           name = services[0].name
-          console.log(services[0])
         }
       } catch (e) {
       }
