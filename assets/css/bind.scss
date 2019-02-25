@@ -253,9 +253,10 @@ h3 {
 	height: 16px;
 }
 .trader_alert {
-	width: 36px;
-	height: 36px;
+	width: 24px;
+	height: 24px;
 	background-image: url('~assets/images/ic_alert.svg');
+	flex-shrink: 0;
 }
 
 .button_link {
@@ -851,16 +852,6 @@ h3 {
 		background-color: $bg-main-color;
 		opacity: 0.6;
 	}
-}
-.tt_graph_empty {
-	border-top: 1px solid $border-thin-color;
-	border-bottom: 1px solid $border-thin-color;
-	color: $down-value-color;
-	height: 64px;
-	display: flex;
-	align-items: center;
-    justify-content: center;
-    font-size: $second_size;
 }
 
 /************ INDEX BLOCKS ************/
@@ -3365,6 +3356,7 @@ h3 {
 			.trader_about {
 				@extend .ff_label;
 				padding-right: 24px;
+				margin-top: 12px;
 			}
 		}
 		&.trader_ratings_block {
@@ -3399,7 +3391,7 @@ h3 {
 				flex-grow: 1;
 				flex-shrink: 0;
 				width: 20%;
-				padding: 16px;
+				padding: 0 16px 8px;
 			}
 			.trader_value {
 				font-size: $label-size;
@@ -3452,6 +3444,7 @@ h3 {
 			background-color: $bg-coin-color;
 			height: 48px;
 			display: flex;
+			align-content: center;
 			align-items: center;
 			padding: 24px 16px;
 			.ff_label {
@@ -3460,11 +3453,12 @@ h3 {
 			.ff_bold {
 				font-weight: bold;
 				margin: 0 auto;
+				font-size: $second_size;
 			}
 		}
 		&.trader_action_tools {
 			border-top: 1px solid $border-bold-color;
-			align-content: stretch;
+			display: flex;
 			.subscribe {
 				@extend .button_class;
 				height: auto;
@@ -3475,7 +3469,9 @@ h3 {
 				align-items: center;
 				justify-content: center;
 				height: 64px;
-
+				&:first-child {
+					border-left:none;
+				}
 				&:hover {
 					background-color: lighten($dark-primary-color, 100%);
 					transition: background-color 0.2s ease-in-out;
@@ -3483,10 +3479,24 @@ h3 {
 			}
 		}
 	}
+	.tt_graph_empty {
+		border-top: 1px solid $border-thin-color;
+		border-bottom: 1px solid $border-thin-color;
+		color: $down-value-color;
+		height: 64px;
+		display: flex;
+		align-items: center;
+	    justify-content: center;
+	    font-size: $second_size;
+	    padding: 0 16px;
+	    line-height: 16px;
+	}
+	.trader_alert {
+		margin-right: 6px; 
+	}
 }
 @media (max-width: 769px) {
 	.ff_traders {
-
 		.ff_trader_head {
 			flex-direction: column;
 			.ff_trader_title {
@@ -3510,11 +3520,11 @@ h3 {
 			flex-wrap: wrap;
 			.ff_trader_dt {
 				width: 100%;
-				padding: 24px;
+				padding: 16px 24px;
 			}
 			.ff_trader_dd {
 				width: 100%;
-				padding: 24px;
+				padding: 0 24px 16px;
 				.trader_about {
 					padding: 0;
 				}
@@ -3531,30 +3541,47 @@ h3 {
 			&.trader_stats_block {
 				.stats_item {
 					width: 50%;
+					padding: 0px 24px 2px;
+					&.is_empty {
+						display: none;
+					}
 				}
 			}
 
 			&.trader_price_block {
+				padding: 16px 16px 8px 16px;
 				.trader_price {
 					flex-wrap: wrap;
+					.price_card {
+						width: 30%;
+						padding: 12px 8px;
+					}
 				}
 			}
 			&.ff_trader_promo {
 				width: 100%;
-				padding: 16px 16px;
+				padding: 16px 24px;
 			}
 			&.trader_action_tools {
-				border-top: none;
-				margin-right: -1px;
-				.subscribe {
-					flex-grow: 1;
-					border: 1px solid $border-bold-color;
-					padding: 16px 0;
-					margin-left: -1px;
+				.subscribe{  
+					border-bottom: 1px solid $border-thin-color;
+					padding: 0 24px;
+					min-width: 50%;
+					flex-shrink: 0;
+					&.light_link {
+						width: 100%;
+					}
 				}
 			}
 		}
 
+		.tt_graph_empty {
+			padding: 0 24px;
+		}
+
+		.trader_tg, .trader_site, .trader_comments, .trader_alert {
+			margin-right: 6px; 
+		}
 	}
 }
 
@@ -3581,31 +3608,88 @@ h3 {
 		}
 	}
 
+	.ff_trader_item_row {
+		&.trader_stats_block {
+			.stats_item {
+				padding: 0 24px 8px;
+			}
+		}
+		&.trader_price_block {
+			padding: 16px 16px 8px 16px;
+		}
+		&.ff_trader_promo {
+			padding: 24px;
+		}
+	}
+
 	.comments_wrap {
 		background-color: $bg-coin-color;
 		padding-bottom: 12px;
+		padding-top: 1px;
 	}
 	.comments {
-		border-top: 1px solid $border-bold-color;
+		.comments_head_block {
+			margin: 24px;
+			display: flex;
+			flex-direction: row;
+			align-items: baseline;
+			.comments_head { 
+				flex-grow: 1;
+			}
+
+			span {
+				flex-grow: 0;
+				margin-left: 4px;
+				font-size: 24px;
+				font-weight: 100;
+			}
+			.ic_up, .ic_down {
+				width: 16px;
+				height: 16px;
+				background-size: cover;
+			}
+			.up {
+				color: $up-value-color;
+				margin-right: 8px;
+			}
+			.down {
+				color: $down-value-color;
+			}
+		}
 		.comments_head {
 			font-size: 24px;
 			font-weight: normal;
-			margin: 24px 24px 0 24px;
 			padding: 0;
+			margin: 0;
 			line-height: 32px;
 		}
 		.comment_item {
+			display: flex;
+			flex-direction: row;
 			border: 1px solid $border-thin-color;
 			margin: 12px 24px;
 			background-color: $bg-main-color;
+			.comment_icon {
+				width: 36px;
+				margin-left: 12px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				.ic_up, .ic_down {
+					width: 16px;
+					height: 16px;
+					background-size: cover;
+				}
+			}
 			.comment_body {
 				padding: 0 12px;
+				flex-grow: 1;
 			}
 		}
 	}
 
 	.ff_form {
-
+		border-top: 1px solid $border-bold-color;
 		box-shadow: 0 2px 8px 0 rgba(0,0,0,0.30);
 		margin: 32px 24px 24px 24px;
 		background-color: $bg-main-color;
@@ -3696,6 +3780,30 @@ h3 {
 		margin: 32px 24px 24px 24px;
 		.trader_about {
 			@extend .ff_page;
+		}
+	}
+}
+
+@media (max-width: 769px) {
+	.ff_trader_page {
+
+		.ff_form {
+			box-shadow: none;
+			margin: 0;
+			padding: 24px 0px;
+			form {
+				width: 100%;
+				textarea {
+					min-height: 100px;
+				}
+			}
+		}
+		.comments_wrap {
+			padding-bottom: 0;
+		}
+		.trader_description .trader_about {
+			width: 100%;
+			padding-top: 0;
 		}
 	}
 }

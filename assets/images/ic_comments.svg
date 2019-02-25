@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="16px" height="16px" viewBox="7 5 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-        <filter x="-2.5%" y="-3.1%" width="104.9%" height="106.1%" filterUnits="objectBoundingBox" id="filter-1">
-            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
-            <feMerge>
-                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
-                <feMergeNode in="SourceGraphic"></feMergeNode>
-            </feMerge>
-        </filter>
-    </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="FF-Traders" transform="translate(-597.000000, -865.000000)" fill="#000000" fill-rule="nonzero">
-            <g id="Group-13" filter="url(#filter-1)" transform="translate(124.000000, 224.000000)">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-597.000000, -865.000000)" fill="#000000" fill-rule="nonzero">
+            <g transform="translate(124.000000, 224.000000)">
                 <path d="M489,657 L485,661 L485,657 L483,657 C481.895431,657 481,656.104569 481,655 L481,649 C481,647.895431 481.895431,647 483,647 L493,647 C494.104569,647 495,647.895431 495,649 L495,655 C495,656.104569 494.104569,657 493,657 L489,657 Z" id="Combined-Shape"></path>
             </g>
         </g>

@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        <div v-if="trader.historypoints" class="tt_graph_wrap margin24">
+        <div v-if="trader.historypoints" class="tt_graph_wrap">
           <no-ssr>
             <ttGraph
               class="border_top tt_graph"
@@ -44,12 +44,12 @@
             />
           </no-ssr>
         </div>
-        <div v-else class="tt_graph_empty margin24">
+        <div v-else class="tt_graph_empty">
           <span class="trader_alert"></span>Подтвержденные данные торгов не предоставлены
         </div>
 
-        <div class="ff_trader_item_row trader_stats_block">
-          <div class="stats_item">
+        <div class="ff_trader_item_row trader_stats_block margin12">
+          <div class="stats_item" :class="isEmpty(trader.periods_deals)">
             <div class="ff_label">
               Сроки сделок
             </div>
@@ -60,7 +60,7 @@
             </div>
           </div>
 
-          <div class="stats_item">
+          <div class="stats_item" :class="isEmpty(trader.team)">
             <div class="ff_label">
               Команда
             </div>
@@ -69,7 +69,7 @@
             </div>
           </div>
 
-          <div class="stats_item">
+          <div class="stats_item" :class="isEmpty(trader.country)">
             <div class="ff_label">
               Страна
             </div>
@@ -87,7 +87,7 @@
             </div>
           </div>
 
-          <div class="stats_item">
+          <div class="stats_item" :class="isEmpty(trader.lang)">
             <div class="ff_label">
               Языки
             </div>
@@ -198,6 +198,7 @@
     },
 
     computed: {
+
     },
 
     methods: {
@@ -219,6 +220,11 @@
       progress( value ) {
         return 'progress_' + Math.round(value * 20/300) * 5
       },
+      isEmpty( value ) {
+        return {
+          'is_empty': value == undefined || value == null
+        }
+      }
 
     }
   }

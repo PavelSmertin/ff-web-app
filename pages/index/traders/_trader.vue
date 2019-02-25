@@ -12,7 +12,7 @@
           </h1>
         </div>
 
-        <div v-if="trader.historypoints" class="tt_graph_wrap margin24">
+        <div v-if="trader.historypoints" class="tt_graph_wrap">
           <no-ssr>
             <ttGraph
               class="border_top tt_graph"
@@ -24,12 +24,12 @@
           </no-ssr>
         </div>
 
-        <div v-else class="tt_graph_empty margin24">
+        <div v-else class="tt_graph_empty">
           <span class="trader_alert"></span>Подтвержденные данные торгов не предоставлены
         </div>
 
-        <div class="ff_trader_item_row trader_stats_block">
-          <div class="stats_item">
+        <div class="ff_trader_item_row trader_stats_block margin12">
+          <div class="stats_item" :class="isEmpty(trader.periods_deals)">
             <div class="ff_label">
               Сроки сделок
             </div>
@@ -40,7 +40,7 @@
             </div>
           </div>
 
-          <div class="stats_item">
+          <div class="stats_item" :class="isEmpty(trader.team)">
             <div class="ff_label">
               Команда
             </div>
@@ -49,7 +49,7 @@
             </div>
           </div>
 
-          <div class="stats_item">
+          <div class="stats_item" :class="isEmpty(trader.country)">
             <div class="ff_label">
               Страна
             </div>
@@ -58,7 +58,7 @@
             </div>
           </div>
 
-          <div class="stats_item">
+          <div class="stats_item" :class="isEmpty(false)">
             <div class="ff_label">
               Сигналы
             </div>
@@ -67,7 +67,7 @@
             </div>
           </div>
 
-          <div class="stats_item">
+          <div class="stats_item" :class="isEmpty(trader.lang)">
             <div class="ff_label">
               Языки
             </div>
@@ -116,7 +116,13 @@
 
         <div class="comments_wrap">
           <div class="comments">
-            <h2 class="comments_head">Отзывы</h2>
+            <div class="comments_head_block">
+              <h2 class="comments_head">Отзывы ({{ trader.comments ? trader.comments.length : 0 }})</h2>
+              <span class="ic_up"></span>
+              <span class="up">{{ trader.comments ? countPositives : 0 }}</span>
+              <span class="ic_down"></span>
+              <span class="down">{{ trader.comments ? countNegatives : 0}}</span>
+            </div>
             <comment v-for="comment of trader.comments" v-bind:key="comment.id" :comment="comment"></comment>
             <comment v-for="newComment of newComments" v-bind:key="newComment.id" :comment="newComment"></comment>
           </div>
@@ -220,7 +226,12 @@
       commentsButtonDisabled: function () {
         return this.commentText.length < 1 || this.commentsSendProcess === true;
       },
-
+      countPositives: function () {
+        return this.services[0].comments.filter(el => el.type == 'positive').length;
+      },
+      countNegatives: function () {
+        return this.services[0].comments.filter(el => el.type == 'negative').length;
+      },
     },
 
     methods: {
@@ -254,6 +265,12 @@
               self.commentsSendProcess = false
             })
       },
+
+      isEmpty( value ) {
+        return {
+          'is_empty': value == undefined || value == null || value == false
+        }
+      }
 
     }
 
