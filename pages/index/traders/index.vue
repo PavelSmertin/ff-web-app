@@ -184,8 +184,6 @@
       try {
         let servicesResponse = await app.$axios.get(API_SIGNALS_SERVICES)
         services = app.$dataFormatter.deserialize(servicesResponse.data)
-        console.log(services)
-
       } catch (e) {
       }
 
