@@ -1,12 +1,5 @@
 <template>
   <div class="ff_post_feed">
-    <nuxt-link 
-      class="ff_post_banner" :to="coinBuyUrl( 'BTC' )"
-      @click.native="sendEvent( 'NewsBanner', 'click', 'Баннер вверху' )" 
-      >
-      <img src="/banner_728x90.png" alt="banner">
-    </nuxt-link>
-
     <post v-for="post of news" v-on:post-visible="seoTitle = $event" v-bind:key="post.id" :postProp="post" :comments="post.comments" :commentsCount="post.comments ? post.comments.length : 0" ></post>
     <div ref="infinite_loading_container"></div>
   </div>

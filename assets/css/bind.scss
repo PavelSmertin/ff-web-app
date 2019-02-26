@@ -3373,7 +3373,7 @@ h3 {
 				padding: 16px;
 				width: 20%;
 				text-align: center;
-				border: 1px solid $border-bold-color;
+				border: 1px solid $border-thin-color;
 			}
 			.trader_value {
 				font-size: $primary-size;
@@ -3406,7 +3406,7 @@ h3 {
 		&.trader_price_block {
 			flex-direction: column;
 			background-color: $bg-coin-color;
-			border-top: 1px solid $border-bold-color;
+			border-top: 1px solid $border-thin-color;
 			padding: 16px 8px 8px 8px;
 			.price_title {
 				text-align: center;
@@ -3440,7 +3440,7 @@ h3 {
 			}
 		}
 		&.ff_trader_promo {
-			border-top: 1px solid $border-bold-color;
+			border-top: 1px solid $border-thin-color;
 			background-color: $bg-coin-color;
 			height: 48px;
 			display: flex;
@@ -3457,7 +3457,7 @@ h3 {
 			}
 		}
 		&.trader_action_tools {
-			border-top: 1px solid $border-bold-color;
+			border-top: 1px solid $border-thin-color;
 			display: flex;
 			.subscribe {
 				@extend .button_class;
@@ -3465,7 +3465,8 @@ h3 {
 				display: flex;
 				padding: 0;
 				border: none;
-				border-left: 1px solid $border-bold-color;
+				border-bottom: 1px solid $border-thin-color;
+				border-left: 1px solid $border-thin-color;
 				align-items: center;
 				justify-content: center;
 				height: 64px;
@@ -3564,7 +3565,6 @@ h3 {
 			}
 			&.trader_action_tools {
 				.subscribe{  
-					border-bottom: 1px solid $border-thin-color;
 					padding: 0 24px;
 					min-width: 50%;
 					flex-shrink: 0;
