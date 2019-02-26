@@ -222,6 +222,10 @@
 
     },
 
+    mounted () {
+      this.goto()
+    },
+
     computed: {
       commentsButtonDisabled: function () {
         return this.commentText.length < 1 || this.commentsSendProcess === true;
@@ -236,9 +240,8 @@
 
     methods: {
       goto( element ) {
-        let topPos = element.offsetTop;
         let scrollParent = this.getScrollParent()
-        scrollParent.scrollTo(0, topPos)
+        scrollParent.scrollTo(0, 0)
       },
       getScrollParent() {
         return this.$parent.$refs["scroll-container"]
