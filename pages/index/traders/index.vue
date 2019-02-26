@@ -134,7 +134,7 @@
             <span class="trader_tg"></span>Telegram
           </a>
           <nuxt-link :to="linkToTrader(trader)" class="subscribe">
-            <span class="trader_comments"></span>Отзывы
+            <span class="trader_comments"></span>Отзывы ({{ trader.comments ? trader.comments.length : 0 }})
           </nuxt-link>
           <nuxt-link :to="linkToTrader(trader)" class="subscribe light_link">
             Подробнее
@@ -184,6 +184,8 @@
       try {
         let servicesResponse = await app.$axios.get(API_SIGNALS_SERVICES)
         services = app.$dataFormatter.deserialize(servicesResponse.data)
+        console.log(services)
+
       } catch (e) {
       }
 

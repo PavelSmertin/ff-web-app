@@ -208,7 +208,6 @@
       try {
         let servicesResponse = await app.$axios.get(getUrl(params.trader))
         services = app.$dataFormatter.deserialize(servicesResponse.data)
-
         if( services && services.length > 0 ) {
           name = services[0].name
         }
@@ -260,9 +259,11 @@
         this.$axios.post( `/api/signals-services/${this.services[0].id}/comment-add`, `SignalComments[comment]=${this.commentText}&SignalComments[type]=${this.picked}`)
             .then( ({ data }) => {
               let commentObj = self.$dataFormatter.deserialize( data )
-              self.newComments.push(commentObj)
-              self.commentsSendProcess = false
-              self.commentText = ''
+              if(commentObj && commentObj.length > 0) {
+                self.newComments.push(commentObj[0])
+                self.commentsSendProcess = false
+                self.commentText = ''
+              }
             })
             .catch(function (error) {
               self.commentsSendProcess = false
