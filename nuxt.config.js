@@ -161,10 +161,6 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     ['@nuxtjs/proxy', { pathRewrite: { '^/api' : '/v1', '^/images' : '/' } }],
-    ['nuxt-facebook-pixel-module', {
-      track: 'PageView',
-      pixelId: '252822442112684',
-    }],
     ['@nuxtjs/pwa', { meta: false, oneSignal: false, manifest: false, icon: false }],
     'nuxt-webfontloader',
     '@miyaoka/nuxt-twitter-widgets-module',
