@@ -164,6 +164,10 @@ export default {
     ['@nuxtjs/pwa', { meta: false, oneSignal: false, manifest: false, icon: false }],
     'nuxt-webfontloader',
     '@miyaoka/nuxt-twitter-widgets-module',
+    ['@nuxtjs/google-adsense', {
+      id: 'ca-pub-2614203244283408',
+      pageLevelAds: true,
+    }]
   ],
 
   axios: {
