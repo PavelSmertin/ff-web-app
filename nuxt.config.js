@@ -95,6 +95,7 @@ export default {
     { src: '~/plugins/intersection-observer.js', ssr: false  }, // for safary browser
     '~/plugins/axios',
     '~/plugins/data-formatter',
+    { src: '~plugins/vue-cookie-law.js', ssr: false }
   ],
 
   env: {

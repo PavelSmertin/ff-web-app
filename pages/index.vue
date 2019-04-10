@@ -131,6 +131,21 @@
           <div class="fading" v-bind:class="{ filtered: isFiltering }"></div>
         </aside>
       </div>
+
+      <no-ssr>
+        <cookie-law theme="dark-lime" :buttonText="'ОК'">
+
+          <div slot="message">
+            Файлы cookie с этого сайта применяются для анализа трафика и оценки эффективности рекламы. 
+            
+            <nuxt-link class="coockie_law_link" :to="{path: '/privacy-policy'}" >
+              Подробнее о том, как мы используем файлы cookie… 
+            </nuxt-link>
+            <br>
+            Если Вы продолжите использовать сайт, мы будем считать, что Вас это устраивает.
+          </div>
+        </cookie-law>
+      </no-ssr>
     </div>
   </main>
 </template>

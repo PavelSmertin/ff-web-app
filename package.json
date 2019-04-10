@@ -20,6 +20,7 @@
     "normalize.css": "^8.0.1",
     "nuxt": "^2.3.4",
     "nuxt-webfontloader": "^1.0.0",
+    "vue-cookie-law": "^1.10.0",
     "vue-infinite-loading": "^2.4.3",
     "vue-observe-visibility": "^0.4.3",
     "vue-social-sharing": "^2.3.3",
