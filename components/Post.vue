@@ -178,24 +178,8 @@
       <img src="/tt_banner.png" class="tt_banner" alt="tt_banner" >
     </a>
 
-    <div class="tg_banner_wrap">
-      <div class="tg_banner">
-        <div class="tg_banner_icon">
-          <span class="banner_icon"></span>
-        </div>
-        <div class="tg_banner_body">
-          <p class="ff_nc_title">Подпишитесь на наш Телеграм канал</p>
-          <p>Инсайдерские новости.  Обучающие материалы. Прогнозы курсов криптовалют</p>
-        </div>
-        <a 
-          @click.native="onSocialClick('tg')" 
-          href="https://telegram.im/@FF_RUS?lang=ru" 
-          class="subscribe tg" 
-          alt="tg" 
-          target="_blank">
-            <span class="banner_icon"></span>Подписаться
-        </a>
-      </div>
+    <div class="content_width">
+      <adsbygoogle :ad-slot="'2416956496'" />
     </div>
 
     <div v-if="post.similar && post.similar.length > 0" class="similar_list_wrap">

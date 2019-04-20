@@ -168,6 +168,8 @@ export default {
     ['@nuxtjs/google-adsense', {
       id: 'ca-pub-2614203244283408',
       pageLevelAds: true,
+      includeQuery: true,
+      // test: true,
     }]
   ],
 
