@@ -565,7 +565,6 @@
 				}
 			},
 			getGraph() {
-				console.log(this.dataPoints)
 				if( this.dataPoints.length > 0 ) {
 					return this.dataPoints
 				}
