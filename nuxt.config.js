@@ -89,6 +89,7 @@ export default {
   plugins: [
     // ssr: false to only include it on client-side
     { src: '~/plugins/ga.js', ssr: false },
+    { src: '~/plugins/mailru.js', ssr: false },
     { src: '~/plugins/vue-socket.js', ssr: false },
     { src: '~/plugins/social.js' },
     { src: '~/plugins/vue-observe-visibility.js', ssr: false  },
